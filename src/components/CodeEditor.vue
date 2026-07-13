@@ -1,24 +1,102 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import type * as Monaco from 'monaco-editor';
 import { useModelStore } from '../stores/model';
+import { primmelLanguageDefinition } from '../lib/monaco-language';
 
 const model = useModelStore();
+const containerRef = ref<HTMLElement | null>(null);
+let editor: Monaco.editor.IStandaloneCodeEditor | null = null;
+let monacoInstance: typeof Monaco | null = null;
 
-const errorLine = computed(() => {
-  if (!model.parseError) return null;
-  const match = model.parseError.match(/line\s+(\d+)/i);
-  return match ? parseInt(match[1], 10) : null;
+onMounted(async () => {
+  if (!containerRef.value) return;
+
+  monacoInstance = await import('monaco-editor');
+
+  self.MonacoEnvironment = {
+    getWorker: () => new Worker('data:text/javascript;base64,cGljbw=='),
+  };
+
+  monacoInstance.languages.register({ id: 'primmel' });
+  monacoInstance.languages.setMonarchTokensProvider('primmel', primmelLanguageDefinition);
+
+  monacoInstance.editor.defineTheme('primmel-light', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: 'keyword', foreground: '4a6fa5', fontStyle: 'bold' },
+      { token: 'string', foreground: '22863a' },
+      { token: 'number', foreground: '005cc5' },
+      { token: 'comment', foreground: '6a737d', fontStyle: 'italic' },
+      { token: 'type', foreground: '6f42c1' },
+      { token: 'identifier', foreground: '24292e' },
+    ],
+    colors: {
+      'editor.background': '#ffffff',
+      'editorLineNumber.foreground': '#b0b0b0',
+      'editor.selectionBackground': '#e7f0ff',
+      'editor.lineHighlightBackground': '#f6f8fa',
+      'editorCursor.foreground': '#4a6fa5',
+    },
+  });
+
+  editor = monacoInstance.editor.create(containerRef.value, {
+    value: model.rawText,
+    language: 'primmel',
+    theme: 'primmel-light',
+    fontFamily: "'SF Mono', Menlo, 'JetBrains Mono', monospace",
+    fontSize: 13,
+    lineHeight: 1.7 * 13,
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    automaticLayout: true,
+    tabSize: 2,
+    wordWrap: 'on',
+    padding: { top: 12, bottom: 12 },
+    lineNumbers: 'on',
+    renderWhitespace: 'selection',
+    smoothScrolling: true,
+  });
+
+  editor.onDidChangeModelContent(() => {
+    const value = editor!.getValue();
+    if (value !== model.rawText) {
+      model.setText(value);
+    }
+  });
 });
 
-function onDrop(e: DragEvent) {
-  e.preventDefault();
-  const file = e.dataTransfer?.files[0];
-  if (file) readFile(file);
-}
+watch(() => model.parseError, (error) => {
+  if (!editor || !monacoInstance) return;
+  const modelUri = editor.getModel()?.uri;
+  if (!modelUri) return;
 
-function onDragOver(e: DragEvent) {
-  e.preventDefault();
-}
+  if (error) {
+    const lineMatch = error.match(/line\s+(\d+)/i);
+    const line = lineMatch ? parseInt(lineMatch[1], 10) : 1;
+    monacoInstance.editor.setModelMarkers(editor.getModel()!, 'primmel', [{
+      startLineNumber: line,
+      startColumn: 1,
+      endLineNumber: line,
+      endColumn: 1000,
+      message: error,
+      severity: monacoInstance.MarkerSeverity.Error,
+    }]);
+  } else {
+    monacoInstance.editor.setModelMarkers(editor.getModel()!, 'primmel', []);
+  }
+});
+
+watch(() => model.rawText, (newText) => {
+  if (editor && newText !== editor.getValue()) {
+    editor.setValue(newText);
+  }
+});
+
+onBeforeUnmount(() => {
+  editor?.dispose();
+});
 
 function openFile() {
   const input = document.createElement('input');
@@ -26,17 +104,12 @@ function openFile() {
   input.accept = '.prl,.mmel,.txt';
   input.onchange = () => {
     const file = input.files?.[0];
-    if (file) readFile(file);
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => model.loadFile(reader.result as string);
+    reader.readAsText(file);
   };
   input.click();
-}
-
-function readFile(file: File) {
-  const reader = new FileReader();
-  reader.onload = () => {
-    model.loadFile(reader.result as string);
-  };
-  reader.readAsText(file);
 }
 
 function download() {
@@ -47,51 +120,34 @@ function download() {
   a.click();
 }
 
-function onKeydown(e: KeyboardEvent) {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const target = e.target as HTMLTextAreaElement;
-    const start = target.selectionStart;
-    const end = target.selectionEnd;
-    const newText = target.value.substring(0, start) + '  ' + target.value.substring(end);
-    model.setText(newText);
-    nextTick(() => {
-      target.selectionStart = target.selectionEnd = start + 2;
-    });
-  }
+function onDrop(e: DragEvent) {
+  e.preventDefault();
+  const file = e.dataTransfer?.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => model.loadFile(reader.result as string);
+  reader.readAsText(file);
 }
-
-import { nextTick } from 'vue';
 </script>
 
 <template>
-  <div
-    class="code-editor"
-    @drop="onDrop"
-    @dragover="onDragOver"
-  >
+  <div class="code-editor" @drop="onDrop" @dragover.prevent>
     <div class="editor-header">
       <span class="filename">model.prl</span>
       <div class="editor-actions">
-        <button class="action-btn" @click="openFile" title="Open .prl file">Open</button>
-        <button class="action-btn" @click="model.format()" title="Format (normalize)">Format</button>
-        <button class="action-btn" @click="download" title="Download">Download</button>
+        <button class="action-btn" @click="openFile">Open</button>
+        <button class="action-btn" @click="model.format()">Format</button>
+        <button class="action-btn" @click="download">Download</button>
       </div>
     </div>
-    <textarea
-      :value="model.rawText"
-      @input="model.setText(($event.target as HTMLTextAreaElement).value)"
-      @keydown="onKeydown"
-      class="code-textarea"
-      spellcheck="false"
-      placeholder="Drop a .prl file here, or start typing..."
-    ></textarea>
+    <div ref="containerRef" class="monaco-container"></div>
     <div v-if="model.parseError" class="error-bar">
-      <span class="error-icon">!</span>
       {{ model.parseError }}
     </div>
     <div v-else-if="model.model" class="success-bar">
-      Parsed: {{ model.model.processes?.length ?? 0 }} processes, {{ model.model.provisions?.length ?? 0 }} provisions, {{ model.model.pages?.length ?? 0 }} canvases
+      Parsed: {{ model.model.processes?.length ?? 0 }} processes,
+      {{ model.model.provisions?.length ?? 0 }} provisions,
+      {{ model.model.pages?.length ?? 0 }} canvases
     </div>
   </div>
 </template>
@@ -110,6 +166,7 @@ import { nextTick } from 'vue';
   padding: 0.4rem 0.75rem;
   background: #f5f5f5;
   border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
 }
 .filename {
   font-family: 'SF Mono', Menlo, monospace;
@@ -127,18 +184,9 @@ import { nextTick } from 'vue';
   color: #555;
 }
 .action-btn:hover { background: #e8e8e8; }
-.code-textarea {
+.monaco-container {
   flex: 1;
-  border: none;
-  padding: 0.75rem;
-  font-family: 'SF Mono', Menlo, monospace;
-  font-size: 0.82rem;
-  line-height: 1.7;
-  resize: none;
-  outline: none;
-  background: #fff;
-  color: #222;
-  tab-size: 2;
+  min-height: 0;
 }
 .error-bar {
   padding: 0.4rem 0.75rem;
@@ -147,21 +195,7 @@ import { nextTick } from 'vue';
   font-family: 'SF Mono', Menlo, monospace;
   font-size: 0.75rem;
   border-top: 1px solid #fcc;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.error-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #c00;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.7rem;
+  flex-shrink: 0;
 }
 .success-bar {
   padding: 0.3rem 0.75rem;
@@ -169,5 +203,6 @@ import { nextTick } from 'vue';
   color: #166534;
   font-size: 0.72rem;
   border-top: 1px solid #bbf7d0;
+  flex-shrink: 0;
 }
 </style>
