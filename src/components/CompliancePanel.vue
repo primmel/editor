@@ -56,42 +56,68 @@ function selectProvision(id: string) {
 .compliance { height: 100%; display: flex; flex-direction: column; }
 .filter-bar {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  gap: 0.2rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
 }
 .filter-bar button {
   flex: 1;
-  padding: 0.25rem;
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.72rem;
-  color: #666;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: var(--transition);
 }
+.filter-bar button:hover { color: var(--text-soft); border-color: var(--border-strong); }
 .filter-bar button.active {
-  background: var(--accent, #4a6fa5);
-  color: #fff;
-  border-color: var(--accent, #4a6fa5);
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
 }
-.provision-list { flex: 1; overflow-y: auto; padding: 0.25rem; }
+.provision-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
 .provision-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
-  border-radius: 3px;
-  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  border-left: 2px solid transparent;
+  margin-bottom: 0.15rem;
+  transition: var(--transition);
 }
-.provision-item:hover { background: #e8e8e8; }
-.provision-item.selected { background: var(--accent, #4a6fa5); color: #fff; }
+.provision-item:hover { background: var(--bg-elevated); }
+.provision-item.selected {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+}
 .modality {
-  font-weight: 700;
-  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.6rem;
   min-width: 3rem;
+  text-align: center;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
 }
-.prov-id { font-family: 'SF Mono', Menlo, monospace; font-size: 0.78rem; }
-.empty { color: #aaa; font-size: 0.85rem; padding: 1rem; text-align: center; }
+.prov-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-soft);
+}
+.provision-item.selected .prov-id { color: var(--accent-hover); }
+.empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-style: italic;
+}
 </style>
