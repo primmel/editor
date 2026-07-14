@@ -33,34 +33,46 @@ export const useModelStore = defineStore('model', () => {
   return { rawText, parseError, model, setText, format, loadFile };
 });
 
-const SAMPLE_MODEL = `root HelloWorld
+const SAMPLE_MODEL = `root Manufacturing
 
 version "v1.0.0-dev1"
 
 metadata {
-  title "Hello World"
+  title "Manufacturing Pipeline"
   schema "Primmel 0.1"
-  namespace "HelloWorld"
+  namespace "Manufacturing"
 }
 
-role Greeter { name "Greeter" }
+role Factory { name "Factory" }
+role AssemblyLine { name "Assembly Line" }
+role QA { name "Quality Assurance" }
 
 start_event Start { }
 end_event Done { }
 
-process Greet {
-  name "Greet the world"
-  actor Greeter
+process Manufacturing {
+  name "Manufacture product"
+  actor Factory
+
+  process Assembly {
+    name "Assemble components"
+    actor AssemblyLine
+  }
+
+  process QualityControl {
+    name "Inspect quality"
+    actor QA
+  }
 }
 
 canvas Root {
   elements {
-    Start { x 0 y 0 }
-    Greet { x 0 y 100 }
-    Done  { x 0 y 200 }
+    Start           { x 0 y 0 }
+    Manufacturing   { x 0 y 100 }
+    Done            { x 0 y 200 }
   }
   process_flow {
-    E1 { from Start to Greet }
-    E2 { from Greet to Done }
+    E1 { from Start to Manufacturing }
+    E2 { from Manufacturing to Done }
   }
 }`;
