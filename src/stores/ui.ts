@@ -18,6 +18,7 @@ export const useUiStore = defineStore('ui', () => {
   const panY = ref(0);
   const leftPanel = ref<'tree' | 'code'>('tree');
   const rightPanel = ref<'inspector' | 'compliance'>('inspector');
+  const view = ref<'model' | 'registry' | 'mapping'>('model');
 
   function select(id: string, type: SelectionType) {
     selection.value = { id, type };
@@ -50,7 +51,7 @@ export const useUiStore = defineStore('ui', () => {
 
   return {
     selection, activeCanvasId, zoom, panX, panY,
-    leftPanel, rightPanel,
+    leftPanel, rightPanel, view,
     select, clearSelection, setCanvas, setZoom, pan, resetView,
     isSelected,
   };

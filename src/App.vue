@@ -7,11 +7,19 @@ import ProcessCanvas from './components/ProcessCanvas.vue';
 import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
+import DataRegistry from './components/DataRegistry.vue';
+import MappingView from './components/MappingView.vue';
 
 const modelStore = useModelStore();
 const ui = useUiStore();
 
 const model = computed(() => modelStore.model);
+
+type ViewMode = 'model' | 'registry' | 'mapping';
+const view = computed<ViewMode>({
+  get: () => ui.view as ViewMode,
+  set: (v) => { ui.view = v; },
+});
 </script>
 
 <template>
@@ -51,49 +59,80 @@ const model = computed(() => modelStore.model);
       </div>
 
       <nav class="panel-nav">
-        <div class="nav-group">
+        <div class="nav-group view-switcher">
           <button
-            :class="{ active: ui.leftPanel === 'tree' }"
-            @click="ui.leftPanel = 'tree'"
-          >Tree</button>
+            :class="{ active: view === 'model' }"
+            @click="view = 'model'"
+          >Model</button>
           <button
-            :class="{ active: ui.leftPanel === 'code' }"
-            @click="ui.leftPanel = 'code'"
-          >Code</button>
+            :class="{ active: view === 'registry' }"
+            @click="view = 'registry'"
+          >Registry</button>
+          <button
+            :class="{ active: view === 'mapping' }"
+            @click="view = 'mapping'"
+          >Mapping</button>
         </div>
-        <span class="nav-sep"></span>
-        <div class="nav-group">
-          <button
-            :class="{ active: ui.rightPanel === 'inspector' }"
-            @click="ui.rightPanel = 'inspector'"
-          >Inspect</button>
-          <button
-            :class="{ active: ui.rightPanel === 'compliance' }"
-            @click="ui.rightPanel = 'compliance'"
-          >Compliance</button>
-        </div>
+        <template v-if="view === 'model'">
+          <span class="nav-sep"></span>
+          <div class="nav-group">
+            <button
+              :class="{ active: ui.leftPanel === 'tree' }"
+              @click="ui.leftPanel = 'tree'"
+            >Tree</button>
+            <button
+              :class="{ active: ui.leftPanel === 'code' }"
+              @click="ui.leftPanel = 'code'"
+            >Code</button>
+          </div>
+          <span class="nav-sep"></span>
+          <div class="nav-group">
+            <button
+              :class="{ active: ui.rightPanel === 'inspector' }"
+              @click="ui.rightPanel = 'inspector'"
+            >Inspect</button>
+            <button
+              :class="{ active: ui.rightPanel === 'compliance' }"
+              @click="ui.rightPanel = 'compliance'"
+            >Compliance</button>
+          </div>
+        </template>
       </nav>
     </header>
 
-    <main class="workspace" v-if="model">
-      <aside class="panel panel-left">
-        <Transition name="fade" mode="out-in">
-          <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
-          <CodeEditor v-else key="code" />
-        </Transition>
-      </aside>
+    <template v-if="view === 'model' && model">
+      <main class="workspace">
+        <aside class="panel panel-left">
+          <Transition name="fade" mode="out-in">
+            <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
+            <CodeEditor v-else key="code" />
+          </Transition>
+        </aside>
 
-      <section class="panel panel-center">
-        <ProcessCanvas :model="model" />
-      </section>
+        <section class="panel panel-center">
+          <ProcessCanvas :model="model" />
+        </section>
 
-      <aside class="panel panel-right">
-        <Transition name="fade" mode="out-in">
-          <ElementInspector v-if="ui.rightPanel === 'inspector'" :model="model" key="inspector" />
-          <CompliancePanel v-else :model="model" key="compliance" />
-        </Transition>
-      </aside>
-    </main>
+        <aside class="panel panel-right">
+          <Transition name="fade" mode="out-in">
+            <ElementInspector v-if="ui.rightPanel === 'inspector'" :model="model" key="inspector" />
+            <CompliancePanel v-else :model="model" key="compliance" />
+          </Transition>
+        </aside>
+      </main>
+    </template>
+
+    <template v-else-if="view === 'registry' && model">
+      <main class="workspace workspace-registry">
+        <DataRegistry :model="model" />
+      </main>
+    </template>
+
+    <template v-else-if="view === 'mapping' && model">
+      <main class="workspace workspace-mapping">
+        <MappingView :implementation-model="model" />
+      </main>
+    </template>
 
     <div v-else class="workspace error-state">
       <aside class="panel panel-left"><CodeEditor /></aside>
