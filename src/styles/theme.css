@@ -1,2 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@300;400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'Spline Sans Mono', 'SF Mono', Menlo, monospace;
+
+  --bg: #14110e;
+  --bg-surface: #1c1814;
+  --bg-elevated: #252019;
+  --bg-hover: #2e2820;
+  --border: #3a322a;
+  --border-soft: #2a2520;
+  --border-strong: #4a4036;
+
+  --text: #e9e0d2;
+  --text-soft: #b8ac98;
+  --text-muted: #7a6f60;
+  --text-faint: #524838;
+
+  --accent: #d49442;
+  --accent-hover: #e8a850;
+  --accent-soft: rgba(212, 148, 66, 0.12);
+  --accent-glow: rgba(212, 148, 66, 0.25);
+
+  --burgundy: #b85555;
+  --burgundy-soft: rgba(184, 85, 85, 0.15);
+  --sage: #7a9e5e;
+  --sage-soft: rgba(122, 158, 94, 0.15);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 24px var(--accent-glow);
+
+  --radius: 6px;
+  --radius-sm: 3px;
+  --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Hanken Grotesk', system-ui, sans-serif; }
+
+html, body, #app {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50% { box-shadow: 0 0 12px 2px var(--accent-glow); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}

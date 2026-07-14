@@ -59,38 +59,59 @@ const visibleProps = computed<[string, unknown][]>(() => {
 </template>
 
 <style scoped>
-.inspector { height: 100%; overflow-y: auto; padding: 0.75rem; }
+.inspector { height: 100%; overflow-y: auto; padding: 1rem; }
 .inspector-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
 }
 .type-badge {
-  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: var(--accent, #4a6fa5);
-  color: #fff;
-  padding: 0.15rem 0.4rem;
-  border-radius: 3px;
+  letter-spacing: 0.1em;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-glow);
+  font-weight: 500;
 }
-.element-id { font-family: 'SF Mono', Menlo, monospace; font-size: 0.82rem; color: #333; }
+.element-id {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 500;
+}
 .prop-list {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.2rem 0.75rem;
-  font-size: 0.8rem;
+  gap: 0.35rem 0.75rem;
+  font-size: 0.78rem;
   margin: 0;
 }
-.prop-list dt { color: #888; font-weight: 500; }
-.prop-list dd { margin: 0; color: #333; word-break: break-word; }
+.prop-list dt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  padding-top: 0.05rem;
+}
+.prop-list dd {
+  margin: 0;
+  color: var(--text);
+  word-break: break-word;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
 .inspector-empty {
-  color: #aaa;
+  color: var(--text-muted);
   font-size: 0.85rem;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1.5rem;
   text-align: center;
+  font-style: italic;
 }
 </style>
