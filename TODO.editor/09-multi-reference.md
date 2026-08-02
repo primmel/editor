@@ -1,4 +1,4 @@
-# 09 — Multi-reference mapping: the lens
+# 09 — Multi-reference mapping: the lens ✅ DONE (a064d8f)
 
 **Wave:** mapping · **Depends on:** 08 · **Priority:** P1
 

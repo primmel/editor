@@ -17,6 +17,8 @@ const props = defineProps<{
   side: 'source' | 'target';
   model: Standard;
   profile: MapProfile | null;
+  /** Cross-profile badges per element id (the multi-reference story). */
+  badgesOf?: (id: string) => string[];
 }>();
 
 const emit = defineEmits<{
@@ -82,6 +84,14 @@ function onRow(row: Row) {
       >
         <span class="party-id">{{ row.id }}</span>
         <span class="party-partners">⇒ {{ row.partners.join(', ') }}</span>
+        <span v-if="badgesOf" class="party-badges">
+          <span
+            v-for="b in badgesOf(row.id)"
+            :key="b"
+            class="party-badge"
+            :data-testid="`party-badge-${row.id}-${b}`"
+          >{{ b }}</span>
+        </span>
       </button>
     </div>
     <div class="party-section">
@@ -138,5 +148,19 @@ function onRow(row: Row) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.party-badges {
+  display: inline-flex;
+  gap: 0.2rem;
+  margin-left: auto;
+}
+.party-badge {
+  font-size: 0.56rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 0 0.25rem;
 }
 </style>

@@ -12,7 +12,9 @@ import ProcessCanvas from '../ProcessCanvas.vue';
 import MapPairDialog from './MapPairDialog.vue';
 import MapPartyList from './MapPartyList.vue';
 import CoverageLegend from './CoverageLegend.vue';
+import ProfileSwitcher from './ProfileSwitcher.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
+import { badgeMap } from '../../lib/multi-map';
 import { COVERAGE_TINTS, coverageTooltip, coverageView, type CoverageView } from '../../lib/coverage';
 import {
   createMappingPair, deleteMappingPair, updateMappingMeta,
@@ -65,6 +67,13 @@ function impTooltip(id: string): string | null {
   if (mapped === undefined) return null;
   return mapped ? 'mapped (a resolving pair exists)' : 'unmapped';
 }
+
+/** The cross-profile badges: every namespace an IMP element maps into. */
+const impBadges = computed(() => {
+  void modelStore.version;
+  const map = badgeMap(props.implementationModel);
+  return (id: string) => map.get(id) ?? [];
+});
 
 function loadReference() {
   const input = document.createElement('input');
@@ -199,18 +208,31 @@ const hoveredEdge = ref<string | null>(null);
 
 <template>
   <div class="mapper" ref="container">
+    <ProfileSwitcher />
+
     <div class="mapper-toolbar">
       <button class="mapper-btn" data-testid="load-ref" @click="loadReference">
-        {{ refModel ? 'change reference' : 'load reference model' }}
+        {{ refModel ? 'load another reference' : 'load reference model' }}
       </button>
       <span v-if="namespace" class="mapper-ns" data-testid="ref-namespace">{{ namespace }}</span>
-      <button v-if="refModel" class="mapper-btn" data-testid="clear-ref" @click="mapping.clearRef()">clear</button>
       <span class="mapper-hint" v-if="refModel">
         click an element on one side, then its partner on the other
       </span>
       <span v-if="mapping.picked" class="mapper-picked" data-testid="picked">
         picked: {{ mapping.picked.id }} ({{ mapping.picked.side }})
       </span>
+    </div>
+
+    <div v-if="mapping.lastSeed" class="seed-review" data-testid="seed-review">
+      <span class="seed-review-title">
+        seeded {{ mapping.lastSeed.toNs }} from {{ mapping.lastSeed.fromNs }}:
+        {{ mapping.lastSeed.outcome.carried }} carried,
+        {{ mapping.lastSeed.outcome.review.length }} to review
+      </span>
+      <ul v-if="mapping.lastSeed.outcome.review.length" class="seed-review-list">
+        <li v-for="r in mapping.lastSeed.outcome.review" :key="r">{{ r }}</li>
+      </ul>
+      <button class="seed-review-dismiss" data-testid="seed-review-dismiss" @click="mapping.lastSeed = null">dismiss</button>
     </div>
 
     <div v-if="mapping.parseError" class="mapper-error" data-testid="ref-parse-error">{{ mapping.parseError }}</div>
@@ -275,6 +297,7 @@ const hoveredEdge = ref<string | null>(null);
           side="source"
           :model="implementationModel"
           :profile="profile"
+          :badges-of="impBadges"
           @pick="onPick('imp', $event)"
           @edit-pair="onEditPair"
         />
@@ -422,4 +445,33 @@ const hoveredEdge = ref<string | null>(null);
   padding: 2rem;
 }
 .mapper-empty .hint { font-size: 0.78rem; font-style: italic; max-width: 34rem; }
+.seed-review {
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.seed-review-title { font-weight: 600; white-space: nowrap; }
+.seed-review-list {
+  margin: 0;
+  padding-left: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+  max-height: 5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.seed-review-dismiss {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.64rem;
+  padding: 0.15rem 0.5rem;
+}
 </style>
