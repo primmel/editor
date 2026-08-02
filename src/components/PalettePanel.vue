@@ -2,14 +2,35 @@
 // ─────────────────────────────────────────────────────────────────────
 // The element palette (TODO.editor/03) — drag (or click) an element
 // kind onto the canvas: the create command with minted id and defaults.
+// Program plugins append their own section (TODO.editor/17 — the
+// registry is the seam; the kernel never names a program).
 // ─────────────────────────────────────────────────────────────────────
+import { computed } from 'vue';
+import type { Standard } from '@primmel/primmel';
 import { PALETTE, type PaletteKind } from '../lib/factory';
 import { nodeColor, nodeShape, NODE_SIZE } from '../lib/render';
+import { activePlugins } from '../plugins';
+import type { PluginPaletteEntry } from '../plugins/types';
+import { useModelStore } from '../stores/model';
+
+const props = defineProps<{ model: Standard }>();
+const modelStore = useModelStore();
 
 const emit = defineEmits<{
   (e: 'pick', entry: PaletteKind): void;
   (e: 'dragstart', entry: PaletteKind, ev: DragEvent): void;
 }>();
+
+/** The active plugins' palette entries (program conveniences). */
+const pluginPalettes = computed(() => {
+  void modelStore.version;
+  return activePlugins(props.model).flatMap(p =>
+    (p.palettes ?? []).map(entry => ({ plugin: p.id, entry })));
+});
+
+function pickPlugin(entry: PluginPaletteEntry) {
+  modelStore.execute(entry.create(props.model));
+}
 
 function glyphColor(entry: PaletteKind): { fill: string; stroke: string } {
   if (entry.kind === 'event') {
@@ -77,6 +98,23 @@ function glyphShape(entry: PaletteKind): string {
         <span class="palette-label">{{ entry.label }}</span>
       </li>
     </ul>
+
+    <template v-if="pluginPalettes.length">
+      <h3 class="palette-title program">Program</h3>
+      <ul class="palette-list">
+        <li
+          v-for="{ plugin, entry } in pluginPalettes"
+          :key="`${plugin}-${entry.label}`"
+          class="palette-item"
+          :data-testid="`palette-plugin-${entry.label.replace(/\s+/g, '-').toLowerCase()}`"
+          :title="plugin"
+          @click="pickPlugin(entry)"
+        >
+          <span class="palette-glyph-text">{{ entry.glyph }}</span>
+          <span class="palette-label">{{ entry.label }}</span>
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
 
@@ -91,6 +129,24 @@ function glyphShape(entry: PaletteKind): string {
   color: var(--text-soft);
   margin: 0 0 0.15rem;
   padding: 0 0.25rem;
+}
+.palette-title.program {
+  margin-top: 0.6rem;
+  color: var(--accent);
+}
+.palette-glyph-text {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
 }
 .palette-hint {
   font-size: 0.66rem;

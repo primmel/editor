@@ -1,4 +1,4 @@
-# 17 — The OIML SMART layer (the program plugin)
+# 17 — The OIML SMART layer (the program plugin) ✅ DONE (50304bb)
 
 **Wave:** program · **Depends on:** 03, 04, 05, 07 · **Priority:** P1
 

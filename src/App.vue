@@ -19,6 +19,7 @@ import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
+import { activePlugins } from './plugins';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
 import { ref } from 'vue';
@@ -28,6 +29,14 @@ const ui = useUiStore();
 const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
 const importOpen = ref(false);
+const openPanelId = ref<string | null>(null);
+
+/** The active plugins' panels (program conveniences, TODO.editor/17). */
+const pluginPanels = computed(() => {
+  void modelStore.version;
+  return activePlugins(modelStore.standard).flatMap(p => p.panels ?? []);
+});
+const openPanel = computed(() => pluginPanels.value.find(p => p.id === openPanelId.value) ?? null);
 const canvasRef = ref<InstanceType<typeof ProcessCanvas> | null>(null);
 
 function onPalettePick(entry: PaletteKind) {
@@ -135,6 +144,12 @@ const view = computed<ViewMode>({
           >Diff</button>
           <span class="nav-sep"></span>
           <button data-testid="open-import" @click="importOpen = true">Import</button>
+          <button
+            v-for="panel in pluginPanels"
+            :key="panel.id"
+            :data-testid="`open-panel-${panel.id}`"
+            @click="openPanelId = openPanelId === panel.id ? null : panel.id"
+          >{{ panel.label }}</button>
         </div>
         <template v-if="view === 'model'">
           <span class="nav-sep"></span>
@@ -170,7 +185,7 @@ const view = computed<ViewMode>({
     <template v-if="view === 'model' && model">
       <main class="workspace">
         <aside class="panel panel-left">
-          <PalettePanel @pick="onPalettePick" @dragstart="onPaletteDragStart" />
+          <PalettePanel :model="model" @pick="onPalettePick" @dragstart="onPaletteDragStart" />
           <PageTree :model="model" />
           <Transition name="fade" mode="out-in">
             <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
@@ -226,6 +241,16 @@ const view = computed<ViewMode>({
     </div>
 
     <ImportPanel v-if="importOpen" @close="importOpen = false" />
+
+    <div v-if="openPanel" class="panel-modal-backdrop" @click.self="openPanelId = null">
+      <div class="panel-modal" :data-testid="`panel-${openPanel.id}`">
+        <div class="panel-modal-head">
+          <span>{{ openPanel.label }}</span>
+          <button type="button" @click="openPanelId = null">✕</button>
+        </div>
+        <component :is="openPanel.component" :model="model" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -398,6 +423,41 @@ const view = computed<ViewMode>({
   margin-bottom: 0.75rem;
 }
 .error-card p { color: var(--text-muted); font-size: 0.85rem; }
+
+.panel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.panel-modal {
+  width: 34rem;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+.panel-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.panel-modal-head button {
+  border: none;
+  background: none;
+  color: var(--text-faint);
+  cursor: pointer;
+}
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity 150ms ease, transform 150ms ease;
