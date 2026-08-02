@@ -1,0 +1,1091 @@
+root Page0
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "Selection of standards and standard-like documents for defence products and services — Order of preference"
+  schema "MMEL 0.1"
+  edition "0.0.1"
+  author "Ribose"
+  shortname "BS 16341"
+  namespace "BS16341"
+}
+
+role Purchaser {
+  name "Purchaser"
+}
+
+role Contractor {
+  name "Contracting Party"
+}
+
+process SelectStandardA {
+  name "Select standards in the order of preference A"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    Provision3
+  }
+}
+
+process SelectStandardB {
+  name "Select standards in the order of preference B"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderB
+  }
+}
+
+process SelectStandardC {
+  name "Select standards in the order of preference C"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderC
+  }
+}
+
+process SelectStandardD {
+  name "Select standards in the order of preference D"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderD
+  }
+}
+
+process SelectStandardE {
+  name "Select standards in the order of preference E"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderE
+  }
+}
+
+process SelectStandardF {
+  name "Select standards in the order of preference F"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderF
+  }
+}
+
+process SelectStandardG {
+  name "Select standards in the order of preference G"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderG
+  }
+}
+
+process SelectStandardH {
+  name "Select standards in the order of preference H"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderH
+  }
+}
+
+process SelectStandardI {
+  name "Select standards in the order of preference I"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    Provision4
+  }
+}
+
+process SelectStandardJ {
+  name "Select standards in the order of preference J"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderJ
+  }
+}
+
+process SelectStandardK {
+  name "Select standards in the order of preference K"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderK
+  }
+}
+
+process SelectStandardL {
+  name "Select standards in the order of preference L"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderL
+  }
+}
+
+process SelectStandardM {
+  name "Select standards in the order of preference M"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderM
+  }
+}
+
+process SelectStandardN {
+  name "Select standards in the order of preference N"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PreferenceOrderN
+  }
+}
+
+process SelectStandardO {
+  name "Select standards in the order of preference O"
+  actor Purchaser
+  modality MAY
+  validate_provision {
+    PreferenceOrderO
+    PreferenceOrderO2
+  }
+}
+
+process ApplyUpdatedEdition {
+  name "Apply the new edition"
+  actor Contractor
+  modality MAY
+  validate_provision {
+    Provision7
+  }
+}
+
+process IdentifyStandardProcess {
+  name "Identification of standards by the purchaser"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    Provision1
+    Provision2
+  }
+}
+
+process ProposeStandardProcess {
+  name "Propose standards by the contracting parties"
+  actor Contractor
+  modality SHALL
+  validate_provision {
+    Provision5
+  }
+}
+
+process AgreeStandardProcess {
+  name "Agree the proposal by contracting parties"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    Provision6
+  }
+}
+
+process TenderProcess {
+  name "Tendering"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    TenderDocRequirement
+  }
+  output {
+    TenderDataRegistry
+  }
+}
+
+process ContractExecution {
+  name "Execution of contractually agreed work"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    EditionApply
+    IssueArise
+  }
+}
+
+process ContractChange {
+  name "Make contract changes"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    ApplyChange
+    ChangeDrivenByExpereience
+    ChangeDrivenByStatutory
+    ChangeDrivenByTechnical
+    ChangeDrivenByEconomical
+    ChangeDrivenByMultilateral
+  }
+}
+
+process ContractChangeConsent {
+  name "Contract amendment"
+  actor Purchaser
+  modality SHALL
+  validate_provision {
+    PriorConsent
+    ChangeonContract
+  }
+  output {
+    ContractAmendmentDataRegistry
+  }
+}
+
+approval NonApplicationApprove {
+  name "Non-application of a standard requires the Purchaser’s written approval"
+  actor Contractor
+  modality SHALL
+  approve_by Purchaser
+  approval_record {
+    StandardApprovalDataRegistry
+  }
+  reference {
+    Ref41
+  }
+}
+
+start_event StartEvent {
+}
+
+end_event EndEvent {
+}
+
+signal_catch_event EditionUpdated {
+  catch "StandardDataRegistryUpdated"
+}
+
+exclusive_gateway NATOGateway {
+  label "Is it for NATO nations: some standards are ratified (without reservations) with the intention of implementation for e.g. achieving the required interoperability between forces?"
+}
+
+exclusive_gateway ConstructionGateway {
+  label "Is the purchaser in construction sector or some standards are related to European Technical Approvals (ETA)?"
+}
+
+exclusive_gateway NoSuitableGateway {
+  label "For the present application no suitable standards or standard-like documents are available (up to this process)?"
+}
+
+exclusive_gateway RequirementMetGateway {
+  label "The necessary requirements cannot be met by the application of the aforementioned standards or standard-like documents"
+}
+
+exclusive_gateway DifficultyGateway {
+  label "Difficulties occur in the execution of a contract due to the fact that a new edition is issued during contract duration"
+}
+
+exclusive_gateway IssueCheckGateway {
+  label "Any change needed?"
+}
+
+exclusive_gateway EndCheckGateway {
+  label "Contract end?"
+}
+
+exclusive_gateway DriverGateway {
+  label "Is the initiative to change the list of standards and standard-like documents is taken by the Contractor?"
+}
+
+exclusive_gateway ProductGateway {
+  label "Is it for the specification of the capability of a defence product or a service, standards or standard-like documents of different domains or origin are available and deemed suitable by the Purchasing Authority?"
+}
+
+exclusive_gateway NonapplcationGateway {
+  label "Any non-application of a standard?"
+}
+
+class ContractAmendmentData {
+  contract: reference(ContractData) {
+    definition "Contract"
+    modality SHALL
+    reference {
+      Ref44
+    }
+  }
+  change: string {
+    definition "Change"
+    modality SHALL
+    reference {
+      Ref44
+    }
+  }
+}
+
+class StandardData {
+  standard {
+    definition "Standard and standard-like document applicable to contracts"
+    modality SHALL
+    reference {
+      Ref41
+    }
+  }
+  edition: string {
+    definition "Edition"
+    modality SHALL
+    reference {
+      Ref42
+    }
+  }
+}
+
+class StandardApprovalData {
+  standard: reference(StandardData) {
+    definition "Standard"
+    modality SHALL
+    reference {
+      Ref41
+    }
+  }
+  approval {
+    definition "A written approval"
+    modality SHALL
+    reference {
+      Ref41
+    }
+  }
+}
+
+class TenderData {
+  tender {
+    definition "Tender"
+    modality SHALL
+    reference {
+      Ref43
+    }
+  }
+  reference[0..*] {
+    definition "Reference"
+    modality SHALL
+    reference {
+      Ref43
+    }
+  }
+}
+
+class ContractData {
+  contract {
+    definition "Contract"
+    modality SHALL
+    reference {
+      Ref44
+    }
+  }
+}
+
+data_registry ContractAmendmentDataRegistry {
+  title "Contract amendment"
+  data_class ContractAmendmentData
+}
+
+data_registry StandardDataRegistry {
+  title "Standards and standard-like documents"
+  data_class StandardData
+}
+
+data_registry StandardApprovalDataRegistry {
+  title "Approval of non-application of a standard"
+  data_class StandardApprovalData
+}
+
+data_registry ContractDataRegistry {
+  title "Contract"
+  data_class ContractData
+}
+
+data_registry TenderDataRegistry {
+  title "Tender"
+  data_class TenderData
+}
+
+provision ChangeDrivenByMultilateral {
+  condition "The changes are driven by other orders of preference being defined in bilateral or multilateral projects"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision TenderDocRequirement {
+  condition "Each reference in tendering documents shall be followed by the expression 'or equivalent' as stated in Directive 2009/81/EC"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision ChangeDrivenByExpereience {
+  condition "The changes are driven by new experience gained during contract execution"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision ChangeonContract {
+  condition "The change shall be laid down in a contract amendment"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision PreferenceOrderO {
+  subject#1 StandardDataRegistry
+  condition "Select company standards in cases where the requirements cannot be covered by the documents previously mentioned"
+  modality MAY
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderN {
+  subject#1 StandardDataRegistry
+  condition "Select Military standards of partner nations, such as MIL Standards (USA)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderM {
+  subject#1 StandardDataRegistry
+  condition "Select Mandatory national regulations and directives relating to specific equipment (e.g. aircraft or naval ships)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderL {
+  subject#1 StandardDataRegistry
+  condition "Select National Defence Materiel Standards (e.g. UK Defence Standards, German VG)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderK {
+  subject#1 StandardDataRegistry
+  condition "Select widely recognized civil technical specifications stemming from industry"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderJ {
+  subject#1 StandardDataRegistry
+  condition "Select National Technical Approvals or Technical Specifications (e.g. DIN-SPEC)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision IssueArise {
+  subject#1 StandardDataRegistry
+  condition "Make necessary change when issues arise during the execution of a contract"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision PreferenceOrderH {
+  subject#1 StandardDataRegistry
+  condition "Select other technical reference systems established by the recognized European standardization bodies"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PriorConsent {
+  subject#1 Purchaser
+  condition "Prior consent from { Purchaser (Role) } shall be obtained"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision PreferenceOrderG {
+  subject#1 StandardDataRegistry
+  condition "Select other international civil standards"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderO2 {
+  subject#2 Purchaser
+  subject#1 StandardDataRegistry
+  condition "Ensure that these standards are made available to { Purchaser (Role) } together with the related rights of use where the application of company standards is envisaged"
+  modality MAY
+  reference {
+    Ref43
+  }
+}
+
+provision ApplyChange {
+  condition "Issues arise during the execution of a contract which necessitate a change in the list of standards and standard-like documents or make a change appear reasonable"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision PreferenceOrderF {
+  subject#1 StandardDataRegistry
+  condition "Select National civil standards, transposing international standards (e.g. BS ISO,...)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderE {
+  subject#1 StandardDataRegistry
+  condition "Select Common European Technical Specifications"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderD {
+  subject#1 StandardDataRegistry
+  condition "Select European Technical Approvals (ETA)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderC {
+  subject#1 StandardDataRegistry
+  condition "Select National civil standards, transposing European standards (e.g. BS EN, NF EN, DIN EN,...)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision PreferenceOrderB {
+  subject#1 StandardDataRegistry
+  condition "Select International Military Alliances Standards (e.g. NATO Allied Publications and associated Standardization Agreements (STANAG))"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision ChangeDrivenByStatutory {
+  condition "The changes are driven by standards lower in the selection order being referred to in laws, ordinances and statutory provisions"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision EditionApply {
+  subject#1 StandardDataRegistry
+  condition "The edition of the { Standards and standard-like documents (Data) } specified in the contract shall apply"
+  modality SHALL
+  reference {
+    Ref42
+  }
+}
+
+provision ChangeDrivenByEconomical {
+  condition "The changes are driven by the application of standards lower in the selection order being more economical"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision ChangeDrivenByTechnical {
+  condition "The changes are driven by standards lower in the selection order appearing to be more suitable from a technical point of view"
+  modality SHALL
+  reference {
+    Ref44
+  }
+}
+
+provision Provision1 {
+  subject#2 Purchaser
+  subject#1 StandardDataRegistry
+  condition "Standards and standard-like documents shall be identified by Purchaser"
+  modality SHALL
+  reference {
+    Ref41
+  }
+}
+
+provision Provision2 {
+  condition "EDSTAR shall be considered during the standards selection process as it contains recommended Best Practice Standards for the acquisition of defence materiel"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision Provision3 {
+  subject#1 StandardDataRegistry
+  condition "Select standards and standard-like documents, which are referenced in laws, ordinances and statutory provisions"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision Provision4 {
+  subject#1 StandardDataRegistry
+  condition "Select other national civil standards and standard-like documents (e.g. BS)"
+  modality SHALL
+  reference {
+    Ref43
+  }
+}
+
+provision Provision5 {
+  subject#2 Contractor
+  subject#1 StandardDataRegistry
+  condition "Contracting Party proposes standards and standard-like documents"
+  modality SHALL
+  reference {
+    Ref41
+  }
+}
+
+provision Provision6 {
+  subject#3 Contractor
+  subject#2 Purchaser
+  subject#1 StandardDataRegistry
+  condition "Purchaser agrees on selected standards and standard-like documents proposed by Contracting Party"
+  modality SHALL
+  reference {
+    Ref41
+  }
+}
+
+provision Provision7 {
+  subject#2 StandardDataRegistry
+  subject#1 Contractor
+  condition "It is at the discretion of the Contracting Party to apply the new edition of standards and standard-like documents"
+  modality MAY
+  reference {
+    Ref42
+  }
+}
+
+subprocess Page0 {
+  elements {
+    StartEvent {
+      x -375
+      y -600
+    }
+    IdentifyStandardProcess {
+      x -435
+      y -450
+    }
+    ProductGateway {
+      x -375
+      y -345
+    }
+    SelectStandardA {
+      x -320
+      y -195
+    }
+    NATOGateway {
+      x -270
+      y -105
+    }
+    SelectStandardB {
+      x -330
+      y 45
+    }
+    SelectStandardC {
+      x -510
+      y 30
+    }
+    ConstructionGateway {
+      x -450
+      y 120
+    }
+    SelectStandardD {
+      x -315
+      y 255
+    }
+    SelectStandardE {
+      x -510
+      y 300
+    }
+    SelectStandardF {
+      x -510
+      y 390
+    }
+    SelectStandardG {
+      x -510
+      y 480
+    }
+    SelectStandardH {
+      x -510
+      y 570
+    }
+    NoSuitableGateway {
+      x -465
+      y 660
+    }
+    SelectStandardI {
+      x -525
+      y 795
+    }
+    SelectStandardJ {
+      x -525
+      y 885
+    }
+    SelectStandardK {
+      x -525
+      y 975
+    }
+    RequirementMetGateway {
+      x -465
+      y 1065
+    }
+    TenderProcess {
+      x -900
+      y 105
+    }
+    ProposeStandardProcess {
+      x -900
+      y 225
+    }
+    NonapplcationGateway {
+      x -855
+      y 330
+    }
+    NonApplicationApprove {
+      x -1110
+      y 450
+    }
+    AgreeStandardProcess {
+      x -915
+      y 540
+    }
+    ContractExecution {
+      x -1245
+      y 690
+    }
+    IssueCheckGateway {
+      x -1170
+      y 795
+    }
+    ContractChange {
+      x -960
+      y 855
+    }
+    DriverGateway {
+      x -915
+      y 1005.0000000000001
+    }
+    ContractChangeConsent {
+      x -975
+      y 1185
+    }
+    EndCheckGateway {
+      x -1170
+      y 1035
+    }
+    EndEvent {
+      x -1350
+      y 1440
+    }
+    SelectStandardL {
+      x -330
+      y 885
+    }
+    SelectStandardM {
+      x -330
+      y 960
+    }
+    SelectStandardN {
+      x -330
+      y 1035
+    }
+    SelectStandardO {
+      x -330
+      y 1110
+    }
+    EditionUpdated {
+      x -1515
+      y 705
+    }
+    DifficultyGateway {
+      x -1515
+      y 885
+    }
+    ApplyUpdatedEdition {
+      x -1800
+      y 1095
+    }
+  }
+  process_flow {
+    Edge0 {
+      from SelectStandardA
+      to NATOGateway
+    }
+    Edge47 {
+      from NATOGateway
+      to SelectStandardB
+      description "Yes"
+    }
+    Edge48 {
+      from NATOGateway
+      to SelectStandardC
+      description "No"
+    }
+    Edge49 {
+      from SelectStandardB
+      to SelectStandardC
+    }
+    Edge50 {
+      from SelectStandardC
+      to ConstructionGateway
+    }
+    Edge51 {
+      from ConstructionGateway
+      to SelectStandardD
+      description "Yes"
+    }
+    Edge52 {
+      from ConstructionGateway
+      to SelectStandardE
+      description "No"
+    }
+    Edge53 {
+      from SelectStandardD
+      to SelectStandardE
+    }
+    Edge54 {
+      from SelectStandardE
+      to SelectStandardF
+    }
+    Edge55 {
+      from SelectStandardF
+      to SelectStandardG
+    }
+    Edge56 {
+      from SelectStandardG
+      to SelectStandardH
+    }
+    Edge57 {
+      from SelectStandardH
+      to NoSuitableGateway
+    }
+    Edge58 {
+      from NoSuitableGateway
+      to SelectStandardI
+      description "True"
+    }
+    Edge59 {
+      from NoSuitableGateway
+      to TenderProcess
+      description "False"
+    }
+    Edge60 {
+      from SelectStandardI
+      to SelectStandardJ
+    }
+    Edge61 {
+      from SelectStandardJ
+      to SelectStandardK
+    }
+    Edge62 {
+      from SelectStandardK
+      to RequirementMetGateway
+    }
+    Edge63 {
+      from RequirementMetGateway
+      to TenderProcess
+      description "False"
+    }
+    Edge64 {
+      from RequirementMetGateway
+      to SelectStandardL
+      description "True"
+    }
+    Edge65 {
+      from SelectStandardL
+      to SelectStandardM
+    }
+    Edge66 {
+      from SelectStandardM
+      to SelectStandardN
+    }
+    Edge67 {
+      from SelectStandardN
+      to SelectStandardO
+    }
+    Edge68 {
+      from SelectStandardO
+      to TenderProcess
+    }
+    Edge69 {
+      from IssueCheckGateway
+      to ContractChange
+      description "Yes"
+    }
+    Edge70 {
+      from ContractChange
+      to DriverGateway
+    }
+    Edge71 {
+      from DriverGateway
+      to ContractChangeConsent
+      description "Yes"
+    }
+    Edge72 {
+      from ContractChangeConsent
+      to ContractExecution
+    }
+    Edge73 {
+      from DriverGateway
+      to ContractExecution
+      description "No"
+    }
+    Edge74 {
+      from IssueCheckGateway
+      to EndCheckGateway
+      description "No"
+    }
+    Edge75 {
+      from EndCheckGateway
+      to EndEvent
+      description "Yes"
+    }
+    Edge76 {
+      from EndCheckGateway
+      to ContractExecution
+      description "No"
+    }
+    Edge77 {
+      from StartEvent
+      to IdentifyStandardProcess
+    }
+    Edge78 {
+      from IdentifyStandardProcess
+      to ProductGateway
+    }
+    Edge79 {
+      from ProductGateway
+      to SelectStandardA
+      description "Yes"
+    }
+    Edge80 {
+      from ProductGateway
+      to TenderProcess
+      description "No"
+    }
+    Edge81 {
+      from TenderProcess
+      to ProposeStandardProcess
+    }
+    Edge82 {
+      from ProposeStandardProcess
+      to NonapplcationGateway
+    }
+    Edge83 {
+      from NonapplcationGateway
+      to NonApplicationApprove
+      description "Yes"
+    }
+    Edge84 {
+      from NonapplcationGateway
+      to AgreeStandardProcess
+      description "No"
+    }
+    Edge85 {
+      from NonApplicationApprove
+      to AgreeStandardProcess
+    }
+    Edge86 {
+      from AgreeStandardProcess
+      to ContractExecution
+    }
+    Edge87 {
+      from ContractExecution
+      to IssueCheckGateway
+    }
+    Edge1 {
+      from DifficultyGateway
+      to ApplyUpdatedEdition
+      description "True"
+    }
+    Edge2 {
+      from DifficultyGateway
+      to EndEvent
+      description "False"
+    }
+    Edge3 {
+      from EditionUpdated
+      to DifficultyGateway
+    }
+    Edge4 {
+      from ApplyUpdatedEdition
+      to EndEvent
+    }
+  }
+  data {
+    TenderDataRegistry {
+      x -1125
+      y 45
+    }
+    StandardApprovalDataRegistry {
+      x -1260
+      y 360
+    }
+    ContractAmendmentDataRegistry {
+      x -705
+      y 1305
+    }
+  }
+}
+
+reference Ref41 {
+  document "BS 16341:2012 Selection of standards"
+  clause "4.1"
+  title ""
+}
+
+reference Ref42 {
+  document "BS 16341:2012 Selection of standards"
+  clause "4.2"
+  title ""
+}
+
+reference Ref43 {
+  document "BS 16341:2012 Selection of standards"
+  clause "4.3"
+  title ""
+}
+
+reference Ref44 {
+  document "BS 16341:2012 Selection of standards"
+  clause "4.4"
+  title ""
+}
+

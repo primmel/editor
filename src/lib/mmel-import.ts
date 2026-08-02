@@ -33,7 +33,7 @@ const KNOWN_KEYWORDS = new Set([
   'exclusive_gateway', 'parallel_gateway',
   'start', 'start_event', 'end', 'end_event', 'timer', 'timer_event', 'signal_event',
   'canvas', 'subprocess', 'reference', 'note', 'table', 'figure', 'link',
-  'comment', 'map_profile', 'view_profile', 'term', 'requirement',
+  'comment', 'map_profile', 'view_profile', 'view', 'term', 'requirement',
   'requirement_class', 'conformance_test', 'conformance_class', 'form', 'subform',
   'symbol', 'calculation', 'state_machine', 'verdict', 'reference_material',
   'competence_kind', 'constraint', 'discrepancy_record', 'test_point_set',
@@ -48,6 +48,7 @@ const KNOWN_KEYWORDS = new Set([
 const RENAMES: { from: string; to: string }[] = [
   { from: 'measurement', to: 'variable' },
   { from: 'subprocess', to: 'canvas' },
+  { from: 'view', to: 'view_profile' },
 ];
 
 /** The top-level keyword inventory of a source text: column-zero

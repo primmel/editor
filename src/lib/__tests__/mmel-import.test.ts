@@ -14,8 +14,8 @@ import { dump, load } from '@primmel/primmel';
 import { importLegacy, keywordInventory } from '../mmel-import';
 
 const fixtures = join(__dirname, 'fixtures');
-const pas2060 = readFileSync(join(fixtures, 'pas2060.mmel'), 'utf8');
-const iso27001 = readFileSync(join(fixtures, 'iso27001.mmel'), 'utf8');
+const pas2060 = readFileSync(join(fixtures, 'corpus/pas2060.mmel'), 'utf8');
+const iso27001 = readFileSync(join(fixtures, 'corpus/iso27001-plugin.mmel'), 'utf8');
 
 describe('15 — the real corpus converts', () => {
   it('PAS2060: every construct intact, the validator accepts', () => {

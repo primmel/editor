@@ -1,4 +1,4 @@
-# 21 — The legacy corpus complete: `view` alias + note EXAMPLE
+# 21 — The legacy corpus complete: `view` alias + note EXAMPLE ✅ DONE (6a89a39)
 
 **Wave:** migration · **Depends on:** 15 · **Priority:** P0
 

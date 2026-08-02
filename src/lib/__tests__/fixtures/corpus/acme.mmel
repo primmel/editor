@@ -1,0 +1,846 @@
+root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title ""
+  schema ""
+  edition ""
+  author ""
+  shortname "Acme Pharmaceuticals"
+  namespace "AcmePharmaceuticals"
+}
+
+role Org {
+  name "Organization"
+}
+
+role ProductTeam {
+  name "R&D Department"
+}
+
+role Production {
+  name "Production Department"
+}
+
+role Testing {
+  name "Testing department"
+}
+
+role ManagementCommittee {
+  name "Management Committee"
+}
+
+role TopMan {
+  name "Top Management"
+}
+
+start_event Start1 {
+}
+
+class RiskPlan#data {
+  scope {
+    definition "Scope"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  Assignment {
+    definition "Responsibilities and authorities"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  Requirements {
+    definition "Requirements for review of risk management activities"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  Criteria {
+    definition "Criteria for risk acceptability"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  Verification {
+    definition "Verification activities"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  activities {
+    definition "Collection and review of relevant production and post-production information"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+}
+
+data_registry RiskPlan {
+  title "Risk management plan"
+  data_class RiskPlan#data
+}
+
+class ChangeRecord#data {
+  Subject {
+    definition "Subject of change"
+  }
+  Date {
+    definition "Date of change"
+  }
+  Reason {
+    definition "Reason of change"
+  }
+  Approval {
+    definition "Approval information"
+  }
+}
+
+data_registry ChangeRecord {
+  title "Change record"
+  data_class ChangeRecord#data
+}
+
+class RiskAnalysisRecord#data {
+  implementation {
+    definition "Methodology of risk analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  results {
+    definition "Results of the risk analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  medicalDevice {
+    definition "Medical device that was analysed"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  Person {
+    definition "Person who carried out the risk analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  Scope {
+    definition "Scope of the risk analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  Date {
+    definition "Date of risk analysis"
+  }
+  ID {
+    definition "Risk ID"
+  }
+}
+
+data_registry RiskAnalysisRecord {
+  title "Risk analysis records"
+  data_class RiskAnalysisRecord#data
+}
+
+class MedicalDevice#data {
+  use {
+    definition "Intended use"
+  }
+  specification {
+    definition "Specification"
+  }
+}
+
+data_registry MedicalDevice {
+  title "Medical device characteristics"
+  data_class MedicalDevice#data
+}
+
+class Hazards#data {
+  hazard {
+    definition "Known hazards"
+  }
+  hazard2 {
+    definition "Foreseeable hazards"
+  }
+  type: HazardType {
+    definition "Hazard type"
+  }
+}
+
+data_registry Hazards {
+  title "Hazards"
+  data_class Hazards#data
+}
+
+class RiskEvaluationResult#data {
+  riskEvaluated {
+    definition "Risk evaluated"
+  }
+  result {
+    definition "Evaluation results"
+  }
+}
+
+data_registry RiskEvaluationResult {
+  title "Risk evaluation results"
+  data_class RiskEvaluationResult#data
+}
+
+class RiskControlRecord#data {
+  selected {
+    definition "risk control measures selected"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-2
+    }
+  }
+  implementation {
+    definition "verification of implementation of each risk control measure"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-3
+    }
+  }
+  effectiveness {
+    definition "verification of the effectiveness of the risk control measure"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-3
+    }
+  }
+  residualRisk {
+    definition "residual risk shall be evaluated"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-4
+    }
+  }
+  risk/benefit {
+    definition "results of risk/benefit analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-5
+    }
+  }
+}
+
+data_registry RiskControlRecord {
+  title "Risk control records"
+  data_class RiskControlRecord#data
+}
+
+class RiskControlMeasureReview#data {
+}
+
+data_registry RiskControlMeasureReview {
+  title "Risk control measure review"
+  data_class RiskControlMeasureReview#data
+}
+
+class Post-ProductionEvaluationResult#data {
+}
+
+data_registry Post-ProductionEvaluationResult {
+  title "Post-production evaluation result"
+  data_class Post-ProductionEvaluationResult#data
+}
+
+class RiskManagementFile#data {
+  plan: reference(RiskPlan) {
+    definition "Risk Management Plan"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  change: reference(ChangeRecord) {
+    definition "Record of changes"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref3-4
+    }
+  }
+  analysis: reference(RiskAnalysisRecord) {
+    definition "Risk analysis"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-1
+    }
+  }
+  device: reference(MedicalDevice) {
+    definition "characteristics related to the safety of the medical device"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref4-2
+    }
+  }
+  hazards: reference(Hazards) {
+    definition "Known and foreseeable hazards associated with the medical device in both normal and fault conditions"
+    modality SHALL
+  }
+  evaluation: reference(RiskEvaluationResult) {
+    definition "Risk evaluation results"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref5
+    }
+  }
+  control: reference(RiskControlRecord) {
+    definition "Risk control records"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-2
+    }
+  }
+  review: reference(RiskControlMeasureReview) {
+    definition "Result of risk control measure review"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref6-6
+    }
+  }
+  post-productionEvaluation: reference(Post-ProductionEvaluationResult) {
+    definition "Post-production evaluation result"
+    modality SHALL
+    reference {
+      ISO14971-doc-ref9
+    }
+  }
+}
+
+data_registry RiskManagementFile {
+  title "Risk management file"
+  data_class RiskManagementFile#data
+}
+
+process RiskManagementFile1 {
+  name "Manage Risk management file"
+  actor Org
+  validate_provision {
+    Provision1
+  }
+  note {
+    Note1
+    Note2
+  }
+  output {
+    RiskManagementFile
+  }
+}
+
+class Procedure#data {
+  Process {
+    definition "Processes"
+  }
+  Procedures {
+    definition "Procedures"
+  }
+}
+
+data_registry Procedure {
+  title "QMS Manual"
+  data_class Procedure#data
+}
+
+class Requirement#data {
+}
+
+data_registry Requirement {
+  title "Requirement"
+  data_class Requirement#data
+}
+
+process DocumentQMS {
+  name "Quality management system"
+  actor Org
+  validate_provision {
+    Provision2
+    Provision3
+    Provision4
+  }
+  output {
+    Procedure
+  }
+  subprocess Page1
+}
+
+start_event Start2 {
+}
+
+process Process1 {
+  name "Establish management committee"
+  actor TopMan
+}
+
+process Process2 {
+  name "Quality Policy"
+}
+
+class QualityPolicy#data {
+  content {
+    definition "Quality Policy Content"
+  }
+}
+
+data_registry QualityPolicy {
+  title "Quality Policy"
+  data_class QualityPolicy#data
+}
+
+process DocumentQualityPolicy {
+  name "Establish Quality Policy"
+  actor Org
+  output {
+    QualityPolicy
+  }
+}
+
+approval Approval1 {
+  name "Approve quality policy statement"
+  modality SHALL
+  approve_by ManagementCommittee
+}
+
+process Process3 {
+  name "Internal Audit"
+  actor Org
+}
+
+process Process4 {
+  name "Resources management"
+  actor Org
+}
+
+process Process5 {
+  name "Product Realization"
+  actor Org
+  subprocess Page2
+}
+
+start_event Start3 {
+}
+
+process Process6 {
+  name "Product planning"
+  actor ProductTeam
+}
+
+process Process7 {
+  name "Product design and development"
+  actor ProductTeam
+}
+
+process Process8 {
+  name "Product verfiication and validation"
+  actor ProductTeam
+}
+
+process Process9 {
+  name "Product launch"
+  actor Production
+}
+
+process Process10 {
+  name "Monitoring"
+  actor Testing
+}
+
+process DetermineObjectiveForProduct {
+  name "Establish quality objectives"
+  actor ManagementCommittee
+  validate_provision {
+    Provision5
+  }
+}
+
+provision Provision1 {
+  condition "For the particular medical device being considered, the manufacturer shall establish and maintain a risk management file"
+  modality SHALL
+  reference {
+    ISO14971-doc-ref3-5
+  }
+}
+
+provision Provision2 {
+  condition "Document a quality management system"
+  modality SHALL
+  reference {
+    ref4-1-1
+  }
+}
+
+provision Provision3 {
+  condition "Maintain its effectiveness in accordance with the requirements of ISO 13485 and applicable regulatory requirements"
+  modality SHALL
+  reference {
+    ref4-1-1
+  }
+}
+
+provision Provision4 {
+  condition "Establish and maintain records needed to demonstrate conformance to ISO 13485  and compliance with applicable regulatory requirements"
+  modality SHALL
+  reference {
+    ref4-1-3
+  }
+}
+
+provision Provision5 {
+  condition "Determine quality objectives and requirements for the product"
+  modality SHALL
+  reference {
+    ref7-1
+  }
+}
+
+enum HazardType {
+  Physical {
+    definition "Physical"
+  }
+  Chemical {
+    definition "Chemical"
+  }
+  Biological {
+    definition "Biological"
+  }
+}
+
+subprocess Root {
+  elements {
+    Start1 {
+      x 0
+      y 0
+    }
+    RiskManagementFile1 {
+      x 60
+      y 120.00000000000001
+    }
+    DocumentQMS {
+      x -140
+      y 120
+    }
+    Process4 {
+      x -330
+      y 120
+    }
+    Process5 {
+      x 250
+      y 120
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start1
+      to RiskManagementFile1
+    }
+    Edge2 {
+      from Start1
+      to DocumentQMS
+    }
+    Edge3 {
+      from Start1
+      to Process4
+    }
+    Edge4 {
+      from Start1
+      to Process5
+    }
+  }
+  data {
+    RiskManagementFile {
+      x 150
+      y 270
+    }
+    RiskPlan {
+      x -30
+      y 380
+    }
+    ChangeRecord {
+      x 450
+      y 380
+    }
+    RiskAnalysisRecord {
+      x 230
+      y 380
+    }
+    MedicalDevice {
+      x 70
+      y 380
+    }
+    Hazards {
+      x 140
+      y 380
+    }
+    RiskEvaluationResult {
+      x 350
+      y 380
+    }
+    RiskControlRecord {
+      x 190
+      y 470
+    }
+    RiskControlMeasureReview {
+      x 60
+      y 470
+    }
+    Post-ProductionEvaluationResult {
+      x 320
+      y 470
+    }
+    Procedure {
+      x -220
+      y 239.99999999999997
+    }
+  }
+}
+
+subprocess Page1 {
+  elements {
+    Start2 {
+      x -90
+      y 10
+    }
+    Process1 {
+      x -270
+      y 150
+    }
+    DocumentQualityPolicy {
+      x -40
+      y 150
+    }
+    Approval1 {
+      x -40
+      y 250
+    }
+    Process3 {
+      x -270
+      y 250
+    }
+    DetermineObjectiveForProduct {
+      x 150
+      y 150
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start2
+      to Process1
+    }
+    Edge2 {
+      from Start2
+      to DocumentQualityPolicy
+    }
+    Edge3 {
+      from DocumentQualityPolicy
+      to Approval1
+    }
+    Edge4 {
+      from Process1
+      to Process3
+    }
+    Edge5 {
+      from Start2
+      to DetermineObjectiveForProduct
+    }
+  }
+  data {
+    QualityPolicy {
+      x -120
+      y 280
+    }
+  }
+}
+
+subprocess Page2 {
+  elements {
+    Start3 {
+      x 0
+      y 0
+    }
+    Process6 {
+      x -50
+      y 80
+    }
+    Process7 {
+      x -50
+      y 170
+    }
+    Process8 {
+      x -50
+      y 260
+    }
+    Process9 {
+      x -50
+      y 350
+    }
+    Process10 {
+      x -50
+      y 440
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start3
+      to Process6
+    }
+    Edge2 {
+      from Process6
+      to Process7
+    }
+    Edge3 {
+      from Process7
+      to Process8
+    }
+    Edge4 {
+      from Process8
+      to Process9
+    }
+    Edge5 {
+      from Process9
+      to Process10
+    }
+  }
+  data {
+  }
+}
+
+note Note1 {
+  type NOTE
+  message "The records and other documents that make up the risk management file can form part of other documents and files required, for example, by a manufacturer ’s quality management system. The risk management file need not physically contain all the records and other documents; however, it should contain at least references or pointers to all required documentation. The manufacturer should be able to assemble the information referenced in the risk management file in a timely fashion"
+  reference {
+    ISO14971-doc-ref3-5
+  }
+}
+
+note Note2 {
+  type NOTE
+  message "The risk management file can be in any form or type of medium"
+  reference {
+    ISO14971-doc-ref3-5
+  }
+}
+
+reference ISO14971-doc-ref3-4 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "3.4"
+  title "Risk management plan"
+}
+
+reference ISO14971-doc-ref3-5 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "3.5"
+  title "Risk management file"
+}
+
+reference ISO14971-doc-ref4-1 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "4.1"
+  title "Risk analysis process"
+}
+
+reference ISO14971-doc-ref4-2 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "4.2"
+  title "Intended use and identification of characteristics related to the safety of the medical device"
+}
+
+reference ISO14971-doc-ref4-3 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "4.3"
+  title "Identification of hazards"
+}
+
+reference ISO14971-doc-ref5 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "5"
+  title "Risk evaluation"
+}
+
+reference ISO14971-doc-ref6-2 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "6.2"
+  title "Risk control option analysis"
+}
+
+reference ISO14971-doc-ref6-3 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "6.3"
+  title "Implementation of risk control measure(s)"
+}
+
+reference ISO14971-doc-ref6-4 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "6.4"
+  title "Residual risk evaluation"
+}
+
+reference ISO14971-doc-ref6-5 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "6.5"
+  title "Risk/benefit analysis"
+}
+
+reference ISO14971-doc-ref6-6 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "6.6"
+  title "Risks arising from risk control measures"
+}
+
+reference ISO14971-doc-ref9 {
+  document "Medical devices — Application of risk management to medical devices"
+  clause "9"
+  title "Production and post-production information"
+}
+
+reference ref4-1-1 {
+  document "ISO 13485:2016"
+  clause "4.1.1"
+  title ""
+}
+
+reference ref4-1-3 {
+  document "ISO 13485:2016"
+  clause "4.1.3"
+  title ""
+}
+
+reference ref4-2-1 {
+  document "ISO 13485:2016"
+  clause "4.2.1"
+  title "General"
+}
+
+reference ref5-1 {
+  document "ISO 13485:2016"
+  clause "5.1"
+  title "Management commitment"
+}
+
+reference ref5-3 {
+  document "ISO 13485:2016"
+  clause "5.3"
+  title "Quality policy"
+}
+
+reference ref7-1 {
+  document "ISO 13485:2016"
+  clause "7.1"
+  title ""
+}
+
