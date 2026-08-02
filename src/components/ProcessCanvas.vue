@@ -6,7 +6,8 @@ import {
   nodeShape, nodeColor, NODE_SIZE,
   type RenderNode,
 } from '../lib/render';
-import { canConnect, mintEdgeId, pageForNode } from '../lib/edges';
+import { canConnect, mintEdgeId, pageForNode, type ConnectionError } from '../lib/edges';
+import { pagePath } from '../lib/pages';
 import {
   createEdge, removeEdge, updateComponentPosition,
 } from '../lib/commands';
@@ -52,12 +53,14 @@ const viewBox = computed(() => {
   return `${-ui.panX / z} ${-ui.panY / z} ${800 / z} ${600 / z}`;
 });
 
-// ── The breadcrumb (root / … / current page) ─────────────────────────
+// ── The breadcrumb (root / … / current page — the page tree's path) ─
 const breadcrumb = computed(() => {
-  const root = props.model.root?.id ?? props.model.pages[0]?.id;
+  void modelStore.version;
   const current = canvas.value?.id;
-  if (!root || !current || current === root) return [];
-  return [root, current];
+  if (!current) return [];
+  const path = pagePath(props.model, current) ?? [current];
+  // At the root the path is the single crumb — no breadcrumb to show.
+  return path.length > 1 ? path : [];
 });
 
 // ── Pan/zoom/drag ────────────────────────────────────────────────────
@@ -161,13 +164,33 @@ function selectionTypeOf(node: RenderNode) {
   }
 }
 
+// ── Connect refusals (the discipline, said out loud) ─────────────────
+const REFUSAL_TEXT: Record<ConnectionError, string> = {
+  'same-node': 'A node cannot connect to itself.',
+  'endpoint-missing': 'That element is not on this page.',
+  'duplicate-edge': 'Those nodes are already connected.',
+  'cross-page': 'Edges cannot cross pages — link through the subprocess node.',
+};
+
+const refusal = ref<string | null>(null);
+let refusalTimer: ReturnType<typeof setTimeout> | undefined;
+
+function refuse(reason: ConnectionError) {
+  refusal.value = REFUSAL_TEXT[reason];
+  clearTimeout(refusalTimer);
+  refusalTimer = setTimeout(() => { refusal.value = null; }, 2600);
+}
+
 function finishConnect(target: RenderNode) {
   const from = connectFrom.value;
   connectFrom.value = null;
   connectMouse.value = null;
-  if (!from || !canvas.value || from.id === target.id) return;
-  const verdict = canConnect(canvas.value, from.id, target.id);
-  if (!verdict.ok) return; // the discipline refuses (same-node / dup / missing)
+  if (!from || !canvas.value) return;
+  const verdict = canConnect(canvas.value, from.id, target.id, '', props.model);
+  if (!verdict.ok) {
+    refuse(verdict.reason);
+    return;
+  }
   const pageId = canvas.value.id;
   modelStore.execute(createEdge(pageId, mintEdgeId(canvas.value), from.id, target.id));
 }
@@ -401,6 +424,8 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
       <kbd>drag</kbd> nodes · <kbd>shift+drag</kbd> to connect · <kbd>dbl-click</kbd> to enter · <kbd>scroll</kbd> to zoom
     </div>
 
+    <div v-if="refusal" class="canvas-refusal" data-testid="canvas-refusal">{{ refusal }}</div>
+
     <div v-if="!canvas" class="canvas-empty">
       No canvas in this model. Add a <code>canvas Root &#123; &#125;</code> block.
     </div>
@@ -577,6 +602,18 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   border-radius: 2px;
   border: 1px solid var(--border);
   color: var(--accent);
+}
+.canvas-refusal {
+  position: absolute;
+  bottom: 3.2rem;
+  left: 1rem;
+  font-size: 0.72rem;
+  color: #b85555;
+  background: var(--bg-surface);
+  border: 1px solid #b85555;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius);
+  animation: fadeIn 120ms ease;
 }
 .canvas-empty {
   position: absolute;

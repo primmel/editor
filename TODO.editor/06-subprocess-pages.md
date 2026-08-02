@@ -1,4 +1,4 @@
-# 06 — Subprocess pages: nested canvases
+# 06 — Subprocess pages: nested canvases ✅ DONE (3903245)
 
 **Wave:** foundation · **Depends on:** 02 · **Priority:** P0
 

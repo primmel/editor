@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useModelStore } from './stores/model';
 import { useUiStore } from './stores/ui';
 import ModelTree from './components/ModelTree.vue';
+import PageTree from './components/PageTree.vue';
 import ProcessCanvas from './components/ProcessCanvas.vue';
 import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
@@ -26,6 +27,12 @@ function onPaletteDragStart(entry: PaletteKind, ev: DragEvent) {
 }
 
 const model = computed(() => modelStore.model);
+
+// Dev/e2e hook: the stores on window (probes read the AST directly
+// instead of spelunking the DOM). Never in production builds.
+if (import.meta.env.DEV) {
+  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui };
+}
 
 type ViewMode = 'model' | 'registry' | 'mapping';
 const view = computed<ViewMode>({
@@ -116,6 +123,7 @@ const view = computed<ViewMode>({
       <main class="workspace">
         <aside class="panel panel-left">
           <PalettePanel @pick="onPalettePick" @dragstart="onPaletteDragStart" />
+          <PageTree :model="model" />
           <Transition name="fade" mode="out-in">
             <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
             <CodeEditor v-else key="code" />

@@ -44,17 +44,30 @@ export type ConnectionError =
  *    forbidden — communication flows through the subprocess node);
  *  - no exact duplicate (same from + to + condition);
  *  - data-link endpoints (a data node ↔ a process) connect through the
- *    data section, allowed across the process/data seam on one page. */
+ *    data section, allowed across the process/data seam on one page.
+ *
+ *  With `model` given, a missing endpoint that exists on ANOTHER page
+ *  reports 'cross-page' (the actionable hint) instead of the generic
+ *  'endpoint-missing'. */
 export function canConnect(
   page: Subprocess,
   fromId: string,
   toId: string,
   condition = '',
+  model?: Standard,
 ): { ok: true } | { ok: false; reason: ConnectionError } {
   if (fromId === toId) return { ok: false, reason: 'same-node' };
   const fromOk = isOnPage(page, fromId) || pageDataNames(page).includes(fromId);
   const toOk = isOnPage(page, toId) || pageDataNames(page).includes(toId);
-  if (!fromOk || !toOk) return { ok: false, reason: 'endpoint-missing' };
+  if (!fromOk || !toOk) {
+    if (model) {
+      const missing = !fromOk ? fromId : toId;
+      const elsewhere = model.pages.some(p =>
+        p.id !== page.id && (pageChildNames(p).includes(missing) || pageDataNames(p).includes(missing)));
+      if (elsewhere) return { ok: false, reason: 'cross-page' };
+    }
+    return { ok: false, reason: 'endpoint-missing' };
+  }
   const dup = (page.edges ?? []).some(e => {
     const ends = edgeEnds(e);
     return ends.from === fromId && ends.to === toId && (e.condition ?? '') === condition;

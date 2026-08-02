@@ -6,21 +6,49 @@
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
 import type { Process, Standard } from '@primmel/primmel';
-import { updateElement } from '../../lib/commands';
+import { createPageForProcess, linkProcessToPage, updateElement } from '../../lib/commands';
 import { useModelStore } from '../../stores/model';
+import { useUiStore } from '../../stores/ui';
 import InspectorField from '../fields/InspectorField.vue';
 import PickerListEdit from '../fields/PickerListEdit.vue';
 import StringListEdit from '../fields/StringListEdit.vue';
 
 const props = defineProps<{ model: Standard; processId: string }>();
 const modelStore = useModelStore();
+const ui = useUiStore();
 
-const process = computed<Process | undefined>(() =>
-  props.model.processes.find(p => p.id === props.processId));
+const process = computed<Process | undefined>(() => {
+  void modelStore.version; // commands mutate in place — re-derive per version
+  return props.model.processes.find(p => p.id === props.processId);
+});
 
-const roleOptions = computed(() => props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })));
-const provisionOptions = computed(() => props.model.provisions.map(p => p.id));
-const registryOptions = computed(() => props.model.regs.map(r => r.id));
+const roleOptions = computed(() => { void modelStore.version; return props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })); });
+const provisionOptions = computed(() => { void modelStore.version; return props.model.provisions.map(p => p.id); });
+const registryOptions = computed(() => { void modelStore.version; return props.model.regs.map(r => r.id); });
+const pageOptions = computed(() => {
+  void modelStore.version;
+  return props.model.pages.filter(p => p.id !== props.model.root?.id).map(p => p.id);
+});
+
+// DERIVED-PRIMITIVE RULE: a computed chained off `process` (identity-
+// stable — commands mutate the AST in place) never re-fires. Read
+// modelStore.version DIRECTLY in every derived-primitive computed.
+const processPageId = computed(() => {
+  void modelStore.version;
+  return (process.value?.page as { id?: string } | null)?.id ?? '';
+});
+
+/** The page select as a writable computed (v-model sets the value
+ *  AFTER the options patch — a `:value` binding races the freshly
+ *  created option and the browser resets the select to ''). */
+const pageSelection = computed<string>({
+  get: () => processPageId.value,
+  set: (id) => modelStore.execute(linkProcessToPage(props.processId, id || null)),
+});
+
+function onNewPage() {
+  modelStore.execute(createPageForProcess(props.processId));
+}
 
 function patch(p: Partial<Process>) {
   modelStore.execute(
@@ -101,6 +129,35 @@ function onMeasure(items: string[]) {
       </select>
     </InspectorField>
 
+    <InspectorField label="subprocess page" hint="the drill-down canvas this process owns">
+      <div class="page-row">
+        <select
+          v-model="pageSelection"
+          class="select-input"
+          data-testid="inspector-page"
+        >
+          <option value="">— none —</option>
+          <option v-for="p in pageOptions" :key="p" :value="p">{{ p }}</option>
+        </select>
+        <button
+          v-if="!processPageId"
+          type="button"
+          class="page-action"
+          title="create a page for this process"
+          data-testid="inspector-new-page"
+          @click="onNewPage"
+        >+ page</button>
+        <button
+          v-else
+          type="button"
+          class="page-action"
+          title="open the page"
+          data-testid="inspector-open-page"
+          @click="ui.setCanvas(processPageId)"
+        >open →</button>
+      </div>
+    </InspectorField>
+
     <InspectorField label="validate_provision">
       <PickerListEdit
         :items="process.provisionRefs"
@@ -157,5 +214,16 @@ function onMeasure(items: string[]) {
 .text-input:focus, .select-input:focus {
   outline: none;
   border-color: var(--accent);
+}
+.page-row { display: flex; gap: 0.3rem; }
+.page-action {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.68rem;
+  padding: 0 0.5rem;
+  white-space: nowrap;
 }
 </style>

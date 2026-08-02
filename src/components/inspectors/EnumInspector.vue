@@ -17,8 +17,16 @@ import InspectorField from '../fields/InspectorField.vue';
 const props = defineProps<{ model: Standard; enumId: string }>();
 const modelStore = useModelStore();
 
-const en = computed(() => props.model.enums.find(e => e.id === props.enumId));
+const en = computed(() => { void modelStore.version; return props.model.enums.find(e => e.id === props.enumId); });
 const valuesOf = (a: Standard) => a.enums.find(e => e.id === props.enumId)!.values;
+
+/** The value rows as a FRESH array per version (the identity-stable
+ *  `en.values` is mutated in place by the commands — a template read
+ *  off `en` alone would never re-fire). */
+const values = computed(() => {
+  void modelStore.version;
+  return [...(en.value?.values ?? [])];
+});
 
 const draftId = ref('');
 const draftValue = ref('');
@@ -45,9 +53,9 @@ function onValueText(v: EnumValue, e: Event) {
       <code class="readonly-id">{{ en.id }}</code>
     </InspectorField>
 
-    <InspectorField :label="`values (${en.values.length})`">
-      <ul v-if="en.values.length" class="enum-rows">
-        <li v-for="(v, i) in en.values" :key="v.id" class="enum-row">
+    <InspectorField :label="`values (${values.length})`">
+      <ul v-if="values.length" class="enum-rows">
+        <li v-for="(v, i) in values" :key="v.id" class="enum-row">
           <code class="enum-id">{{ v.id }}</code>
           <input
             class="text-input"
@@ -65,7 +73,7 @@ function onValueText(v: EnumValue, e: Event) {
           >↑</button>
           <button
             type="button"
-            :disabled="i === en.values.length - 1"
+            :disabled="i === values.length - 1"
             title="move down"
             :data-testid="`enum-down-${v.id}`"
             @click="modelStore.execute(reorderList(valuesOf, i, i + 1))"

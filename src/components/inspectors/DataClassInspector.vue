@@ -20,15 +20,34 @@ import AttributeList from '../fields/AttributeList.vue';
 const props = defineProps<{ model: Standard; classId: string }>();
 const modelStore = useModelStore();
 
-const cls = computed(() => props.model.dataclasses.find(d => d.id === props.classId));
-const classOptions = computed(() => props.model.dataclasses.map(d => d.id));
-const referenceOptions = computed(() => props.model.references.map(r => r.id));
+const cls = computed(() => { void modelStore.version; return props.model.dataclasses.find(d => d.id === props.classId); });
+const classOptions = computed(() => { void modelStore.version; return props.model.dataclasses.map(d => d.id); });
+const referenceOptions = computed(() => { void modelStore.version; return props.model.references.map(r => r.id); });
 
 function patch(p: Record<string, unknown>) {
   modelStore.execute(
     updateElement((a: Standard) => a.dataclasses, props.classId, p as never),
   );
 }
+
+/** The extends select as a writable computed (same v-model race
+ *  discipline as the other dynamic-option selects; the get reads
+ *  version DIRECTLY — `cls` is identity-stable under in-place edits). */
+const extendsSelection = computed<string>({
+  get: () => {
+    void modelStore.version;
+    return cls.value?.extends ?? '';
+  },
+  set: (v) => patch({ extends: v || undefined }),
+});
+
+/** The attribute rows as a FRESH array per version (the identity-stable
+ *  `cls.attributes` array is mutated in place by the commands — a
+ *  chained computed would never re-fire). */
+const attrs = computed(() => {
+  void modelStore.version;
+  return [...(cls.value?.attributes ?? [])];
+});
 
 function onAdd(id: string) {
   const attr: DataAttribute = {
@@ -74,10 +93,9 @@ function onRefs(attrId: string, ids: string[]) {
 
     <InspectorField label="extends" hint="inherit fields from a parent class">
       <select
+        v-model="extendsSelection"
         class="select-input"
-        :value="cls.extends ?? ''"
         data-testid="dataclass-extends"
-        @change="patch({ extends: ($event.target as HTMLSelectElement).value || undefined })"
       >
         <option value="">— none —</option>
         <option v-for="c in classOptions.filter(o => o !== cls?.id)" :key="c" :value="c">{{ c }}</option>
@@ -96,7 +114,7 @@ function onRefs(attrId: string, ids: string[]) {
 
     <InspectorField :label="`attributes (${cls.attributes.length})`">
       <AttributeList
-        :attributes="cls.attributes"
+        :attributes="attrs"
         :class-options="classOptions"
         :reference-options="referenceOptions"
         @add="onAdd"

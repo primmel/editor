@@ -548,3 +548,127 @@ export function updateComponentPosition(
 export function rootPageId(ast: Standard): string | null {
   return ast.root?.id ?? null;
 }
+
+// ── Subprocess pages (TODO.editor/06) ───────────────────────────────
+
+/** Create a fresh page and link it as `processId`'s subprocess page —
+ *  one command, one undo unit (the palette's drill-down path). */
+export function createPageForProcess(processId: string): Command {
+  let mintedId: string | null = null;
+  return {
+    label: `create page for ${processId}`,
+    apply(ast) {
+      const proc = ast.processes.find(p => p.id === processId);
+      if (!proc) throw new Error(`unknown process ${processId}`);
+      if (proc.page) throw new Error(`${processId} already has a page`);
+      if (mintedId === null) mintedId = mintId(ast, 'Page');
+      if (ast.pages.some(p => p.id === mintedId)) throw new Error(`duplicate page ${mintedId}`);
+      const page = { id: mintedId, childs: [], edges: [], data: [] } as never;
+      ast.pages.push(page);
+      (proc as { page: unknown }).page = ast.pages.find(p => p.id === mintedId);
+    },
+    revert(ast) {
+      const proc = ast.processes.find(p => p.id === processId);
+      if (proc) (proc as { page: unknown }).page = null;
+      if (mintedId !== null) {
+        const i = ast.pages.findIndex(p => p.id === mintedId);
+        if (i >= 0) ast.pages.splice(i, 1);
+      }
+    },
+  };
+}
+
+/** Link a process to an existing page (or unlink with null). */
+export function linkProcessToPage(processId: string, pageId: string | null): Command {
+  let before: unknown;
+  return {
+    label: pageId ? `link ${processId} → page ${pageId}` : `unlink ${processId}`,
+    apply(ast) {
+      const proc = ast.processes.find(p => p.id === processId);
+      if (!proc) throw new Error(`unknown process ${processId}`);
+      const page = pageId ? ast.pages.find(p => p.id === pageId) : null;
+      if (pageId && !page) throw new Error(`unknown page ${pageId}`);
+      before = (proc as { page: unknown }).page;
+      (proc as { page: unknown }).page = page ?? null;
+    },
+    revert(ast) {
+      const proc = ast.processes.find(p => p.id === processId);
+      if (proc) (proc as { page: unknown }).page = before;
+    },
+  };
+}
+
+/** Rename a page: the id, every process's `page` copy (the resolver
+ *  strips `_relations` — a process holds a COPY of its page, identity
+ *  is by id, so both sides move), plus every placement and edge
+ *  endpoint that names it (a subprocess node's placement name IS its
+ *  page id). */
+export function renamePage(oldId: string, newId: string): Command {
+  const clean = newId.trim();
+  return {
+    label: `rename page ${oldId} → ${clean}`,
+    apply(ast) {
+      if (!clean) throw new Error('the page id cannot be empty');
+      if (clean === oldId) return;
+      const page = ast.pages.find(p => p.id === oldId);
+      if (!page) throw new Error(`unknown page ${oldId}`);
+      if (findElement(ast, clean) || ast.regs.some(r => r.id === clean) || ast.enums.some(e => e.id === clean)) {
+        throw new Error(`id ${clean} is already taken`);
+      }
+      page.id = clean;
+      for (const proc of ast.processes) {
+        const linked = (proc as { page?: { id?: string } | null }).page;
+        if (linked?.id === oldId) linked.id = clean;
+      }
+      for (const host of ast.pages) {
+        for (const comp of [...(host.childs ?? []), ...(host.data ?? [])]) {
+          if (comp.name === oldId) {
+            comp.name = clean;
+            if (comp.element) comp.element = { id: clean };
+          }
+        }
+        for (const e of host.edges ?? []) {
+          const ends = [
+            e.from as { name?: string; element?: { id: string } | null } | null,
+            e.to as { name?: string; element?: { id: string } | null } | null,
+          ];
+          for (const end of ends) {
+            if (end?.name === oldId) {
+              end.name = clean;
+              if (end.element) end.element = { id: clean };
+            }
+          }
+        }
+      }
+    },
+    revert(ast) {
+      const page = ast.pages.find(p => p.id === clean);
+      if (!page) return;
+      page.id = oldId;
+      for (const proc of ast.processes) {
+        const linked = (proc as { page?: { id?: string } | null }).page;
+        if (linked?.id === clean) linked.id = oldId;
+      }
+      for (const host of ast.pages) {
+        for (const comp of [...(host.childs ?? []), ...(host.data ?? [])]) {
+          if (comp.name === clean) {
+            comp.name = oldId;
+            if (comp.element) comp.element = { id: oldId };
+          }
+        }
+        for (const e of host.edges ?? []) {
+          const ends = [
+            e.from as { name?: string; element?: { id: string } | null } | null,
+            e.to as { name?: string; element?: { id: string } | null } | null,
+          ];
+          for (const end of ends) {
+            if (end?.name === clean) {
+              end.name = oldId;
+              if (end.element) end.element = { id: oldId };
+            }
+          }
+        }
+      }
+    },
+  };
+}

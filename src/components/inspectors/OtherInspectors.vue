@@ -15,13 +15,13 @@ const props = defineProps<{
 }>();
 const modelStore = useModelStore();
 
-const approval = computed(() => props.model.approvals.find(a => a.id === props.elementId));
-const event = computed(() => props.model.events.find(e => e.id === props.elementId));
-const gateway = computed(() => props.model.gateways.find(g => g.id === props.elementId));
-const page = computed(() => props.model.pages.find(p => p.id === props.elementId));
+const approval = computed(() => { void modelStore.version; return props.model.approvals.find(a => a.id === props.elementId); });
+const event = computed(() => { void modelStore.version; return props.model.events.find(e => e.id === props.elementId); });
+const gateway = computed(() => { void modelStore.version; return props.model.gateways.find(g => g.id === props.elementId); });
+const page = computed(() => { void modelStore.version; return props.model.pages.find(p => p.id === props.elementId); });
 
-const roleOptions = computed(() => props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })));
-const registryOptions = computed(() => props.model.regs.map(r => r.id));
+const roleOptions = computed(() => { void modelStore.version; return props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })); });
+const registryOptions = computed(() => { void modelStore.version; return props.model.regs.map(r => r.id); });
 
 function patchApproval(p: Record<string, unknown>) {
   modelStore.execute(updateElement((a: Standard) => a.approvals, props.elementId, p as never));

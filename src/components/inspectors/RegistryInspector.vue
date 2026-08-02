@@ -12,22 +12,29 @@ import InspectorField from '../fields/InspectorField.vue';
 const props = defineProps<{ model: Standard; registryId: string }>();
 const modelStore = useModelStore();
 
-const registry = computed(() => props.model.regs.find(r => r.id === props.registryId));
-const classOptions = computed(() => props.model.dataclasses.map(d => d.id));
+const registry = computed(() => { void modelStore.version; return props.model.regs.find(r => r.id === props.registryId); });
+const classOptions = computed(() => { void modelStore.version; return props.model.dataclasses.map(d => d.id); });
+
+/** v-model over a computed (the directive writes the value after the
+ *  options patch — a `:value` binding races a freshly created class).
+ *  The get reads version DIRECTLY (chaining off the identity-stable
+ *  `registry` computed would never re-fire on in-place mutation). */
+const dataClassSelection = computed<string>({
+  get: () => {
+    void modelStore.version;
+    return registry.value?.data?.id ?? '';
+  },
+  set: (id) => {
+    const data = props.model.dataclasses.find(d => d.id === id) ?? null;
+    modelStore.execute(updateElement((a: Standard) => a.regs, props.registryId, { data }));
+  },
+});
 
 function onTitle(e: Event) {
   modelStore.execute(
     updateElement((a: Standard) => a.regs, props.registryId, {
       title: (e.target as HTMLInputElement).value,
     }),
-  );
-}
-
-function onDataClass(e: Event) {
-  const id = (e.target as HTMLSelectElement).value;
-  const data = props.model.dataclasses.find(d => d.id === id) ?? null;
-  modelStore.execute(
-    updateElement((a: Standard) => a.regs, props.registryId, { data }),
   );
 }
 </script>
@@ -49,10 +56,9 @@ function onDataClass(e: Event) {
 
     <InspectorField label="data_class" hint="the class this registry carries">
       <select
+        v-model="dataClassSelection"
         class="select-input"
-        :value="registry.data?.id ?? ''"
         data-testid="registry-data-class"
-        @change="onDataClass"
       >
         <option value="">— none —</option>
         <option v-for="c in classOptions" :key="c" :value="c">{{ c }}</option>
