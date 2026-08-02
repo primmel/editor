@@ -21,7 +21,11 @@ const props = withDefaults(defineProps<{
   mode?: 'edit' | 'select';
   /** The externally-driven selection highlight (select mode). */
   selectedId?: string | null;
-}>(), { mode: 'edit', selectedId: null });
+  /** Per-node glow tint (the coverage overlay) — null = untinted. */
+  tintOf?: ((id: string) => string | null) | null;
+  /** Per-node tooltip (the coverage basis / conflict). */
+  tooltipOf?: ((id: string) => string | null) | null;
+}>(), { mode: 'edit', selectedId: null, tintOf: null, tooltipOf: null });
 
 const emit = defineEmits<{
   /** Select mode: a node was picked (the mapper pairs on this). */
@@ -383,6 +387,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         :key="node.id + (node.isData ? ':data' : '')"
         :transform="nodeTransform(node)"
         :data-node-id="node.id"
+        :style="tintOf?.(node.id) ? { filter: `drop-shadow(0 0 5px ${tintOf(node.id)})` } : undefined"
         :class="{ selected: mode === 'edit' ? ui.isSelected(node.id) : selectedId === node.id, dragging: draggingNode?.id === node.id, 'is-data': node.isData, 'connect-source': connectFrom?.id === node.id }"
         class="node-group"
         @click.stop="onNodeClick(node)"
@@ -390,6 +395,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         @mousedown="onNodeMouseDown($event, node)"
         @mouseup.stop="onNodeMouseUp(node)"
       >
+        <title v-if="tooltipOf?.(node.id)">{{ tooltipOf(node.id) }}</title>
         <rect
           v-if="nodeShape(node.kind) === 'rect'"
           :x="-NODE_SIZE/2" :y="-NODE_SIZE/2"

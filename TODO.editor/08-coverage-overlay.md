@@ -1,4 +1,4 @@
-# 08 — The coverage overlay: the calculus on canvas
+# 08 — The coverage overlay: the calculus on canvas ✅ DONE (9a56dd3)
 
 **Wave:** mapping · **Depends on:** 07 · **Priority:** P0
 

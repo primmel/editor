@@ -11,7 +11,9 @@ import type { Standard } from '@primmel/primmel';
 import ProcessCanvas from '../ProcessCanvas.vue';
 import MapPairDialog from './MapPairDialog.vue';
 import MapPartyList from './MapPartyList.vue';
+import CoverageLegend from './CoverageLegend.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
+import { COVERAGE_TINTS, coverageTooltip, coverageView, type CoverageView } from '../../lib/coverage';
 import {
   createMappingPair, deleteMappingPair, updateMappingMeta,
 } from '../../lib/commands';
@@ -31,6 +33,38 @@ const profile = computed(() => {
   void modelStore.version;
   return namespace.value ? profileFor(props.implementationModel, namespace.value) : null;
 });
+
+// ── The coverage overlay (the KERNEL's calculus, bridged) ────────────
+const coverage = computed<CoverageView | null>(() => {
+  void modelStore.version;
+  if (!refModel.value || !namespace.value) return null;
+  return coverageView(props.implementationModel, refModel.value, namespace.value);
+});
+
+const CONFLICT_TINT = '#b85555';
+
+function refTint(id: string): string | null {
+  const row = coverage.value?.ref.get(id);
+  if (!row) return null;
+  return row.conflict ? CONFLICT_TINT : COVERAGE_TINTS[row.computed];
+}
+
+function refTooltip(id: string): string | null {
+  const row = coverage.value?.ref.get(id);
+  return row ? coverageTooltip(row) : null;
+}
+
+function impTint(id: string): string | null {
+  const mapped = coverage.value?.impMapped.get(id);
+  if (mapped === undefined) return null;
+  return mapped ? COVERAGE_TINTS.full : COVERAGE_TINTS.none;
+}
+
+function impTooltip(id: string): string | null {
+  const mapped = coverage.value?.impMapped.get(id);
+  if (mapped === undefined) return null;
+  return mapped ? 'mapped (a resolving pair exists)' : 'unmapped';
+}
 
 function loadReference() {
   const input = document.createElement('input');
@@ -181,6 +215,8 @@ const hoveredEdge = ref<string | null>(null);
 
     <div v-if="mapping.parseError" class="mapper-error" data-testid="ref-parse-error">{{ mapping.parseError }}</div>
 
+    <CoverageLegend v-if="refModel" />
+
     <div v-if="refModel" class="mapper-body">
       <div class="mapper-pane" ref="refPane" data-testid="ref-pane">
         <div class="pane-label">reference — {{ namespace }}</div>
@@ -188,6 +224,8 @@ const hoveredEdge = ref<string | null>(null);
           :model="refModel"
           mode="select"
           :selected-id="mapping.picked?.side === 'ref' ? mapping.picked.id : null"
+          :tint-of="refTint"
+          :tooltip-of="refTooltip"
           @node-select="onPick('ref', $event)"
         />
       </div>
@@ -198,6 +236,8 @@ const hoveredEdge = ref<string | null>(null);
           :model="implementationModel"
           mode="select"
           :selected-id="mapping.picked?.side === 'imp' ? mapping.picked.id : null"
+          :tint-of="impTint"
+          :tooltip-of="impTooltip"
           @node-select="onPick('imp', $event)"
         />
       </div>
