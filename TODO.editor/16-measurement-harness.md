@@ -1,4 +1,4 @@
-# 16 — The measurement harness view
+# 16 — The measurement harness view ✅ DONE (c1b13f6)
 
 **Wave:** program · **Depends on:** 04, 05 · **Priority:** P2
 

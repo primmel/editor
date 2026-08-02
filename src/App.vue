@@ -15,6 +15,7 @@ import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
+import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
@@ -188,6 +189,7 @@ const view = computed<ViewMode>({
             <SimulationPanel v-else :model="model" key="simulation" />
           </Transition>
           <CommentPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
+          <MeasurementPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
         </aside>
       </main>
     </template>
