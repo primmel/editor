@@ -13,6 +13,8 @@ import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
+import SimulationPanel from './components/simulation/SimulationPanel.vue';
+import { useSimStore } from './stores/simulation';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
 import { ref } from 'vue';
@@ -32,6 +34,22 @@ function onPaletteDragStart(entry: PaletteKind, ev: DragEvent) {
 }
 
 const model = computed(() => modelStore.model);
+
+// ── The simulation highlight (TODO.editor/13) — the current node in
+//    accent, the walked trajectory dimmer, tooltips off. ─────────────
+const simStore = useSimStore();
+
+function simTint(id: string): string | null {
+  const run = simStore.run;
+  if (!run) return null;
+  if (run.current?.nodeId === id) return '#5b6bc0';
+  if (run.trajectory.some(t => t.nodeId === id)) return 'rgba(91, 107, 192, 0.45)';
+  return null;
+}
+
+function simTooltip(): string | null {
+  return null;
+}
 
 // Dev/e2e hook: the stores on window (probes read the AST directly
 // instead of spelunking the DOM). Never in production builds.
@@ -123,6 +141,10 @@ const view = computed<ViewMode>({
               :class="{ active: ui.rightPanel === 'compliance' }"
               @click="ui.rightPanel = 'compliance'"
             >Compliance</button>
+            <button
+              :class="{ active: ui.rightPanel === 'simulation' }"
+              @click="ui.rightPanel = 'simulation'"
+            >Simulate</button>
           </div>
         </template>
       </nav>
@@ -140,13 +162,14 @@ const view = computed<ViewMode>({
         </aside>
 
         <section class="panel panel-center">
-          <ProcessCanvas ref="canvasRef" :model="model" />
+          <ProcessCanvas ref="canvasRef" :model="model" :tint-of="simTint" :tooltip-of="simTooltip" :tick="simStore.run" />
         </section>
 
         <aside class="panel panel-right">
           <Transition name="fade" mode="out-in">
             <ElementInspector v-if="ui.rightPanel === 'inspector'" :model="model" key="inspector" />
-            <CompliancePanel v-else :model="model" key="compliance" />
+            <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
+            <SimulationPanel v-else :model="model" key="simulation" />
           </Transition>
         </aside>
       </main>

@@ -1,4 +1,4 @@
-# 13 — The process simulation
+# 13 — The process simulation ✅ DONE (788ec66)
 
 **Wave:** advanced · **Depends on:** 02, 05 · **Priority:** P2
 

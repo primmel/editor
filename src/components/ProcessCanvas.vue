@@ -25,6 +25,9 @@ const props = withDefaults(defineProps<{
   tintOf?: ((id: string) => string | null) | null;
   /** Per-node tooltip (the coverage basis / conflict). */
   tooltipOf?: ((id: string) => string | null) | null;
+  /** An external re-render signal (the simulation run's identity — the
+   *  canvas re-renders when it changes). */
+  tick?: unknown;
 }>(), { mode: 'edit', selectedId: null, tintOf: null, tooltipOf: null });
 
 const emit = defineEmits<{
@@ -65,6 +68,7 @@ const canvas = computed(() => {
 });
 const rendered = computed(() => {
   void modelStore.version;
+  void props.tick; // external re-render signal (the simulation run)
   const z = ui.zoom;
   return renderCanvas(props.model, canvas.value, {
     x: -ui.panX / z - 400 / z,
