@@ -14,7 +14,9 @@ import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
+import CommentPanel from './components/comments/CommentPanel.vue';
 import { useSimStore } from './stores/simulation';
+import { unresolvedByElement } from './lib/comments';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
 import { ref } from 'vue';
@@ -50,6 +52,16 @@ function simTint(id: string): string | null {
 function simTooltip(): string | null {
   return null;
 }
+
+// ── The comment badge (TODO.editor/14) — unresolved count per node. ──
+const commentBadges = computed(() => {
+  void modelStore.version;
+  const map = unresolvedByElement(modelStore.standard!);
+  return (id: string) => {
+    const n = map.get(id) ?? 0;
+    return n > 0 ? String(n) : null;
+  };
+});
 
 // Dev/e2e hook: the stores on window (probes read the AST directly
 // instead of spelunking the DOM). Never in production builds.
@@ -162,7 +174,7 @@ const view = computed<ViewMode>({
         </aside>
 
         <section class="panel panel-center">
-          <ProcessCanvas ref="canvasRef" :model="model" :tint-of="simTint" :tooltip-of="simTooltip" :tick="simStore.run" />
+          <ProcessCanvas ref="canvasRef" :model="model" :tint-of="simTint" :tooltip-of="simTooltip" :tick="simStore.run" :badge-of="commentBadges" />
         </section>
 
         <aside class="panel panel-right">
@@ -171,6 +183,7 @@ const view = computed<ViewMode>({
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else :model="model" key="simulation" />
           </Transition>
+          <CommentPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
         </aside>
       </main>
     </template>

@@ -28,7 +28,9 @@ const props = withDefaults(defineProps<{
   /** An external re-render signal (the simulation run's identity — the
    *  canvas re-renders when it changes). */
   tick?: unknown;
-}>(), { mode: 'edit', selectedId: null, tintOf: null, tooltipOf: null });
+  /** Per-node badge text (the unresolved comment count) — null = none. */
+  badgeOf?: ((id: string) => string | null) | null;
+}>(), { mode: 'edit', selectedId: null, tintOf: null, tooltipOf: null, badgeOf: null });
 
 const emit = defineEmits<{
   /** Select mode: a node was picked (the mapper pairs on this). */
@@ -440,6 +442,10 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
           :stroke-width="node.kind === 'end_event' ? 3 : 1.5"
         />
         <text y="4" text-anchor="middle" class="node-label">{{ labelText(node) }}</text>
+        <g v-if="badgeOf?.(node.id)" class="node-badge" :data-testid="`badge-${node.id}`">
+          <circle :cx="NODE_SIZE / 2" :cy="-NODE_SIZE / 2" r="9" />
+          <text :x="NODE_SIZE / 2" :y="-NODE_SIZE / 2 + 3" text-anchor="middle">{{ badgeOf(node.id) }}</text>
+        </g>
       </g>
     </svg>
 
@@ -588,6 +594,18 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   font-family: var(--font-mono);
   font-size: 10px;
   fill: var(--text);
+  pointer-events: none;
+  user-select: none;
+}
+.node-badge circle {
+  fill: var(--accent);
+  stroke: var(--bg);
+  stroke-width: 1.5;
+}
+.node-badge text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--bg);
   pointer-events: none;
   user-select: none;
 }

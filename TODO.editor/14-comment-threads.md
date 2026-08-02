@@ -1,4 +1,4 @@
-# 14 — Element comment threads
+# 14 — Element comment threads ✅ DONE (a04762d)
 
 **Wave:** advanced · **Depends on:** 01 · **Priority:** P2
 

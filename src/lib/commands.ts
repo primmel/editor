@@ -98,7 +98,7 @@ function listFor(ast: Standard, kind: ElementKind): Array<{ id: string }> {
 /** Mint the smallest free `{prefix}{n}` id in the package. */
 export function mintId(ast: Standard, prefix: string): string {
   const taken = new Set<string>();
-  for (const list of [ast.processes, ast.approvals, ast.dataclasses, ast.events, ast.gateways, ast.pages, ast.regs, ast.enums, ast.variables]) {
+  for (const list of [ast.processes, ast.approvals, ast.dataclasses, ast.events, ast.gateways, ast.pages, ast.regs, ast.enums, ast.variables, ast.comments]) {
     for (const x of list) taken.add((x as { id: string }).id);
   }
   for (let n = 1; ; n++) {
