@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted } from 'vue';
 import { useModelStore } from './stores/model';
 import { useUiStore } from './stores/ui';
 import { useMappingStore } from './stores/mapping';
@@ -17,6 +17,7 @@ import SimulationPanel from './components/simulation/SimulationPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
 import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
+import SavePanel from './components/SavePanel.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
 import { activePlugins } from './plugins';
@@ -29,7 +30,30 @@ const ui = useUiStore();
 const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
 const importOpen = ref(false);
+const saveOpen = ref(false);
 const openPanelId = ref<string | null>(null);
+
+// ── The dirty discipline (TODO.editor/18) — Ctrl+S saves; leaving with
+//    unsaved changes warns (dirty = history cursor ≠ saved cursor). ──
+function onKeydown(e: KeyboardEvent) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    saveOpen.value = true;
+  }
+}
+
+function onBeforeUnload(e: BeforeUnloadEvent) {
+  if (modelStore.dirty) e.preventDefault();
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown);
+  window.addEventListener('beforeunload', onBeforeUnload);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown);
+  window.removeEventListener('beforeunload', onBeforeUnload);
+});
 
 /** The active plugins' panels (program conveniences, TODO.editor/17). */
 const pluginPanels = computed(() => {
@@ -143,6 +167,12 @@ const view = computed<ViewMode>({
             @click="view = 'diff'"
           >Diff</button>
           <span class="nav-sep"></span>
+          <button
+            class="save-nav-btn"
+            :class="{ dirty: modelStore.dirty }"
+            data-testid="open-save"
+            @click="saveOpen = true"
+          >Save<span v-if="modelStore.dirty" class="dirty-dot" data-testid="dirty-dot" /></button>
           <button data-testid="open-import" @click="importOpen = true">Import</button>
           <button
             v-for="panel in pluginPanels"
@@ -241,6 +271,7 @@ const view = computed<ViewMode>({
     </div>
 
     <ImportPanel v-if="importOpen" @close="importOpen = false" />
+    <SavePanel v-if="saveOpen && model" :model="model" @close="saveOpen = false" />
 
     <div v-if="openPanel" class="panel-modal-backdrop" @click.self="openPanelId = null">
       <div class="panel-modal" :data-testid="`panel-${openPanel.id}`">
@@ -423,6 +454,18 @@ const view = computed<ViewMode>({
   margin-bottom: 0.75rem;
 }
 .error-card p { color: var(--text-muted); font-size: 0.85rem; }
+
+.save-nav-btn { position: relative; }
+.save-nav-btn.dirty { color: var(--accent); }
+.dirty-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
 
 .panel-modal-backdrop {
   position: fixed;

@@ -1,4 +1,4 @@
-# 18 — Save to SSOT + the change preview
+# 18 — Save to SSOT + the change preview ✅ DONE (4fed73f)
 
 **Wave:** persistence · **Depends on:** 01, 12 · **Priority:** P0
 
