@@ -19,6 +19,7 @@ interface TreeGroup {
 }
 
 const groups = computed<TreeGroup[]>(() => {
+  void modelStore.version; // commands mutate the AST in place — re-derive
   const m = props.model;
   const childSet = new Set<string>();
   for (const p of m.processes) {

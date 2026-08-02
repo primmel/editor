@@ -158,6 +158,30 @@ describe('13 — the walk', () => {
     expect(state.current?.nodeId).toBe('Heavy');
   });
 
+  it('a conditioned edge wins from ANY node (not only gateways)', () => {
+    // Weigh has E2 (default → X1) first; adding a TRUE conditioned
+    // edge to Done later must still win over the earlier default.
+    const model = fresh();
+    const root = model.pages.find(p => p.id === model.root?.id)!;
+    root.edges.push({
+      id: 'E7',
+      from: { name: 'Weigh', element: { id: 'Weigh' }, x: 0, y: 0 },
+      to: { name: 'Done', element: { id: 'Done' }, x: 0, y: 0 },
+      description: '', condition: 'load > 50',
+    });
+    let state = createRun(model, { registers: { load: '80' } });
+    state = step(model, state); // Weigh
+    state = step(model, state); // the conditioned edge wins → Done (run completes)
+    expect(state.done).toBe(true);
+    expect(state.trajectory.some(t => t.note.includes('load > 50'))).toBe(true);
+
+    // …and with the condition false, the earlier default fires.
+    let other = createRun(model, { registers: { load: '20' } });
+    other = step(model, other); // Weigh
+    other = step(model, other); // default → X1
+    expect(other.current?.nodeId).toBe('X1');
+  });
+
   it('reset restores the initial registers; the MODEL is untouched', () => {
     const model = fresh();
     const before = JSON.parse(JSON.stringify(model));

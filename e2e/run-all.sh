@@ -26,6 +26,7 @@ for leg in \
   measurement-smoke \
   import-smoke \
   plugin-smoke \
+  capability-walk \
   save-smoke
 do
   echo "── $leg"

@@ -1,4 +1,4 @@
-# 25 — The capability walk (the ultimate e2e validation)
+# 25 — The capability walk (the ultimate e2e validation) ✅ DONE (d03dae6)
 
 **Wave:** validation · **Depends on:** 22, 23 · **Priority:** P0
 

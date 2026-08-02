@@ -319,7 +319,20 @@ export function step(model: Standard, state: SimState): SimState {
 
   let chosen: { to: string; condition: string; id: string } | null = null;
   let note = '';
-  if (kind === 'gateway-x') {
+  if (kind === 'gateway-p') {
+    // The linearized walk: follow each branch in order — the first
+    // this step, the rest queued on the stack.
+    const [first, ...rest] = outs;
+    chosen = first!;
+    note = rest.length > 0 ? `parallel: ${rest.length + 1} branches, walked in order` : '';
+    for (const o of rest.reverse()) {
+      next.stack.push({ pageId, nodeId: o.to });
+    }
+  } else {
+    // Branch selection is kind-agnostic (TODO.editor/25): the first
+    // TRUE conditioned edge wins; the first unconditioned edge is the
+    // default. With conditioned edges but none true and no default,
+    // the flow stalls (blocked — edit a register and step again).
     const conditioned = outs.filter(o => o.condition.trim() !== '');
     for (const o of conditioned) {
       let ok = false;
@@ -338,23 +351,12 @@ export function step(model: Standard, state: SimState): SimState {
       const fallback = outs.find(o => o.condition.trim() === '');
       if (fallback) {
         chosen = fallback;
-        note = 'default branch';
-      } else {
+        note = conditioned.length > 0 ? 'default branch' : '';
+      } else if (conditioned.length > 0) {
         next.blocked = `no branch of ${nodeId} is true — edit a register and step again`;
         return next;
       }
     }
-  } else if (kind === 'gateway-p') {
-    // The linearized walk: follow each branch in order — the first
-    // this step, the rest queued on the stack.
-    const [first, ...rest] = outs;
-    chosen = first!;
-    note = rest.length > 0 ? `parallel: ${rest.length + 1} branches, walked in order` : '';
-    for (const o of rest.reverse()) {
-      next.stack.push({ pageId, nodeId: o.to });
-    }
-  } else {
-    chosen = outs[0]!;
   }
 
   const targetKind = simNodeKind(model, chosen.to);
