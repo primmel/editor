@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { load, dump } from '@primmel/primmel';
 import type { Standard } from '@primmel/primmel';
 import {
   extractCanvas, renderCanvas, bezierPath,
   nodeShape, nodeColor, NODE_SIZE,
   type RenderNode,
 } from '../lib/render';
+import { canConnect, mintEdgeId, pageForNode } from '../lib/edges';
+import {
+  createEdge, removeEdge, updateComponentPosition,
+} from '../lib/commands';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 
@@ -14,35 +17,79 @@ const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
 const modelStore = useModelStore();
 
+// ── View state ───────────────────────────────────────────────────────
 const isPanning = ref(false);
 const panStart = ref({ x: 0, y: 0, panX: 0, panY: 0 });
 const draggingNode = ref<RenderNode | null>(null);
 const dragOffset = ref({ x: 0, y: 0 });
 
-const canvas = computed(() => extractCanvas(props.model, ui.activeCanvasId));
-const rendered = computed(() => renderCanvas(props.model, canvas.value));
+// ── Edge connect state (port-to-port) ────────────────────────────────
+const connectFrom = ref<RenderNode | null>(null);
+const connectMouse = ref<{ x: number; y: number } | null>(null);
+
+// ── Edge selection + condition editing ───────────────────────────────
+const selectedEdgeId = ref<string | null>(null);
+const edgeCondition = ref('');
+
+const canvas = computed(() => {
+  void modelStore.version;
+  return extractCanvas(props.model, ui.activeCanvasId);
+});
+const rendered = computed(() => {
+  void modelStore.version;
+  const z = ui.zoom;
+  return renderCanvas(props.model, canvas.value, {
+    x: -ui.panX / z - 400 / z,
+    y: -ui.panY / z - 300 / z,
+    w: 800 / z,
+    h: 600 / z,
+  });
+});
 
 const viewBox = computed(() => {
   const z = ui.zoom;
   return `${-ui.panX / z} ${-ui.panY / z} ${800 / z} ${600 / z}`;
 });
 
+// ── The breadcrumb (root / … / current page) ─────────────────────────
+const breadcrumb = computed(() => {
+  const root = props.model.root?.id ?? props.model.pages[0]?.id;
+  const current = canvas.value?.id;
+  if (!root || !current || current === root) return [];
+  return [root, current];
+});
+
+// ── Pan/zoom/drag ────────────────────────────────────────────────────
 function onCanvasMouseDown(e: MouseEvent) {
   const target = e.target as Element;
   if (target.tagName === 'svg' || target.getAttribute('data-bg')) {
+    if (selectedEdgeId.value) {
+      selectedEdgeId.value = null;
+      return;
+    }
     isPanning.value = true;
     panStart.value = { x: e.clientX, y: e.clientY, panX: ui.panX, panY: ui.panY };
   }
 }
 
+function worldPoint(e: MouseEvent): { x: number; y: number } {
+  const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
+  const z = ui.zoom;
+  return {
+    x: (e.clientX - rect.left + ui.panX) / z - 400 / z,
+    y: (e.clientY - rect.top + ui.panY) / z - 300 / z,
+  };
+}
+
 function onMouseMove(e: MouseEvent) {
+  if (connectFrom.value) {
+    connectMouse.value = worldPoint(e);
+    return;
+  }
   if (draggingNode.value) {
-    const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
-    const z = ui.zoom;
-    const worldX = (e.clientX - rect.left + ui.panX) / z - 400 / z;
-    const worldY = (e.clientY - rect.top + ui.panY) / z - 300 / z;
-    draggingNode.value.x = worldX - dragOffset.value.x;
-    draggingNode.value.y = worldY - dragOffset.value.y;
+    const p = worldPoint(e);
+    draggingNode.value.x = p.x - dragOffset.value.x;
+    draggingNode.value.y = p.y - dragOffset.value.y;
   } else if (isPanning.value) {
     const dx = e.clientX - panStart.value.x;
     const dy = e.clientY - panStart.value.y;
@@ -52,9 +99,11 @@ function onMouseMove(e: MouseEvent) {
 }
 
 function onMouseUp() {
-  if (draggingNode.value) {
-    commitDrag();
+  if (connectFrom.value) {
+    connectFrom.value = null;
+    connectMouse.value = null;
   }
+  if (draggingNode.value) commitDrag();
   isPanning.value = false;
   draggingNode.value = null;
 }
@@ -65,42 +114,85 @@ function onWheel(e: WheelEvent) {
   ui.setZoom(ui.zoom * delta);
 }
 
+// ── Node interactions ────────────────────────────────────────────────
 function onNodeClick(node: RenderNode) {
-  ui.select(node.id, node.kind === 'process' ? 'process' : 'event');
+  if (connectFrom.value) {
+    finishConnect(node);
+    return;
+  }
+  ui.select(node.id, selectionTypeOf(node));
+}
+
+/** Release over a node completes the shift+drag connect. */
+function onNodeMouseUp(node: RenderNode) {
+  if (connectFrom.value) finishConnect(node);
+}
+
+function onNodeDoubleClick(node: RenderNode) {
+  // Descend into a subprocess page (the MMEL's drill-down).
+  const pageId = pageForNode(props.model, node.id);
+  if (pageId) ui.setCanvas(pageId);
 }
 
 function onNodeMouseDown(e: MouseEvent, node: RenderNode) {
   e.stopPropagation();
+  if (e.shiftKey) {
+    // Shift+drag = connect (the port-to-port edge creation).
+    connectFrom.value = node;
+    connectMouse.value = worldPoint(e);
+    return;
+  }
   draggingNode.value = node;
-  const rect = (e.currentTarget as SVGElement).closest('svg')!.getBoundingClientRect();
-  const z = ui.zoom;
-  const worldX = (e.clientX - rect.left + ui.panX) / z - 400 / z;
-  const worldY = (e.clientY - rect.top + ui.panY) / z - 300 / z;
-  dragOffset.value = { x: worldX - node.x, y: worldY - node.y };
-  ui.select(node.id, node.kind === 'process' ? 'process' : 'event');
+  const p = worldPoint(e);
+  dragOffset.value = { x: p.x - node.x, y: p.y - node.y };
+  ui.select(node.id, selectionTypeOf(node));
+}
+
+function selectionTypeOf(node: RenderNode) {
+  switch (node.kind) {
+    case 'process': return 'process' as const;
+    case 'dataclass': return 'dataclass' as const;
+    case 'exclusive_gateway':
+    case 'parallel_gateway': return 'gateway' as const;
+    default: return 'event' as const;
+  }
+}
+
+function finishConnect(target: RenderNode) {
+  const from = connectFrom.value;
+  connectFrom.value = null;
+  connectMouse.value = null;
+  if (!from || !canvas.value || from.id === target.id) return;
+  const verdict = canConnect(canvas.value, from.id, target.id);
+  if (!verdict.ok) return; // the discipline refuses (same-node / dup / missing)
+  const pageId = canvas.value.id;
+  modelStore.execute(createEdge(pageId, mintEdgeId(canvas.value), from.id, target.id));
 }
 
 function commitDrag() {
   if (!draggingNode.value || !canvas.value) return;
   const node = draggingNode.value;
-  const canvasObj = canvas.value;
-  const comp = canvasObj.childs?.find(c => (c.element?.id ?? c.name) === node.id);
-  if (comp) {
-    comp.x = Math.round(node.x);
-    comp.y = Math.round(node.y);
-  }
-  try {
-    const newModel = load(modelStore.rawText);
-    const targetCanvas = newModel.pages.find(p => p.id === canvasObj.id);
-    if (targetCanvas) {
-      const targetComp = targetCanvas.childs?.find(c => (c.element?.id ?? c.name) === node.id);
-      if (targetComp) {
-        targetComp.x = Math.round(node.x);
-        targetComp.y = Math.round(node.y);
-      }
-    }
-    modelStore.rawText = dump(newModel);
-  } catch { /* ignore parse errors during drag */ }
+  modelStore.execute(updateComponentPosition(canvas.value.id, node.id, node.x, node.y));
+}
+
+// ── Edge interactions ────────────────────────────────────────────────
+function onEdgeClick(edgeId: string) {
+  selectedEdgeId.value = edgeId;
+  const edge = canvas.value?.edges.find(e => e.id === edgeId);
+  edgeCondition.value = edge?.condition ?? '';
+}
+
+function onEdgeDoubleClick(edgeId: string) {
+  if (!canvas.value) return;
+  modelStore.execute(removeEdge(canvas.value.id, edgeId));
+  selectedEdgeId.value = null;
+}
+
+function applyEdgeCondition() {
+  const edge = canvas.value?.edges.find(e => e.id === selectedEdgeId.value);
+  if (!edge || !canvas.value) return;
+  edge.condition = edgeCondition.value;
+  modelStore.version++;
 }
 
 function nodeTransform(node: RenderNode): string {
@@ -116,9 +208,13 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   start_event: { fill: 'rgba(122, 158, 94, 0.15)', stroke: '#7a9e5e' },
   end_event: { fill: 'rgba(184, 85, 85, 0.15)', stroke: '#b85555' },
   timer_event: { fill: 'rgba(212, 148, 66, 0.15)', stroke: '#d49442' },
+  signal_event: { fill: 'rgba(108, 99, 166, 0.15)', stroke: '#6c63a6' },
   process: { fill: 'rgba(212, 148, 66, 0.08)', stroke: '#d49442' },
+  approval: { fill: 'rgba(184, 85, 85, 0.12)', stroke: '#b85555' },
   exclusive_gateway: { fill: 'rgba(184, 85, 85, 0.12)', stroke: '#c47550' },
   parallel_gateway: { fill: 'rgba(122, 158, 94, 0.12)', stroke: '#8a7e5e' },
+  dataclass: { fill: 'rgba(47, 125, 107, 0.12)', stroke: '#2f7d6b' },
+  subprocess: { fill: 'rgba(91, 107, 192, 0.10)', stroke: '#5b6bc0' },
 };
 </script>
 
@@ -135,6 +231,15 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         {{ page.id }}
       </button>
     </div>
+
+    <div v-if="breadcrumb.length" class="canvas-breadcrumb" data-testid="canvas-breadcrumb">
+      <template v-for="(crumb, i) in breadcrumb" :key="crumb">
+        <span v-if="i > 0" class="crumb-sep">/</span>
+        <button v-if="i < breadcrumb.length - 1" class="crumb-link" @click="ui.setCanvas(crumb)">{{ crumb }}</button>
+        <span v-else class="crumb-current">{{ crumb }}</span>
+      </template>
+    </div>
+
     <svg
       class="canvas-svg"
       :viewBox="viewBox"
@@ -151,36 +256,51 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="var(--text-muted)" />
         </marker>
-        <filter id="node-glow">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
       </defs>
 
       <rect data-bg="true" :x="-5000" :y="-5000" :width="10000" :height="10000" fill="url(#grid)" />
 
-      <g v-for="edge in rendered.edges" :key="edge.id" class="edge-group">
+      <g v-for="edge in rendered.edges" :key="edge.id" class="edge-group"
+         :class="{ selected: selectedEdgeId === edge.id }"
+         @click.stop="onEdgeClick(edge.id)"
+         @dblclick.stop="onEdgeDoubleClick(edge.id)">
         <path
           :d="bezierPath(edge.from, edge.to)"
           fill="none"
-          stroke="var(--text-muted)"
-          stroke-width="1.5"
+          :stroke="selectedEdgeId === edge.id ? 'var(--accent)' : 'var(--text-muted)'"
+          :stroke-width="selectedEdgeId === edge.id ? 2.5 : 1.5"
+          :stroke-dasharray="edge.isDataLink ? '6 4' : undefined"
           marker-end="url(#arrowhead)"
-          opacity="0.6"
+          :opacity="selectedEdgeId === edge.id ? 1 : 0.6"
         />
+        <text
+          v-if="edge.condition"
+          :x="(edge.from.x + edge.to.x) / 2"
+          :y="(edge.from.y + edge.to.y) / 2 - 6"
+          text-anchor="middle"
+          class="edge-condition"
+        >[{{ edge.condition }}]</text>
       </g>
+
+      <!-- The in-flight connect line (shift+drag) -->
+      <line
+        v-if="connectFrom && connectMouse"
+        :x1="connectFrom.x" :y1="connectFrom.y"
+        :x2="connectMouse.x" :y2="connectMouse.y"
+        stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"
+        marker-end="url(#arrowhead)"
+      />
 
       <g
         v-for="node in rendered.nodes"
-        :key="node.id"
+        :key="node.id + (node.isData ? ':data' : '')"
         :transform="nodeTransform(node)"
-        :class="{ selected: ui.isSelected(node.id), dragging: draggingNode?.id === node.id }"
+        :class="{ selected: ui.isSelected(node.id), dragging: draggingNode?.id === node.id, 'is-data': node.isData, 'connect-source': connectFrom?.id === node.id }"
         class="node-group"
         @click.stop="onNodeClick(node)"
+        @dblclick.stop="onNodeDoubleClick(node)"
         @mousedown="onNodeMouseDown($event, node)"
+        @mouseup.stop="onNodeMouseUp(node)"
       >
         <rect
           v-if="nodeShape(node.kind) === 'rect'"
@@ -191,25 +311,37 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
           :stroke="nodeColors[node.kind].stroke"
           stroke-width="1.5"
         />
-        <circle
-          v-else-if="nodeShape(node.kind) === 'circle'"
-          :r="NODE_SIZE / 2.5"
-          :fill="nodeColors[node.kind].fill"
-          :stroke="nodeColors[node.kind].stroke"
-          :stroke-width="node.kind === 'end_event' ? 3 : 1.5"
-        />
         <polygon
-          v-else
+          v-else-if="nodeShape(node.kind) === 'diamond'"
           :points="`0,${-NODE_SIZE/2} ${NODE_SIZE/2},0 0,${NODE_SIZE/2} ${-NODE_SIZE/2},0`"
           :fill="nodeColors[node.kind].fill"
           :stroke="nodeColors[node.kind].stroke"
           stroke-width="1.5"
         />
-        <text
-          y="4"
-          text-anchor="middle"
-          class="node-label"
-        >{{ labelText(node) }}</text>
+        <g v-else-if="nodeShape(node.kind) === 'cylinder'">
+          <ellipse :rx="NODE_SIZE/2" :ry="NODE_SIZE/5" :cy="-NODE_SIZE/2 + NODE_SIZE/10"
+            :fill="nodeColors[node.kind].fill" :stroke="nodeColors[node.kind].stroke" stroke-width="1.5" />
+          <path :d="`M ${-NODE_SIZE/2} ${-NODE_SIZE/2 + NODE_SIZE/10} v ${NODE_SIZE*0.8} a ${NODE_SIZE/2} ${NODE_SIZE/5} 0 0 0 ${NODE_SIZE} 0 v ${-NODE_SIZE*0.8}`"
+            :fill="nodeColors[node.kind].fill" :stroke="nodeColors[node.kind].stroke" stroke-width="1.5" />
+        </g>
+        <rect
+          v-else-if="nodeShape(node.kind) === 'frame'"
+          :x="-NODE_SIZE/2" :y="-NODE_SIZE/2"
+          :width="NODE_SIZE" :height="NODE_SIZE"
+          rx="4"
+          :fill="nodeColors[node.kind].fill"
+          :stroke="nodeColors[node.kind].stroke"
+          stroke-width="2"
+          stroke-dasharray="8 3"
+        />
+        <circle
+          v-else
+          :r="NODE_SIZE / 2.5"
+          :fill="nodeColors[node.kind].fill"
+          :stroke="nodeColors[node.kind].stroke"
+          :stroke-width="node.kind === 'end_event' ? 3 : 1.5"
+        />
+        <text y="4" text-anchor="middle" class="node-label">{{ labelText(node) }}</text>
       </g>
     </svg>
 
@@ -220,8 +352,21 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
       <button class="ctrl-btn reset" @click="ui.resetView()" title="Reset view">⟲</button>
     </div>
 
-    <div class="canvas-hint" v-if="!draggingNode">
-      <kbd>drag</kbd> nodes to reposition · <kbd>scroll</kbd> to zoom
+    <div v-if="selectedEdgeId" class="edge-editor" data-testid="edge-editor">
+      <span class="edge-editor-title">{{ selectedEdgeId }}</span>
+      <input
+        v-model="edgeCondition"
+        class="edge-condition-input"
+        placeholder="condition (OCL, empty = default)"
+        data-testid="edge-condition-input"
+        @keyup.enter="applyEdgeCondition"
+      />
+      <button class="ctrl-btn" @click="applyEdgeCondition" title="Apply condition">✓</button>
+      <button class="ctrl-btn" @click="onEdgeDoubleClick(selectedEdgeId)" title="Delete edge">✕</button>
+    </div>
+
+    <div class="canvas-hint" v-if="!draggingNode && !connectFrom">
+      <kbd>drag</kbd> nodes · <kbd>shift+drag</kbd> to connect · <kbd>dbl-click</kbd> to enter · <kbd>scroll</kbd> to zoom
     </div>
 
     <div v-if="!canvas" class="canvas-empty">
@@ -273,12 +418,72 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   border-bottom-color: var(--accent);
   font-weight: 500;
 }
+.canvas-breadcrumb {
+  position: absolute;
+  top: 2.4rem;
+  left: 0.5rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.crumb-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+.crumb-link:hover { text-decoration: underline; }
+.crumb-current { color: var(--text); }
+.crumb-sep { opacity: 0.5; }
 .node-group { cursor: pointer; transition: filter 150ms ease; }
 .node-group:hover { filter: drop-shadow(0 0 8px var(--accent-glow)); }
-.node-group.selected > * {
-  filter: drop-shadow(0 0 10px var(--accent-glow));
-}
+.node-group.selected > * { filter: drop-shadow(0 0 10px var(--accent-glow)); }
 .node-group.dragging { opacity: 0.8; cursor: grabbing; }
+.node-group.is-data { opacity: 0.85; }
+.node-group.connect-source > * { filter: drop-shadow(0 0 12px var(--accent)); }
+.edge-group { cursor: pointer; }
+.edge-group.selected path { pointer-events: stroke; }
+.edge-condition {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text-muted);
+  pointer-events: none;
+}
+.edge-editor {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.6rem;
+  z-index: 10;
+}
+.edge-editor-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.edge-condition-input {
+  width: 220px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
 .node-label {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -314,6 +519,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   transition: var(--transition);
 }
 .ctrl-btn:hover { background: var(--bg-hover); color: var(--accent); border-color: var(--accent); }
+.ctrl-btn.reset { font-size: 0.8rem; }
 .zoom-display {
   font-family: var(--font-mono);
   font-size: 0.65rem;

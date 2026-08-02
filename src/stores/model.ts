@@ -102,6 +102,9 @@ export const useModelStore = defineStore('model', () => {
    *  command-layer store read this; it is the same object as `standard`). */
   const model = computed(() => standard.value);
 
+  // Boot parse — the sample document opens the workspace on first load.
+  loadText(rawText.value);
+
   return {
     standard, model, parseError, version, rawText,
     history, cursor, dirty, canUndo, canRedo,

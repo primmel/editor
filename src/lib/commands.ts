@@ -469,3 +469,36 @@ export function updateMappingMeta(
     },
   };
 }
+
+// ── Canvas component position (the drag commit, TODO.editor/02) ─────
+
+export function updateComponentPosition(
+  pageId: string,
+  elementId: string,
+  x: number,
+  y: number,
+): Command {
+  let before: { x: number; y: number };
+  return {
+    label: `move ${elementId} to (${Math.round(x)}, ${Math.round(y)})`,
+    apply(ast) {
+      const page = pageOf(ast, pageId);
+      const comp = page.childs.find(c => c.name === elementId);
+      if (!comp) throw new Error(`component ${elementId} is not on page ${pageId}`);
+      before = { x: comp.x, y: comp.y };
+      comp.x = Math.round(x);
+      comp.y = Math.round(y);
+    },
+    revert(ast) {
+      const page = pageOf(ast, pageId);
+      const comp = page.childs.find(c => c.name === elementId);
+      if (comp) { comp.x = before.x; comp.y = before.y; }
+    },
+  };
+}
+
+/** The root page id (the root canvas's content page — `standard.root`
+ *  is only the marker). */
+export function rootPageId(ast: Standard): string | null {
+  return ast.root?.id ?? null;
+}
