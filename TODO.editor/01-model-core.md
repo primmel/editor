@@ -1,4 +1,4 @@
-# 01 — The model core: PRL AST + the command layer ✅ DONE (ba7b264 + primmel-ts f0d4565)
+# 01 — The model core: PRL AST + the command layer ✅ DONE (ba7b264) (ba7b264 + primmel-ts f0d4565)
 
 **Wave:** foundation · **Depends on:** nothing · **Priority:** P0
 
