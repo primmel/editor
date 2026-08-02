@@ -122,6 +122,7 @@ the mapping calculus must match the kernel's numbers exactly (item
 | 26 | the R 7 tutorial model (Clinical thermometers) | P0 | program |
 | 27 | the dual-demo tutorial (model YOUR Recommendation) | P1 | docs |
 | 28 | the validation close-out (VALIDATION.md) | P0 | validation |
+| 29 | validation throughout (the Primmel validation surface) | P0 | validation |
 
 The contract: create new Primmel models (reference/implementation),
 import old MMEL models (all ten), do mappings with coverage, navigate,
