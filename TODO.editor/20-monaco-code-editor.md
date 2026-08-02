@@ -1,4 +1,4 @@
-# 20 — The Monaco code editor (the PRL language mode)
+# 20 — The Monaco code editor (the PRL language mode) ✅ DONE (3bcc8dc)
 
 **Wave:** polish · **Depends on:** 01 · **Priority:** P2
 

@@ -29,7 +29,7 @@ onMounted(async () => {
   apiAvailable.value = await writeApiAvailable();
 });
 
-const preview = computed(() => serializeForSave(props.model, modelStore.rawText));
+const preview = computed(() => serializeForSave(props.model, modelStore.loadedText));
 const STATUS_ORDER: DiffStatus[] = ['added', 'removed', 'changed', 'moved'];
 
 function doDownload() {

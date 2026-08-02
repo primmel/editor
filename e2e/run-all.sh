@@ -19,6 +19,7 @@ for leg in \
   automap-smoke \
   diff-smoke \
   simulation-smoke \
+  monaco-smoke \
   comments-smoke \
   measurement-smoke \
   import-smoke \

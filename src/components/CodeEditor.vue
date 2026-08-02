@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import type * as Monaco from 'monaco-editor';
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import { validate } from '@primmel/primmel';
 import { useModelStore } from '../stores/model';
 import { primmelLanguageDefinition } from '../lib/monaco-language';
+import {
+  completionContext, completionItemsFor,
+  markerFromParseError, markersFromIssues,
+} from '../lib/monaco-prl';
 
 const model = useModelStore();
 const containerRef = ref<HTMLElement | null>(null);
@@ -14,12 +20,50 @@ onMounted(async () => {
 
   monacoInstance = await import('monaco-editor');
 
+  // The real worker (the editor's own — the PRL mode needs no language
+  // worker; monarch tokenizes in-page).
   self.MonacoEnvironment = {
-    getWorker: () => new Worker('data:text/javascript;base64,cGljbw=='),
+    getWorker: () => new editorWorker(),
   };
 
   monacoInstance.languages.register({ id: 'primmel' });
   monacoInstance.languages.setMonarchTokensProvider('primmel', primmelLanguageDefinition);
+
+  // Completion from the live AST (the model's own vocabulary).
+  monacoInstance.languages.registerCompletionItemProvider('primmel', {
+    provideCompletionItems(textModel, position) {
+      const textBefore = textModel.getValueInRange({
+        startLineNumber: 1,
+        startColumn: 1,
+        endLineNumber: position.lineNumber,
+        endColumn: position.column,
+      });
+      const context = completionContext(textBefore);
+      const ast = model.standard;
+      if (!ast) return { suggestions: [] };
+      const word = textModel.getWordUntilPosition(position);
+      const range = {
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: word.startColumn,
+        endColumn: word.endColumn,
+      };
+      const kindMap = {
+        id: monacoInstance!.languages.CompletionItemKind.Reference,
+        keyword: monacoInstance!.languages.CompletionItemKind.Keyword,
+        type: monacoInstance!.languages.CompletionItemKind.TypeParameter,
+      } as const;
+      return {
+        suggestions: completionItemsFor(context, ast).map(item => ({
+          label: item.label,
+          kind: kindMap[item.kind],
+          detail: item.detail,
+          insertText: item.label,
+          range,
+        })),
+      };
+    },
+  });
 
   monacoInstance.editor.defineTheme('primmel-atelier', {
     base: 'vs-dark',
@@ -76,32 +120,57 @@ onMounted(async () => {
       model.setText(value);
     }
   });
-});
 
-watch(() => model.parseError, (error) => {
-  if (!editor || !monacoInstance) return;
-  const modelUri = editor.getModel()?.uri;
-  if (!modelUri) return;
+  refreshMarkers();
 
-  if (error) {
-    const lineMatch = error.match(/line\s+(\d+)/i);
-    const line = lineMatch ? parseInt(lineMatch[1], 10) : 1;
-    monacoInstance.editor.setModelMarkers(editor.getModel()!, 'primmel', [{
-      startLineNumber: line,
-      startColumn: 1,
-      endLineNumber: line,
-      endColumn: 1000,
-      message: error,
-      severity: monacoInstance.MarkerSeverity.Error,
-    }]);
-  } else {
-    monacoInstance.editor.setModelMarkers(editor.getModel()!, 'primmel', []);
+  // Dev/e2e hook: the Monaco instance (probes drive cursor/suggest
+  // deterministically). Never in production builds.
+  if (import.meta.env.DEV) {
+    (window as unknown as { __editor: unknown }).__editor = editor;
   }
 });
 
+/** The markers: the parse error when broken, else the kernel's
+ *  validation issues on the parsed model. */
+function refreshMarkers() {
+  if (!editor || !monacoInstance) return;
+  const textModel = editor.getModel();
+  if (!textModel) return;
+
+  if (model.parseError) {
+    const m = markerFromParseError(model.parseError);
+    monacoInstance.editor.setModelMarkers(textModel, 'primmel', [
+      { ...m, severity: monacoInstance.MarkerSeverity.Error },
+    ]);
+    return;
+  }
+  const issues = model.standard ? validate(model.standard) : [];
+  monacoInstance.editor.setModelMarkers(
+    textModel,
+    'primmel',
+    markersFromIssues(issues).map(m => ({
+      ...m,
+      severity: m.severity === 'error'
+        ? monacoInstance!.MarkerSeverity.Error
+        : m.severity === 'warning'
+          ? monacoInstance!.MarkerSeverity.Warning
+          : monacoInstance!.MarkerSeverity.Info,
+    })),
+  );
+}
+
+watch(() => [model.parseError, model.version], refreshMarkers);
+
 watch(() => model.rawText, (newText) => {
   if (editor && newText !== editor.getValue()) {
+    // The single-writer discipline: an AST-side edit re-renders the
+    // text byte-clean; the cursor survives where it still fits.
+    const position = editor.getPosition();
     editor.setValue(newText);
+    if (position) {
+      editor.setPosition(position);
+      editor.revealPositionInCenterIfOutsideViewport(position);
+    }
   }
 });
 

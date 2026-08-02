@@ -20,12 +20,22 @@ export const useModelStore = defineStore('model', () => {
   const cursor = ref(0);
   const savedCursor = ref(0);
 
-  /** The text projection — derived, debounce-synced by the code editor. */
+  /** The text projection — derived; synced after every command and
+   *  editable in the code editor. */
   const rawText = ref(SAMPLE_MODEL);
+
+  /** The save baseline — the text as of the last load or save (the
+   *  save preview diffs against THIS, not the live projection). */
+  const loadedText = ref(SAMPLE_MODEL);
 
   const dirty = computed(() => cursor.value !== savedCursor.value);
   const canUndo = computed(() => cursor.value > 0);
   const canRedo = computed(() => cursor.value < history.value.length);
+
+  /** The projection refresh — rawText shows the AST after commands. */
+  function syncProjection() {
+    if (standard.value) rawText.value = dump(standard.value);
+  }
 
   function loadText(text: string) {
     try {
@@ -35,6 +45,7 @@ export const useModelStore = defineStore('model', () => {
       cursor.value = 0;
       savedCursor.value = 0;
       rawText.value = text;
+      loadedText.value = text;
       version.value++;
     } catch (e) {
       parseError.value = (e as Error).message;
@@ -47,6 +58,7 @@ export const useModelStore = defineStore('model', () => {
     history.value.splice(cursor.value);
     history.value.push(command);
     cursor.value++;
+    syncProjection();
     version.value++;
   }
 
@@ -54,6 +66,7 @@ export const useModelStore = defineStore('model', () => {
     if (!standard.value || cursor.value <= 0) return;
     cursor.value--;
     history.value[cursor.value]!.revert(standard.value);
+    syncProjection();
     version.value++;
   }
 
@@ -61,6 +74,7 @@ export const useModelStore = defineStore('model', () => {
     if (!standard.value || cursor.value >= history.value.length) return;
     history.value[cursor.value]!.apply(standard.value);
     cursor.value++;
+    syncProjection();
     version.value++;
   }
 
@@ -70,6 +84,8 @@ export const useModelStore = defineStore('model', () => {
 
   function markSaved() {
     savedCursor.value = cursor.value;
+    // After a save the working text IS the new baseline.
+    loadedText.value = rawText.value;
   }
 
   /** The code editor's write path: text → AST (parse errors surface,
@@ -106,7 +122,7 @@ export const useModelStore = defineStore('model', () => {
   loadText(rawText.value);
 
   return {
-    standard, model, parseError, version, rawText,
+    standard, model, parseError, version, rawText, loadedText,
     history, cursor, dirty, canUndo, canRedo,
     loadText, setText, loadFile, format, execute, undo, redo, serialize, markSaved,
   };
