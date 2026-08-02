@@ -14,6 +14,7 @@ import MapPartyList from './MapPartyList.vue';
 import CoverageLegend from './CoverageLegend.vue';
 import ProfileSwitcher from './ProfileSwitcher.vue';
 import DocumentView from './DocumentView.vue';
+import AutoMapPanel from './AutoMapPanel.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
 import { badgeMap } from '../../lib/multi-map';
 import { COVERAGE_TINTS, coverageTooltip, coverageView, type CoverageView } from '../../lib/coverage';
@@ -261,6 +262,13 @@ const hoveredEdge = ref<string | null>(null);
     <div v-if="mapping.parseError" class="mapper-error" data-testid="ref-parse-error">{{ mapping.parseError }}</div>
 
     <CoverageLegend v-if="refModel && !mapping.docMode" />
+
+    <AutoMapPanel
+      v-if="refModel && !mapping.docMode && namespace"
+      :implementation-model="implementationModel"
+      :reference-model="refModel"
+      :namespace="namespace"
+    />
 
     <div v-if="mapping.docMode && mapping.document" class="mapper-body">
       <div class="mapper-pane" ref="refPane" data-testid="ref-pane">

@@ -38,6 +38,14 @@ export const useMappingStore = defineStore('mapping', () => {
   /** The last seed run's outcome (the review list's panel). */
   const lastSeed = ref<{ fromNs: string; toNs: string; outcome: SeedOutcome } | null>(null);
 
+  /** Session-level automap rejections (`imp|ref`) — never re-suggested
+   *  this session (TODO.editor/11). */
+  const rejectedPairs = ref(new Set<string>());
+
+  function rejectPair(impId: string, refId: string) {
+    rejectedPairs.value.add(`${impId}|${refId}`);
+  }
+
   /** The active reference model (null when nothing is registered). */
   const refModel = computed(() => (activeNs.value ? refs.value[activeNs.value] ?? null : null));
 
@@ -109,8 +117,9 @@ export const useMappingStore = defineStore('mapping', () => {
 
   return {
     refs, refTexts, activeNs, parseError, picked, pairDraft, lastSeed,
-    document, docMode,
+    document, docMode, rejectedPairs,
     refModel, namespaces,
     loadRefText, loadDocumentText, clearDocument, activate, removeRef, refNamespace,
+    rejectPair,
   };
 });

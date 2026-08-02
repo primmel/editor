@@ -1,4 +1,4 @@
-# 11 — Automap: suggest, confirm, merge
+# 11 — Automap: suggest, confirm, merge ✅ DONE (9c2cb82)
 
 **Wave:** mapping · **Depends on:** 08 · **Priority:** P1
 
