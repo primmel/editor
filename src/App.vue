@@ -15,6 +15,7 @@ import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
+import ImportPanel from './components/ImportPanel.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
 import PalettePanel from './components/PalettePanel.vue';
@@ -25,6 +26,7 @@ const modelStore = useModelStore();
 const ui = useUiStore();
 const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
+const importOpen = ref(false);
 const canvasRef = ref<InstanceType<typeof ProcessCanvas> | null>(null);
 
 function onPalettePick(entry: PaletteKind) {
@@ -130,6 +132,8 @@ const view = computed<ViewMode>({
             :class="{ active: view === 'diff' }"
             @click="view = 'diff'"
           >Diff</button>
+          <span class="nav-sep"></span>
+          <button data-testid="open-import" @click="importOpen = true">Import</button>
         </div>
         <template v-if="view === 'model'">
           <span class="nav-sep"></span>
@@ -218,6 +222,8 @@ const view = computed<ViewMode>({
       </section>
       <aside class="panel panel-right"></aside>
     </div>
+
+    <ImportPanel v-if="importOpen" @close="importOpen = false" />
   </div>
 </template>
 

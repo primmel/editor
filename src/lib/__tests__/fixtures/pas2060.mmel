@@ -1,0 +1,3557 @@
+root root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  schema "MMEL 0.1"
+  edition "2014"
+  author "Ribose"
+  shortname "PAS 2060"
+  namespace "PAS2060Application"
+}
+
+role entity {
+  name "Entity to demonstrate carbon neutrality "
+}
+
+role assessor {
+  name "Assessing entity"
+}
+
+role Verifier {
+  name "Independent third party verifier"
+}
+
+process DetermineSubject {
+  name "Determine subject of carbon neutrality"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision1
+  }
+  output {
+    Subject
+  }
+  subprocess Page0
+}
+
+process QuantifyCarbon {
+  name "Quantify carbon footprint"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision0
+    Provision51
+  }
+  subprocess Page1
+}
+
+process DevelopManagementPlan {
+  name "Develop carbon footprint management plan"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision2
+    Provision76
+  }
+  output {
+    CarbonFootprintPlan
+  }
+  subprocess Page2
+}
+
+process Action {
+  name "Take action"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision4
+    Provision5
+  }
+  subprocess Page3
+}
+
+process Requantify {
+  name "Re-quantify the carbon footprint of the determined subject"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision6
+    Provision7
+    Provision8
+  }
+  output {
+    Reduction
+  }
+  subprocess Page4
+}
+
+process BalanceOut {
+  name "Balance out residual GHG emissions"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision9
+  }
+  output {
+    CarbonOffset
+  }
+  subprocess Page5
+}
+
+process Declaration {
+  name "Make a declaration of achievement"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision10
+  }
+  output {
+    Achievement
+  }
+}
+
+process SelectMethodologies {
+  name "Selection of methodologies
+"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision11
+  }
+  subprocess Page7
+}
+
+process SelectMethodPreference {
+  name "Select methodologies in order of preference"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision16
+  }
+  subprocess Page8
+}
+
+process UseLegistrationMethods {
+  name "Use methodologies imposed by legistration"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision13
+  }
+  output {
+    Methodology
+  }
+}
+
+process CheckLegistration {
+  name "Check for applicable legislation"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision12
+  }
+}
+
+process Documentation {
+  name "Documentation"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision14
+    Provision15
+  }
+}
+
+process SelectISO {
+  name "Select methodologies from international standards"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision17
+  }
+  output {
+    Methodology
+  }
+}
+
+process SelectRegional {
+  name "Select methodologies with international acceptability"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision18
+  }
+  output {
+    Methodology
+  }
+}
+
+process SelectIndustry {
+  name "Select recognized industry methodologies"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision19
+  }
+  output {
+    Methodology
+  }
+}
+
+process DevelopMethod {
+  name "Develop a method"
+  actor entity
+  modality MAY
+  validate_provision {
+    Provision20
+  }
+  output {
+    Methodology
+  }
+}
+
+process DeclareAchievementBaeline {
+  name "Declaration of Achievement for Baseline Period"
+  actor entity
+  modality SHOULD
+  validate_provision {
+    Provision21
+    Provision26
+    Provision27
+  }
+  output {
+    Achievement
+  }
+}
+
+process DeterminePeriod {
+  name "Determine the length of the application period"
+  actor assessor
+  modality SHOULD
+  validate_provision {
+    Provision22
+    Provision23
+    Provision24
+    Provision25
+  }
+}
+
+process MakeCommitment {
+  name "Make commitment to carbon neutrality"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision3
+    Provision66
+  }
+  output {
+    CarbonFootprintPlan
+  }
+}
+
+process DetermineSubjectDetails {
+  name "Determine the subject"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision28
+    Provision32
+    Provision33
+  }
+  output {
+    Subject
+  }
+}
+
+process EstablishActivities {
+  name "Establish activities"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision29
+  }
+}
+
+process SubjectUnchanged {
+  name "Ensure subject remains unchanged"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision30
+  }
+}
+
+process Restart {
+  name "Restart the sequence"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision31
+  }
+}
+
+process ApplyCompanyPrinciples {
+  name "Apply organization/company specific principles"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision34
+    Provision35
+    Provision36
+    Provision37
+    Provision38
+    Provision39
+  }
+  output {
+    Subject
+  }
+}
+
+process Process0 {
+  name "Apply product/service specific principles"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision40
+  }
+  output {
+    Subject
+  }
+}
+
+process DefineGHG {
+  name "Define GHG emissions associated with the subject "
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision41
+  }
+  subprocess Page9
+}
+
+process IncludeGHG {
+  name "Define GHG emissions associated with the subject"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision42
+    Provision43
+    Provision44
+  }
+  output {
+    Subject
+  }
+}
+
+process AlternativeCoverageValidation {
+  name "Apply the alternative coverage principle"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision46
+  }
+  validate_measurement {
+    "[Excluded_Emssions_Without_Max_In_Percentage] < 0.05"
+  }
+  output {
+    Subject
+  }
+}
+
+process ExcludeEmissionSource {
+  name "Exclude emission source"
+  actor entity
+  modality MAY
+  validate_provision {
+    Provision45
+    Provision48
+    Provision98
+    Provision99
+  }
+  validate_measurement {
+    "[Excluded_Emission].max / [Total_Emission] < 0.01"
+  }
+  output {
+    Subject
+  }
+}
+
+process DefineSubjectDocumentation {
+  name "Documentation"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision49
+    Provision50
+  }
+  output {
+    SubjectMethodology
+    Subject
+  }
+}
+
+process DetermineMethodology {
+  name "Determine methodology used to quantify the carbon footprint"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision52
+    Provision53
+  }
+  output {
+    MethodQuantification
+  }
+}
+
+process InternationalGuideline {
+  name "Use international or industry guidelines"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision54
+  }
+  output {
+    MethodQuantification
+  }
+}
+
+process UseGovernmentFactors {
+  name "Use emission factors from national publications"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision55
+  }
+  output {
+    MethodQuantification
+  }
+}
+
+process CalculateGHGemissions {
+  name "Calculate GHG emissions"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision56
+    Provision57
+  }
+}
+
+process ConversionToCO2e {
+  name "Conversion of non-CO_2 greenhouse gases to CO_2e"
+  modality SHALL
+  validate_provision {
+    Provision59
+    Provision60
+    Provision61
+    Provision62
+  }
+  output {
+    CarbonFootprint
+  }
+}
+
+process ObtainGHGEmissions {
+  name "Obtain GHG emissions "
+  modality SHALL
+  validate_provision {
+    Provision58
+  }
+  output {
+    MethodQuantification
+  }
+}
+
+process ConfirmApplication {
+  name "Confirm application of the methodology"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision63
+  }
+  output {
+    MethodQuantification
+  }
+}
+
+process QuantificationDocumentation {
+  name "Documentation"
+  modality SHALL
+  validate_provision {
+    Provision64
+    Provision65
+  }
+  output {
+    CarbonFootprint
+    MethodQuantification
+  }
+}
+
+process ImplementPlan {
+  name "Implement the carbon footprint management plan"
+  actor entity
+  modality SHALL
+  reference_data_registry {
+    CarbonFootprintPlan
+  }
+  validate_provision {
+    Provision68
+  }
+}
+
+process PeriodicAssessment {
+  name "Undertake periodic assessments of performance against the plan"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision69
+    Provision75
+  }
+}
+
+process ImplementAction {
+  name "Implement corrective action"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision70
+  }
+}
+
+process PlanDetails {
+  name "Provide plan details"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision72
+  }
+  output {
+    CarbonFootprintPlan
+  }
+}
+
+process IdentifyWaysforEvents {
+  name "Identify reduction ways for events "
+  modality SHALL
+  validate_provision {
+    Provision67
+  }
+  output {
+    CarbonFootprintPlan
+  }
+}
+
+process PostEventReview {
+  name "Post-event review"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision71
+  }
+}
+
+process IdentifyPeriod {
+  name "identify the period"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision73
+  }
+  output {
+    CarbonFootprintPlan
+  }
+}
+
+process DemonstrateHistoricReductions {
+  name "Demonstrate historic reductions"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision74
+  }
+}
+
+process ReductionCalculation {
+  name "Calculation of reduction in the carbon footprint"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision77
+    Provision78
+    Provision82
+    Provision84
+    Provision85
+  }
+  output {
+    Reduction
+  }
+}
+
+process ReductionDocumentation {
+  name "Documentation"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision79
+    Provision83
+  }
+  output {
+    Reduction
+    Methodology
+  }
+}
+
+process EmployAlternativeMethod {
+  name "Employ alternative method"
+  actor entity
+  modality MAY
+  validate_provision {
+    Provision81
+  }
+}
+
+process EmploySameMethod {
+  name "Employ the same methodology"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision80
+  }
+}
+
+process ReconcileCarbonCredit {
+  name "Implement carbon offset projects"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision86
+    Provision89
+    Provision90
+  }
+  output {
+    CarbonOffsetProject
+    CarbonOffset
+  }
+}
+
+process ObtainCarbonCredit {
+  name "Obtain carbon credit"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision88
+    Provision91
+  }
+  output {
+    CarbonOffsetProject
+  }
+}
+
+process VerifyCarbonCredit {
+  name "Verify carbon credit"
+  actor Verifier
+  modality SHALL
+  validate_provision {
+    Provision87
+  }
+}
+
+process RetireCarbonCredit {
+  name "Retire Carbon Credit"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision92
+    Provision93
+    Provision94
+  }
+  output {
+    CarbonOffsetProject
+  }
+}
+
+process OffsetDocumentation {
+  name "Documentation"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision95
+    Provision96
+    Provision97
+  }
+  output {
+    CarbonOffsetProject
+    CarbonOffset
+  }
+}
+
+process ApplyOverallCoverageRule {
+  name "Apply the overall coverage principle"
+  actor entity
+  modality SHALL
+  validate_provision {
+    Provision47
+  }
+  validate_measurement {
+    "[Total_Included_Emissions_In_Percentage] >= 0.95"
+  }
+}
+
+start_event Start0 {
+}
+
+start_event Start1 {
+}
+
+start_event Start2 {
+}
+
+start_event Start4 {
+}
+
+start_event Start5 {
+}
+
+start_event Start6 {
+}
+
+start_event Start8 {
+}
+
+start_event Start9 {
+}
+
+end_event EndEvent0 {
+}
+
+end_event EndEvent1 {
+}
+
+end_event EndEvent2 {
+}
+
+timer_event TimerEvent0 {
+}
+
+end_event EndEvent3 {
+}
+
+start_event Start10 {
+}
+
+timer_event TimerEvent1 {
+  type WAIT
+  para "at most 12 months"
+}
+
+timer_event TimerEvent2 {
+}
+
+start_event Start3 {
+}
+
+end_event EndEvent4 {
+}
+
+end_event EndEvent5 {
+}
+
+end_event EndEvent6 {
+}
+
+timer_event EventCreditRetirementTimer {
+  type WAIT
+  para "at most 36 months"
+}
+
+timer_event NonEventCreditRetirementTimer {
+  type WAIT
+  para "at most 12 months"
+}
+
+exclusive_gateway NeutralityGateway {
+  label "Has carbon neutrality been achieved?"
+}
+
+exclusive_gateway LagistrationGateway {
+  label "Has legislation imposed any specific requirements on entities to use certain methodologies?"
+}
+
+exclusive_gateway MethodFromISOGatewat {
+  label "No method exists"
+}
+
+exclusive_gateway RegionalMethodGateway {
+  label "No method exists"
+}
+
+exclusive_gateway NoMethodGateway {
+  label "No method exists"
+}
+
+exclusive_gateway SubjectChangeGateway {
+  label "Any material change to the subject?"
+}
+
+exclusive_gateway SubjectIsOrganizationGateway {
+  label "What is the nature of the subject?"
+}
+
+exclusive_gateway CalculationGateway {
+  label "Is quantification based on calculations?"
+}
+
+exclusive_gateway GovernmentFactorAvailable {
+  label "Are factors from national (Government) publications available"
+}
+
+exclusive_gateway RecurringEventGateway {
+  label "Is the subject a non-recurring event such as a wedding or concert?"
+}
+
+exclusive_gateway RecurringEventActionGateway {
+  label "Is the subject a recurring event?"
+}
+
+exclusive_gateway HistoricReductionGateway {
+  label "Are historic reductions from the defined subject, not otherwise taken into account, to be taken into account?"
+}
+
+exclusive_gateway HistoricReductionActionGateWay {
+  label "historic reductions are to be taken into account"
+}
+
+exclusive_gateway AlternativeMethodAvailableGateway {
+  label "Does an alternative methodology become available that would
+reduce uncertainty and yield more accurate, consistent and reproducible results?"
+}
+
+exclusive_gateway EGate1 {
+}
+
+exclusive_gateway SingleSourceDominanceGateway {
+  label "Does a single source contribute more than 50% of the total emissions"
+}
+
+class Methodology#data {
+  methodology {
+    definition "Methodology used to deliver the evidence"
+    modality SHALL
+    reference {
+      ref421
+    }
+  }
+  justification {
+    definition "Justification"
+    modality SHALL
+  }
+}
+
+class Achievement#data {
+  declaration {
+    definition "Declaration"
+    modality SHALL
+    reference {
+      ref41
+    }
+  }
+}
+
+class CarbonFootprintPlan#data {
+  commitment {
+    definition "A statement of commitment to carbon neutrality for the defined subject"
+    modality SHALL
+    reference {
+      ref41
+      ref7
+    }
+  }
+  timescale {
+    definition "A timescale for achieving carbon neutrality of the defined subject"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+  target {
+    definition "Targets for GHG reduction for the defined subject appropriate to the timescale for achieving carbon neutrality"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+  means {
+    definition "Planned means of achieving and maintaining GHG emissions reductions "
+    reference {
+      ref7
+    }
+  }
+  assumption {
+    definition "Assumptions made of the techniques and measures to be employed to reduce GHG emissions
+"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+  justification {
+    definition "Justification of the techniques and measures to be employed to reduce GHG emissions
+"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+  calculation {
+    definition "Where historic reductions are to be taken into account, the period over which those reductions are to be calculated and confirmation that the necessary data is available and that calculation is to be undertaken using precisely the same methodology as that to be employed to assess and calculate future reductions"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+  offset {
+    definition "The offset strategy to be adopted including an estimate of the quantity of GHG emissions to be offset, the nature of the offsets and the likely number and type of credits"
+    modality SHALL
+    reference {
+      ref7
+    }
+  }
+}
+
+class Subject#data {
+  Entity {
+    definition "Entity"
+    modality SHALL
+    reference {
+      ref511
+    }
+  }
+  subject {
+    definition "Subject of the declaration of carbon neutrality"
+    modality SHALL
+    reference {
+      ref511
+      ref612
+    }
+  }
+  purpose {
+    definition "Purposes"
+    modality SHALL
+    reference {
+      ref511
+    }
+  }
+  Objective {
+    definition "Objectives"
+    modality SHALL
+    reference {
+      ref511
+    }
+  }
+  functionality {
+    definition "Functionality"
+    modality SHALL
+    reference {
+      ref511
+    }
+  }
+  rationale {
+    definition "Rationale for the selection of the subject"
+    modality SHALL
+    reference {
+      ref521
+    }
+  }
+  exclusion: Exclusion {
+    definition "Exclusion"
+    modality SHALL
+    reference {
+      ref521
+    }
+  }
+  emission {
+    definition "GHG emissions associated with the subject"
+    reference {
+      ref524
+    }
+  }
+  uncertainty {
+    definition "Uncertainties and variability including the positive tolerances adopted in association with estimates"
+    modality SHALL
+    reference {
+      ref53
+    }
+  }
+  boundary {
+    definition "Boundaries"
+    modality SHALL
+    reference {
+      ref522
+      ref53
+      ref612
+    }
+  }
+}
+
+class Exclusion {
+  source {
+    definition "Material GHG emission source"
+    modality SHALL
+    reference {
+      ref521
+      ref524
+    }
+  }
+  reason {
+    definition "Reason for the exclusion"
+    modality SHALL
+    reference {
+      ref521
+      ref524
+    }
+  }
+}
+
+class SubjectMethodology#data {
+  methodology {
+    definition "Methodology"
+    modality SHALL
+    reference {
+      ref525
+      ref53
+    }
+  }
+  justification {
+    definition "Justification for the selection of the methodology"
+    modality SHALL
+    reference {
+      ref53
+    }
+  }
+  assumption {
+    definition "Assumption made in defining the boundaries and for determining which GHG emissions to include (in terms of both sources and which greenhouse gases)"
+    modality SHALL
+    reference {
+      ref53
+    }
+  }
+  confirmation {
+    definition "Confirmation that the selected methodology was applied in accordance with its provisions and that the principles set out in PAS 2060 were met;
+
+"
+    modality SHALL
+    reference {
+      ref53
+    }
+  }
+}
+
+class MethodQuantification#data {
+  source {
+    definition "Data source"
+    modality SHALL
+    reference {
+      ref612
+    }
+  }
+  standard {
+    definition "Standard"
+    modality SHALL
+    reference {
+      ref62
+      ref83
+    }
+  }
+  methodology {
+    definition "Methodology"
+    modality SHALL
+    reference {
+      ref62
+      ref83
+    }
+  }
+  justification {
+    definition "Justification for the selection of the methodology"
+    modality SHALL
+    reference {
+      ref62
+      ref83
+    }
+  }
+  assumption {
+    definition "Assumptions in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors"
+    modality SHALL
+    reference {
+      ref62
+      ref83
+    }
+  }
+  calculation {
+    definition "Calculations in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors"
+    modality SHALL
+    reference {
+      ref62
+      ref83
+    }
+  }
+  confirmation {
+    definition "Confirmation that the selected methodology was applied in accordance with its provisions"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+  actualMethod {
+    definition "The actual methods used to quantify GHG emissions (e.g. use of primary or secondary data)"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+  measurement {
+    definition "The measurement unit(s) applied"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+}
+
+class CarbonFootprint#data {
+  time {
+    definition "The time period associated with the carbon footprint"
+    modality SHALL
+    reference {
+      ref612
+      ref62
+    }
+  }
+  carbonFootprint {
+    definition "The size of carbon footprint"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+  uncertainty {
+    definition "Uncertainty or variability associated with quantifying GHG emissions (e.g. resulting from the use of alternative types of data)"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+  statementExtent {
+    definition "A statement as to the extent of that uncertainty with explanation of any underlying assumptions"
+    modality SHALL
+    reference {
+      ref62
+    }
+  }
+}
+
+class Reduction#data {
+  type {
+    definition "A statement identifying whether the reductions are overall, activity-based or intensity-based"
+    modality SHALL
+    reference {
+      ref821
+    }
+  }
+  reduction: GHGReduction {
+    definition "GHG emissions that have been reduced"
+    modality SHALL
+    reference {
+      ref821
+    }
+  }
+  means {
+    definition "Actual means of achieving GHG emissions reductions"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+  confirmation {
+    definition "Confirmation that the methodology used was applied in accordance with its provisions and that the principles set out in PAS 2060 clause 8.2.2"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+  reductionMet {
+    definition "Whether or not the actual reduction is in line with that forecast in the carbon management plan together"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+  reason {
+    definition "Reasons for any significant variation"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+  footprint {
+    definition "The size of the reduced carbon footprint"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+}
+
+class GHGReduction {
+  amount {
+    definition "Amount of GHG emission that have been reduced in absolute or intensity terms"
+    modality SHALL
+    reference {
+      ref822
+    }
+  }
+  type {
+    definition "Type of GHG emission that have been reduced"
+    modality SHALL
+    reference {
+      ref822
+    }
+  }
+  period {
+    definition "The time period involved"
+    modality SHALL
+    reference {
+      ref822
+    }
+  }
+  percentage {
+    definition "Percentage of original carbon footprint"
+    modality SHALL
+    reference {
+      ref83
+    }
+  }
+}
+
+class CarbonOffset#data {
+  methodology {
+    definition "Standard and methodology used to achieve its carbon offset"
+    modality SHALL
+    reference {
+      ref912
+    }
+  }
+  emissions {
+    definition "Which GHG emissions have been offset"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  amount {
+    definition "The actual amount of carbon credit required"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  type {
+    definition "Type of offset"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  project {
+    definition "Projects involved"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  confirmation {
+    definition "Confirmation that the carbon offset scheme was used in accordance with its provisions and that there was no conflict with the principles set out in PAS 2060 clause 9.1.2"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  creditUsed: CarbonCreditUse {
+    definition "Carbon credits used"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  retirement {
+    definition "Retirement/cancellation of carbon credits sufficient to prevent their use by others including a link to the registry where the credit has been retired"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+}
+
+class CarbonOffsetProject#data {
+  information {
+    definition "Information about the offset project"
+    modality SHALL
+    reference {
+      ref912
+    }
+  }
+  quantification {
+    definition "Quantification methodology"
+    modality SHALL
+    reference {
+      ref912
+    }
+  }
+  validation {
+    definition "Validation procedures"
+    modality SHALL
+    reference {
+      ref912
+    }
+  }
+  verification {
+    definition "Verification procedures"
+    modality SHALL
+    reference {
+      ref912
+    }
+  }
+  credit: CarbonCredit {
+    definition "Credits from carbon offset projects"
+    modality SHALL
+    reference {
+      ref912
+      ref92
+    }
+  }
+}
+
+class CarbonCredit {
+  amount {
+    definition "Number of carbon credits"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  type {
+    definition "Type of carbon credits"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+}
+
+class CarbonCreditUse {
+  credit: CarbonCredit {
+    definition "Carbon credit"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  period {
+    definition "Time period over which the credits have been generated"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+  retirement {
+    definition "Date of retirement"
+    modality SHALL
+    reference {
+      ref92
+    }
+  }
+}
+
+data_registry Methodology {
+  title "Selected methodology"
+  data_class Methodology#data
+}
+
+data_registry Achievement {
+  title "Declaration of Achievement"
+  data_class Achievement#data
+}
+
+data_registry CarbonFootprintPlan {
+  title "Carbon Footprint Management Plan "
+  data_class CarbonFootprintPlan#data
+}
+
+data_registry Subject {
+  title "Subject"
+  data_class Subject#data
+}
+
+data_registry SubjectMethodology {
+  title "Methodology for defining the subject "
+  data_class SubjectMethodology#data
+}
+
+data_registry MethodQuantification {
+  title "Method for quantification"
+  data_class MethodQuantification#data
+}
+
+data_registry CarbonFootprint {
+  title "Carbon Footprint"
+  data_class CarbonFootprint#data
+}
+
+data_registry Reduction {
+  title "GHG Emission Reduction"
+  data_class Reduction#data
+}
+
+data_registry CarbonOffset {
+  title "Carbon Offset"
+  data_class CarbonOffset#data
+}
+
+data_registry CarbonOffsetProject {
+  title "Carbon Offset Project"
+  data_class CarbonOffsetProject#data
+}
+
+provision Provision4 {
+  condition "Take action to reduce the carbon footprint of the determined subject"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision5 {
+  condition "Establish the effectiveness of those actions"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision11 {
+  condition "Select reliable supporting methodologies
+"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision12 {
+  condition "Check for any applicable legislation"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision13 {
+  condition "Use methodologies imposed by legistration"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision14 {
+  condition "Document evidence used to substantiate declarations contained within PAS 2060"
+  modality SHALL
+  reference {
+    ref422
+  }
+}
+
+provision Provision15 {
+  condition "Retain the documentation for the period that the status of carbon neutrality is valid, and for a period of six years thereafter."
+  modality SHALL
+  reference {
+    ref422
+  }
+}
+
+provision Provision16 {
+  condition "Select methodologies used to deliver the evidence needed to substantiate the declarations contained within PAS 2060 following the order of preference"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision18 {
+  condition "Select methodologies from standards that have international acceptability (i.e. regional or national standards)"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision17 {
+  condition "Select methodologies from International Standards (ISO)"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision19 {
+  condition "Select methodologies from proprietary industry or trade methods that are considered to be sufficiently robust to demonstrate carbon neutrality in accordance with PAS 2060 in a manner that can be reliably and repeatedly validated"
+  modality SHALL
+  reference {
+    ref421
+  }
+}
+
+provision Provision20 {
+  condition "Develop a method, provided it meets the principles and other requirements of PAS 2060, provides reliable and reproducible results and is freely available for peer review"
+  modality MAY
+  reference {
+    ref421
+  }
+}
+
+provision Provision22 {
+  condition "Determine the length
+of the application period to suit the requirements of the carbon footprint management plan"
+  modality SHOULD
+  reference {
+    ref41
+  }
+}
+
+provision Provision23 {
+  condition "Determine application periods to be equal length other than where “historic reductions” are to be included in the first application period"
+  modality SHOULD
+  reference {
+    ref41
+  }
+}
+
+provision Provision24 {
+  condition "The selection of particularly long application periods (e.g. in excess of two years) can delay recognition of the assessing entities' achievement"
+  reference {
+    ref41
+  }
+}
+
+provision Provision25 {
+  condition "Take into consideration GHG emission reductions associated with the defined subject immediately prior to the baseline date (historic reductions) to enable declarations of neutrality."
+  modality MAY
+  reference {
+    ref41
+  }
+}
+
+provision Provision21 {
+  condition "Declare Achievement for Baseline Period based on any reduction achieved during the period plus permitted historic reduction and offset or based on 100% offset"
+  modality SHOULD
+  reference {
+    ref41
+  }
+}
+
+provision Provision26 {
+  condition "Make a Declaration of Achievement of carbon neutrality at the end of the first application period and it can be based on reductions achieved during the first application period together with reductions achieved during a specified continuous period immediately prior to the baseline date"
+  modality CAN
+  reference {
+    ref41
+  }
+}
+
+provision Provision27 {
+  condition "Use offsetting to account for all of the GHG emissions associated with the defined subject at the end of the first application period and are therefore able to make a Declaration of Achievement of carbon neutrality at the end of the first application period based solely on offsetting"
+  modality MAY
+  reference {
+    ref41
+  }
+}
+
+provision Provision29 {
+  condition "Establish and take into consideration all activities material to the fulfilment, achievement or delivery of the purposes, objectives or functionality of the subject"
+  modality SHALL
+  reference {
+    ref511
+  }
+}
+
+provision Provision30 {
+  condition "Ensure that the definition of the subject remains unchanged through each and every stage of the methodology set out"
+  reference {
+    ref512
+  }
+}
+
+provision Provision31 {
+  condition "Re-start the sequence on the basis of a newly-defined subject."
+  modality SHALL
+  reference {
+    ref512
+  }
+}
+
+provision Provision34 {
+  condition "Define boundaries to be a true and fair representation of the organization's GHG emissions (i.e. shall include all GHG emissions relating to core operations including subsidiaries owned and operated by the organization)"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision35 {
+  condition "Use the equity share or control approach to define which GHG emissions are to be included"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision36 {
+  condition "Identify subject that is part of an organization or a specific site or location, and treat it as a discrete operation with its own purpose, objectives and functionality"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision37 {
+  condition "Ensure claims are credible, so if an entity chooses a very narrow subject and excludes its carbon intensive activities or if it outsources its carbon intensive activities, then this needs to be documented"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision38 {
+  condition "Under the equity share approach, accounts for GHG emissions from the subject according to its share of equity in the subject"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision39 {
+  condition "Under the control approach, accounts for 100% of the GHG emissions over which it has financial and/or operational control.
+"
+  modality SHALL
+  reference {
+    ref522
+  }
+}
+
+provision Provision28 {
+  condition "Determination the subject"
+  modality SHALL
+  reference {
+    ref511
+  }
+}
+
+provision Provision32 {
+  condition "Select subject based on a broader understanding of the entire carbon footprint of the entity so that the carbon footprint of the selected subject can be seen in context"
+  modality SHOULD
+  reference {
+    ref521
+  }
+}
+
+provision Provision33 {
+  condition "Be able to demonstrate that they are not intentionally excluding their most significant GHG emissions (or alternatively can justify why they have done so)"
+  modality SHOULD
+  reference {
+    ref521
+  }
+}
+
+provision Provision41 {
+  condition "Include all greenhouse gases and convert into tCO_2e"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision42 {
+  condition "Include 100% Scope 1 (direct) emissions relevant to the subject"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision43 {
+  condition "Include 100% Scope 2 (indirect) emissions relevant to the subject"
+  reference {
+    ref524
+  }
+}
+
+provision Provision44 {
+  condition "Determine carbon footprint in a manner that precludes underestimation where estimates of GHG emissions are used in the quantification of the subject carbon footprint (particularly when associated with scope 3 emissions)"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision49 {
+  condition "Confirm and record that their application of the methodology selected for defining the subject and identifying which emission sources are to be included in the quantification, conforms to the principles established in PAS 2060"
+  modality SHALL
+  reference {
+    ref525
+  }
+}
+
+provision Provision50 {
+  condition "Prepare documentation defining and substantiating the subject and the GHG emissions associated with the subject"
+  modality SHALL
+  reference {
+    ref53
+  }
+}
+
+provision Provision0 {
+  condition "Quantify the carbon footprint of that subject using a recognized methodology"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision51 {
+  condition "Quantify the carbon footprint of the identified subject"
+  modality SHALL
+  reference {
+    ref611
+  }
+}
+
+provision Provision40 {
+  condition "Take into consideration all Scope 3 emissions and the lifecycle of the product/service"
+  modality SHALL
+  reference {
+    ref523
+  }
+}
+
+provision Provision1 {
+  condition "Determine the subject of the intended claim of carbon neutrality"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision52 {
+  condition "Quantify carbon footprint based on primary activity data unless the entity can demonstrate that it is not practicable to do so and an authoritative source of secondary data relevant to the subject, is available"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision53 {
+  condition "Employ the methodology that minimizes uncertainly and yields accurate, consistent and reproducible results"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision54 {
+  condition "Use international or industry guidelines to identify emission factors"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision55 {
+  condition "Use emission factors from national (Government) publications"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision56 {
+  condition "Calculate GHG emissions using emission factors"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision57 {
+  condition "Ensure that emission factors are relevant to the activity concerned and current at the time of quantification"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision58 {
+  condition "Identify the data sources"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision59 {
+  condition "Convert non-CO_2 greenhouse gases to CO_2e based upon the 100 year Global Warming Potential figures published by the IPCC or national (Government) publication"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision60 {
+  condition "Express all carbon footprints as an absolute amount in tCO_2e."
+  modality SHALL
+}
+
+provision Provision61 {
+  condition "For products and services, relate to a specified unit of product or instance of service (e.g. tCO2e per kg of product)"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision62 {
+  condition "For all subjects other than those for which PAS 2050 is used for quantification, specify the time period associated with the carbon footprint"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision63 {
+  condition "Confirm and record that their application of the methodology selected for quantification of the greenhouse gas emissions from the subject"
+  modality SHALL
+  reference {
+    ref612
+  }
+}
+
+provision Provision64 {
+  condition "Prepare documentation substantiating the quantification of the carbon footprint of the specified subject"
+  modality SHALL
+  reference {
+    ref62
+  }
+}
+
+provision Provision65 {
+  condition "Take the form of a qualitative description regarding the uncertainty of the results, or a quantitative assessment of uncertainty if available (e.g. carbon footprint based on 95% of likely greenhouse gas emissions; primary sources are subject to variation over time; footprint is best estimate based on reasonable costs of evaluation)."
+  modality CAN
+  reference {
+    ref62
+  }
+}
+
+provision Provision3 {
+  condition "Make a declaration of commitment to carbon neutrality in accordance with PAS 2060"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision66 {
+  condition "Commit to achieving and, if applicable, maintaining carbon neutrality for the defined subject"
+  modality SHALL
+  reference {
+    ref7
+  }
+}
+
+provision Provision68 {
+  condition "Implement the carbon footprint management plan in order to achieve reductions in GHG emissions from the subject"
+  modality SHALL
+  reference {
+    ref811
+  }
+}
+
+provision Provision70 {
+  condition "Implement corrective action to ensure targets are achieved"
+  modality SHALL
+  reference {
+    ref811
+  }
+}
+
+provision Provision67 {
+  condition "Identify ways of reducing GHG emissions to the maximum extent commensurate with enabling the event to meet its intended objectives before the event takes place"
+  modality SHALL
+  reference {
+    ref813
+  }
+}
+
+provision Provision71 {
+  condition "Include post-event review to determine whether or not the expected minimisation in emissions has
+been achieved"
+  modality SHALL
+  reference {
+    ref813
+  }
+}
+
+provision Provision72 {
+  condition "Develop and document a carbon footprint management plan"
+  modality SHALL
+  reference {
+    ref7
+  }
+}
+
+provision Provision73 {
+  condition "Identify the period from which those reductions shall be taken and confirm that sufficient data appropriate to the methodology to be used for calculation of the carbon footprint is available"
+  modality SHALL
+  reference {
+    ref814
+  }
+}
+
+provision Provision74 {
+  condition "Demonstrate that historic reductions were made wholly in accordance PAS 2060"
+  modality SHALL
+  reference {
+    ref814
+  }
+}
+
+provision Provision69 {
+  condition "Have a process in place for undertaking periodic assessments of performance against the plan "
+  modality SHALL
+  reference {
+    ref811
+  }
+}
+
+provision Provision75 {
+  condition "Determine the frequency of assessing performance against the plan that commensurates with the timescale for achieving carbon neutrality"
+  modality SHOULD
+  reference {
+    ref814
+  }
+}
+
+provision Provision2 {
+  condition "Develop and document a carbon footprint management plan"
+  modality SHALL
+  reference {
+    ref7
+    ref41
+  }
+}
+
+provision Provision76 {
+  condition "Have sufficient resources to achieve the carbon footprint management plan"
+  modality SHOULD
+  reference {
+    ref814
+  }
+}
+
+provision Provision80 {
+  condition "Employ the same methodology that is used to quantify the original carbon footprint to quantify reductions"
+  modality SHALL
+  reference {
+    ref822
+  }
+}
+
+provision Provision81 {
+  condition "Employ the alternative methodology for comparison purposes"
+  modality MAY
+  reference {
+    ref822
+  }
+}
+
+provision Provision79 {
+  condition "Express quantified GHG emissions reductions in absolute terms and relate to the application period selected or be expressed in emission intensity terms (e.g. per specified unit of product or instance of service)."
+  modality SHALL
+  reference {
+    ref822
+  }
+}
+
+provision Provision83 {
+  condition "Confirm and record that their application of the methodology used for re-quantification after reduction of the greenhouse gas emissions from the subject, conforms to the principles in PAS 2060"
+  modality SHALL
+  reference {
+    ref823
+  }
+}
+
+provision Provision77 {
+  condition "Establish, by calculation, that a reduction in the carbon footprint of the identified subject has been achieved to establish the level of residual GHG emissions requiring offset"
+  modality SHALL
+  reference {
+    ref821
+  }
+}
+
+provision Provision78 {
+  condition "Ensure that the QES and any separate communication referring to this reduction, includes a statement identifying whether the reductions are overall, activity-based or intensity-based"
+  modality SHALL
+  reference {
+    ref821
+  }
+}
+
+provision Provision82 {
+  condition "Not include GHG emissions reductions made outside of the subject carbon footprint"
+  modality SHALL
+  reference {
+    ref822
+  }
+}
+
+provision Provision84 {
+  condition "Where mandatory reduction targets apply then the entity
+take a primary responsibility to ensure that these are achieved (Mandatory targets would be regarded as the minimum target that an entity is expected to achieve)"
+  modality SHALL
+  reference {
+    ref83
+  }
+}
+
+provision Provision85 {
+  condition "Not regard outsourcing (i.e. the transference of activities previously undertaken by the entity to a third party) as a form of reduction unless this genuinely results in a reduction of GHG emissions associated with the subject"
+  modality SHALL
+  reference {
+    ref83
+  }
+}
+
+provision Provision6 {
+  condition "Re-quantify the carbon footprint of the determined subject"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision7 {
+  condition "Ensure that subject is unchanged"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision8 {
+  condition "Determine the residual GHG emissions"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision9 {
+  condition "Introduce or take account of, a previously initiated offset programme to balance out the residual GHG emissions"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision87 {
+  condition "Verify carbon credits"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision88 {
+  condition "Ensure that credits generated or allowance credits surrendered shall represent genuine, additional GHG emission reductions elsewhere"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision91 {
+  condition "Ensure that credits from Carbon offset projects are issued after the emission reduction associated with the offset project has taken place"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision92 {
+  condition "Retire credits from carbon offset projects other than events within 12 months of the date of the declaration of achievement"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision93 {
+  condition "Retire credits from carbon offset projects for events as short as can be reasonably achieved"
+  modality SHOULD
+  reference {
+    ref912
+  }
+}
+
+provision Provision94 {
+  condition "Ensure that the retirement of credits from carbon offset projects for events is not more than 36 months"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision86 {
+  condition "Ensure, including where offset projects supported by charities are used, that the methodology and types of credits employed shall meet the principles in PAS 2060 clause 9.1.2"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision89 {
+  condition "Ensure that projects involved in delivering carbon credits meet the criteria of additionality, permanence, leakage and double counting (See the WRI Greenhouse Gas Protocol for Project Accounting and/or the WRI Corporate Accounting and Reporting Standard, for definitions of additionality, permanence, leakage and double counting)
+"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision90 {
+  condition "Ensure that credits from Carbon offset projects are only  issued after the emission reduction associated with the offset project has taken place"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision95 {
+  condition "Ensure that credits from carbon offset projects are supported by publicly available project documentation on a registry or equivalent publicly available record, which shall provide information about the offset project, quantification methodology and validation and verification procedures"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision96 {
+  condition "Store and retire credits from Carbon offset projects in an independent and credible registry or equivalent publicly available record"
+  modality SHALL
+  reference {
+    ref912
+  }
+}
+
+provision Provision97 {
+  condition "Confirm and record that their use of the selected scheme does not conflict with the principles in PAS 2060 clause 9.1.2"
+  modality SHALL
+  reference {
+    ref913
+  }
+}
+
+provision Provision10 {
+  condition "Make a declaration of achievement of carbon neutrality in accordance with PAS 2060"
+  modality SHALL
+  reference {
+    ref41
+  }
+}
+
+provision Provision45 {
+  condition "Exclude emission sources estimated to constitute less than 1% of the total carbon footprint"
+  modality MAY
+  reference {
+    ref524
+  }
+}
+
+provision Provision48 {
+  condition "Include emission source estimated to be material i.e. more than 1% of the total carbon footprint"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision98 {
+  condition "Provide evidence to demonstrate that such quantification would not be technically feasible, practicable or cost effective"
+  modality CAN
+  reference {
+    ref524
+  }
+}
+
+provision Provision99 {
+  condition "Document any exclusion and the reason for that exclusion"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision47 {
+  condition "Ensure that the quantified carbon footprint covers at least 95% of the emissions from the subject"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+provision Provision46 {
+  condition "Apply the 95% threshold to the remaining sources of emissions"
+  modality SHALL
+  reference {
+    ref524
+  }
+}
+
+subprocess root {
+  elements {
+    Start0 {
+      x -120
+      y -510
+    }
+    DetermineSubject {
+      x -105
+      y -360
+    }
+    QuantifyCarbon {
+      x -105.00000000000001
+      y -120
+    }
+    DevelopManagementPlan {
+      x -105
+      y 150
+    }
+    Action {
+      x -105
+      y 255
+    }
+    Requantify {
+      x -105
+      y 375
+    }
+    BalanceOut {
+      x -105
+      y 480
+    }
+    Declaration {
+      x -120
+      y 750
+    }
+    NeutralityGateway {
+      x -60
+      y 600
+    }
+    SelectMethodologies {
+      x 90
+      y -240
+    }
+    Documentation {
+      x -345
+      y -360
+    }
+    DeclareAchievementBaeline {
+      x 150.00000000000003
+      y 0
+    }
+    TimerEvent0 {
+      x 300
+      y -120
+    }
+    DeterminePeriod {
+      x 300
+      y -360
+    }
+    MakeCommitment {
+      x -105
+      y 45
+    }
+    TimerEvent1 {
+      x -180
+      y -90
+    }
+  }
+  process_flow {
+    Edge0 {
+      from Start0
+      to DetermineSubject
+    }
+    Edge3 {
+      from DevelopManagementPlan
+      to Action
+    }
+    Edge4 {
+      from Action
+      to Requantify
+    }
+    Edge5 {
+      from Requantify
+      to BalanceOut
+    }
+    Edge6 {
+      from BalanceOut
+      to NeutralityGateway
+    }
+    Edge7 {
+      from NeutralityGateway
+      to Declaration
+      description "Carbon neutrality has been achieved for the determined subject"
+    }
+    Edge1 {
+      from DetermineSubject
+      to SelectMethodologies
+    }
+    Edge8 {
+      from SelectMethodologies
+      to QuantifyCarbon
+    }
+    Edge13 {
+      from Start0
+      to Documentation
+    }
+    Edge2 {
+      from QuantifyCarbon
+      to DeclareAchievementBaeline
+    }
+    Edge24 {
+      from TimerEvent0
+      to DeclareAchievementBaeline
+    }
+    Edge25 {
+      from Start0
+      to DeterminePeriod
+    }
+    Edge26 {
+      from DeterminePeriod
+      to TimerEvent0
+    }
+    Edge30 {
+      from MakeCommitment
+      to DevelopManagementPlan
+    }
+    Edge27 {
+      from DeclareAchievementBaeline
+      to MakeCommitment
+    }
+    Edge28 {
+      from NeutralityGateway
+      to MakeCommitment
+      description "default"
+    }
+    Edge29 {
+      from Declaration
+      to MakeCommitment
+    }
+    Edge61 {
+      from MakeCommitment
+      to TimerEvent1
+    }
+    Edge62 {
+      from TimerEvent1
+      to MakeCommitment
+    }
+  }
+  data {
+    CarbonFootprintPlan {
+      x 375
+      y 870
+    }
+    Achievement {
+      x 495.00000000000006
+      y 870
+    }
+    Subject {
+      x 615
+      y 870
+    }
+    Exclusion {
+      x 585
+      y 975
+    }
+    Reduction {
+      x 255
+      y 870
+    }
+    GHGReduction {
+      x 330
+      y 975
+    }
+    CarbonOffset {
+      x 150
+      y 870
+    }
+    CarbonCreditUse {
+      x 195
+      y 975
+    }
+  }
+}
+
+subprocess Page0 {
+  elements {
+    Start1 {
+      x 0
+      y -390
+    }
+    DetermineSubjectDetails {
+      x -45
+      y -285
+    }
+    EstablishActivities {
+      x -60
+      y 135
+    }
+    SubjectUnchanged {
+      x -60
+      y 240
+    }
+    SubjectChangeGateway {
+      x 0
+      y 345
+    }
+    Restart {
+      x 45
+      y 495
+    }
+    EndEvent3 {
+      x -90
+      y 495
+    }
+    SubjectIsOrganizationGateway {
+      x -1.7763568394002505e-15
+      y -165
+    }
+    ApplyCompanyPrinciples {
+      x -240
+      y -75
+    }
+    Process0 {
+      x 120
+      y -75
+    }
+    DefineGHG {
+      x -60
+      y 45
+    }
+    DefineSubjectDocumentation {
+      x -285
+      y -285
+    }
+  }
+  process_flow {
+    Edge31 {
+      from Start1
+      to DetermineSubjectDetails
+    }
+    Edge33 {
+      from EstablishActivities
+      to SubjectUnchanged
+    }
+    Edge34 {
+      from SubjectChangeGateway
+      to EndEvent3
+      description "default"
+    }
+    Edge35 {
+      from SubjectChangeGateway
+      to Restart
+      description "Material change to the subject occurs"
+    }
+    Edge36 {
+      from SubjectUnchanged
+      to SubjectChangeGateway
+    }
+    Edge32 {
+      from SubjectIsOrganizationGateway
+      to ApplyCompanyPrinciples
+      description "the subject is an organization/company or part thereof"
+    }
+    Edge38 {
+      from DetermineSubjectDetails
+      to SubjectIsOrganizationGateway
+    }
+    Edge40 {
+      from SubjectIsOrganizationGateway
+      to Process0
+      description "the subject is a product or service"
+    }
+    Edge37 {
+      from ApplyCompanyPrinciples
+      to DefineGHG
+    }
+    Edge39 {
+      from Process0
+      to DefineGHG
+    }
+    Edge41 {
+      from SubjectIsOrganizationGateway
+      to DefineGHG
+      description "default"
+    }
+    Edge42 {
+      from DefineGHG
+      to EstablishActivities
+    }
+    Edge48 {
+      from Start1
+      to DefineSubjectDocumentation
+    }
+  }
+  data {
+    Subject {
+      x -480
+      y 375
+    }
+    Exclusion {
+      x -570
+      y 480
+    }
+    SubjectMethodology {
+      x -585
+      y -60
+    }
+  }
+}
+
+subprocess Page1 {
+  elements {
+    Start2 {
+      x 30
+      y -135
+    }
+    DetermineMethodology {
+      x -30
+      y -30
+    }
+    CalculationGateway {
+      x 30
+      y 90
+    }
+    InternationalGuideline {
+      x 405
+      y 330
+    }
+    GovernmentFactorAvailable {
+      x 315
+      y 195
+    }
+    UseGovernmentFactors {
+      x 135
+      y 330
+    }
+    CalculateGHGemissions {
+      x 270
+      y 465
+    }
+    ConversionToCO2e {
+      x 105
+      y 600
+    }
+    ObtainGHGEmissions {
+      x -75
+      y 465
+    }
+    ConfirmApplication {
+      x 105
+      y 720
+    }
+    QuantificationDocumentation {
+      x -270
+      y -30
+    }
+  }
+  process_flow {
+    Edge49 {
+      from Start2
+      to DetermineMethodology
+    }
+    Edge50 {
+      from DetermineMethodology
+      to CalculationGateway
+    }
+    Edge51 {
+      from CalculationGateway
+      to GovernmentFactorAvailable
+      description "Quantification is based on calculations (e.g. GHG activity data multiplied by greenhouse gas emission factors or the use of mass balance/lifecycle models)"
+    }
+    Edge52 {
+      from GovernmentFactorAvailable
+      to InternationalGuideline
+      description "Factors from national (Government) publications are not available"
+    }
+    Edge53 {
+      from GovernmentFactorAvailable
+      to UseGovernmentFactors
+      description "default"
+    }
+    Edge54 {
+      from UseGovernmentFactors
+      to CalculateGHGemissions
+    }
+    Edge55 {
+      from InternationalGuideline
+      to CalculateGHGemissions
+    }
+    Edge56 {
+      from CalculationGateway
+      to ObtainGHGEmissions
+      description "default"
+    }
+    Edge57 {
+      from ObtainGHGEmissions
+      to ConversionToCO2e
+    }
+    Edge58 {
+      from CalculateGHGemissions
+      to ConversionToCO2e
+    }
+    Edge59 {
+      from ConversionToCO2e
+      to ConfirmApplication
+    }
+    Edge60 {
+      from Start2
+      to QuantificationDocumentation
+    }
+  }
+  data {
+    MethodQuantification {
+      x -330
+      y 840
+    }
+    CarbonFootprint {
+      x 405
+      y 735
+    }
+  }
+}
+
+subprocess Page3 {
+  elements {
+    Start4 {
+      x 0
+      y -75
+    }
+    ImplementPlan {
+      x -60
+      y 30
+    }
+    TimerEvent2 {
+      x -30
+      y 165.00000000000003
+    }
+    PeriodicAssessment {
+      x -45
+      y 270
+    }
+    ImplementAction {
+      x -45.000000000000014
+      y 360
+    }
+    RecurringEventActionGateway {
+      x 195
+      y 150
+    }
+    PostEventReview {
+      x 225
+      y 255
+    }
+    HistoricReductionActionGateWay {
+      x 465
+      y 150
+    }
+    DemonstrateHistoricReductions {
+      x 510
+      y 255
+    }
+    EndEvent5 {
+      x 405
+      y 255
+    }
+    EndEvent6 {
+      x 135
+      y 255
+    }
+  }
+  process_flow {
+    Edge63 {
+      from Start4
+      to ImplementPlan
+    }
+    Edge65 {
+      from TimerEvent2
+      to PeriodicAssessment
+    }
+    Edge66 {
+      from PeriodicAssessment
+      to ImplementAction
+    }
+    Edge68 {
+      from ImplementAction
+      to ImplementPlan
+    }
+    Edge64 {
+      from ImplementPlan
+      to RecurringEventActionGateway
+    }
+    Edge72 {
+      from RecurringEventActionGateway
+      to PostEventReview
+    }
+    Edge77 {
+      from ImplementPlan
+      to HistoricReductionActionGateWay
+    }
+    Edge78 {
+      from HistoricReductionActionGateWay
+      to DemonstrateHistoricReductions
+      description "Historic reductions are to be taken into account"
+    }
+    Edge79 {
+      from HistoricReductionActionGateWay
+      to EndEvent5
+      description "default"
+    }
+    Edge80 {
+      from ImplementPlan
+      to TimerEvent2
+    }
+    Edge67 {
+      from RecurringEventActionGateway
+      to EndEvent6
+    }
+  }
+  data {
+    CarbonFootprintPlan {
+      x -270
+      y -75
+    }
+  }
+}
+
+subprocess Page4 {
+  elements {
+    Start5 {
+      x 90
+      y -405
+    }
+    ReductionCalculation {
+      x 45.000000000000014
+      y 75
+    }
+    ReductionDocumentation {
+      x 45.000000000000014
+      y 180
+    }
+    AlternativeMethodAvailableGateway {
+      x 90.00000000000001
+      y -300
+    }
+    EmployAlternativeMethod {
+      x -105
+      y -165
+    }
+    EmploySameMethod {
+      x 44.999999999999986
+      y -45
+    }
+  }
+  process_flow {
+    Edge82 {
+      from ReductionCalculation
+      to ReductionDocumentation
+    }
+    Edge81 {
+      from Start5
+      to AlternativeMethodAvailableGateway
+    }
+    Edge84 {
+      from EmploySameMethod
+      to ReductionCalculation
+    }
+    Edge85 {
+      from AlternativeMethodAvailableGateway
+      to EmployAlternativeMethod
+      description "The alternative methodology is available"
+    }
+    Edge86 {
+      from AlternativeMethodAvailableGateway
+      to EmploySameMethod
+      description "default"
+    }
+    Edge83 {
+      from EmployAlternativeMethod
+      to EmploySameMethod
+    }
+  }
+  data {
+    Reduction {
+      x 345
+      y 480
+    }
+    GHGReduction {
+      x 405
+      y 570
+    }
+    Methodology {
+      x 495
+      y 480
+    }
+  }
+}
+
+subprocess Page5 {
+  elements {
+    Start6 {
+      x 0
+      y 0
+    }
+    ReconcileCarbonCredit {
+      x -60
+      y 90
+    }
+    ObtainCarbonCredit {
+      x -60
+      y 195
+    }
+    VerifyCarbonCredit {
+      x -60
+      y 300
+    }
+    Declaration {
+      x -300
+      y 540
+    }
+    EGate1 {
+      x -105
+      y 450
+    }
+    RetireCarbonCredit {
+      x -210
+      y 735
+    }
+    EventCreditRetirementTimer {
+      x -75
+      y 630
+    }
+    NonEventCreditRetirementTimer {
+      x -240
+      y 630
+    }
+    OffsetDocumentation {
+      x 135
+      y 90
+    }
+  }
+  process_flow {
+    Edge87 {
+      from Start6
+      to ReconcileCarbonCredit
+    }
+    Edge88 {
+      from ObtainCarbonCredit
+      to VerifyCarbonCredit
+    }
+    Edge89 {
+      from ReconcileCarbonCredit
+      to ObtainCarbonCredit
+    }
+    Edge92 {
+      from EGate1
+      to EventCreditRetirementTimer
+    }
+    Edge93 {
+      from EventCreditRetirementTimer
+      to RetireCarbonCredit
+    }
+    Edge90 {
+      from EGate1
+      to Declaration
+    }
+    Edge95 {
+      from VerifyCarbonCredit
+      to EGate1
+    }
+    Edge91 {
+      from Declaration
+      to NonEventCreditRetirementTimer
+    }
+    Edge94 {
+      from NonEventCreditRetirementTimer
+      to RetireCarbonCredit
+    }
+    Edge96 {
+      from Start6
+      to OffsetDocumentation
+    }
+  }
+  data {
+    Achievement {
+      x -375
+      y 705
+    }
+    CarbonOffsetProject {
+      x 450
+      y 945
+    }
+    CarbonOffset {
+      x 555
+      y 945
+    }
+    CarbonCredit {
+      x 465
+      y 1050
+    }
+    CarbonCreditUse {
+      x 570
+      y 1050
+    }
+  }
+}
+
+subprocess Page7 {
+  elements {
+    Start8 {
+      x 15
+      y -270
+    }
+    LagistrationGateway {
+      x 15
+      y -45
+    }
+    SelectMethodPreference {
+      x -150
+      y 75
+    }
+    UseLegistrationMethods {
+      x 75
+      y 75
+    }
+    CheckLegistration {
+      x -45.00000000000001
+      y -165
+    }
+  }
+  process_flow {
+    Edge9 {
+      from Start8
+      to CheckLegistration
+    }
+    Edge10 {
+      from CheckLegistration
+      to LagistrationGateway
+    }
+    Edge11 {
+      from LagistrationGateway
+      to SelectMethodPreference
+      description "default"
+    }
+    Edge12 {
+      from LagistrationGateway
+      to UseLegistrationMethods
+      description "Legislation imposes specific requirements on entities to use certain methodologies"
+    }
+  }
+  data {
+    Methodology {
+      x 345
+      y 240
+    }
+  }
+}
+
+subprocess Page8 {
+  elements {
+    Start9 {
+      x 0
+      y -30
+    }
+    SelectISO {
+      x -60
+      y 75
+    }
+    MethodFromISOGatewat {
+      x -15
+      y 165
+    }
+    SelectRegional {
+      x -60
+      y 285
+    }
+    RegionalMethodGateway {
+      x -14.999999999999998
+      y 375
+    }
+    SelectIndustry {
+      x -75
+      y 495
+    }
+    EndEvent0 {
+      x 225
+      y 465
+    }
+    EndEvent1 {
+      x 225
+      y 255
+    }
+    NoMethodGateway {
+      x -15
+      y 585
+    }
+    DevelopMethod {
+      x -75
+      y 720
+    }
+    EndEvent2 {
+      x 225
+      y 675
+    }
+  }
+  process_flow {
+    Edge14 {
+      from Start9
+      to SelectISO
+    }
+    Edge15 {
+      from SelectISO
+      to MethodFromISOGatewat
+    }
+    Edge16 {
+      from MethodFromISOGatewat
+      to SelectRegional
+      description "No method exists"
+    }
+    Edge17 {
+      from SelectRegional
+      to RegionalMethodGateway
+    }
+    Edge18 {
+      from RegionalMethodGateway
+      to SelectIndustry
+      description "No method exists"
+    }
+    Edge19 {
+      from RegionalMethodGateway
+      to EndEvent0
+      description "default"
+    }
+    Edge20 {
+      from MethodFromISOGatewat
+      to EndEvent1
+      description "default"
+    }
+    Edge21 {
+      from SelectIndustry
+      to NoMethodGateway
+    }
+    Edge22 {
+      from NoMethodGateway
+      to DevelopMethod
+      description "No method exists"
+    }
+    Edge23 {
+      from NoMethodGateway
+      to EndEvent2
+      description "default"
+    }
+  }
+  data {
+    Methodology {
+      x -345
+      y 810
+    }
+  }
+}
+
+subprocess Page9 {
+  elements {
+    Start10 {
+      x 14.999999999999996
+      y -210
+    }
+    IncludeGHG {
+      x -30.000000000000014
+      y -15
+    }
+    AlternativeCoverageValidation {
+      x 105
+      y 180
+    }
+    ExcludeEmissionSource {
+      x -30
+      y -120
+    }
+    SingleSourceDominanceGateway {
+      x 30
+      y 75
+    }
+    ApplyOverallCoverageRule {
+      x -165
+      y 180
+    }
+  }
+  process_flow {
+    Edge43 {
+      from ExcludeEmissionSource
+      to IncludeGHG
+    }
+    Edge45 {
+      from Start10
+      to ExcludeEmissionSource
+    }
+    Edge44 {
+      from IncludeGHG
+      to SingleSourceDominanceGateway
+    }
+    Edge46 {
+      from SingleSourceDominanceGateway
+      to AlternativeCoverageValidation
+      description "A single source contributes more than 50% of the total emissions"
+      condition "[Largest_Emission_In_Percentage] > 0.5"
+    }
+    Edge47 {
+      from SingleSourceDominanceGateway
+      to ApplyOverallCoverageRule
+      description "default"
+      condition "default"
+    }
+  }
+  data {
+    Subject {
+      x -495
+      y 195
+    }
+    Exclusion {
+      x -495
+      y 285
+    }
+  }
+}
+
+subprocess Page2 {
+  elements {
+    Start3 {
+      x 0
+      y 0
+    }
+    PlanDetails {
+      x -75
+      y 90
+    }
+    RecurringEventGateway {
+      x -3.552713678800501e-15
+      y 195
+    }
+    IdentifyWaysforEvents {
+      x 120
+      y 315
+    }
+    HistoricReductionGateway {
+      x 0
+      y 465
+    }
+    IdentifyPeriod {
+      x 120
+      y 600
+    }
+    EndEvent4 {
+      x 0
+      y 690
+    }
+  }
+  process_flow {
+    Edge69 {
+      from RecurringEventGateway
+      to IdentifyWaysforEvents
+      description "The event is a non-recurring event"
+    }
+    Edge70 {
+      from PlanDetails
+      to RecurringEventGateway
+    }
+    Edge71 {
+      from Start3
+      to PlanDetails
+    }
+    Edge73 {
+      from RecurringEventGateway
+      to HistoricReductionGateway
+      description "default"
+    }
+    Edge74 {
+      from IdentifyWaysforEvents
+      to HistoricReductionGateway
+    }
+    Edge75 {
+      from HistoricReductionGateway
+      to IdentifyPeriod
+      description "Historic reductions are to be taken into account"
+    }
+    Edge76 {
+      from HistoricReductionGateway
+      to EndEvent4
+      description "default"
+    }
+  }
+  data {
+    CarbonFootprintPlan {
+      x 450
+      y 765
+    }
+  }
+}
+
+measurement Excluded_Emission {
+  type DATALIST
+  description "Excluded emissions"
+}
+
+measurement Included_Emission {
+  type DATALIST
+  description "Emissions of the subject (including Scope 1, Scope 2 and Scope 3)"
+}
+
+measurement Largest_Emission_In_Percentage {
+  type DERIVED
+  definition "[Included_Emission].max / [Total_Emission]"
+  description "The largest emission source"
+}
+
+measurement Total_Emission {
+  type DERIVED
+  definition "[Included_Emission].sum + [Excluded_Emission].sum"
+  description "Total emission"
+}
+
+measurement Total_Emission_Excluded_Max {
+  type DERIVED
+  definition "[Total_Emission] - [Included_Emission].max"
+  description "The total emission excluding the largest emission"
+}
+
+measurement Excluded_Emssions_Without_Max_In_Percentage {
+  type DERIVED
+  definition "[Excluded_Emission].sum / [Total_Emission_Excluded_Max]"
+  description "Percentage of excluded emissions"
+}
+
+measurement Total_Included_Emissions_In_Percentage {
+  type DERIVED
+  definition "[Included_Emission].sum / [Total_Emission]"
+  description "Percentage of all included emissions"
+}
+
+reference ref41 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "4.1"
+  title ""
+}
+
+reference ref421 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "4.2.1"
+  title ""
+}
+
+reference ref422 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "4.2.2"
+  title ""
+}
+
+reference ref511 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.1.1"
+  title ""
+}
+
+reference ref512 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.1.2"
+  title ""
+}
+
+reference ref521 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.2.1"
+  title ""
+}
+
+reference ref522 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.2.2"
+  title ""
+}
+
+reference ref523 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.2.3"
+  title ""
+}
+
+reference ref524 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.2.4"
+  title ""
+}
+
+reference ref525 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.2.5"
+  title ""
+}
+
+reference ref53 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "5.3"
+  title ""
+}
+
+reference ref611 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "6.1.1"
+  title ""
+}
+
+reference ref612 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "6.1.2"
+  title ""
+}
+
+reference ref613 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "6.1.3"
+  title ""
+}
+
+reference ref62 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "6.2"
+  title ""
+}
+
+reference ref7 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "7"
+  title ""
+}
+
+reference ref811 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.1.1"
+  title ""
+}
+
+reference ref812 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.1.2"
+  title ""
+}
+
+reference ref813 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.1.3"
+  title ""
+}
+
+reference ref814 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.1.4"
+  title ""
+}
+
+reference ref821 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.2.1"
+  title ""
+}
+
+reference ref822 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.2.2"
+  title ""
+}
+
+reference ref823 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.2.3"
+  title ""
+}
+
+reference ref83 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "8.3"
+  title ""
+}
+
+reference ref911 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "9.1.1"
+  title ""
+}
+
+reference ref912 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "9.1.2"
+  title ""
+}
+
+reference ref913 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "9.1.3"
+  title ""
+}
+
+reference ref92 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "9.2"
+  title ""
+}
+
+reference ref101 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.1"
+  title ""
+}
+
+reference ref102 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.2"
+  title ""
+}
+
+reference ref1031 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.3.1"
+  title ""
+}
+
+reference ref1032 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.3.2"
+  title ""
+}
+
+reference ref1033 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.3.3"
+  title ""
+}
+
+reference ref1034 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.3.4"
+  title ""
+}
+
+reference ref1041 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.1"
+  title ""
+}
+
+reference ref10421 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.2.1"
+  title ""
+}
+
+reference ref10422 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.2.2"
+  title ""
+}
+
+reference ref10423 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.2.3"
+  title ""
+}
+
+reference ref10431 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.3.1"
+  title ""
+}
+
+reference ref10432 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.3.2"
+  title ""
+}
+
+reference ref10433 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.3.3"
+  title ""
+}
+
+reference ref10441 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.4.1"
+  title ""
+}
+
+reference ref10442 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.4.2"
+  title ""
+}
+
+reference ref10443 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.4.4.3"
+  title ""
+}
+
+reference ref1051 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.5.1"
+  title ""
+}
+
+reference ref1052 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.5.2"
+  title ""
+}
+
+reference ref1053 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "10.5.3"
+  title ""
+}
+
+reference ref111 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "11.1"
+  title ""
+}
+
+reference ref112 {
+  document "PAS 2060:2014 Specification for the demonstration of carbon neutrality"
+  clause "11.2"
+  title ""
+}
+

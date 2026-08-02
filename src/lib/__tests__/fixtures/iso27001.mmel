@@ -1,0 +1,819 @@
+root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "Ribose Crimson"
+  schema "MMEL 1.0"
+  edition "30-07-2021"
+  author "Ribose"
+  shortname "Ribose"
+  namespace "RiboseISO27001"
+}
+
+process Crimson {
+  name "Crimson"
+  validate_provision {
+    Provision1
+    Provision2
+  }
+  subprocess Page1
+}
+
+process CrimsonRequirements {
+  name "Crimson  Requirements"
+  validate_provision {
+    Provision3
+  }
+}
+
+process CrimsonPolicies {
+  name "Crimson  Policies"
+  validate_provision {
+    Provision4
+  }
+}
+
+process CrimsonProcedures {
+  name "Crimson  Procedures"
+  validate_provision {
+    Provision5
+  }
+}
+
+process CrimsonGuidelines {
+  name "Crimson  Guidelines"
+  validate_provision {
+    Provision6
+  }
+}
+
+process CrimsonPlans {
+  name "Crimson Plans"
+  validate_provision {
+    Provision7
+  }
+}
+
+process CrimsonContext {
+  name "Crimson Context"
+  validate_provision {
+    Provision8
+  }
+}
+
+process SoA {
+  name "Statement of applicability"
+  validate_provision {
+    Provision9
+  }
+}
+
+process Meetings {
+  name "Meetings"
+  validate_provision {
+    Provision10
+  }
+  subprocess Page2
+}
+
+start_event Start0 {
+}
+
+start_event Start1 {
+}
+
+start_event Start2 {
+}
+
+process ManagementReview {
+  name "Management Review"
+}
+
+process RiskAssessments {
+  name "Risk Assessments"
+  validate_provision {
+    Provision11
+  }
+}
+
+process ObjectivesAndProgrammes {
+  name "Objectives and Programmes"
+  validate_provision {
+    Provision12
+  }
+}
+
+process Operation {
+  name "Operation"
+  subprocess Page3
+}
+
+process Training {
+  name "Training"
+  subprocess Page4
+}
+
+start_event Start3 {
+}
+
+process TaskList {
+  name "Task List"
+  validate_provision {
+    Provision13
+  }
+}
+
+start_event Start4 {
+}
+
+process ISO27001LeadAuditorTraining {
+  name "ISO 27001 Lead Auditor Training"
+  validate_provision {
+    Provision14
+  }
+}
+
+process ISO27001AwarenessTraining {
+  name "ISO 27001 Awareness Training"
+  validate_provision {
+    Provision15
+  }
+}
+
+process InternalAudit {
+  name "Internal Audit"
+}
+
+process RiboseScrum {
+  name "Ribose Scrum"
+}
+
+start_event Start5 {
+}
+
+process Recruitment {
+  name "Recruitment"
+  subprocess Page5
+}
+
+process Screening {
+  name "Screening"
+}
+
+process SignContract {
+  name "Sign employment contract"
+}
+
+process Termination {
+  name "Termination"
+}
+
+process InventoryList {
+  name "Inventory List"
+}
+
+process AWS {
+  name "AWS"
+}
+
+process RiboseOperationWiki {
+  name "Ribose Operation Wiki"
+}
+
+process VisitorRegistrationSystem {
+  name "Visitor registration system"
+  validate_provision {
+    Provision16
+  }
+}
+
+process CCTV {
+  name "CCTV"
+}
+
+process ADTSecuritySystem {
+  name "ADT Security System"
+}
+
+process Wifi {
+  name "Wifi"
+}
+
+process Papertrail {
+  name "Papertrail"
+}
+
+process Platforms {
+  name "Platforms"
+  subprocess Page6
+}
+
+start_event Start6 {
+}
+
+process Jenkins {
+  name "Jenkins"
+}
+
+process ApprovedSuppliers {
+  name "Approved Suppliers"
+}
+
+process Testing {
+  name "Testing"
+  subprocess Page7
+}
+
+start_event Start7 {
+}
+
+process BrowserTest {
+  name "Browser test"
+}
+
+process UnitTest {
+  name "Unit Test"
+}
+
+process Brakeman {
+  name "Brakeman"
+}
+
+process ribose.com {
+  name "ribose.com"
+}
+
+process ExternalAudit {
+  name "External Audit"
+  validate_provision {
+    Provision17
+  }
+}
+
+process MonitorTraffic {
+  name "Monitor AWS traffic"
+  subprocess Page8
+}
+
+start_event Start8 {
+}
+
+process FailedLoginMonitor {
+  name "Failed login monitoring"
+  validate_measurement {
+    "[NumFailLogin] / [NumLogin] <= 0.4"
+  }
+}
+
+process TrafficMonitor {
+  name "Traffic monitor"
+  validate_measurement {
+    "[NumConnection].max <= 100"
+  }
+}
+
+provision Provision1 {
+  condition "Crimson is Ribose's internal manual system, providing manual documents (e.g., policy and procedures) for staff"
+}
+
+provision Provision2 {
+  condition "URL: https://crimson.ribose.com"
+}
+
+provision Provision4 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-policies/document.html"
+}
+
+provision Provision5 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-procedures/document.html"
+}
+
+provision Provision3 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-requirements/document.html"
+}
+
+provision Provision6 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-guidelines/document.html"
+}
+
+provision Provision7 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-plans/document.html"
+}
+
+provision Provision8 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-context/document.html"
+}
+
+provision Provision9 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-soa-27001-27017-27018-27701/document.html"
+}
+
+provision Provision10 {
+  condition "Meeting records: ribose-iso/records/meetings"
+}
+
+provision Provision11 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-risk-assessments/document.html"
+}
+
+provision Provision12 {
+  condition "URL: https://crimson.ribose.com/documents/crimson-objectives-and-programs/document.html"
+}
+
+provision Provision13 {
+  condition "URL: https://docs.google.com/spreadsheets/d/1z5lf_Z3No3ivg_fhuEgfoy6ZUk7ryUyKmUhKTgMsLQo/edit#gid=1004941583"
+}
+
+provision Provision14 {
+  condition "Records: ribose-iso/records/attendance-lists/ISO_27001_Lead_Auditor_Training"
+}
+
+provision Provision15 {
+  condition "Records: ribose-iso/records/attendance-lists/ISO_27001_Awareness_training"
+}
+
+provision Provision16 {
+  condition "Visitor registration system in google drive"
+}
+
+provision Provision17 {
+  condition "By BSI"
+}
+
+subprocess Root {
+  elements {
+    Start0 {
+      x 180
+      y -110
+    }
+    Crimson {
+      x -190
+      y 109.99999999999999
+    }
+    Meetings {
+      x 20
+      y 110
+    }
+    Operation {
+      x 220
+      y 110
+    }
+    Training {
+      x 410
+      y 110
+    }
+    Recruitment {
+      x 610
+      y 110
+    }
+    Termination {
+      x 610
+      y 210
+    }
+    ribose.com {
+      x 220
+      y 210
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start0
+      to Crimson
+    }
+    Edge2 {
+      from Start0
+      to Meetings
+    }
+    Edge3 {
+      from Start0
+      to Operation
+    }
+    Edge4 {
+      from Start0
+      to Training
+    }
+    Edge5 {
+      from Start0
+      to Recruitment
+    }
+    Edge6 {
+      from Recruitment
+      to Termination
+    }
+    Edge7 {
+      from Operation
+      to ribose.com
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page1 {
+  elements {
+    Start1 {
+      x 500
+      y -20
+    }
+    CrimsonRequirements {
+      x -290
+      y 150
+    }
+    CrimsonPolicies {
+      x -120
+      y 150
+    }
+    CrimsonProcedures {
+      x 50
+      y 150
+    }
+    CrimsonGuidelines {
+      x 220
+      y 150
+    }
+    CrimsonPlans {
+      x 390
+      y 150
+    }
+    CrimsonContext {
+      x 560
+      y 150
+    }
+    SoA {
+      x 730
+      y 150
+    }
+    RiskAssessments {
+      x 900
+      y 150
+    }
+    ObjectivesAndProgrammes {
+      x 1070
+      y 150
+    }
+    ApprovedSuppliers {
+      x 1240
+      y 150
+    }
+  }
+  process_flow {
+    Edge2 {
+      from Start1
+      to CrimsonRequirements
+    }
+    Edge3 {
+      from Start1
+      to CrimsonPolicies
+    }
+    Edge4 {
+      from Start1
+      to CrimsonProcedures
+    }
+    Edge5 {
+      from Start1
+      to CrimsonGuidelines
+    }
+    Edge6 {
+      from Start1
+      to CrimsonPlans
+    }
+    Edge7 {
+      from Start1
+      to CrimsonContext
+    }
+    Edge1 {
+      from Start1
+      to SoA
+    }
+    Edge8 {
+      from Start1
+      to RiskAssessments
+    }
+    Edge9 {
+      from Start1
+      to ObjectivesAndProgrammes
+    }
+    Edge10 {
+      from Start1
+      to ApprovedSuppliers
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page2 {
+  elements {
+    Start2 {
+      x 19.999999999999996
+      y 0
+    }
+    ManagementReview {
+      x -220
+      y 120
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start2
+      to ManagementReview
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page3 {
+  elements {
+    Start3 {
+      x 260
+      y -150
+    }
+    TaskList {
+      x -180
+      y 130
+    }
+    InternalAudit {
+      x 0
+      y 130
+    }
+    InventoryList {
+      x 350
+      y 130
+    }
+    RiboseOperationWiki {
+      x -370
+      y 130
+    }
+    VisitorRegistrationSystem {
+      x -550
+      y 130
+    }
+    CCTV {
+      x 170
+      y 130
+    }
+    ADTSecuritySystem {
+      x 530
+      y 130
+    }
+    Wifi {
+      x 700
+      y 130
+    }
+    Platforms {
+      x 880
+      y 130
+    }
+    Testing {
+      x -720
+      y 130
+    }
+    ExternalAudit {
+      x 0
+      y 240
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start3
+      to TaskList
+    }
+    Edge2 {
+      from Start3
+      to InternalAudit
+    }
+    Edge4 {
+      from Start3
+      to InventoryList
+    }
+    Edge5 {
+      from Start3
+      to RiboseOperationWiki
+    }
+    Edge7 {
+      from Start3
+      to VisitorRegistrationSystem
+    }
+    Edge8 {
+      from Start3
+      to CCTV
+    }
+    Edge9 {
+      from Start3
+      to ADTSecuritySystem
+    }
+    Edge10 {
+      from Start3
+      to Wifi
+    }
+    Edge3 {
+      from Start3
+      to Platforms
+    }
+    Edge6 {
+      from Start3
+      to Testing
+    }
+    Edge11 {
+      from InternalAudit
+      to ExternalAudit
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page4 {
+  elements {
+    Start4 {
+      x -70
+      y 0
+    }
+    ISO27001LeadAuditorTraining {
+      x -230
+      y 130
+    }
+    ISO27001AwarenessTraining {
+      x -40
+      y 130
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start4
+      to ISO27001LeadAuditorTraining
+    }
+    Edge2 {
+      from Start4
+      to ISO27001AwarenessTraining
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page5 {
+  elements {
+    Start5 {
+      x 0
+      y 0
+    }
+    Screening {
+      x -60
+      y 90
+    }
+    SignContract {
+      x -60
+      y 180
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start5
+      to Screening
+    }
+    Edge2 {
+      from Screening
+      to SignContract
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page6 {
+  elements {
+    Start6 {
+      x 160
+      y 0
+    }
+    AWS {
+      x 30
+      y 140
+    }
+    Papertrail {
+      x 200
+      y 140
+    }
+    RiboseScrum {
+      x -150
+      y 140
+    }
+    Jenkins {
+      x 380
+      y 140
+    }
+    MonitorTraffic {
+      x 30
+      y 230
+    }
+  }
+  process_flow {
+    Edge3 {
+      from Start6
+      to RiboseScrum
+    }
+    Edge6 {
+      from Start6
+      to AWS
+    }
+    Edge11 {
+      from Start6
+      to Papertrail
+    }
+    Edge1 {
+      from Start6
+      to Jenkins
+    }
+    Edge2 {
+      from AWS
+      to MonitorTraffic
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page7 {
+  elements {
+    Start7 {
+      x 80
+      y -10.000000000000004
+    }
+    BrowserTest {
+      x -160
+      y 140
+    }
+    UnitTest {
+      x 20
+      y 140
+    }
+    Brakeman {
+      x 200
+      y 140
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start7
+      to BrowserTest
+    }
+    Edge2 {
+      from Start7
+      to UnitTest
+    }
+    Edge3 {
+      from Start7
+      to Brakeman
+    }
+  }
+  data {
+  }
+}
+
+subprocess Page8 {
+  elements {
+    Start8 {
+      x -30
+      y -20
+    }
+    FailedLoginMonitor {
+      x -190
+      y 110
+    }
+    TrafficMonitor {
+      x 20
+      y 110
+    }
+  }
+  process_flow {
+    Edge1 {
+      from Start8
+      to FailedLoginMonitor
+    }
+    Edge2 {
+      from Start8
+      to TrafficMonitor
+    }
+  }
+  data {
+  }
+}
+
+measurement NumFailLogin {
+  type NUMERIC
+  description "Number of failed login attempts"
+}
+
+measurement NumLogin {
+  type NUMERIC
+  description "Number of login attempts"
+}
+
+measurement NumConnection {
+  type DATALIST
+  description "Number of connections within 10 seconds (for each user)"
+}
+
