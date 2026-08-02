@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useModelStore } from './stores/model';
 import { useUiStore } from './stores/ui';
+import { useMappingStore } from './stores/mapping';
 import ModelTree from './components/ModelTree.vue';
 import PageTree from './components/PageTree.vue';
 import ProcessCanvas from './components/ProcessCanvas.vue';
@@ -9,13 +10,14 @@ import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
-import MappingView from './components/MappingView.vue';
+import MappingView from './components/mapper/MapperView.vue';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
 import { ref } from 'vue';
 
 const modelStore = useModelStore();
 const ui = useUiStore();
+const mappingStore = useMappingStore();
 const canvasRef = ref<InstanceType<typeof ProcessCanvas> | null>(null);
 
 function onPalettePick(entry: PaletteKind) {
@@ -31,7 +33,7 @@ const model = computed(() => modelStore.model);
 // Dev/e2e hook: the stores on window (probes read the AST directly
 // instead of spelunking the DOM). Never in production builds.
 if (import.meta.env.DEV) {
-  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui };
+  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui, mapping: mappingStore };
 }
 
 type ViewMode = 'model' | 'registry' | 'mapping';

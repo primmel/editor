@@ -1,4 +1,4 @@
-# 07 — The mapper core: REF ⇄ IMP pairs
+# 07 — The mapper core: REF ⇄ IMP pairs ✅ DONE (1d35a28)
 
 **Wave:** mapping · **Depends on:** 02, 01 · **Priority:** P0
 

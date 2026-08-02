@@ -15,9 +15,31 @@ import { createFromPalette, type PaletteKind } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 
-const props = defineProps<{ model: Standard }>();
+const props = withDefaults(defineProps<{
+  model: Standard;
+  /** edit = the model workspace; select = read+pick (the mapper). */
+  mode?: 'edit' | 'select';
+  /** The externally-driven selection highlight (select mode). */
+  selectedId?: string | null;
+}>(), { mode: 'edit', selectedId: null });
+
+const emit = defineEmits<{
+  /** Select mode: a node was picked (the mapper pairs on this). */
+  (e: 'nodeSelect', id: string): void;
+}>();
+
 const ui = useUiStore();
 const modelStore = useModelStore();
+
+// ── The active page (select mode navigates LOCALLY — two mapper
+//    canvases must not share the ui store's page) ─────────────────────
+const localPage = ref<string | null>(null);
+const activePageId = computed(() => props.mode === 'select' ? localPage.value : ui.activeCanvasId);
+
+function gotoPage(id: string) {
+  if (props.mode === 'select') localPage.value = id;
+  else ui.setCanvas(id);
+}
 
 // ── View state ───────────────────────────────────────────────────────
 const isPanning = ref(false);
@@ -35,7 +57,7 @@ const edgeCondition = ref('');
 
 const canvas = computed(() => {
   void modelStore.version;
-  return extractCanvas(props.model, ui.activeCanvasId);
+  return extractCanvas(props.model, activePageId.value);
 });
 const rendered = computed(() => {
   void modelStore.version;
@@ -120,6 +142,10 @@ function onWheel(e: WheelEvent) {
 
 // ── Node interactions ────────────────────────────────────────────────
 function onNodeClick(node: RenderNode) {
+  if (props.mode === 'select') {
+    emit('nodeSelect', node.id);
+    return;
+  }
   if (connectFrom.value) {
     finishConnect(node);
     return;
@@ -129,17 +155,19 @@ function onNodeClick(node: RenderNode) {
 
 /** Release over a node completes the shift+drag connect. */
 function onNodeMouseUp(node: RenderNode) {
+  if (props.mode !== 'edit') return;
   if (connectFrom.value) finishConnect(node);
 }
 
 function onNodeDoubleClick(node: RenderNode) {
   // Descend into a subprocess page (the MMEL's drill-down).
   const pageId = pageForNode(props.model, node.id);
-  if (pageId) ui.setCanvas(pageId);
+  if (pageId) gotoPage(pageId);
 }
 
 function onNodeMouseDown(e: MouseEvent, node: RenderNode) {
   e.stopPropagation();
+  if (props.mode === 'select') return; // pick happens on click
   if (e.shiftKey) {
     // Shift+drag = connect (the port-to-port edge creation).
     connectFrom.value = node;
@@ -203,12 +231,14 @@ function commitDrag() {
 
 // ── Edge interactions ────────────────────────────────────────────────
 function onEdgeClick(edgeId: string) {
+  if (props.mode !== 'edit') return;
   selectedEdgeId.value = edgeId;
   const edge = canvas.value?.edges.find(e => e.id === edgeId);
   edgeCondition.value = edge?.condition ?? '';
 }
 
 function onEdgeDoubleClick(edgeId: string) {
+  if (props.mode !== 'edit') return;
   if (!canvas.value) return;
   modelStore.execute(removeEdge(canvas.value.id, edgeId));
   selectedEdgeId.value = null;
@@ -224,6 +254,7 @@ function applyEdgeCondition() {
 // ── Palette drops (TODO.editor/03) ───────────────────────────────────
 function onPaletteDrop(e: DragEvent) {
   e.preventDefault();
+  if (props.mode !== 'edit') return;
   const payload = e.dataTransfer?.getData('application/x-primmel-palette');
   if (!payload || !canvas.value) return;
   const entry = JSON.parse(payload) as PaletteKind;
@@ -232,6 +263,7 @@ function onPaletteDrop(e: DragEvent) {
 }
 
 function onPaletteDragOver(e: DragEvent) {
+  if (props.mode !== 'edit') return;
   if (e.dataTransfer?.types.includes('application/x-primmel-palette')) {
     e.preventDefault();
   }
@@ -279,7 +311,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         :key="page.id"
         class="canvas-tab"
         :class="{ active: page.id === canvas?.id }"
-        @click="ui.setCanvas(page.id)"
+        @click="gotoPage(page.id)"
       >
         {{ page.id }}
       </button>
@@ -288,7 +320,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
     <div v-if="breadcrumb.length" class="canvas-breadcrumb" data-testid="canvas-breadcrumb">
       <template v-for="(crumb, i) in breadcrumb" :key="crumb">
         <span v-if="i > 0" class="crumb-sep">/</span>
-        <button v-if="i < breadcrumb.length - 1" class="crumb-link" @click="ui.setCanvas(crumb)">{{ crumb }}</button>
+        <button v-if="i < breadcrumb.length - 1" class="crumb-link" @click="gotoPage(crumb)">{{ crumb }}</button>
         <span v-else class="crumb-current">{{ crumb }}</span>
       </template>
     </div>
@@ -350,7 +382,8 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         v-for="node in rendered.nodes"
         :key="node.id + (node.isData ? ':data' : '')"
         :transform="nodeTransform(node)"
-        :class="{ selected: ui.isSelected(node.id), dragging: draggingNode?.id === node.id, 'is-data': node.isData, 'connect-source': connectFrom?.id === node.id }"
+        :data-node-id="node.id"
+        :class="{ selected: mode === 'edit' ? ui.isSelected(node.id) : selectedId === node.id, dragging: draggingNode?.id === node.id, 'is-data': node.isData, 'connect-source': connectFrom?.id === node.id }"
         class="node-group"
         @click.stop="onNodeClick(node)"
         @dblclick.stop="onNodeDoubleClick(node)"
@@ -420,7 +453,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
       <button class="ctrl-btn" @click="onEdgeDoubleClick(selectedEdgeId)" title="Delete edge">✕</button>
     </div>
 
-    <div class="canvas-hint" v-if="!draggingNode && !connectFrom">
+    <div class="canvas-hint" v-if="mode === 'edit' && !draggingNode && !connectFrom">
       <kbd>drag</kbd> nodes · <kbd>shift+drag</kbd> to connect · <kbd>dbl-click</kbd> to enter · <kbd>scroll</kbd> to zoom
     </div>
 

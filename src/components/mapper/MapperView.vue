@@ -1,0 +1,385 @@
+<script setup lang="ts">
+// ─────────────────────────────────────────────────────────────────────
+// The mapper (TODO.editor/07) — the MMEL extension's MappingsCanvus,
+// on the v3 MapProfile: REF model left, IMP model right, click-pair
+// to map, the overlay edges between them, the pair dialog for meta,
+// the party lists below. Every pair is a command on the IMP model's
+// mapProfiles — undo/redo works, the dump serializes the profile.
+// ─────────────────────────────────────────────────────────────────────
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import type { Standard } from '@primmel/primmel';
+import ProcessCanvas from '../ProcessCanvas.vue';
+import MapPairDialog from './MapPairDialog.vue';
+import MapPartyList from './MapPartyList.vue';
+import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
+import {
+  createMappingPair, deleteMappingPair, updateMappingMeta,
+} from '../../lib/commands';
+import { useModelStore } from '../../stores/model';
+import { useMappingStore } from '../../stores/mapping';
+import { useUiStore } from '../../stores/ui';
+
+const props = defineProps<{ implementationModel: Standard }>();
+const modelStore = useModelStore();
+const mapping = useMappingStore();
+const ui = useUiStore();
+
+// ── The reference side ───────────────────────────────────────────────
+const refModel = computed(() => mapping.refModel);
+const namespace = computed(() => mapping.refNamespace());
+const profile = computed(() => {
+  void modelStore.version;
+  return namespace.value ? profileFor(props.implementationModel, namespace.value) : null;
+});
+
+function loadReference() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.prl,.txt';
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => mapping.loadRefText(reader.result as string);
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ── The pick flow (click one side, then the other) ───────────────────
+function onPick(side: 'ref' | 'imp', id: string) {
+  const prev = mapping.picked;
+  if (!prev || prev.side === side) {
+    mapping.picked = { side, id };
+    return;
+  }
+  const impId = side === 'imp' ? id : prev.id;
+  const refId = side === 'ref' ? id : prev.id;
+  mapping.picked = null;
+  // A pair that already exists opens for editing, never a duplicate.
+  const existing = profile.value?.mappings[impId]?.find(
+    p => p.target === targetRef(namespace.value!, refId),
+  );
+  editing.value = existing
+    ? { description: existing.description, justification: existing.justification, coverage: existing.coverage }
+    : null;
+  mapping.pairDraft = { impId, refId };
+}
+
+function onEditPair(impId: string, refId: string) {
+  const existing = profile.value?.mappings[impId]?.find(
+    p => p.target === targetRef(namespace.value!, refId),
+  );
+  if (!existing) return;
+  editing.value = {
+    description: existing.description,
+    justification: existing.justification,
+    coverage: existing.coverage,
+  };
+  mapping.pairDraft = { impId, refId };
+}
+
+// ── The pair dialog ──────────────────────────────────────────────────
+const editing = ref<{ description: string; justification: string; coverage: '' | 'full' | 'minimal' | 'partial' | 'none' } | null>(null);
+
+function onPairConfirm(meta: { description: string; justification: string; coverage: '' | 'full' | 'minimal' | 'partial' | 'none' }) {
+  const draft = mapping.pairDraft;
+  const ns = namespace.value;
+  if (!draft || !ns) return;
+  const target = targetRef(ns, draft.refId);
+  if (editing.value) {
+    modelStore.execute(updateMappingMeta(ns, draft.impId, target, meta));
+  } else {
+    modelStore.execute(createMappingPair(ns, draft.impId, target, meta));
+  }
+  mapping.pairDraft = null;
+  editing.value = null;
+}
+
+function onPairDelete() {
+  const draft = mapping.pairDraft;
+  const ns = namespace.value;
+  if (!draft || !ns) return;
+  modelStore.execute(deleteMappingPair(ns, draft.impId, targetRef(ns, draft.refId)));
+  mapping.pairDraft = null;
+  editing.value = null;
+}
+
+// ── The overlay edges (measured from the rendered node DOM) ──────────
+interface OverlayEdge {
+  key: string;
+  impId: string;
+  refId: string;
+  x1: number; y1: number; x2: number; y2: number;
+}
+
+const container = ref<HTMLElement | null>(null);
+const refPane = ref<HTMLElement | null>(null);
+const impPane = ref<HTMLElement | null>(null);
+const overlayEdges = ref<OverlayEdge[]>([]);
+
+function centerOf(pane: HTMLElement | null, nodeId: string, base: DOMRect): { x: number; y: number } | null {
+  const el = pane?.querySelector(`[data-node-id="${CSS.escape(nodeId)}"]`);
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2 - base.left, y: r.top + r.height / 2 - base.top };
+}
+
+async function measure() {
+  await nextTick();
+  const base = container.value?.getBoundingClientRect();
+  if (!base || !profile.value) {
+    overlayEdges.value = [];
+    return;
+  }
+  const out: OverlayEdge[] = [];
+  for (const { source, pair } of allPairs(profile.value)) {
+    const refId = splitTargetRef(pair.target)?.id;
+    if (!refId) continue;
+    const a = centerOf(refPane.value, refId, base);
+    const b = centerOf(impPane.value, source, base);
+    if (!a || !b) continue; // one end is on another page — the edge sleeps
+    out.push({ key: `${source}⇒${pair.target}`, impId: source, refId, x1: a.x, y1: a.y, x2: b.x, y2: b.y });
+  }
+  overlayEdges.value = out;
+}
+
+watch(
+  () => [modelStore.version, ui.panX, ui.panY, ui.zoom, mapping.refModel, ui.activeCanvasId],
+  measure,
+  { deep: false },
+);
+onMounted(() => {
+  measure();
+  window.addEventListener('resize', measure);
+});
+onBeforeUnmount(() => window.removeEventListener('resize', measure));
+
+function edgePath(e: OverlayEdge): string {
+  const mx = (e.x1 + e.x2) / 2;
+  return `M ${e.x1} ${e.y1} C ${mx} ${e.y1}, ${mx} ${e.y2}, ${e.x2} ${e.y2}`;
+}
+
+const hoveredEdge = ref<string | null>(null);
+</script>
+
+<template>
+  <div class="mapper" ref="container">
+    <div class="mapper-toolbar">
+      <button class="mapper-btn" data-testid="load-ref" @click="loadReference">
+        {{ refModel ? 'change reference' : 'load reference model' }}
+      </button>
+      <span v-if="namespace" class="mapper-ns" data-testid="ref-namespace">{{ namespace }}</span>
+      <button v-if="refModel" class="mapper-btn" data-testid="clear-ref" @click="mapping.clearRef()">clear</button>
+      <span class="mapper-hint" v-if="refModel">
+        click an element on one side, then its partner on the other
+      </span>
+      <span v-if="mapping.picked" class="mapper-picked" data-testid="picked">
+        picked: {{ mapping.picked.id }} ({{ mapping.picked.side }})
+      </span>
+    </div>
+
+    <div v-if="mapping.parseError" class="mapper-error" data-testid="ref-parse-error">{{ mapping.parseError }}</div>
+
+    <div v-if="refModel" class="mapper-body">
+      <div class="mapper-pane" ref="refPane" data-testid="ref-pane">
+        <div class="pane-label">reference — {{ namespace }}</div>
+        <ProcessCanvas
+          :model="refModel"
+          mode="select"
+          :selected-id="mapping.picked?.side === 'ref' ? mapping.picked.id : null"
+          @node-select="onPick('ref', $event)"
+        />
+      </div>
+
+      <div class="mapper-pane" ref="impPane" data-testid="imp-pane">
+        <div class="pane-label">implementation — {{ implementationModel.meta.namespace }}</div>
+        <ProcessCanvas
+          :model="implementationModel"
+          mode="select"
+          :selected-id="mapping.picked?.side === 'imp' ? mapping.picked.id : null"
+          @node-select="onPick('imp', $event)"
+        />
+      </div>
+
+      <svg class="mapper-overlay" data-testid="map-overlay">
+        <path
+          v-for="e in overlayEdges"
+          :key="e.key"
+          :d="edgePath(e)"
+          class="map-edge"
+          :class="{ hovered: hoveredEdge === e.key }"
+          :data-testid="`map-edge-${e.impId}`"
+          fill="none"
+          @mouseenter="hoveredEdge = e.key"
+          @mouseleave="hoveredEdge = null"
+          @click="onEditPair(e.impId, e.refId)"
+        />
+      </svg>
+    </div>
+
+    <div v-if="refModel" class="mapper-parties">
+      <div class="party-col">
+        <div class="party-col-label">reference</div>
+        <MapPartyList
+          side="target"
+          :model="refModel"
+          :profile="profile"
+          @pick="onPick('ref', $event)"
+          @edit-pair="onEditPair"
+        />
+      </div>
+      <div class="party-col">
+        <div class="party-col-label">implementation</div>
+        <MapPartyList
+          side="source"
+          :model="implementationModel"
+          :profile="profile"
+          @pick="onPick('imp', $event)"
+          @edit-pair="onEditPair"
+        />
+      </div>
+    </div>
+
+    <div v-else class="mapper-empty">
+      <p>Load a reference model (.prl) to start mapping.</p>
+      <p class="hint">The reference is the standard being adopted; the implementation is the working model. Pairs land in the implementation's <code>map_profile</code>.</p>
+    </div>
+
+    <MapPairDialog
+      v-if="mapping.pairDraft"
+      :imp-id="mapping.pairDraft.impId"
+      :ref-id="mapping.pairDraft.refId"
+      :existing="editing"
+      @confirm="onPairConfirm"
+      @delete="onPairDelete"
+      @cancel="mapping.pairDraft = null; editing = null"
+    />
+  </div>
+</template>
+
+<style scoped>
+.mapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mapper-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.mapper-btn {
+  padding: 0.25rem 0.65rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+.mapper-btn:hover { border-color: var(--accent); color: var(--accent); }
+.mapper-ns {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.5rem;
+}
+.mapper-hint {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-left: auto;
+}
+.mapper-picked {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+}
+.mapper-error {
+  padding: 0.4rem 0.75rem;
+  color: #b85555;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.mapper-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 0;
+  position: relative;
+}
+.mapper-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+.mapper-pane:last-child { border-right: none; }
+.pane-label {
+  padding: 0.35rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+.mapper-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.map-edge {
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 0.55;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+.map-edge.hovered { opacity: 1; stroke-width: 3; }
+.mapper-parties {
+  height: 180px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+  min-height: 0;
+}
+.party-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+.party-col:last-child { border-right: none; }
+.party-col-label {
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+.mapper-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem;
+}
+.mapper-empty .hint { font-size: 0.78rem; font-style: italic; max-width: 34rem; }
+</style>
