@@ -9,9 +9,21 @@ import ElementInspector from './components/ElementInspector.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/MappingView.vue';
+import PalettePanel from './components/PalettePanel.vue';
+import type { PaletteKind } from './lib/factory';
+import { ref } from 'vue';
 
 const modelStore = useModelStore();
 const ui = useUiStore();
+const canvasRef = ref<InstanceType<typeof ProcessCanvas> | null>(null);
+
+function onPalettePick(entry: PaletteKind) {
+  canvasRef.value?.paletteAdd(entry);
+}
+
+function onPaletteDragStart(entry: PaletteKind, ev: DragEvent) {
+  ev.dataTransfer?.setData('application/x-primmel-palette', JSON.stringify(entry));
+}
 
 const model = computed(() => modelStore.model);
 
@@ -103,6 +115,7 @@ const view = computed<ViewMode>({
     <template v-if="view === 'model' && model">
       <main class="workspace">
         <aside class="panel panel-left">
+          <PalettePanel @pick="onPalettePick" @dragstart="onPaletteDragStart" />
           <Transition name="fade" mode="out-in">
             <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
             <CodeEditor v-else key="code" />
@@ -110,7 +123,7 @@ const view = computed<ViewMode>({
         </aside>
 
         <section class="panel panel-center">
-          <ProcessCanvas :model="model" />
+          <ProcessCanvas ref="canvasRef" :model="model" />
         </section>
 
         <aside class="panel panel-right">

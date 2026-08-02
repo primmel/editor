@@ -1,4 +1,4 @@
-# 02 — The canvas engine: drag, connect, pages
+# 02 — The canvas engine: drag, connect, pages ✅ DONE (a3af55b)
 
 **Wave:** foundation · **Depends on:** 01 · **Priority:** P0
 

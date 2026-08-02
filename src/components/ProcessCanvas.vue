@@ -10,6 +10,7 @@ import { canConnect, mintEdgeId, pageForNode } from '../lib/edges';
 import {
   createEdge, removeEdge, updateComponentPosition,
 } from '../lib/commands';
+import { createFromPalette, type PaletteKind } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 
@@ -195,6 +196,33 @@ function applyEdgeCondition() {
   modelStore.version++;
 }
 
+// ── Palette drops (TODO.editor/03) ───────────────────────────────────
+function onPaletteDrop(e: DragEvent) {
+  e.preventDefault();
+  const payload = e.dataTransfer?.getData('application/x-primmel-palette');
+  if (!payload || !canvas.value) return;
+  const entry = JSON.parse(payload) as PaletteKind;
+  const p = worldPoint(e as unknown as MouseEvent);
+  modelStore.execute(createFromPalette(props.model, entry, p, canvas.value.id));
+}
+
+function onPaletteDragOver(e: DragEvent) {
+  if (e.dataTransfer?.types.includes('application/x-primmel-palette')) {
+    e.preventDefault();
+  }
+}
+
+/** Click-to-add (the palette's click path): create at the viewport
+ *  center of the current page. */
+function paletteAdd(entry: PaletteKind) {
+  if (!canvas.value) return;
+  const z = ui.zoom;
+  const center = { x: (400 - ui.panX) / z - 400 / z + 300, y: (300 - ui.panY) / z - 300 / z + 200 };
+  modelStore.execute(createFromPalette(props.model, entry, center, canvas.value.id));
+}
+
+defineExpose({ paletteAdd });
+
 function nodeTransform(node: RenderNode): string {
   return `translate(${node.x} ${node.y})`;
 }
@@ -248,6 +276,8 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
       @mouseup="onMouseUp"
       @mouseleave="onMouseUp"
       @wheel.prevent="onWheel"
+      @drop="onPaletteDrop"
+      @dragover="onPaletteDragOver"
     >
       <defs>
         <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
