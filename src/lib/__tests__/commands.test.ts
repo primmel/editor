@@ -21,10 +21,12 @@ import {
   removeEdge,
   reorderList,
   updateAttribute,
+  updateComponentPosition,
   updateElement,
   updateMappingMeta,
   updateMeta,
 } from '../commands';
+import { canConnect } from '../edges';
 
 const TEXT = `root Root
 
@@ -216,6 +218,58 @@ describe('meta + mapping commands', () => {
 
     cmd.revert(ast);
     expect(ast.mapProfiles.find(p => p.namespace === 'RefNS')!.mappings['P1'] ?? []).toHaveLength(0);
+  });
+});
+
+describe('the data section (TODO.editor/23)', () => {
+  it('dataclass placements land in page.data, not childs', () => {
+    const ast = fresh();
+    createElement('dataclass', 'DC1', { x: 50, y: 60 }).apply(ast);
+    const page = rootPage(ast);
+    expect(page.data.map(c => c.name)).toContain('DC1');
+    expect(page.childs.map(c => c.name)).not.toContain('DC1');
+    // The dump carries the data block with the placement.
+    const text = dump(ast);
+    expect(text).toContain('data {\n    DC1 {');
+    const reparsed = load(text);
+    expect(reparsed.pages.find(p => p.id === ast.root?.id)!.data.map(c => c.name)).toContain('DC1');
+  });
+
+  it('a process ↔ dataclass edge connects through the data seam and renders as a data link', () => {
+    const ast = fresh();
+    createElement('dataclass', 'DC1', { x: 50, y: 60 }).apply(ast);
+    const page = rootPage(ast);
+    // The data seam: DC1 is connectable from the data section.
+    const verdict = canConnect(page, 'P1', 'DC1', '', ast);
+    expect(verdict).toEqual({ ok: true });
+    createEdge('root', 'E9', 'P1', 'DC1').apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('from P1');
+    expect(text).toContain('to DC1');
+  });
+
+  it('deleteElement captures data placements; revert restores both sections', () => {
+    const ast = fresh();
+    createElement('dataclass', 'DC1', { x: 50, y: 60 }).apply(ast);
+    createEdge('root', 'E9', 'P1', 'DC1').apply(ast);
+    const before = clone(ast);
+    const cmd = deleteElement('dataclass', 'DC1');
+    cmd.apply(ast);
+    expect(rootPage(ast).data.map(c => c.name)).not.toContain('DC1');
+    expect(rootPage(ast).edges.map(e => e.id)).not.toContain('E9');
+    cmd.revert(ast);
+    expect(ast).toEqual(before);
+  });
+
+  it('updateComponentPosition moves data-section nodes', () => {
+    const ast = fresh();
+    createElement('dataclass', 'DC1', { x: 50, y: 60 }).apply(ast);
+    const cmd = updateComponentPosition('root', 'DC1', 120, 240);
+    cmd.apply(ast);
+    const comp = rootPage(ast).data.find(c => c.name === 'DC1')!;
+    expect([comp.x, comp.y]).toEqual([120, 240]);
+    cmd.revert(ast);
+    expect([comp.x, comp.y]).toEqual([50, 60]);
   });
 });
 

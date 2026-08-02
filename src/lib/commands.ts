@@ -161,16 +161,26 @@ export function createElement(
       if (list.some(x => x.id === id)) throw new Error(`duplicate id ${id}`);
       list.push(ELEMENT_DEFAULTS[kind](id) as never);
       if (kind !== 'subprocess' && position) {
-        pageOf(ast, pageId).childs.push({ name: id, element: { id }, x: position.x, y: position.y });
+        // The data discipline: dataclasses live in the page's DATA
+        // section (the dashed data nodes), everything else in the flow.
+        const page = pageOf(ast, pageId);
+        const placement = { name: id, element: { id }, x: position.x, y: position.y };
+        if (kind === 'dataclass') {
+          page.data.push(placement as never);
+        } else {
+          page.childs.push(placement as never);
+        }
       }
     },
     revert(ast) {
       const list = listFor(ast, kind);
       const i = list.findIndex(x => x.id === id);
       if (i >= 0) list.splice(i, 1);
-      // Placements + edges referencing the element vanish with it.
+      // Placements + edges referencing the element vanish with it
+      // (BOTH sections — data placements too).
       for (const page of [ast.root, ...ast.pages].filter(Boolean) as Subprocess[]) {
         page.childs = page.childs.filter(c => c.name !== id);
+        page.data = page.data.filter(c => c.name !== id);
         page.edges = page.edges.filter(e => {
           const ends = edgeEnds(e);
           return ends.from !== id && ends.to !== id;
@@ -183,7 +193,7 @@ export function createElement(
 // ── deleteElement ───────────────────────────────────────────────────
 
 export function deleteElement(kind: ElementKind, id: string): Command {
-  let captured: { element: unknown; placements: Array<{ pageId: string; index: number; child: unknown }>; edges: Array<{ pageId: string; index: number; edge: Edge }> };
+  let captured: { element: unknown; placements: Array<{ pageId: string; section: 'childs' | 'data'; index: number; child: unknown }>; edges: Array<{ pageId: string; index: number; edge: Edge }> };
   return {
     label: `delete ${kind} ${id}`,
     apply(ast) {
@@ -193,13 +203,15 @@ export function deleteElement(kind: ElementKind, id: string): Command {
       captured = { element: list[i], placements: [], edges: [] };
       list.splice(i, 1);
       for (const page of [ast.root, ...ast.pages].filter(Boolean) as Subprocess[]) {
-        page.childs = page.childs.filter(c => {
-          if (c.name === id) {
-            captured.placements.push({ pageId: page.id, index: page.childs.indexOf(c), child: c });
-            return false;
-          }
-          return true;
-        });
+        for (const section of ['childs', 'data'] as const) {
+          page[section] = page[section].filter(c => {
+            if (c.name === id) {
+              captured.placements.push({ pageId: page.id, section, index: page[section].indexOf(c), child: c });
+              return false;
+            }
+            return true;
+          }) as never;
+        }
         page.edges = page.edges.filter(e => {
           const ends = edgeEnds(e);
           if (ends.from === id || ends.to === id) {
@@ -214,7 +226,7 @@ export function deleteElement(kind: ElementKind, id: string): Command {
       listFor(ast, kind).push(captured.element as never);
       for (const p of captured.placements) {
         const page = p.pageId === 'root' ? ast.root! : ast.pages.find(pg => pg.id === p.pageId)!;
-        page.childs.splice(Math.min(p.index, page.childs.length), 0, p.child as never);
+        page[p.section].splice(Math.min(p.index, page[p.section].length), 0, p.child as never);
       }
       for (const e of captured.edges) {
         const page = e.pageId === 'root' ? ast.root! : ast.pages.find(pg => pg.id === e.pageId)!;
@@ -263,8 +275,11 @@ export function createEdge(
     apply(ast) {
       const page = pageOf(ast, pageId);
       if (page.edges.some(e => e.id === edgeId)) throw new Error(`duplicate edge id ${edgeId}`);
-      if (!page.childs.some(c => c.name === fromId)) throw new Error(`from ${fromId} is not on page ${pageId}`);
-      if (!page.childs.some(c => c.name === toId)) throw new Error(`to ${toId} is not on page ${pageId}`);
+      // Endpoints may live in the flow OR the data section (the seam).
+      const onPage = (id: string) =>
+        page.childs.some(c => c.name === id) || page.data.some(c => c.name === id);
+      if (!onPage(fromId)) throw new Error(`from ${fromId} is not on page ${pageId}`);
+      if (!onPage(toId)) throw new Error(`to ${toId} is not on page ${pageId}`);
       page.edges.push({
         id: edgeId,
         from: { name: fromId, element: { id: fromId }, x: 0, y: 0 },
@@ -525,11 +540,13 @@ export function updateComponentPosition(
   y: number,
 ): Command {
   let before: { x: number; y: number };
+  const compOf = (page: Subprocess) =>
+    page.childs.find(c => c.name === elementId) ?? page.data.find(c => c.name === elementId);
   return {
     label: `move ${elementId} to (${Math.round(x)}, ${Math.round(y)})`,
     apply(ast) {
       const page = pageOf(ast, pageId);
-      const comp = page.childs.find(c => c.name === elementId);
+      const comp = compOf(page);
       if (!comp) throw new Error(`component ${elementId} is not on page ${pageId}`);
       before = { x: comp.x, y: comp.y };
       comp.x = Math.round(x);
@@ -537,7 +554,7 @@ export function updateComponentPosition(
     },
     revert(ast) {
       const page = pageOf(ast, pageId);
-      const comp = page.childs.find(c => c.name === elementId);
+      const comp = compOf(page);
       if (comp) { comp.x = before.x; comp.y = before.y; }
     },
   };

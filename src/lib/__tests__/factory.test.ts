@@ -48,6 +48,7 @@ describe('createFromPalette', () => {
       }
       if (entry.kind === 'gateway') expect(ast.gateways.map(g => g.id)).toContain(id);
       if (entry.kind === 'subprocess') expect(ast.pages.map(p => p.id)).toContain(id);
+      else if (entry.kind === 'dataclass') expect(rootPage(ast).data.map(c => c.name)).toContain(id);
       else expect(rootPage(ast).childs.map(c => c.name)).toContain(id);
       cmd.revert(ast);
       expect(JSON.stringify(ast)).toBe(JSON.stringify(fresh()));

@@ -1,4 +1,4 @@
-# 23 — The data section: dataclasses live in `page.data`
+# 23 — The data section: dataclasses live in `page.data` ✅ DONE (8ac2526)
 
 **Wave:** foundation · **Depends on:** 02, 05 · **Priority:** P0
 

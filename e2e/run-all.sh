@@ -21,6 +21,7 @@ for leg in \
   simulation-smoke \
   monaco-smoke \
   new-model-smoke \
+  data-section-smoke \
   comments-smoke \
   measurement-smoke \
   import-smoke \
