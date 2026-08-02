@@ -1,4 +1,4 @@
-# 27 — The dual-demo tutorial (model YOUR Recommendation)
+# 27 — The dual-demo tutorial (model YOUR Recommendation) ✅ DONE (6d5245b)
 
 **Wave:** docs · **Depends on:** 26 · **Priority:** P1
 
