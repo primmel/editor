@@ -109,3 +109,22 @@ Small commits per item; the byte-clean round trip (parse → command
 edits → dump ≡ identity) is the foundational proof (item 01's gate);
 the mapping calculus must match the kernel's numbers exactly (item
 08's gate — never a reimplementation).
+
+## The validation wave (21–28) — the capability contract
+
+| # | Item | Priority | Wave |
+|---|---|---|---|
+| 21 | the legacy corpus complete (view alias + note EXAMPLE) | P0 | migration |
+| 22 | the new-model flow (File → New) | P0 | foundation |
+| 23 | the data section (dataclasses in `page.data`) | P0 | foundation |
+| 24 | the corpus matrix (the ten, vendored and proven) | P0 | migration |
+| 25 | the capability walk (the ultimate e2e validation) | P0 | validation |
+| 26 | the R 7 tutorial model (Clinical thermometers) | P0 | program |
+| 27 | the dual-demo tutorial (model YOUR Recommendation) | P1 | docs |
+| 28 | the validation close-out (VALIDATION.md) | P0 | validation |
+
+The contract: create new Primmel models (reference/implementation),
+import old MMEL models (all ten), do mappings with coverage, navigate,
+create data registers and processes, drill in and out, show diagrams,
+run execution, and model a new OIML Recommendation (R 7, Clinical
+thermometers) as the dual demo with the smart-r60 classroom.
