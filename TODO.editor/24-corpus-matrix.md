@@ -1,4 +1,4 @@
-# 24 — The corpus matrix (the ten, vendored and proven)
+# 24 — The corpus matrix (the ten, vendored and proven) ✅ DONE (441a1ac)
 
 **Wave:** migration · **Depends on:** 21 · **Priority:** P0
 
