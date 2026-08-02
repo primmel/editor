@@ -1,4 +1,4 @@
-# 26 — The R 7 tutorial model (Clinical thermometers, in Primmel)
+# 26 — The R 7 tutorial model (Clinical thermometers, in Primmel) ✅ DONE (910f889)
 
 **Wave:** program · **Depends on:** 17 · **Priority:** P0
 

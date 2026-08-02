@@ -58,10 +58,11 @@ function slugify(s: string): string {
 }
 
 /** The URN base for a docidentifier: the OIML publication form when
- *  resolvable (`OIML R 60-2:2021` → `urn:oiml:pub:r:60-2:2021`), else
- *  the document-local slug. */
+ *  resolvable (`OIML R 60-2:2021` or `OIML R 7 1979` →
+ *  `urn:oiml:pub:r:60-2:2021` / `urn:oiml:pub:r:7:1979`), else the
+ *  document-local slug. */
 export function urnBaseFor(docid: string): string {
-  const m = /OIML\s+R\s*(\d+)(?:-(\d+))?(?::(\d{4}))?/i.exec(docid);
+  const m = /OIML\s+R\s*(\d+)(?:-(\d+))?(?:[:\s](\d{4}))?/i.exec(docid);
   if (m) {
     const [, part, sub, year] = m;
     return `urn:oiml:pub:r:${part}${sub ? '-' + sub : ''}${year ? ':' + year : ''}`;
@@ -87,20 +88,34 @@ export function parsePresentationXml(xmlText: string, dom?: XmlParserLike): Docu
     || doc.querySelector('docidentifier')?.textContent?.trim()
     || 'document';
   const title = doc.querySelector('bibdata title')?.textContent?.trim() ?? docid;
-  const urnBase = urnBaseFor(docid);
+  let urnBase = urnBaseFor(docid);
+  // The edition year: when the docidentifier carries none, take the
+  // bibdata's published/issued year (the OIML URN convention is
+  // year-qualified — `urn:oiml:pub:r:7:1979`).
+  if (urnBase.startsWith('urn:oiml:') && !/:\d{4}$/.test(urnBase)) {
+    const year = doc.querySelector('bibdata date on')?.textContent?.trim().slice(0, 4)
+      ?? doc.querySelector('bibdata date')?.textContent?.trim().slice(0, 4);
+    if (year && /^\d{4}$/.test(year)) urnBase = `${urnBase}:${year}`;
+  }
 
   const statements = new Map<string, DocStatement>();
   const clauses: DocClause[] = [];
 
-  // Only content clauses (skip the ToC and boilerplate sections).
-  const clauseEls = [...doc.querySelectorAll('sections clause, clause[obligation]')]
+  // Only TOP-LEVEL content clauses (direct children of sections/annex —
+  // a nested subclause's content belongs to its parent at this grain);
+  // the ToC and boilerplate are skipped. Documents whose clause titles
+  // carry no numbers (the R 7 form) get ordinal ids (s1, s2, …) in
+  // document order — stable for the document, and the tutorial names
+  // the caveat: the semantic clause numbers live in the model's
+  // `source { clause }` facets.
+  const clauseEls = [...doc.querySelectorAll('sections > clause, annex > clause')]
     .filter(el => el.getAttribute('type') !== 'toc');
 
   for (const el of clauseEls) {
     const titleEl = [...el.children].find(c => c.tagName === 'title');
     const rawTitle = titleEl?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
     // The clause number: the title's leading numeric token, else the
-    // clause's position among its siblings of the same depth.
+    // clause's position among the top-level clauses.
     const numMatch = /^(\d+(?:\.\d+)*)\s*/.exec(rawTitle);
     const number = numMatch ? numMatch[1]! : `s${clauses.length + 1}`;
     const clauseId = el.getAttribute('id') ?? number;
@@ -108,9 +123,8 @@ export function parsePresentationXml(xmlText: string, dom?: XmlParserLike): Docu
     const paragraphs: DocParagraph[] = [];
     let pCount = 0;
     let liCount = 0;
-    // Direct-child paragraphs and list items only (nested clauses own
-    // their own content).
-    for (const child of [...el.children]) {
+    // Every descendant paragraph and list item, in document order.
+    for (const child of el.querySelectorAll('p, ol, ul')) {
       if (child.tagName === 'p') {
         pCount++;
         const pid = `${number}.p${pCount}`;
@@ -124,7 +138,7 @@ export function parsePresentationXml(xmlText: string, dom?: XmlParserLike): Docu
           return stmt;
         });
         paragraphs.push({ id: pid, statements: stmts });
-      } else if (child.tagName === 'ol' || child.tagName === 'ul') {
+      } else {
         for (const li of [...child.children].filter(c => c.tagName === 'li')) {
           liCount++;
           const id = `${number}.li${liCount}`;

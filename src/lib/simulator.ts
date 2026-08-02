@@ -359,6 +359,14 @@ export function step(model: Standard, state: SimState): SimState {
     }
   }
 
+  if (!chosen) {
+    // Unreachable in practice (outs is non-empty and an unconditioned
+    // fallback always exists unless a conditioned block returned early)
+    // — but never step without a target.
+    next.blocked = `no outgoing edge of ${nodeId} is selectable`;
+    return next;
+  }
+
   const targetKind = simNodeKind(model, chosen.to);
   next.returned = false;
   next.current = { pageId, nodeId: chosen.to };

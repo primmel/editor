@@ -1,0 +1,350 @@
+root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "OIML R 7 (1979) — Clinical thermometers (mercury-in-glass, with maximum device)"
+  schema "Primmel 0.1"
+  namespace "OIML.R7"
+  author "Primmel Studio tutorial"
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// OIML R 7 (1979): Clinical thermometers (mercury-in-glass, with
+// maximum device) — the worked tutorial model. Every normative claim
+// carries its clause URN (source: { doc, clause }).
+// ─────────────────────────────────────────────────────────────────────
+
+role VerifyingAuthority { name "Verifying authority (the metrology laboratory)" }
+role Manufacturer { name "Thermometer manufacturer" }
+
+// ── The subject: the instrument itself (IS / HAS / DOES) ────────────
+
+subject ClinicalThermometer {
+  is {
+    metadata {
+      name "Clinical thermometer (mercury-in-glass, with maximum device)"
+      intended_use "Measurement of the internal human body temperature (clause 1)"
+      type_solid_stem "scale marked directly on the stem (3.1.1)"
+      type_enclosed_scale "scale on a scale-bearing strip (3.1.2)"
+    }
+    provenance {
+      recommendation "OIML R 7 (1979)"
+      scope "clinical thermometers of the mercury-in-glass type with a maximum device (clause 1)"
+      exclusions "special purpose and veterinary thermometers (clause 1)"
+    }
+    design_parameters {
+      unit "degree Celsius, symbol °C (clause 2)"
+      maximum_permissible_error_high "+0.1 °C (clause 8)"
+      maximum_permissible_error_low "-0.15 °C (clause 8)"
+      ambient_validity_range "15 °C to 30 °C (clause 8)"
+      scale_spacing_solid_stem "at least 0.5 mm (6.1)"
+      scale_spacing_enclosed_scale "at least 0.6 mm (6.1)"
+    }
+    promises {
+      "The mercury column does not recede solely because of cooling — the maximum device holds the reading (5.4)."
+      "The thermometer is free from defects that prevent normal operation or mislead the user (5.1)."
+    }
+  }
+  has {
+    attributes {
+      graduation_and_numbering "scale spacing per type; numbering engraved or indelibly printed (clauses 6, 7)"
+      inscriptions "the symbol °C near the scale, engraved or indelibly printed (7.1.1)"
+      construction_integrity "no defects preventing normal operation (5.1)"
+      space_for_stamping "space for the verification stamp (clause 9)"
+    }
+    characteristics {
+      error_of_indication "reading minus the conventional true temperature at a scale point (clause 8, A.3)"
+    }
+  }
+  does {
+    behavior IndicateTemperature
+    behavior HoldMaximumReading
+    behavior BeVerifiedAtScalePoints
+  }
+}
+
+behavior IndicateTemperature {
+  name "Indicate the body temperature"
+}
+
+behavior HoldMaximumReading {
+  name "Hold the maximum reading after removal and cooling (the maximum device, 5.4)"
+}
+
+behavior BeVerifiedAtScalePoints {
+  name "Be compared with standard thermometers in well-stirred water baths (A.3)"
+}
+
+// ── Requirements (the normative clauses, with provenance) ────────────
+
+requirement REQ-Construction {
+  name "Construction integrity"
+  statement "The thermometer must be free from any defects which might prevent it from operating normally, or which might lead to errors by the users."
+  obligation shall
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "5.1"
+  }
+}
+
+requirement REQ-MaximumDevice {
+  name "Maximum device holds the reading"
+  statement "The maximum device prevents the mercury column from receding solely because of the cooling of the thermometer."
+  obligation shall
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "5.4"
+  }
+}
+
+requirement REQ-Graduation {
+  name "Scale spacing and graduation"
+  statement "The scale spacing must be at least 0.5 mm for solid-stem thermometers and at least 0.6 mm for enclosed-scale thermometers."
+  obligation shall
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "6.1"
+  }
+}
+
+requirement REQ-Inscriptions {
+  name "Inscriptions"
+  statement "The symbol °C near the scale must be engraved or indelibly printed on the scale-bearing strip of enclosed-scale thermometers and on the stem of solid-stem thermometers."
+  obligation shall
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "7.1.1"
+  }
+}
+
+requirement REQ-MPE {
+  name "Maximum permissible errors"
+  statement "The error of indication must be within +0.1 °C and −0.15 °C for thermometer readings after cooling to an ambient temperature between 15 °C and 30 °C."
+  obligation shall
+  limit {
+    expression "error_of_indication >= -0.15 and error_of_indication <= 0.1"
+  }
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "8"
+  }
+}
+
+// ── Conformance tests (Annex A + the examinations) ───────────────────
+
+conformance_test CT-VisualExamination {
+  name "Construction, graduation and inscriptions examination"
+  purpose "Verify compliance with Clauses 5, 6 and 7 (defects, scale spacing, graduation, inscriptions)."
+  kind examination
+  obligation shall
+  acceptance_pass_if "no defects found; scale spacing meets the type minimum (0.5 / 0.6 mm); the °C inscription is present and indelible"
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "A.5"
+  }
+}
+
+conformance_test CT-ErrorDetermination {
+  name "Determination of errors of indication"
+  purpose "Examine compliance with Clause 8 (maximum permissible errors) by comparing the test thermometer with standard thermometers in well-stirred water baths."
+  kind testing
+  obligation shall
+  preconditions {
+    "the water bath is well stirred and its temperature is stable"
+    "the standard thermometer is calibrated (A.1.2.2.2)"
+    "the ambient temperature is between 15 °C and 30 °C (clause 8)"
+  }
+  procedure {
+    1 "immerse the test thermometer and the standard thermometer in the well-stirred water bath at the scale point"
+    2 "read both thermometers after stabilization"
+    3 "compute the error of indication (test reading minus standard reading)"
+    4 "repeat for each declared scale point"
+    5 "cool to an ambient temperature between 15 °C and 30 °C and read again (the maximum device must hold the reading)"
+  }
+  acceptance_pass_if "every error of indication is within +0.1 °C and −0.15 °C"
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "A.3"
+  }
+}
+
+conformance_test CT-MaximumDevice {
+  name "Testing the maximum device"
+  purpose "Test the maximum device for compliance with the requirements of 5.4 (the mercury column does not recede on cooling)."
+  kind testing
+  obligation shall
+  procedure {
+    1 "hold the thermometer at a temperature above the maximum of its scale"
+    2 "remove it and allow it to cool in ambient air"
+    3 "read the indicated temperature — it must not have receded"
+  }
+  acceptance_pass_if "the indicated reading after cooling equals the maximum reading"
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "A.4"
+  }
+}
+
+conformance_test CT-Coloration {
+  name "Testing the solid-stem thermometer coloration"
+  purpose "Assure the scale, numbering and inscriptions are engraved or indelibly printed (Clauses 6 and 7): immersion in 5% phenol solution (20–30 °C) for one hour, or 96% alcohol; the cloth must pick up no stains."
+  kind testing
+  obligation shall
+  procedure {
+    1 "immerse for one hour in a 5 % aqueous solution of phenol at 20–30 °C (or subject to 96 % alcohol)"
+    2 "wipe with a piece of light-colored cloth"
+    3 "inspect the cloth for stains"
+  }
+  acceptance_pass_if "the cloth picks up no stains"
+  source {
+    doc "urn:oiml:pub:r:7:1979"
+    clause "A.5"
+  }
+}
+
+// ── The test report form (the evidence skeleton) ─────────────────────
+
+form TestReportR7 {
+  name "Clinical thermometer verification test report"
+  description "The evidence record for one sample: the examinations, the error table per scale point, and the per-test verdicts."
+  section "verification"
+}
+
+// ── The verification workflow (the simulatable process) ──────────────
+
+variable ambient_temperature {
+  type float
+  definition "The ambient temperature during the run (°C)"
+  description "clause 8 validity: 15–30 °C"
+}
+
+variable error_of_indication {
+  type float
+  definition "The measured error of indication at a scale point (°C)"
+  description "must lie in [−0.15, +0.1]"
+}
+
+start_event Received { }
+end_event VerdictIssued { }
+
+exclusive_gateway AmbientValid { }
+exclusive_gateway WithinMPE { }
+
+process ReceiveSample {
+  name "Receive the sample and register it"
+  actor VerifyingAuthority
+  modality SHALL
+}
+
+process VisualExamination {
+  name "Construction, graduation and inscriptions examination"
+  actor VerifyingAuthority
+  modality SHALL
+  validate_measurement {
+    "ambient_temperature"
+  }
+}
+
+process ErrorDetermination {
+  name "Determination of errors of indication at the scale points"
+  actor VerifyingAuthority
+  modality SHALL
+  validate_measurement {
+    "ambient_temperature"
+    "error_of_indication"
+  }
+}
+
+process MaximumDeviceTest {
+  name "Testing the maximum device"
+  actor VerifyingAuthority
+  modality SHALL
+}
+
+process ColorationTest {
+  name "Testing the coloration (indelibility)"
+  actor VerifyingAuthority
+  modality SHOULD
+}
+
+process IssueVerdict {
+  name "Issue the verification verdict and certificate (11.2)"
+  actor VerifyingAuthority
+  modality SHALL
+  subprocess VerdictPage
+}
+
+process RecordEvidence {
+  name "Record the evidence into the test report"
+  actor VerifyingAuthority
+  modality SHALL
+}
+
+canvas Root {
+  elements {
+    Received { x 0 y 0 }
+    ReceiveSample { x 0 y 80 }
+    VisualExamination { x 0 y 160 }
+    AmbientValid { x 0 y 240 }
+    ErrorDetermination { x 0 y 320 }
+    WithinMPE { x 0 y 400 }
+    MaximumDeviceTest { x 0 y 480 }
+    ColorationTest { x 0 y 560 }
+    IssueVerdict { x 0 y 640 }
+    VerdictIssued { x 0 y 720 }
+  }
+  process_flow {
+    E1 { from Received to ReceiveSample }
+    E2 { from ReceiveSample to VisualExamination }
+    E3 { from VisualExamination to AmbientValid }
+    E4 { from AmbientValid to ErrorDetermination
+      condition "ambient_temperature >= 15 and ambient_temperature <= 30"
+    }
+    E5 { from AmbientValid to VerdictIssued
+      condition "ambient_temperature < 15 or ambient_temperature > 30"
+    }
+    E6 { from ErrorDetermination to WithinMPE }
+    E7 { from WithinMPE to MaximumDeviceTest
+      condition "error_of_indication >= -0.15 and error_of_indication <= 0.1"
+    }
+    E8 { from WithinMPE to VerdictIssued
+      condition "error_of_indication < -0.15 or error_of_indication > 0.1"
+    }
+    E9 { from MaximumDeviceTest to ColorationTest }
+    E10 { from ColorationTest to IssueVerdict }
+    E11 { from IssueVerdict to VerdictIssued }
+  }
+  data {
+  }
+}
+
+canvas VerdictPage {
+  elements {
+    RecordEvidence { x 0 y 0 }
+    VerdictIssued { x 0 y 100 }
+  }
+  process_flow {
+    V1 { from RecordEvidence to VerdictIssued }
+  }
+  data {
+  }
+}
+
+// ── The doc map (the model ↔ the document's statements) ──────────────
+
+map_profile "urn:oiml:pub:r:7:1979" {
+  description "The model mapped back onto the Recommendation's statements (the provenance made visible)"
+  mapping {
+    REQ-Construction -> "urn:oiml:pub:r:7:1979#s5.p1" { description "construction integrity is clause 5.1 verbatim" }
+    REQ-MaximumDevice -> "urn:oiml:pub:r:7:1979#s3.p4" { description "the maximum device definition (clause 3, types)" }
+    REQ-Graduation -> "urn:oiml:pub:r:7:1979#s6.p1" { description "the scale spacing minimums (6.1)" }
+    REQ-Inscriptions -> "urn:oiml:pub:r:7:1979#s7.p1" { description "the inscription requirement (7.1)" }
+    REQ-MPE -> "urn:oiml:pub:r:7:1979#s8.p1" { description "the MPE values +0.1 / −0.15 °C (clause 8)" }
+    CT-ErrorDetermination -> "urn:oiml:pub:r:7:1979#s14.p1.s1" { description "the A.3 examination requirement" }
+    CT-MaximumDevice -> "urn:oiml:pub:r:7:1979#s15.p1" { description "the A.4 maximum-device test" }
+    CT-Coloration -> "urn:oiml:pub:r:7:1979#s16.p1" { description "the A.5 phenol/alcohol indelibility test" }
+    VisualExamination -> "urn:oiml:pub:r:7:1979#s5.p1" { description "the examination covers clause 5" }
+    ErrorDetermination -> "urn:oiml:pub:r:7:1979#s14.p1.s2" { description "the workflow step IS the A.3 bath comparison" }
+  }
+}
