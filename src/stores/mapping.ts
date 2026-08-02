@@ -9,6 +9,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, shallowRef } from 'vue';
 import { load, type Standard } from '@primmel/primmel';
 import type { SeedOutcome } from '../lib/multi-map';
+import { loadDocument, type DocumentModel } from '../lib/document-model';
 
 export interface PairDraft {
   impId: string;
@@ -22,6 +23,11 @@ export const useMappingStore = defineStore('mapping', () => {
   /** The active lens (the namespace the mapper shows). */
   const activeNs = ref<string | null>(null);
   const parseError = ref<string | null>(null);
+
+  /** The document-mapping side (TODO.editor/10): the parsed document
+   *  and whether the left pane shows IT (vs a reference model). */
+  const document = shallowRef<DocumentModel | null>(null);
+  const docMode = ref(false);
 
   /** The first half of a pair: the element clicked on one side. */
   const picked = ref<{ side: 'ref' | 'imp'; id: string } | null>(null);
@@ -46,16 +52,37 @@ export const useMappingStore = defineStore('mapping', () => {
       refs.value = { ...refs.value, [ns]: model };
       refTexts.value = { ...refTexts.value, [ns]: text };
       parseError.value = null;
+      docMode.value = false;
       activate(ns);
     } catch (e) {
       parseError.value = (e as Error).message;
     }
   }
 
+  function loadDocumentText(text: string) {
+    try {
+      document.value = loadDocument(text);
+      parseError.value = null;
+      docMode.value = true;
+      picked.value = null;
+      pairDraft.value = null;
+    } catch (e) {
+      parseError.value = (e as Error).message;
+    }
+  }
+
+  function clearDocument() {
+    document.value = null;
+    docMode.value = false;
+    picked.value = null;
+    pairDraft.value = null;
+  }
+
   /** Swap the lens. */
   function activate(ns: string) {
     if (!refs.value[ns]) return;
     activeNs.value = ns;
+    docMode.value = false;
     picked.value = null;
     pairDraft.value = null;
   }
@@ -74,14 +101,16 @@ export const useMappingStore = defineStore('mapping', () => {
     pairDraft.value = null;
   }
 
-  /** Back-compat alias: the active namespace (the profile's key). */
+  /** The active mapping namespace: the document's URN base in doc
+   *  mode, else the active reference namespace. */
   function refNamespace(): string | null {
-    return activeNs.value;
+    return docMode.value ? document.value?.urnBase ?? null : activeNs.value;
   }
 
   return {
     refs, refTexts, activeNs, parseError, picked, pairDraft, lastSeed,
+    document, docMode,
     refModel, namespaces,
-    loadRefText, activate, removeRef, refNamespace,
+    loadRefText, loadDocumentText, clearDocument, activate, removeRef, refNamespace,
   };
 });

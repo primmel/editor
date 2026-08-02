@@ -13,6 +13,7 @@ import MapPairDialog from './MapPairDialog.vue';
 import MapPartyList from './MapPartyList.vue';
 import CoverageLegend from './CoverageLegend.vue';
 import ProfileSwitcher from './ProfileSwitcher.vue';
+import DocumentView from './DocumentView.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
 import { badgeMap } from '../../lib/multi-map';
 import { COVERAGE_TINTS, coverageTooltip, coverageView, type CoverageView } from '../../lib/coverage';
@@ -39,6 +40,7 @@ const profile = computed(() => {
 // ── The coverage overlay (the KERNEL's calculus, bridged) ────────────
 const coverage = computed<CoverageView | null>(() => {
   void modelStore.version;
+  if (mapping.docMode) return null; // a document has no process tree
   if (!refModel.value || !namespace.value) return null;
   return coverageView(props.implementationModel, refModel.value, namespace.value);
 });
@@ -84,6 +86,20 @@ function loadReference() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => mapping.loadRefText(reader.result as string);
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function loadDocumentFile() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.xml,.txt,.md';
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => mapping.loadDocumentText(reader.result as string);
     reader.readAsText(file);
   };
   input.click();
@@ -188,7 +204,7 @@ async function measure() {
 }
 
 watch(
-  () => [modelStore.version, ui.panX, ui.panY, ui.zoom, mapping.refModel, ui.activeCanvasId],
+  () => [modelStore.version, ui.panX, ui.panY, ui.zoom, mapping.refModel, mapping.document, mapping.docMode, ui.activeCanvasId],
   measure,
   { deep: false },
 );
@@ -214,8 +230,15 @@ const hoveredEdge = ref<string | null>(null);
       <button class="mapper-btn" data-testid="load-ref" @click="loadReference">
         {{ refModel ? 'load another reference' : 'load reference model' }}
       </button>
+      <button class="mapper-btn" data-testid="load-doc" @click="loadDocumentFile">load document</button>
       <span v-if="namespace" class="mapper-ns" data-testid="ref-namespace">{{ namespace }}</span>
-      <span class="mapper-hint" v-if="refModel">
+      <button
+        v-if="mapping.docMode"
+        class="mapper-btn"
+        data-testid="clear-doc"
+        @click="mapping.clearDocument()"
+      >close document</button>
+      <span class="mapper-hint" v-if="namespace">
         click an element on one side, then its partner on the other
       </span>
       <span v-if="mapping.picked" class="mapper-picked" data-testid="picked">
@@ -237,9 +260,48 @@ const hoveredEdge = ref<string | null>(null);
 
     <div v-if="mapping.parseError" class="mapper-error" data-testid="ref-parse-error">{{ mapping.parseError }}</div>
 
-    <CoverageLegend v-if="refModel" />
+    <CoverageLegend v-if="refModel && !mapping.docMode" />
 
-    <div v-if="refModel" class="mapper-body">
+    <div v-if="mapping.docMode && mapping.document" class="mapper-body">
+      <div class="mapper-pane" ref="refPane" data-testid="ref-pane">
+        <div class="pane-label">document — {{ namespace }}</div>
+        <DocumentView
+          :document="mapping.document"
+          :profile="profile"
+          :picked-id="mapping.picked?.side === 'ref' ? mapping.picked.id : null"
+          @pick="onPick('ref', $event)"
+        />
+      </div>
+
+      <div class="mapper-pane" ref="impPane" data-testid="imp-pane">
+        <div class="pane-label">implementation — {{ implementationModel.meta.namespace }}</div>
+        <ProcessCanvas
+          :model="implementationModel"
+          mode="select"
+          :selected-id="mapping.picked?.side === 'imp' ? mapping.picked.id : null"
+          :tint-of="impTint"
+          :tooltip-of="impTooltip"
+          @node-select="onPick('imp', $event)"
+        />
+      </div>
+
+      <svg class="mapper-overlay" data-testid="map-overlay">
+        <path
+          v-for="e in overlayEdges"
+          :key="e.key"
+          :d="edgePath(e)"
+          class="map-edge"
+          :class="{ hovered: hoveredEdge === e.key }"
+          :data-testid="`map-edge-${e.impId}`"
+          fill="none"
+          @mouseenter="hoveredEdge = e.key"
+          @mouseleave="hoveredEdge = null"
+          @click="onEditPair(e.impId, e.refId)"
+        />
+      </svg>
+    </div>
+
+    <div v-else-if="refModel" class="mapper-body">
       <div class="mapper-pane" ref="refPane" data-testid="ref-pane">
         <div class="pane-label">reference — {{ namespace }}</div>
         <ProcessCanvas
@@ -280,8 +342,8 @@ const hoveredEdge = ref<string | null>(null);
       </svg>
     </div>
 
-    <div v-if="refModel" class="mapper-parties">
-      <div class="party-col">
+    <div v-if="refModel || (mapping.docMode && mapping.document)" class="mapper-parties">
+      <div class="party-col" v-if="!mapping.docMode && refModel">
         <div class="party-col-label">reference</div>
         <MapPartyList
           side="target"
@@ -291,7 +353,7 @@ const hoveredEdge = ref<string | null>(null);
           @edit-pair="onEditPair"
         />
       </div>
-      <div class="party-col">
+      <div class="party-col" :class="{ 'party-col-wide': mapping.docMode }">
         <div class="party-col-label">implementation</div>
         <MapPartyList
           side="source"
@@ -305,7 +367,7 @@ const hoveredEdge = ref<string | null>(null);
     </div>
 
     <div v-else class="mapper-empty">
-      <p>Load a reference model (.prl) to start mapping.</p>
+      <p>Load a reference model (.prl) or a document (.xml) to start mapping.</p>
       <p class="hint">The reference is the standard being adopted; the implementation is the working model. Pairs land in the implementation's <code>map_profile</code>.</p>
     </div>
 
@@ -425,6 +487,7 @@ const hoveredEdge = ref<string | null>(null);
   border-right: 1px solid var(--border);
 }
 .party-col:last-child { border-right: none; }
+.party-col-wide { grid-column: span 2; }
 .party-col-label {
   padding: 0.3rem 0.65rem;
   font-family: var(--font-mono);

@@ -1,4 +1,4 @@
-# 10 — Document mapping: elements ↔ paragraphs
+# 10 — Document mapping: elements ↔ paragraphs ✅ DONE (d01bf61)
 
 **Wave:** mapping · **Depends on:** 07 · **Priority:** P1
 
