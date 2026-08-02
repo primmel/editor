@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useModelStore } from './stores/model';
 import { useUiStore } from './stores/ui';
 import { useMappingStore } from './stores/mapping';
+import { useDiffStore } from './stores/diff';
 import ModelTree from './components/ModelTree.vue';
 import PageTree from './components/PageTree.vue';
 import ProcessCanvas from './components/ProcessCanvas.vue';
@@ -11,6 +12,7 @@ import ElementInspector from './components/ElementInspector.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
+import DiffView from './components/diff/DiffView.vue';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
 import { ref } from 'vue';
@@ -18,6 +20,7 @@ import { ref } from 'vue';
 const modelStore = useModelStore();
 const ui = useUiStore();
 const mappingStore = useMappingStore();
+const diffStore = useDiffStore();
 const canvasRef = ref<InstanceType<typeof ProcessCanvas> | null>(null);
 
 function onPalettePick(entry: PaletteKind) {
@@ -33,10 +36,10 @@ const model = computed(() => modelStore.model);
 // Dev/e2e hook: the stores on window (probes read the AST directly
 // instead of spelunking the DOM). Never in production builds.
 if (import.meta.env.DEV) {
-  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui, mapping: mappingStore };
+  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui, mapping: mappingStore, diff: diffStore };
 }
 
-type ViewMode = 'model' | 'registry' | 'mapping';
+type ViewMode = 'model' | 'registry' | 'mapping' | 'diff';
 const view = computed<ViewMode>({
   get: () => ui.view as ViewMode,
   set: (v) => { ui.view = v; },
@@ -93,6 +96,10 @@ const view = computed<ViewMode>({
             :class="{ active: view === 'mapping' }"
             @click="view = 'mapping'"
           >Mapping</button>
+          <button
+            :class="{ active: view === 'diff' }"
+            @click="view = 'diff'"
+          >Diff</button>
         </div>
         <template v-if="view === 'model'">
           <span class="nav-sep"></span>
@@ -154,6 +161,12 @@ const view = computed<ViewMode>({
     <template v-else-if="view === 'mapping' && model">
       <main class="workspace workspace-mapping">
         <MappingView :implementation-model="model" />
+      </main>
+    </template>
+
+    <template v-else-if="view === 'diff' && model">
+      <main class="workspace workspace-diff">
+        <DiffView :model="model" />
       </main>
     </template>
 

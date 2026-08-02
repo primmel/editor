@@ -1,4 +1,4 @@
-# 12 — The model-diff view
+# 12 — The model-diff view ✅ DONE (33bca19)
 
 **Wave:** advanced · **Depends on:** 01 · **Priority:** P1
 

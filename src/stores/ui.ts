@@ -19,7 +19,7 @@ export const useUiStore = defineStore('ui', () => {
   const panY = ref(0);
   const leftPanel = ref<'tree' | 'code'>('tree');
   const rightPanel = ref<'inspector' | 'compliance'>('inspector');
-  const view = ref<'model' | 'registry' | 'mapping'>('model');
+  const view = ref<'model' | 'registry' | 'mapping' | 'diff'>('model');
 
   function select(id: string, type: SelectionType) {
     selection.value = { id, type };
