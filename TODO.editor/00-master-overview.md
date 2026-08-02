@@ -1,4 +1,4 @@
-# 00 — Primmel Studio: the master overview (the MMEL port)
+# 00 — Primmel Studio: the master overview (the MMEL port) ✅ COMPLETE (2026-08-03)
 
 **Mission.** Port the Paneron MMEL Editor/Viewer/Mapper (extension of
 28 Jan 2022, `@paneron/extension-hls` v1.0.0-dev18) to Primmel v3 as
@@ -6,6 +6,18 @@
 platform, with the OIML SMART program as its first layer. This app
 (`~/src/primmel/editor`) is the home; the kernel
 (`~/src/primmel/primmel-ts`) is the only semantics.
+
+> **Program complete.** All twenty items landed, each in its own
+> commit with its gates green: 19 vitest files / 108 tests, the type
+> check, the production build, and the 18-leg e2e suite
+> (`e2e/run-all.sh`). The four kernel additions upstream: the
+> `version` line strict-parse special case (f0d4565), the `EnumValue`
+> type export (af1a5f6), the browser-bundle re-exports — type-expr +
+> mapping-coverage (12c26bc) and model-diff — and the `comment`
+> construct. The MMEL extension's full feature surface is ported:
+> model core, canvas, editors, the mapper with coverage, document
+> mapping, automap, simulation, measurement, comments, diff, legacy
+> import, and the OIML program layer proving the plugin seam.
 
 ## The source's feature surface (investigated)
 
@@ -64,26 +76,26 @@ From `~/src/mn/SMART-documentation/Demo/Extension/extension 28 Jan 2022.zip`:
 
 | # | Item | Priority | Wave |
 |---|---|---|---|
-| 01 | the model core (AST + command layer + undo/redo) | P0 | foundation |
-| 02 | the canvas engine (drag/connect/pages) | P0 | foundation |
-| 03 | the element palette (create nodes) | P0 | foundation |
-| 04 | the inspectors (per-type property editors) | P0 | foundation |
-| 05 | the data-model editors (HAS axis) | P0 | foundation |
-| 06 | subprocess pages (nested canvases) | P0 | foundation |
-| 07 | the mapper core (REF⇄IMP pairs) | P0 | mapping |
-| 08 | the coverage overlay (the calculus) | P0 | mapping |
-| 09 | multi-reference mapping (the lens) | P1 | mapping |
-| 10 | document mapping (elements ↔ paragraphs) | P1 | mapping |
-| 11 | automap (suggest + confirm + merge) | P1 | mapping |
-| 12 | the model-diff view | P1 | advanced |
-| 13 | the process simulation | P2 | advanced |
-| 14 | element comment threads | P2 | advanced |
-| 15 | legacy .mmel import (v1/v2 DSL → PRL) | P1 | migration |
-| 16 | the measurement harness view | P2 | program |
-| 17 | the OIML SMART layer (the program plugin) | P1 | program |
-| 18 | save-to-SSOT + the change preview | P0 | persistence |
-| 19 | e2e + docs (chapter, README, AGENTS) | P1 | polish |
-| 20 | the Monaco code editor (PRL language mode) | P2 | polish |
+| 01 | the model core (AST + command layer + undo/redo) | P0 | foundation | ✅ ba7b264 |
+| 02 | the canvas engine (drag/connect/pages) | P0 | foundation | ✅ a3af55b |
+| 03 | the element palette (create nodes) | P0 | foundation | ✅ c700d5f |
+| 04 | the inspectors (per-type property editors) | P0 | foundation | ✅ df19747 |
+| 05 | the data-model editors (HAS axis) | P0 | foundation | ✅ 26b513a |
+| 06 | subprocess pages (nested canvases) | P0 | foundation | ✅ 9d631c7 |
+| 07 | the mapper core (REF⇄IMP pairs) | P0 | mapping | ✅ 6a55ed3 |
+| 08 | the coverage overlay (the calculus) | P0 | mapping | ✅ e2087c3 |
+| 09 | multi-reference mapping (the lens) | P1 | mapping | ✅ 938cc7a |
+| 10 | document mapping (elements ↔ paragraphs) | P1 | mapping | ✅ e4e0687 |
+| 11 | automap (suggest + confirm + merge) | P1 | mapping | ✅ 957543d |
+| 12 | the model-diff view | P1 | advanced | ✅ 25572e3 |
+| 13 | the process simulation | P2 | advanced | ✅ bda9d2c |
+| 14 | element comment threads | P2 | advanced | ✅ 3373834 |
+| 15 | legacy .mmel import (v1/v2 DSL → PRL) | P1 | migration | ✅ 7b4aa73 |
+| 16 | the measurement harness view | P2 | program | ✅ 58227c0 |
+| 17 | the OIML SMART layer (the program plugin) | P1 | program | ✅ e93171d |
+| 18 | save-to-SSOT + the change preview | P0 | persistence | ✅ 99ddec3 |
+| 19 | e2e + docs (chapter, README, AGENTS) | P1 | polish | ✅ e1b2128 |
+| 20 | the Monaco code editor (PRL language mode) | P2 | polish | ✅ aede694 |
 
 ## The gates (every item lands green)
 
