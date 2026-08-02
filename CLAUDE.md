@@ -1,74 +1,86 @@
-# Primmel Editor
+# Primmel Studio (editor)
 
-Browser-based model editor/viewer for the Primmel modelling language.
-Successor to the Paneron SMART extension. Runs entirely in the browser —
-no server, no Electron.
+The premier editing tool for the Primmel modelling language (PRL v3) —
+the full port of the Paneron MMEL Editor/Viewer/Mapper onto the
+Primmel v3 kernel. Runs in the browser; the dev server adds an
+optional write API for direct SSOT saves.
+
+The full feature map lives in `README.md`; the work program in
+`TODO.editor/` (00–20, each file marked with its landing commit).
 
 ## Stack
 
-- Vue 3 + Pinia (state management)
-- Vite 8 (build tool)
-- Tailwind 4 (styling)
-- @primmel/primmel@^1.3.0 (parser, browser-compatible)
-- Monaco Editor (installed, integration planned)
+- Vue 3 + Pinia + Vite, TypeScript throughout.
+- `@primmel/primmel` — the LOCAL kernel (`file:../primmel-ts/packages/primmel`),
+  not the npm build: the Studio tracks the v3 kernel (MapProfile,
+  coverage, model-diff, type-expr, comments). Rebuild the kernel's
+  `dist/` AND `dist-browser/` after upstream changes
+  (`cd ../primmel-ts/packages/primmel && yarn build && yarn build:browser`).
+- Puppeteer + tsx for the e2e probes (`e2e/`).
 
-## Architecture
+## The laws (hold them or the app rots)
+
+1. **The AST is the single source of truth** (`stores/model.ts`).
+   Every mutation is a typed **Command** (`src/lib/commands.ts`,
+   apply + revert) through `modelStore.execute`. Undo/redo is exact.
+   No component writes the AST directly.
+2. **The kernel owns the semantics.** Parsing, serialization, the
+   coverage calculus, model-diff, the type vocabulary — import from
+   `@primmel/primmel`, never reimplement. Bridges live in `src/lib/`
+   (`coverage.ts`, `diff-view.ts`, `mapper.ts`, `multi-map.ts`).
+3. **Programs plug in, they don't branch the kernel.** The registry
+   (`src/plugins/`) carries program conveniences (the OIML SMART
+   layer first). `activePlugins(model)` decides; the Studio kernel
+   never names a program.
+4. **Projections, one store.** Tree, canvas, code, inspector, mapper,
+   diff render the same store. Computeds that read the AST key on
+   `modelStore.version` (commands mutate in place); computeds that
+   derive PRIMITIVES from the AST read `modelStore.version` DIRECTLY
+   (chained off an identity-stable computed they never re-fire).
+5. **Ephemeral stays ephemeral.** Simulation registers, measurement
+   run values, mapping rejections live in their own stores — never
+   the AST, never serialized.
+
+## Layout
 
 ```
 src/
-├── stores/
-│   ├── model.ts          Model state: rawText → parsed Standard, parseError
-│   └── ui.ts             UI state: selection, active canvas, zoom/pan, panels
-├── components/
-│   ├── ModelTree.vue     Left: tree of all model elements by type
-│   ├── ProcessCanvas.vue Center: SVG diagram (pan/zoom, node rendering)
-│   ├── CodeEditor.vue    Left (tab): .prl text editor + file open/download
-│   ├── ElementInspector.vue Right: properties of selected element
-│   └── CompliancePanel.vue  Right (tab): provisions with modality filter
-├── lib/
-│   ├── render.ts         Model → RenderNode/RenderEdge (SVG primitives)
-│   └── layout.ts         Auto-layout (BFS level assignment)
-└── App.vue               Three-panel layout with tabbed left/right
+├── stores/        model (AST+history), ui, mapping, diff, simulation, measurement
+├── lib/           pure logic: commands, render, edges, pages, factory,
+│                  mapper, multi-map, coverage, automap, diff-view,
+│                  simulator, comments, measurement, document-model,
+│                  mmel-import, save (+ __tests__ for all)
+├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel,
+│                  inspectors/, fields/, mapper/, diff/, simulation/,
+│                  comments/, measurement/, ImportPanel, SavePanel
+├── plugins/       the registry (types, index) + oiml/ (the first program)
+└── App.vue        the workspace shell + the dev/e2e window.__stores hook
 ```
 
-### State flow
-
-```
-rawText (model store)
-  → load() from @primmel/primmel
-  → Standard (resolved model)
-  → ProcessCanvas renders active Subprocess as SVG
-  → ModelTree renders element lists
-  → ElementInspector shows selected element props
-  → CompliancePanel lists provisions
-```
-
-### Key types from @primmel/primmel
-
-- `Standard` — the top-level model (roles, processes, provisions, pages, events, gateways, etc.)
-- `Standard['pages'][number]` — a canvas (was called Subprocess; internally still Subprocess)
-- `SubprocessComponent` — { name, element: { id } | null, x, y }
-- `EventNode` — eventType: 'start' | 'end' | 'signalcatch' | 'timer'
-- `Gateway` — gatewayType: 'exclusive_gateway' | 'parallel_gateway'
-
-## Dev
+## The gates (run before declaring done)
 
 ```bash
-npm install
-npm run dev    # auto port (usually 5173)
-npm run build  # → dist/
-npm run preview
+npx vue-tsc --noEmit
+npx vitest run
+npm run build
+./e2e/run-all.sh     # needs npm run dev on :5173
 ```
 
-## Vite alias note
+## Gotchas that bit us (don't relearn them)
 
-The parser's `exports.browser` in 1.3.0 points to a `dist-browser/` that
-isn't in the npm tarball. We alias `@primmel/primmel` to `dist/index.js`
-in `vite.config.ts`. This works because `load()` and `dump()` are pure
-JS (no Node APIs). Once 1.3.1 ships with the browser bundle included,
-the alias can be removed.
-
-## Deployment
-
-Static site — no server. Deploy to GitHub Pages or any static host.
-Can be embedded in primmel.org via iframe.
+- **`standard.root` is the id marker**, the root page's content lives
+  in `pages`. `pageOf()` in commands.ts handles it.
+- **Process `page` is a COPY** (the resolver strips `_relations`) —
+  page identity is by id, never by object. `renamePage` updates both.
+- **Vue's select race**: `:value` on a select patches before freshly
+  created options exist → the browser resets to ''. Use `v-model`
+  with a computed (it sets value after the full patch).
+- **Canvas labels truncate** (`labelText` in ProcessCanvas) — e2e
+  probes must match the truncated form or use `data-node-id`.
+- **e2e + tsx**: named functions/methods inside `page.evaluate` get
+  `__name()` injected — it doesn't exist in the browser. Pass the
+  evaluate as a STRING for those.
+- **Template literals eat `\s`/`\d`** in e2e regexes — write `\\s`.
+- **The kernel's browser bundle** (`dist-browser/index.mjs`) has its
+  OWN entry (`src/ser-des/index.ts`) — a runtime export missing there
+  silently drops from the browser build. Rebuild both bundles.
