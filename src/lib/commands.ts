@@ -384,6 +384,52 @@ export function reorderList<T extends { id: string }>(
   };
 }
 
+// ── Generic list CRUD (enums, registries, enum values…) ─────────────
+// For element kinds with no canvas placement: push/remove by id with
+// before-capture, so undo restores the exact slot.
+
+export function createInList<T extends { id: string }>(
+  listOf: (ast: Standard) => T[],
+  element: T,
+  label?: string,
+): Command {
+  return {
+    label: label ?? `create ${element.id}`,
+    apply(ast) {
+      const list = listOf(ast);
+      if (list.some(x => x.id === element.id)) throw new Error(`duplicate id ${element.id}`);
+      list.push(element);
+    },
+    revert(ast) {
+      const list = listOf(ast);
+      const i = list.findIndex(x => x.id === element.id);
+      if (i >= 0) list.splice(i, 1);
+    },
+  };
+}
+
+export function deleteInList<T extends { id: string }>(
+  listOf: (ast: Standard) => T[],
+  id: string,
+  label?: string,
+): Command {
+  let captured: { index: number; element: T };
+  return {
+    label: label ?? `delete ${id}`,
+    apply(ast) {
+      const list = listOf(ast);
+      const index = list.findIndex(x => x.id === id);
+      if (index < 0) throw new Error(`unknown element ${id}`);
+      captured = { index, element: list[index]! };
+      list.splice(index, 1);
+    },
+    revert(ast) {
+      const list = listOf(ast);
+      list.splice(Math.min(captured.index, list.length), 0, captured.element);
+    },
+  };
+}
+
 // ── Metadata ────────────────────────────────────────────────────────
 
 export function updateMeta(patch: Partial<Metadata>): Command {

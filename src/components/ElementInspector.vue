@@ -4,6 +4,9 @@ import type { Standard } from '@primmel/primmel';
 import { useUiStore } from '../stores/ui';
 import ProcessInspector from './inspectors/ProcessInspector.vue';
 import OtherInspectors from './inspectors/OtherInspectors.vue';
+import DataClassInspector from './inspectors/DataClassInspector.vue';
+import RegistryInspector from './inspectors/RegistryInspector.vue';
+import EnumInspector from './inspectors/EnumInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -33,8 +36,23 @@ const target = computed(() => {
         :kind="target.type as 'approval' | 'event' | 'gateway' | 'subprocess'"
         :element-id="target.id"
       />
+      <DataClassInspector
+        v-else-if="target.type === 'dataclass'"
+        :model="props.model"
+        :class-id="target.id"
+      />
+      <RegistryInspector
+        v-else-if="target.type === 'registry'"
+        :model="props.model"
+        :registry-id="target.id"
+      />
+      <EnumInspector
+        v-else-if="target.type === 'enum'"
+        :model="props.model"
+        :enum-id="target.id"
+      />
       <div v-else class="inspector-note">
-        The {{ target.type }} inspector arrives with its wave (dataclass: 05, mapper: 07).
+        The {{ target.type }} inspector arrives with its wave (mapper: 07, measurements: 16).
       </div>
     </template>
     <div v-else class="inspector-empty">

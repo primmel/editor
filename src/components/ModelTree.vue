@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
+import { createElement, createInList, mintId } from '../lib/commands';
+import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
+const modelStore = useModelStore();
 
 interface TreeGroup {
   label: string;
   type: SelectionType;
+  /** Id prefix when the group offers in-tree creation. */
+  createPrefix?: string;
   items: { id: string; detail?: string; children?: string[]; depth?: number }[];
 }
 
@@ -36,13 +41,35 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Events', type: 'event', items: m.events.map((e) => ({ id: e.id, detail: e.eventType })) },
     { label: 'Gateways', type: 'gateway', items: m.gateways.map((g) => ({ id: g.id, detail: g.gatewayType })) },
     { label: 'Canvases', type: 'canvas', items: m.pages.map((p) => ({ id: p.id })) },
-    { label: 'Data Classes', type: 'dataclass', items: m.dataclasses.map((d) => ({ id: d.id })) },
-    { label: 'Registries', type: 'registry', items: m.regs.map((r) => ({ id: r.id })) },
+    { label: 'Data Classes', type: 'dataclass', createPrefix: 'DC', items: m.dataclasses.map((d) => ({ id: d.id })) },
+    { label: 'Registries', type: 'registry', createPrefix: 'REG', items: m.regs.map((r) => ({ id: r.id })) },
+    { label: 'Enums', type: 'enum', createPrefix: 'EN', items: m.enums.map((e) => ({ id: e.id, detail: `${e.values.length} values` })) },
     { label: 'Variables', type: 'measurement', items: m.variables.map((v) => ({ id: v.id })) },
     { label: 'Notes', type: 'reference', items: m.notes.map((n) => ({ id: n.id })) },
   ];
-  return result.filter((g) => g.items.length > 0);
+  return result.filter((g) => g.items.length > 0 || g.createPrefix);
 });
+
+/** In-tree creation (dataclass / registry / enum) — the element lands
+ *  in the model and becomes the selection, ready for its inspector. */
+function createIn(group: TreeGroup) {
+  const m = props.model;
+  const id = mintId(m, group.createPrefix!);
+  switch (group.type) {
+    case 'dataclass':
+      modelStore.execute(createElement('dataclass', id));
+      break;
+    case 'registry':
+      modelStore.execute(createInList((a: Standard) => a.regs, { id, title: '', data: null }, `create registry ${id}`));
+      break;
+    case 'enum':
+      modelStore.execute(createInList((a: Standard) => a.enums, { id, values: [] }, `create enum ${id}`));
+      break;
+    default:
+      return;
+  }
+  ui.select(id, group.type);
+}
 
 function childItems(parentId: string, depth: number): { id: string; detail?: string; depth: number }[] {
   const parent = props.model.processes.find(p => p.id === parentId);
@@ -67,7 +94,17 @@ function selectItem(type: SelectionType, id: string) {
 <template>
   <div class="model-tree">
     <div v-for="group in groups" :key="group.label" class="tree-group">
-      <div class="group-header">{{ group.label }} ({{ group.items.length }})</div>
+      <div class="group-header">
+        {{ group.label }} ({{ group.items.length }})
+        <button
+          v-if="group.createPrefix"
+          type="button"
+          class="group-add"
+          :title="`new ${group.label.toLowerCase()}`"
+          :data-testid="`tree-add-${group.type}`"
+          @click.stop="createIn(group)"
+        >+</button>
+      </div>
       <ul class="group-items">
         <li
           v-for="item in group.items"
@@ -129,6 +166,19 @@ function selectItem(type: SelectionType, id: string) {
   height: 1px;
   background: var(--border-soft);
 }
+.group-add {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.62rem;
+  width: 16px;
+  height: 16px;
+  line-height: 1;
+  padding: 0;
+}
+.group-add:hover { border-color: var(--accent); }
 .group-items { list-style: none; padding: 0; margin: 0; }
 .group-items li {
   padding: 0.25rem 0.5rem;

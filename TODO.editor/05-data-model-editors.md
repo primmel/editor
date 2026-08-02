@@ -1,4 +1,4 @@
-# 05 — The data-model editors (the HAS axis)
+# 05 — The data-model editors (the HAS axis) ✅ DONE (8467e2d)
 
 **Wave:** foundation · **Depends on:** 04 · **Priority:** P0
 
