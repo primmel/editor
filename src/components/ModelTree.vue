@@ -31,6 +31,7 @@ const groups = computed<TreeGroup[]>(() => {
   const result: TreeGroup[] = [
     { label: 'Roles', type: 'role', items: m.roles.map((r) => ({ id: r.id, detail: r.name })) },
     { label: 'Processes', type: 'process', items: processItems },
+    { label: 'Approvals', type: 'approval', items: m.approvals.map((a) => ({ id: a.id, detail: a.name })) },
     { label: 'Provisions', type: 'provision', items: m.provisions.map((p) => ({ id: p.id, detail: p.modality })) },
     { label: 'Events', type: 'event', items: m.events.map((e) => ({ id: e.id, detail: e.eventType })) },
     { label: 'Gateways', type: 'gateway', items: m.gateways.map((g) => ({ id: g.id, detail: g.gatewayType })) },

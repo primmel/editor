@@ -3,7 +3,8 @@ import { ref, computed } from 'vue';
 
 export type SelectionType =
   | 'role' | 'process' | 'provision' | 'event' | 'gateway'
-  | 'canvas' | 'dataclass' | 'registry' | 'measurement' | 'reference' | 'note';
+  | 'canvas' | 'dataclass' | 'registry' | 'measurement' | 'reference' | 'note'
+  | 'approval' | 'subprocess';
 
 export interface Selection {
   id: string;

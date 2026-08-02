@@ -1,4 +1,4 @@
-# 03 — The element palette: create nodes
+# 03 — The element palette: create nodes ✅ DONE (c700d5f)
 
 **Wave:** foundation · **Depends on:** 02 · **Priority:** P0
 

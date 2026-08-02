@@ -1,4 +1,4 @@
-# 04 — The inspectors: per-type property editors
+# 04 — The inspectors: per-type property editors ✅ DONE (23c1929)
 
 **Wave:** foundation · **Depends on:** 01 · **Priority:** P0
 

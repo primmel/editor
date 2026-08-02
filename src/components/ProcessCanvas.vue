@@ -152,6 +152,8 @@ function onNodeMouseDown(e: MouseEvent, node: RenderNode) {
 function selectionTypeOf(node: RenderNode) {
   switch (node.kind) {
     case 'process': return 'process' as const;
+    case 'approval': return 'approval' as const;
+    case 'subprocess': return 'subprocess' as const;
     case 'dataclass': return 'dataclass' as const;
     case 'exclusive_gateway':
     case 'parallel_gateway': return 'gateway' as const;
