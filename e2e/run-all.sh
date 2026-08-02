@@ -20,6 +20,7 @@ for leg in \
   diff-smoke \
   simulation-smoke \
   monaco-smoke \
+  new-model-smoke \
   comments-smoke \
   measurement-smoke \
   import-smoke \

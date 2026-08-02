@@ -1,4 +1,4 @@
-# 22 — The new-model flow (File → New)
+# 22 — The new-model flow (File → New) ✅ DONE (c28bcaa)
 
 **Wave:** foundation · **Depends on:** 01 · **Priority:** P0
 

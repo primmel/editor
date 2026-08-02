@@ -18,6 +18,7 @@ import CommentPanel from './components/comments/CommentPanel.vue';
 import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
 import SavePanel from './components/SavePanel.vue';
+import NewModelDialog from './components/NewModelDialog.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
 import { activePlugins } from './plugins';
@@ -31,6 +32,7 @@ const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
 const importOpen = ref(false);
 const saveOpen = ref(false);
+const newOpen = ref(false);
 const openPanelId = ref<string | null>(null);
 
 // ── The dirty discipline (TODO.editor/18) — Ctrl+S saves; leaving with
@@ -39,6 +41,10 @@ function onKeydown(e: KeyboardEvent) {
   if ((e.metaKey || e.ctrlKey) && e.key === 's') {
     e.preventDefault();
     saveOpen.value = true;
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+    e.preventDefault();
+    newOpen.value = true;
   }
 }
 
@@ -167,6 +173,7 @@ const view = computed<ViewMode>({
             @click="view = 'diff'"
           >Diff</button>
           <span class="nav-sep"></span>
+          <button data-testid="open-new" @click="newOpen = true">New</button>
           <button
             class="save-nav-btn"
             :class="{ dirty: modelStore.dirty }"
@@ -272,6 +279,7 @@ const view = computed<ViewMode>({
 
     <ImportPanel v-if="importOpen" @close="importOpen = false" />
     <SavePanel v-if="saveOpen && model" :model="model" @close="saveOpen = false" />
+    <NewModelDialog v-if="newOpen" @close="newOpen = false" />
 
     <div v-if="openPanel" class="panel-modal-backdrop" @click.self="openPanelId = null">
       <div class="panel-modal" :data-testid="`panel-${openPanel.id}`">
