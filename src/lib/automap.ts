@@ -111,6 +111,19 @@ export function nameSimilarity(
   return best;
 }
 
+/** The cheap pre-score (no edit distance — the scale budget's first
+ *  pass): the best token overlap across the label pairs. */
+function preScore(
+  a: { id: string; name?: string },
+  b: { id: string; name?: string },
+): number {
+  let best = tokenOverlap(tokens(a.id), tokens(b.id));
+  if (a.name && b.name) best = Math.max(best, tokenOverlap(tokens(a.name), tokens(b.name)));
+  if (a.name) best = Math.max(best, tokenOverlap(tokens(a.name), tokens(b.id)));
+  if (b.name) best = Math.max(best, tokenOverlap(tokens(a.id), tokens(b.name)));
+  return best;
+}
+
 // ── Structural similarity ────────────────────────────────────────────
 
 /** Processes: the input/output registry id overlap. Dataclasses: the
@@ -175,9 +188,15 @@ export function suggestMappings(
           .map(p => splitTargetRef(p.target)?.id)
           .filter((x): x is string => !!x),
       );
-      for (const re of refEls) {
-        if (existing.has(re.id)) continue;
-        if (opts.skip?.has(`${ie.id}|${re.id}`)) continue;
+      // The scale budget (TODO.editor/34): the O(m·n) edit distance
+      // runs only for token-competitive candidates — a 262×56-process
+      // scan stays interactive. A pair can only rank on edit alone
+      // when its token overlap is non-trivial.
+      const candidates = refEls
+        .filter(re => !existing.has(re.id) && !opts.skip?.has(`${ie.id}|${re.id}`))
+        .map(re => ({ re, cheap: preScore(ie, re) }))
+        .filter(c => c.cheap >= 0.15);
+      for (const { re } of candidates) {
         const name = nameSimilarity(ie, re);
         const structural = structuralSimilarity(imp, ref, ie.id, re.id);
         const score = Math.min(1, name + structural * 0.15);

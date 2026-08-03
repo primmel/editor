@@ -1,4 +1,4 @@
-# 34 — The render-layer specs + the scale proof
+# 34 — The render-layer specs + the scale proof ✅ DONE (d46a9e4)
 
 **Wave:** audit · **Depends on:** 02 · **Priority:** P1
 

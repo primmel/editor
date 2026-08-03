@@ -7,7 +7,9 @@ export const primmelLanguageDefinition: languages.IMonarchLanguage = {
   keywords: [
     'root', 'version', 'metadata', 'schema', 'title', 'namespace',
     'edition', 'author', 'shortname',
-    'role', 'process', 'canvas', 'parent',
+    'role', 'process', 'canvas', 'parent', 'subprocess', 'comment',
+    'requirement', 'conformance_test', 'subject', 'instrument', 'verdict',
+    'measurement', 'signal_event',
     'start_event', 'end_event', 'timer_event', 'signal_catch_event',
     'exclusive_gateway', 'parallel_gateway',
     'provision', 'validate_provision', 'validate_measurement',

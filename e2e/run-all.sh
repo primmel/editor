@@ -28,6 +28,7 @@ for leg in \
   plugin-smoke \
   capability-walk \
   r7-smoke \
+  scale-smoke \
   save-smoke
 do
   echo "── $leg"

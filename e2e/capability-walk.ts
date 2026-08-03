@@ -1,4 +1,8 @@
 import puppeteer from 'puppeteer'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+
+const ACME_CORPUS = readFileSync(join('src/lib/__tests__/fixtures/corpus', 'acme.mmel'), 'utf8')
 
 // ─────────────────────────────────────────────────────────────────────
 // The capability walk (TODO.editor/25) — one continuous Studio session
@@ -271,16 +275,11 @@ await new Promise(r => setTimeout(r, 500))
 console.log('leg 7 (run execution):', results['7-run-execution'])
 
 // ── Leg 8: import a legacy MMEL file (in-browser path) ───────────────
-const corpusText = await page.evaluate(`(async () => {
-  const res = await fetch('/src/lib/__tests__/fixtures/corpus/acme.mmel?raw')
-  const mod = await res.text()
-  return mod
-})()`)
 await page.evaluate(`(async (text) => {
   const { importLegacy } = await import('/src/lib/mmel-import.ts')
   const result = importLegacy(text)
   window.__stores.model.loadText(result.canonical)
-})(${JSON.stringify(corpusText)})`)
+})(${JSON.stringify(ACME_CORPUS)})`)
 await new Promise(r => setTimeout(r, 700))
 {
   const s = await page.evaluate(`(() => ({
