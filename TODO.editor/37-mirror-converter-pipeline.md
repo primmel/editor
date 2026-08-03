@@ -1,4 +1,4 @@
-# 37 — The mirror converter pipeline (Metanorma → JSON)
+# 37 — The mirror converter pipeline (Metanorma → JSON) ✅ DONE (af47ead)
 
 **Wave:** oiml-cs · **Depends on:** 10 · **Priority:** P0
 

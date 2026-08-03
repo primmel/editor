@@ -1,0 +1,3442 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Transition Arrangements under the OIML-CS"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_20cd1a8d-3ef7-2354-48df-3ec3d55a1efc",
+            "obligation": "informative",
+            "semx_id": "_20cd1a8d-3ef7-2354-48df-3ec3d55a1efc",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_bc8c39ab-bd2e-870f-299d-c3530b8ad0d5",
+                "semx_id": "_bc8c39ab-bd2e-870f-299d-c3530b8ad0d5"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the Maintenance Group of the OIML Certification System (OIML-CS) Management Committee (MC)."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_e0327134-f42c-6782-f00e-fef2b2740fec",
+                "semx_id": "_e0327134-f42c-6782-f00e-fef2b2740fec"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Management Committee approved this Edition 4 of OIML-CS PD-07 by electronic ballot on 15 January 2024 and it was published on 16 January 2024. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b",
+                "semx_id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to the Framework for the OIML Certification System (OIML-CS) (OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") which contains the framework for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796",
+                "semx_id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The text of this publication is based on the following documents:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_1526cfd5-9827-cd4e-0af5-c8ef3e8d641d",
+                "semx_id": "_1526cfd5-9827-cd4e-0af5-c8ef3e8d641d",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f30f18dc-361e-d36f-6feb-8f9657c63a79"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_1c62e812-9f28-fef3-8497-851eb1020a65"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published July 2017"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_bae92a51-9d3c-ac34-e575-e75eed07c5e8"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 20 December 2018"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_95de0637-9afe-4dfc-8fd7-d0af50f31e4f"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 10 June 2021"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_eeb34bcb-9224-c19c-5fdd-f9d12dd65354"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 4 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N077"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment: 20230921"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_06910e09-4947-fbeb-3d49-218c1bed18a2"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-07 Edition 4 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P4_N126"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC approval: 20231213"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_2816795d-0a53-3d82-8872-3b1578a9e56e",
+            "obligation": "informative",
+            "semx_id": "_2816795d-0a53-3d82-8872-3b1578a9e56e",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_d0482303-3e98-7a9c-d1d1-277fc9b2915b",
+                "obligation": "informative",
+                "semx_id": "_d0482303-3e98-7a9c-d1d1-277fc9b2915b"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06",
+                    "semx_id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML Certification System (OIML-CS) has been established"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "semx_id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a6612b28-6421-54a8-7065-2fe6adf15852"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb",
+                            "semx_id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to promote the global harmonization, uniform interpretation and implementation of legal metrological requirements for measuring instruments and/or modules,"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bf572391-8389-0684-1582-47046bbdf569"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9",
+                            "semx_id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to avoid unnecessary re-testing when obtaining national type evaluations and approvals, and to support the recognition of measuring instruments and/or modules under legal metrological control, while achieving and maintaining confidence in the results in support of facilitating the global trade of individual instruments, and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c154974c-667c-fafa-81a6-acc78fe24c2c"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb",
+                            "semx_id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to establish rules and procedures for fostering mutual confidence among participating OIML Member States and Corresponding Members in the results of type evaluations that indicate conformity of measuring instruments and/or modules, under legal metrological control, to metrological and technical requirements established in the applicable OIML Recommendation(s)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_bc3319c9-08de-4a41-c48a-14fb5575e928",
+                "obligation": "informative",
+                "semx_id": "_bc3319c9-08de-4a41-c48a-14fb5575e928"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_78425cd2-6101-ee11-7f26-9270bcb301eb",
+                    "semx_id": "_78425cd2-6101-ee11-7f26-9270bcb301eb"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by a range of Operational Documents and Procedural Documents which are developed, maintained and approved by the OIML-CS Management Committee. == Scope"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea",
+                    "semx_id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This document is one of a series of Operational Documents and Procedural Documents that define the rules for the operation of the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_114dc033-f9fe-9100-5e73-ee00ee3868fc",
+                    "semx_id": "_114dc033-f9fe-9100-5e73-ee00ee3868fc"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This publication contains the procedures covering the transition of the OIML Basic Certificate System and the OIML Mutual Acceptance Arrangement (MAA) to the OIML-CS, including the use of existing OIML Basic and MAA certificates and their associated OIML type evaluation reports and previous test data to issue OIML certificates under the OIML-CS. It also covers the transition arrangements when a category of measuring instrument moves from Scheme B to Scheme A under the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_e20749cb-eb81-3eb8-eca0-7308de3746a0",
+                    "semx_id": "_e20749cb-eb81-3eb8-eca0-7308de3746a0"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "These procedures relate to the framework for the OIML-CS, as given in OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", the Operational Rules as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_01",
+                            "citeas": "OIML-CS OD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_02",
+                            "citeas": "OIML-CS OD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", and the Procedures as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_01",
+                            "citeas": "OIML-CS PD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_02",
+                            "citeas": "OIML-CS PD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-04",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_04",
+                            "citeas": "OIML-CS PD-04"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-05",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_05",
+                            "citeas": "OIML-CS PD-05"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-06",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_06",
+                            "citeas": "OIML-CS PD-06"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-08",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_08",
+                            "citeas": "OIML-CS PD-08"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". == Terminology and abbreviations"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_3898ed46-ba3a-6ca5-8d3d-0f269dc02262",
+                    "semx_id": "_3898ed46-ba3a-6ca5-8d3d-0f269dc02262"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The terminology and abbreviations defined in clause 3 of OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " apply. In addition, the following definition applies:"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_43e605e5-9b43-ef14-df48-826a06240299",
+                "obligation": "informative",
+                "semx_id": "_43e605e5-9b43-ef14-df48-826a06240299"
+              }
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c0c7f2cd-f70d-b9eb-9956-b50ee2b3182f",
+                "obligation": "informative",
+                "semx_id": "_c0c7f2cd-f70d-b9eb-9956-b50ee2b3182f",
+                "title": "previous test data"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_2ed96ef8-e1d1-7603-d651-02d3644390d5",
+                    "semx_id": "_2ed96ef8-e1d1-7603-d651-02d3644390d5"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "test results and test reports that have been used to support the issuing of an OIML Basic or MAA type evaluation report or an OIML Basic or MAA certificate under the OIML Basic Certificate System or OIML Mutual Acceptance Arrangement == Status, acceptance and revision of existing OIML Basic and MAA certificates"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_ec20f09e-647f-ab7a-c58d-98731f1f00f9",
+                "obligation": "informative",
+                "semx_id": "_ec20f09e-647f-ab7a-c58d-98731f1f00f9"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_ee8d5ff5-ec96-3147-d0bb-a02b23e1146a",
+                    "semx_id": "_ee8d5ff5-ec96-3147-d0bb-a02b23e1146a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "As specified in OIML B 18, 15.10 and 15.11 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", OIML Basic and OIML MAA certificates that were issued under the OIML Basic Certificate System and the OIML MAA respectively are considered to remain valid."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_42f51c3a-3657-2812-cb04-ce5ac8971f0d",
+                "obligation": "informative",
+                "semx_id": "_42f51c3a-3657-2812-cb04-ce5ac8971f0d"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_a02da885-1021-8331-69c0-0e62775031dc",
+                    "semx_id": "_a02da885-1021-8331-69c0-0e62775031dc"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Utilizers and Associates may specify their acceptance of OIML MAA certificates and/or OIML MAA type evaluation reports in their OIML-CS Declaration, and any associated conditions, as defined in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-08",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_08",
+                            "citeas": "OIML-CS PD-08"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". Acceptance of OIML Basic certificates will be on a voluntary basis; this will not be specified in the OIML-CS Declaration of a Utilizer or Associate."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_3933fc40-e557-b6d6-0c2e-a41851419013",
+                "obligation": "informative",
+                "semx_id": "_3933fc40-e557-b6d6-0c2e-a41851419013"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c233c0f3-e496-64c6-faa8-b3ba9111bc1a",
+                    "semx_id": "_c233c0f3-e496-64c6-faa8-b3ba9111bc1a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "From 1 January 2018, no new OIML Basic certificates or OIML MAA certificates may be issued and revisions to existing OIML Basic certificates or existing OIML MAA certificates are no longer permitted. However, an “Annex” to the OIML Basic certificate or OIML MAA certificate may be issued by the original Issuing Authority (under the OIML Basic Certificate System) or by the original Issuing Participant (under the OIML MAA) respectively in the following instances:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_e99c9d05-f7a8-87e5-0c4e-942c21517f32",
+                    "semx_id": "_e99c9d05-f7a8-87e5-0c4e-942c21517f32",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_9fc1b55e-901b-86cc-45e8-f240afe083f6"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_f118c975-c13b-efed-8075-3b98cfc76aed",
+                            "semx_id": "_f118c975-c13b-efed-8075-3b98cfc76aed"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to correct an error by the applicant or the Issuing Authority/Participant; or"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_732118d2-defb-88be-3810-bfc8806c9be6"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_f3de7215-240e-a8bf-dd48-dbc6e5b6dc58",
+                            "semx_id": "_f3de7215-240e-a8bf-dd48-dbc6e5b6dc58"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "when the ownership of an OIML Basic or MAA certificate is transferred to a new applicant."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f088a38b-843a-009f-ddd9-eab385f720d4",
+                "obligation": "informative",
+                "semx_id": "_f088a38b-843a-009f-ddd9-eab385f720d4"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_1d4a1de7-76fe-d9ab-429f-44c80b494513",
+                    "semx_id": "_1d4a1de7-76fe-d9ab-429f-44c80b494513"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An “Annex” to an OIML Basic certificate or OIML MAA certificate cannot be issued to change the technical or metrological characteristics of the measuring instrument/module. In this instance, a new OIML certificate shall be issued under Scheme A or Scheme B as appropriate. Existing OIML Basic and/or OIML MAA type evaluation reports may be used to support the issuing of the new OIML certificate according to the conditions specified in clauses 5 and 6 below."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_814657f2-0323-e41e-734b-2ef7443e4236",
+                "obligation": "informative",
+                "semx_id": "_814657f2-0323-e41e-734b-2ef7443e4236"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0d7e4396-19a4-c0f9-4c3a-a5f6cf4fb34d",
+                    "semx_id": "_0d7e4396-19a4-c0f9-4c3a-a5f6cf4fb34d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Applications for OIML certification under either Scheme A or Scheme B may be made based on existing OIML MAA certificates or OIML Basic certificates, and their corresponding OIML MAA or Basic type evaluation reports and previous test data."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d4f14810-4ab1-ff19-0b6e-f504bff4e8cb",
+                    "semx_id": "_d4f14810-4ab1-ff19-0b6e-f504bff4e8cb"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In this case the application shall be made to the ‘original’ OIML Issuing Authority as the organization that issued the OIML MAA certificate (as an Issuing Participant under the OIML MAA) or the OIML Basic certificate (as an Issuing Authority under the OIML Basic Certificate System). The following exceptions apply to this requirement:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_6028a0a5-ee19-4bac-7013-0ed709266b4f",
+                    "semx_id": "_6028a0a5-ee19-4bac-7013-0ed709266b4f",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_ad112855-ea7b-6fe8-5e78-c071ad83ed76"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_979207ce-858a-8fdd-9836-7651ed168f10",
+                            "semx_id": "_979207ce-858a-8fdd-9836-7651ed168f10"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where the original Issuing Participant or Issuing Authority is not an OIML Issuing Authority under the OIML-CS for that category of measuring instrument, the application may be made to another OIML Issuing Authority for that category of measuring instrument."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_5dd81aba-98b0-ebdf-97b2-c8b52a92c502"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_a2263ed1-5daf-bf72-64c5-77c18617f1a6",
+                            "semx_id": "_a2263ed1-5daf-bf72-64c5-77c18617f1a6"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where the original OIML Issuing Authority is not able to fulfil the certification process required by the application (for whatever reason), a new application may be made to another OIML Issuing Authority for that category of measuring instrument subject to, and accompanied by, written permission from either:"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "ordered_list",
+                          "attrs": {
+                            "id": "_f9704d47-a4cc-9dd5-b425-20db371bccb0",
+                            "semx_id": "_f9704d47-a4cc-9dd5-b425-20db371bccb0",
+                            "type": "arabic"
+                          },
+                          "content": [
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_fd13cc66-4eea-3d8b-5ee7-5021aa7b5f82"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_4cee5dc9-e38a-d975-c4ff-c6a2720a9012",
+                                    "semx_id": "_4cee5dc9-e38a-d975-c4ff-c6a2720a9012"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "the original OIML Issuing Authority; or"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_8559aa3e-395b-a017-c7fa-455f9c5448ac"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_17040f9d-7611-f63f-f443-807b40b86f05",
+                                    "semx_id": "_17040f9d-7611-f63f-f443-807b40b86f05"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "the Executive Secretary of the OIML-CS."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_8b6fe794-06a8-78f1-9f19-673c35da6053",
+                "obligation": "informative",
+                "semx_id": "_8b6fe794-06a8-78f1-9f19-673c35da6053"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_7a9da9ba-bd48-d310-5a82-8aa6d4c50018",
+                    "semx_id": "_7a9da9ba-bd48-d310-5a82-8aa6d4c50018"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The “Annex” shall bear the applicable logo (the MAA logo for MAA certificates or the OIML logo for Basic certificates) and shall be provided with a unique number. Requirements regarding the use of the OIML and OIML-CS logos are specified in OIML B 20 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 20:2019",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_20",
+                            "citeas": "OIML B 20:2019"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". == Issuing an OIML certificate under Scheme B"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_64f2e40e-0389-8967-14ec-3eb51a7240a7",
+                "obligation": "informative",
+                "semx_id": "_64f2e40e-0389-8967-14ec-3eb51a7240a7"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_05513b16-bbd5-65d7-9f90-64f2b572b663",
+                    "semx_id": "_05513b16-bbd5-65d7-9f90-64f2b572b663"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An applicant may apply to an OIML Issuing Authority to use an existing OIML MAA certificate or OIML Basic certificate, its corresponding OIML MAA or Basic type evaluation report and previous test data to issue a Scheme B OIML certificate and OIML type evaluation report under the OIML-CS. The requirements of 4.5 apply."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_273d8bc1-2492-bef6-b4e4-d856081d9ca8",
+                "obligation": "informative",
+                "semx_id": "_273d8bc1-2492-bef6-b4e4-d856081d9ca8"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_7352e18f-3b35-8fcf-0558-0534d6b1ec9c",
+                    "semx_id": "_7352e18f-3b35-8fcf-0558-0534d6b1ec9c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where previous test data is used to issue a Scheme B OIML certificate and OIML type evaluation report, the OIML Issuing Authority shall ensure that:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_b3a8f3e5-9fdf-eef0-7fe8-9ed898206524",
+                    "semx_id": "_b3a8f3e5-9fdf-eef0-7fe8-9ed898206524",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_01497eef-1a4f-d91f-ac17-cc6150db7a58"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_eca5b936-c78c-fef2-6136-8ec4bceea44b",
+                            "semx_id": "_eca5b936-c78c-fef2-6136-8ec4bceea44b"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "at the time that the original testing took place the test facility satisfied the requirements of ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025_2017",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2005",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025_2005",
+                                    "citeas": "ISO/IEC 17025:2005"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "1)",
+                              "marks": [
+                                {
+                                  "type": "footnote",
+                                  "attrs": {
+                                    "id": "_041a8073-a30f-88e4-1ea6-520d635c628d",
+                                    "reference": "1"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ", either through self-declaration, peer assessment or accreditation with a scope covering the relevant OIML Recommendation (see 5.3 for a conditional exception);"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_d39e67d6-c0a4-a80f-ebd0-c9a67696a092"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_99735f40-7cfa-db8d-13ac-0f9e05d6f45c",
+                            "semx_id": "_99735f40-7cfa-db8d-13ac-0f9e05d6f45c"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the testing was performed on a sample that is representative of the current type; and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_97a220d9-d569-e377-7525-a17592a88f2f"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_107f397e-c82b-90f2-3dad-c8ecfc4c7751",
+                            "semx_id": "_107f397e-c82b-90f2-3dad-c8ecfc4c7751"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the testing that was performed is equivalent to the requirements specified in the edition of the OIML Recommendation for which the OIML certificate is being issued."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_486da01f-79c4-90d4-995c-a0b054ddd4b0",
+                "obligation": "informative",
+                "semx_id": "_486da01f-79c4-90d4-995c-a0b054ddd4b0"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_076b4311-e717-a5fb-7f13-5fcce831d39b",
+                    "semx_id": "_076b4311-e717-a5fb-7f13-5fcce831d39b"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where testing was performed in a test facility (either a test laboratory or field site), that did not satisfy the requirements of 5.2 a) at the time of testing, the OIML Issuing Authority shall include a documented appraisal of the testing and the use of any previous test data in the OIML type evaluation report. The documented appraisal shall include an explanation as to why the previous test data is considered acceptable under the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0495aa64-41c4-0e00-9f0e-350eaa0f9ae0",
+                    "semx_id": "_0495aa64-41c4-0e00-9f0e-350eaa0f9ae0"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The requirements of 5.2 b) and c) still apply."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_eb1675a5-0650-3056-22a6-1de6b978f66d",
+                "obligation": "informative",
+                "semx_id": "_eb1675a5-0650-3056-22a6-1de6b978f66d"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5c8a8913-7bc4-3bb1-37af-3f7927cf4944",
+                    "semx_id": "_5c8a8913-7bc4-3bb1-37af-3f7927cf4944"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The procedures specified in clause 4 of "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-05",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_05",
+                            "citeas": "OIML-CS PD-05"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " shall be applied. Previous test data that satisfies the requirements of 5.2 above is deemed to fulfil the requirement specified in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-05",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_05",
+                            "citeas": "OIML-CS PD-05"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", 4.3. In addition, the OIML type evaluation report shall clearly identify:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_84b7cd71-7e4d-408f-f67f-19663daffdd2",
+                    "semx_id": "_84b7cd71-7e4d-408f-f67f-19663daffdd2",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_87e5c89e-f972-6815-f43e-54274b0ef0cd"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_f102b065-fb74-ded6-3720-debb552a9a19",
+                            "semx_id": "_f102b065-fb74-ded6-3720-debb552a9a19"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "all test facilities that performed testing and issued the test data and/or test reports; and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_e750a1e8-7841-2bc3-1f19-a15716e2f7f8"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_ea21795a-24ea-0ecc-cb5b-988e042022a2",
+                            "semx_id": "_ea21795a-24ea-0ecc-cb5b-988e042022a2"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "all OIML test reports, other test reports, and previous test data (regardless of dates of testing) with all relevant information and explanations provided."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_fbc27e1f-2449-d99f-98b1-506b556f6997",
+                "obligation": "informative",
+                "semx_id": "_fbc27e1f-2449-d99f-98b1-506b556f6997"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c5001d9c-906a-dfc7-a444-4199d0c101d8",
+                    "semx_id": "_c5001d9c-906a-dfc7-a444-4199d0c101d8"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Scheme B OIML certificates may only be issued for editions of OIML Recommendations that are included in the OIML-CS at the time of issue."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_b36c0396-b1d6-eda9-e010-2da38fbcc0eb",
+                "obligation": "informative",
+                "semx_id": "_b36c0396-b1d6-eda9-e010-2da38fbcc0eb"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_e8c57729-ab33-cd7f-6883-132a4d14a077",
+                    "semx_id": "_e8c57729-ab33-cd7f-6883-132a4d14a077"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "To issue a Scheme B OIML certificate for a revised edition of the OIML Recommendation, the OIML MAA or Basic type evaluation report issued in support of the existing OIML MAA certificate or OIML Basic certificate may be used to support the assessment of requirements, where those requirements and tests are unchanged in the revised edition of the Recommendation."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_bcfa3da0-a7c4-6321-e81d-b994cd18e483",
+                "obligation": "informative",
+                "semx_id": "_bcfa3da0-a7c4-6321-e81d-b994cd18e483"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_32a52ce7-4f4b-a3e3-e22f-a554937be770",
+                    "semx_id": "_32a52ce7-4f4b-a3e3-e22f-a554937be770"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where additional tests are required, or the test requirements have changed in the revised edition of a Recommendation (e.g. different severity level), testing shall be conducted by a Test Laboratory listed in the OIML-CS Declaration of any OIML Issuing Authority."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_5d20e1a5-7e60-cd97-d051-340be2070b20",
+                "obligation": "informative",
+                "semx_id": "_5d20e1a5-7e60-cd97-d051-340be2070b20"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_060192da-5c7e-08d8-80c6-a70b8bf06052",
+                    "semx_id": "_060192da-5c7e-08d8-80c6-a70b8bf06052"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Scheme B OIML type evaluation reports shall clearly specify whether or not they have been issued on the basis of previous test data from an existing OIML Basic certificate and its corresponding OIML type evaluation report."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_5b9696de-de0a-c3f6-e1ec-3b6c794b1569",
+                "obligation": "informative",
+                "semx_id": "_5b9696de-de0a-c3f6-e1ec-3b6c794b1569"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_4d40f67e-7b8d-02be-0ccd-b302c3a14f6d",
+                    "semx_id": "_4d40f67e-7b8d-02be-0ccd-b302c3a14f6d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Scheme B OIML certificates and OIML type evaluation reports issued on the basis of previous test data from an existing OIML Basic certificate and its corresponding OIML Basic type evaluation report may be accepted by Utilizers and Associates in their OIML-CS Declaration on a voluntary basis."
+                    },
+                    {
+                      "type": "note",
+                      "attrs": {
+                        "id": "_5c159ca0-2ca1-e6be-2ecc-6b1c40ab428f",
+                        "semx_id": "_5c159ca0-2ca1-e6be-2ecc-6b1c40ab428f"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_dd5eecaa-2d88-36f7-130c-b14c61abf1cf",
+                            "semx_id": "_dd5eecaa-2d88-36f7-130c-b14c61abf1cf"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Utilizers and Associates may inform the Executive Secretary of their rejection of an OIML certificate and/or OIML type evaluation report, and the reasons for the rejection. == Issuing an OIML certificate under Scheme A"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_98209f5b-a27b-875e-22b3-b0f883e26eca",
+                "obligation": "informative",
+                "semx_id": "_98209f5b-a27b-875e-22b3-b0f883e26eca",
+                "title": "OIML MAA certificates, OIML MAA type evaluation reports and previous test data"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_2591c2fc-4b0d-b9bd-3d3e-1059bc374e10",
+                    "obligation": "informative",
+                    "semx_id": "_2591c2fc-4b0d-b9bd-3d3e-1059bc374e10"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_b888d9b7-7d13-d2cc-09fc-a681931701c5",
+                        "semx_id": "_b888d9b7-7d13-d2cc-09fc-a681931701c5"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An applicant may apply to an OIML Issuing Authority under the OIML-CS to use an existing OIML MAA certificate, its corresponding OIML MAA type evaluation report and previous test data to issue a Scheme A OIML certificate and OIML type evaluation report under the OIML-CS. The requirements of 4.5 apply."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_131dc2ec-9f2d-c9af-f207-a6c681381faa",
+                    "obligation": "informative",
+                    "semx_id": "_131dc2ec-9f2d-c9af-f207-a6c681381faa"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_665afdf3-cfd5-e424-25ac-7464ab29364c",
+                        "semx_id": "_665afdf3-cfd5-e424-25ac-7464ab29364c"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where previous test data is used to issue a Scheme A OIML certificate and OIML type evaluation report, the OIML Issuing Authority shall ensure that:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_da521f15-5261-e023-9b43-5e31deddc3ae",
+                        "semx_id": "_da521f15-5261-e023-9b43-5e31deddc3ae",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_769a2b09-52a7-c033-51b9-e1adc7ca5500"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_039e6809-cd5b-4307-704c-2fe9a6918a2a",
+                                "semx_id": "_039e6809-cd5b-4307-704c-2fe9a6918a2a"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "the testing was performed on a sample that is representative of the current type; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_40604906-c063-4a4e-dcb8-a28b5771ce36"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_428864cd-4612-d959-8589-fc6d6a12377c",
+                                "semx_id": "_428864cd-4612-d959-8589-fc6d6a12377c"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "the testing that was performed is equivalent to the requirements specified in the edition of the OIML Recommendation for which the OIML certificate is being issued."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_295cd98d-278e-51e3-7d8d-61cd44f3632c",
+                    "obligation": "informative",
+                    "semx_id": "_295cd98d-278e-51e3-7d8d-61cd44f3632c"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_26feff84-77cb-1b56-aad2-e5cd8fd89395",
+                        "semx_id": "_26feff84-77cb-1b56-aad2-e5cd8fd89395"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedures specified in clause 5 of "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-05",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_05",
+                                "citeas": "OIML-CS PD-05"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " shall be applied to the processing of a Scheme A OIML certificate. Previous test data that satisfies the requirements of 6.1.2 above is deemed to fulfil the requirement specified in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-05",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_05",
+                                "citeas": "OIML-CS PD-05"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", 5.3. In addition, the OIML type evaluation report shall clearly identify:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_53811d86-ddb8-0772-2e9b-4f2af37ee560",
+                        "semx_id": "_53811d86-ddb8-0772-2e9b-4f2af37ee560",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_8ed1d0eb-1926-1197-07f9-f5d49abb9374"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_4fa40f3d-6e4e-56c0-cd83-5cb58c9ae3a6",
+                                "semx_id": "_4fa40f3d-6e4e-56c0-cd83-5cb58c9ae3a6"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all test facilities that performed testing and issued the test data and/or test reports; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_f94985e8-57f4-7897-4373-ee0abf6be94d"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_eeb87170-f93c-d597-c239-2fe5b01c3b83",
+                                "semx_id": "_eeb87170-f93c-d597-c239-2fe5b01c3b83"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all OIML test reports, other test reports, and previous test data (regardless of dates of testing) with all relevant information and explanations provided."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_b34e6258-7dba-55ef-46ba-6b96142fe055",
+                    "obligation": "informative",
+                    "semx_id": "_b34e6258-7dba-55ef-46ba-6b96142fe055"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_009044ad-a9f1-1662-cecf-87e20a6f966c",
+                        "semx_id": "_009044ad-a9f1-1662-cecf-87e20a6f966c"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Scheme A OIML certificates may only be issued for editions of OIML Recommendations that are included in the OIML-CS at the time of issue."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_2db75155-8c91-1a51-1c2e-09216b0f91e2",
+                    "obligation": "informative",
+                    "semx_id": "_2db75155-8c91-1a51-1c2e-09216b0f91e2"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_9da84320-af92-9c32-dd40-8ec13b89eebe",
+                        "semx_id": "_9da84320-af92-9c32-dd40-8ec13b89eebe"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "To issue a Scheme A OIML certificate for a revised edition of the OIML Recommendation, the OIML MAA type evaluation report issued in support of the existing OIML MAA certificate may be used to support the assessment of requirements where those requirements and tests are unchanged in the revised edition of the Recommendation."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_232085d0-76df-db06-50f9-0be7ff336521",
+                    "obligation": "informative",
+                    "semx_id": "_232085d0-76df-db06-50f9-0be7ff336521"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_1a224f55-5a37-5bfa-9f6b-1744dedce015",
+                        "semx_id": "_1a224f55-5a37-5bfa-9f6b-1744dedce015"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where additional tests are required or the test requirements have changed in the revised edition of a Recommendation (e.g. different severity level), all new testing shall be conducted by an approved Test Laboratory listed in the OIML-CS Declaration of any OIML Issuing Authority."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a45eba6f-760f-47f0-3979-3be0da217328",
+                "obligation": "informative",
+                "semx_id": "_a45eba6f-760f-47f0-3979-3be0da217328",
+                "title": "OIML Basic certificates, OIML Basic type evaluation reports and previous test data"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_9db9ef0a-1ce1-51e6-9419-a5c2979793ef",
+                    "obligation": "informative",
+                    "semx_id": "_9db9ef0a-1ce1-51e6-9419-a5c2979793ef"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_cb8e83c4-7fbc-db19-ad2f-c54119615cf2",
+                        "semx_id": "_cb8e83c4-7fbc-db19-ad2f-c54119615cf2"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An applicant may apply to an OIML Issuing Authority to use an existing Basic certificate, its corresponding OIML Basic type evaluation report and previous test data to issue a Scheme A OIML certificate for any OIML Recommendation included in the OIML-CS. The requirements of 4.5 apply."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_578a3bd8-699c-cd5f-cf93-0407822f2368",
+                        "semx_id": "_578a3bd8-699c-cd5f-cf93-0407822f2368"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "While an existing OIML Basic certificate and its corresponding OIML Basic type evaluation report cannot be used directly to issue a Scheme A OIML certificate, the associated previous test data may be used to issue a Scheme A OIML certificate and OIML type evaluation report under the conditions specified in 6.2.2 to 6.2.9 below."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e0fd5c22-333d-a39e-b4b7-330b0b6223d8",
+                    "obligation": "informative",
+                    "semx_id": "_e0fd5c22-333d-a39e-b4b7-330b0b6223d8"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_0f59792b-2339-4a2e-9391-36208a8ea8f8",
+                        "semx_id": "_0f59792b-2339-4a2e-9391-36208a8ea8f8"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where previous test data is used to issue a Scheme A OIML certificate and OIML type evaluation report, the OIML Issuing Authority shall ensure that:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_777ff6f3-7417-301d-74c3-a00847b10818",
+                        "semx_id": "_777ff6f3-7417-301d-74c3-a00847b10818",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_71e262ba-f163-ce76-2091-dcba51493213"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_b46c5332-dbd1-9594-75cd-1778e4f3dbda",
+                                "semx_id": "_b46c5332-dbd1-9594-75cd-1778e4f3dbda"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "at the time that the original testing took place the test facility was accredited or peer assessed to ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2017",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2005",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2005",
+                                        "citeas": "ISO/IEC 17025:2005"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ", with the scope of accreditation or peer assessment covering the relevant OIML Recommendation (see 6.2.3 for a conditional exception);"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_82de49d9-4144-a877-f6b1-1f5d0004e76d"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_0b1a18b1-ab78-02e6-48a9-470b9f06b766",
+                                "semx_id": "_0b1a18b1-ab78-02e6-48a9-470b9f06b766"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "the testing was performed on a sample that is representative of the current type; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_22c3cbcb-0a26-88ec-9648-c7c01e2a8283"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_4db7ea8d-a5d3-7a10-7ae7-42648c74d57a",
+                                "semx_id": "_4db7ea8d-a5d3-7a10-7ae7-42648c74d57a"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "the testing that was performed is equivalent to the requirements specified in the edition of the OIML Recommendation for which the OIML certificate is being issued."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_a6c7a3fc-60ec-a3e6-bbac-d0586eefc5cd",
+                    "obligation": "informative",
+                    "semx_id": "_a6c7a3fc-60ec-a3e6-bbac-d0586eefc5cd"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_a73d4417-6c47-9368-da71-d257f8b657a1",
+                        "semx_id": "_a73d4417-6c47-9368-da71-d257f8b657a1"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where previous testing was performed in a facility (either a test laboratory or field site) that did not satisfy the requirements of 6.2.2 a) at the time of testing, the OIML Issuing Authority shall include a documented appraisal of the previous testing and shall accurately record the use of any previous test data in the OIML type evaluation report."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_abd39ea9-de76-dde8-c06d-a1802801454b",
+                        "semx_id": "_abd39ea9-de76-dde8-c06d-a1802801454b"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The requirements of 6.2.2 b) and c) still apply."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_393cc552-f88d-b5ec-9762-5f034f9135f7",
+                        "semx_id": "_393cc552-f88d-b5ec-9762-5f034f9135f7"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The documented appraisal of the previous testing shall include at least the following:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_67d3c5dd-730c-7f5c-1aa2-5a6d70583500",
+                        "semx_id": "_67d3c5dd-730c-7f5c-1aa2-5a6d70583500",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_2a276e03-536c-5200-eb4b-84455659e73b"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_8c750a89-8c0b-d22f-7e84-9f5facc3a9ed",
+                                "semx_id": "_8c750a89-8c0b-d22f-7e84-9f5facc3a9ed"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "an assessment of the test facility and test methodology used at the time of testing, with consideration of the requirements of ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2017",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2005",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2005",
+                                        "citeas": "ISO/IEC 17025:2005"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ", including:"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "ordered_list",
+                              "attrs": {
+                                "id": "_e4f382e9-515a-2353-f2ee-cc65735f9834",
+                                "semx_id": "_e4f382e9-515a-2353-f2ee-cc65735f9834",
+                                "type": "arabic"
+                              },
+                              "content": [
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_002f8dac-381f-e2b8-43f2-6fd62abf2f36"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_289bb1a8-5a2b-2b72-dd54-7051bd9fa247",
+                                        "semx_id": "_289bb1a8-5a2b-2b72-dd54-7051bd9fa247"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Traceability and calibration of reference standards;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_f7c480b8-0eb1-d66d-3230-9a00e9f9f083"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_03573b66-a017-9dc1-49ae-e0dc7584b1f5",
+                                        "semx_id": "_03573b66-a017-9dc1-49ae-e0dc7584b1f5"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Documented procedures and test methods;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_bea036ed-3fe4-3e7f-bda6-f1dab840b6b2"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_bec4d221-66f6-eb49-0253-816bb2e25c13",
+                                        "semx_id": "_bec4d221-66f6-eb49-0253-816bb2e25c13"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Estimation of the uncertainty of the results associated with the test methods;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_32c3ecba-171d-8cbf-733f-ddc17f7ad46f"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_e87f0e54-38d9-4a31-b5ae-fa3a1e624bf4",
+                                        "semx_id": "_e87f0e54-38d9-4a31-b5ae-fa3a1e624bf4"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Staff competency and training; and"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_2c9843a9-dd36-d438-9d72-ec39bd80670d"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_4e5995e3-1291-a4a8-45fa-05cfdf7f5a98",
+                                        "semx_id": "_4e5995e3-1291-a4a8-45fa-05cfdf7f5a98"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "History of similar testing and comparisons with other results."
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_58a4adec-de61-6044-3696-5c0fbf64eec1"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_63d20024-b583-18e2-465f-c7c4afed886c",
+                                "semx_id": "_63d20024-b583-18e2-465f-c7c4afed886c"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a review of the previous test data that evaluates both the data itself and its acceptability to the Issuing Authority at the time of testing; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_96269f24-04da-2a94-91c0-478e713c38e3"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_d9f2a95d-ca25-3aed-ba34-17d369076d57",
+                                "semx_id": "_d9f2a95d-ca25-3aed-ba34-17d369076d57"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a statement that the previous test data continues to be acceptable under the OIML-CS."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_36c28c98-0573-5323-c3fb-7c621d6d361a",
+                    "obligation": "informative",
+                    "semx_id": "_36c28c98-0573-5323-c3fb-7c621d6d361a"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_57f312e9-22d0-559e-0bd2-3c26b7ee6586",
+                        "semx_id": "_57f312e9-22d0-559e-0bd2-3c26b7ee6586"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedures specified in clause 5 of "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-05",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_05",
+                                "citeas": "OIML-CS PD-05"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " shall be applied to the processing of a Scheme A OIML certificate. In addition, the OIML type evaluation report shall clearly identify:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_7b05f9d9-fa9a-85d7-fc83-2071e39ce544",
+                        "semx_id": "_7b05f9d9-fa9a-85d7-fc83-2071e39ce544",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_29296f74-846c-7e8c-5140-b8e09a1dd679"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_6fa8a962-a8ec-4604-0cc5-fb9d83133622",
+                                "semx_id": "_6fa8a962-a8ec-4604-0cc5-fb9d83133622"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all test facilities that performed testing and issued the test data and/or test reports; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_cafabdbf-2ebd-e489-1475-9efb8b423089"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_60a624e6-ba86-228f-f3fe-14a487ba613e",
+                                "semx_id": "_60a624e6-ba86-228f-f3fe-14a487ba613e"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all OIML test reports, other test reports, and previous test data (regardless of dates of testing) with all relevant information and explanations provided."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_df8ba66f-e8a9-8644-a659-08ce64c28753",
+                    "obligation": "informative",
+                    "semx_id": "_df8ba66f-e8a9-8644-a659-08ce64c28753"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_567568f0-a050-14b5-b52a-36b47cb76d84",
+                        "semx_id": "_567568f0-a050-14b5-b52a-36b47cb76d84"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Scheme A OIML certificates may only be issued for editions of OIML Recommendations that are included in the OIML-CS at the time of issue."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_11c23c1b-4e81-5471-e68b-639c69275416",
+                    "obligation": "informative",
+                    "semx_id": "_11c23c1b-4e81-5471-e68b-639c69275416"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_598b96d5-b9e5-b97b-cedf-0dc5da29d297",
+                        "semx_id": "_598b96d5-b9e5-b97b-cedf-0dc5da29d297"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "To issue a Scheme A OIML certificate for a revised edition of the OIML Recommendation, the previous test data may be used to support the assessment of requirements where those requirements and tests are unchanged in the revised edition of the Recommendation."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e5859903-6ba4-8734-746e-98b9c79677d9",
+                    "obligation": "informative",
+                    "semx_id": "_e5859903-6ba4-8734-746e-98b9c79677d9"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_96ce437f-bfc6-8188-d48a-74a7443beecd",
+                        "semx_id": "_96ce437f-bfc6-8188-d48a-74a7443beecd"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where additional tests are required or the test requirements have changed in the revised edition of a Recommendation (e.g. different severity level), all new testing shall be conducted by an approved Test Laboratory listed in the OIML-CS Declaration of any OIML Issuing Authority."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_334164bf-eef3-3b77-2b14-3a948b83fdb5",
+                    "obligation": "informative",
+                    "semx_id": "_334164bf-eef3-3b77-2b14-3a948b83fdb5"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_652a540c-5b76-0bc4-7efe-b22655d5f3b7",
+                        "semx_id": "_652a540c-5b76-0bc4-7efe-b22655d5f3b7"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Scheme A OIML type evaluation reports shall clearly specify whether or not they have been issued on the basis of previous test data from an existing OIML Basic certificate and its corresponding OIML Basic type evaluation report."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_ba3c5dd3-7987-d836-0e64-aebfc8bac7bb",
+                    "obligation": "informative",
+                    "semx_id": "_ba3c5dd3-7987-d836-0e64-aebfc8bac7bb"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_d028d25e-f909-e8bf-9b4d-b043da5cc9d3",
+                        "semx_id": "_d028d25e-f909-e8bf-9b4d-b043da5cc9d3"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Scheme A OIML certificates and OIML type evaluation reports that contain previous test data from an existing OIML Basic certificate and its corresponding OIML Basic type evaluation report may be accepted by Utilizers and Associates in their OIML-CS Declaration on a voluntary basis."
+                        },
+                        {
+                          "type": "note",
+                          "attrs": {
+                            "id": "_3b97f3ab-00ce-6ae8-04b7-7fa6a0a1f1ea",
+                            "semx_id": "_3b97f3ab-00ce-6ae8-04b7-7fa6a0a1f1ea"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_79c5f764-009e-2bae-1ba2-dbe731529033",
+                                "semx_id": "_79c5f764-009e-2bae-1ba2-dbe731529033"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Utilizers and Associates may inform the Executive Secretary of their rejection of an OIML certificate and/or OIML type evaluation report, and the reasons for the rejection. == Transition from Scheme B to Scheme A"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_2127f356-19f8-8b81-2f7e-befca40a30eb",
+                "obligation": "informative",
+                "semx_id": "_2127f356-19f8-8b81-2f7e-befca40a30eb",
+                "title": "Issuing OIML certificates"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_870653cd-6488-3905-cc0f-430f8723b0b3",
+                    "obligation": "informative",
+                    "semx_id": "_870653cd-6488-3905-cc0f-430f8723b0b3"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_0fbab813-ddca-b7cd-e3fd-3950ce7e5125",
+                        "semx_id": "_0fbab813-ddca-b7cd-e3fd-3950ce7e5125"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "When a category of measuring instrument and the relevant OIML Recommendation transitions from Scheme B to Scheme A (see OIML B 18, 16.2 "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML B 18:2022",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_B_18",
+                                "citeas": "OIML B 18:2022"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "), no new OIML certificates under Scheme B may be issued for that category of measuring instrument on the basis of the relevant Recommendation except under the conditions defined in 7.1.2."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_d1341335-df37-00f8-cfb1-6950b0927e8b",
+                    "obligation": "informative",
+                    "semx_id": "_d1341335-df37-00f8-cfb1-6950b0927e8b"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_7901e651-8d55-a302-9727-d20b97d46694",
+                        "semx_id": "_7901e651-8d55-a302-9727-d20b97d46694"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "When the relevant category of measuring instrument and OIML Recommendation has transitioned to Scheme A, in the event that an applicant requests a revision of an existing OIML certificate issued under Scheme B based on the same edition of the OIML Recommendation, the revised OIML certificate under Scheme B may be issued by the original OIML Issuing Authority. The requirements of 4.5 apply."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_7d227358-7007-c3fe-e0be-faac31b801e0",
+                "obligation": "informative",
+                "semx_id": "_7d227358-7007-c3fe-e0be-faac31b801e0",
+                "title": "Using Scheme B certificates to issue Scheme A certificates"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_a82822a5-074a-44b5-86c0-b4e904c84e4f",
+                    "obligation": "informative",
+                    "semx_id": "_a82822a5-074a-44b5-86c0-b4e904c84e4f"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_3206d598-ca95-5d1b-7daf-419980627306",
+                        "semx_id": "_3206d598-ca95-5d1b-7daf-419980627306"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where a category of measuring instrument and the relevant OIML Recommendation is in Scheme A under the OIML-CS, an applicant may apply to an OIML Issuing Authority to use an existing OIML certificate under Scheme B to issue a Scheme A certificate. The requirements of 4.5 and the following conditions apply:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_0d5e31ea-b081-5f30-6be9-2035811c5202",
+                        "semx_id": "_0d5e31ea-b081-5f30-6be9-2035811c5202",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_49ca879a-bc2e-1040-c596-ac29557b7213"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_42cd6b5c-4bf9-6228-7416-f32ef92affd9",
+                                "semx_id": "_42cd6b5c-4bf9-6228-7416-f32ef92affd9"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "The Test Laboratory that conducted the testing is a Test Laboratory listed in the OIML-CS Declaration of any OIML Issuing Authority for the applicable category of measuring instrument;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_c0d7d30d-237d-4ef7-b849-c44044ea4059"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_9ad11503-a72b-828a-bb7f-9c68bf697d1c",
+                                "semx_id": "_9ad11503-a72b-828a-bb7f-9c68bf697d1c"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "At the time that the original OIML type evaluation took place the Test Laboratory was accredited/peer assessed to ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2017",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2005",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2005",
+                                        "citeas": "ISO/IEC 17025:2005"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ", with the scope of accreditation/peer assessment in both cases covering the category of measuring instrument and the relevant OIML Recommendation (see 7.2.2 and Notes under 5.2);"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_34eea536-b290-9be5-6d2f-49f945be0d01"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_2656eeef-99bc-7c9b-8b19-213cdcc6cfbb",
+                                "semx_id": "_2656eeef-99bc-7c9b-8b19-213cdcc6cfbb"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "The testing was conducted on a sample that is representative of the current type; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_ddd824cf-a6dc-90d5-af35-45347df8ec95"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_81d4dbfd-4ccc-496d-a7f1-966a8ffdab80",
+                                "semx_id": "_81d4dbfd-4ccc-496d-a7f1-966a8ffdab80"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "The testing that was performed is equivalent to the requirements specified in the edition of the OIML Recommendation for which the OIML certificate is being issued."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_a1643685-86d2-17fa-55ec-4429473d2087",
+                    "obligation": "informative",
+                    "semx_id": "_a1643685-86d2-17fa-55ec-4429473d2087"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_06f581bc-b18b-9683-0bb0-9726484415d9",
+                        "semx_id": "_06f581bc-b18b-9683-0bb0-9726484415d9"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where previous testing was performed in a facility (either a test laboratory or field site) that did not satisfy the requirements of 7.2.1 a) and b) at the time of testing, the OIML Issuing Authority shall include a documented appraisal of the previous testing and shall accurately record the use of any previous test data in the OIML type evaluation report."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_fc9fe3b2-6a6d-18b5-a347-3a2e95b86098",
+                        "semx_id": "_fc9fe3b2-6a6d-18b5-a347-3a2e95b86098"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The requirements of 7.2.1 c) and d) still apply."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_5eec342b-3ee3-6230-c950-3430336c7c7a",
+                        "semx_id": "_5eec342b-3ee3-6230-c950-3430336c7c7a"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The documented appraisal of the previous testing shall include at least the following:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_548c16ee-27c0-d732-2cb0-2153c9360a6a",
+                        "semx_id": "_548c16ee-27c0-d732-2cb0-2153c9360a6a",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_2e0043d0-0eb4-a089-d6b7-5eb329f275d3"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_c9c4f507-8b20-a622-ca6d-5eb874826b7c",
+                                "semx_id": "_c9c4f507-8b20-a622-ca6d-5eb874826b7c"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "an assessment of the test facility and test methodology used at the time of testing, with consideration of the requirements of ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2017",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2005",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025_2005",
+                                        "citeas": "ISO/IEC 17025:2005"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ", including:"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "ordered_list",
+                              "attrs": {
+                                "id": "_2b67017c-36cd-90be-d57c-8a59a932acc3",
+                                "semx_id": "_2b67017c-36cd-90be-d57c-8a59a932acc3",
+                                "type": "arabic"
+                              },
+                              "content": [
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_8d8d2ec2-7f31-15ab-388b-bb6ef42fef46"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_b2cfcde1-ddb2-bfc6-f468-fb8b55d568f9",
+                                        "semx_id": "_b2cfcde1-ddb2-bfc6-f468-fb8b55d568f9"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Traceability and calibration of reference standards;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_d1b5af42-6519-980d-f4da-8355a2520ecc"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_9984f81f-6fe3-24f6-4a94-1c43832e42df",
+                                        "semx_id": "_9984f81f-6fe3-24f6-4a94-1c43832e42df"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Documented procedures and test methods;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_d4d0f2d9-83a5-7903-5c49-89e9cb4e5d6d"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_2e5a0b19-43b7-13ad-ae2e-802b8b082374",
+                                        "semx_id": "_2e5a0b19-43b7-13ad-ae2e-802b8b082374"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Estimation of the uncertainty of the results associated with the test methods;"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_317542d5-1854-b752-f577-793690024480"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_308f3a58-19ba-9bc9-f0bf-e9738cc0e88e",
+                                        "semx_id": "_308f3a58-19ba-9bc9-f0bf-e9738cc0e88e"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "Staff competency and training; and"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "list_item",
+                                  "attrs": {
+                                    "id": "_a66dd713-f645-8d80-902f-2193c580f005"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "paragraph",
+                                      "attrs": {
+                                        "id": "_38117bf1-dbc3-516a-f611-83b5c52db435",
+                                        "semx_id": "_38117bf1-dbc3-516a-f611-83b5c52db435"
+                                      },
+                                      "content": [
+                                        {
+                                          "type": "text",
+                                          "text": "History of similar testing and comparisons with other results."
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_99d3acb6-658f-38da-472e-8c378be51b9b"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_6a11993e-b0c6-d361-db52-3f0dbe26e9a6",
+                                "semx_id": "_6a11993e-b0c6-d361-db52-3f0dbe26e9a6"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a review of the previous test data that evaluates both the data itself and its acceptability to the Issuing Authority at the time of testing; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_5d333414-8484-fb32-9d8a-7d9e41ae5256"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_edf88952-45fc-037a-ded3-8ac8b2e90259",
+                                "semx_id": "_edf88952-45fc-037a-ded3-8ac8b2e90259"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a statement that the previous test data continues to be acceptable under the OIML-CS."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e2164619-1226-05ce-a7a2-cd2222ed78ca",
+                    "obligation": "informative",
+                    "semx_id": "_e2164619-1226-05ce-a7a2-cd2222ed78ca"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_c5382e33-3e29-e10e-1e5a-265660b05652",
+                        "semx_id": "_c5382e33-3e29-e10e-1e5a-265660b05652"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedures specified in clause 5 of "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-05",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_05",
+                                "citeas": "OIML-CS PD-05"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " shall be applied, with the OIML type evaluation report issued for the OIML Basic certificate deemed to fulfil the requirement specified in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-05",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_05",
+                                "citeas": "OIML-CS PD-05"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", 5.3.3. In addition, the OIML type evaluation report shall clearly identify:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_82fd742a-07fd-add5-378c-18410b08db46",
+                        "semx_id": "_82fd742a-07fd-add5-378c-18410b08db46",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_a8657e91-5e6e-2b8d-8b8e-7237cbebd56a"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_e8e0f15e-75b9-3724-3cc0-20459ee03053",
+                                "semx_id": "_e8e0f15e-75b9-3724-3cc0-20459ee03053"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all test facilities that performed testing and issued the test data and/or test reports; and"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_9d81f98a-d051-caee-2c1a-db6b8bccae0e"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_563d01e5-4c06-7670-e0d6-ff171f6b8914",
+                                "semx_id": "_563d01e5-4c06-7670-e0d6-ff171f6b8914"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "all OIML test reports, other test reports, and previous test data (regardless of dates of testing) with all relevant information and explanations provided."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_bb291397-5698-ae54-3901-34cb9482610e",
+                    "obligation": "informative",
+                    "semx_id": "_bb291397-5698-ae54-3901-34cb9482610e"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_ed43bbae-21b8-0161-16be-a41a34a228b5",
+                        "semx_id": "_ed43bbae-21b8-0161-16be-a41a34a228b5"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Where an OIML Recommendation has been revised since the original OIML certificate under Scheme B was issued, an OIML certificate under Scheme A can be issued for the original edition of the OIML Recommendation where it has been retained in the OIML-CS under Scheme A. To issue a Scheme A OIML certificate under the OIML-CS for the revised edition of the OIML Recommendation the OIML type evaluation report issued in support of the existing OIML certificate under Scheme B may only be applied to tests where the requirements for the tests haven’t changed in the revised edition of the Recommendation. Where there are additional tests or the test requirements have changed (e.g. different severity level) in the revised edition, all new testing shall be conducted by a Test Laboratory listed in the OIML-CS Declaration of any OIML Issuing Authority."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections"
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_c2e0a988-3adc-34de-9473-04e6784e823c",
+            "obligation": "informative",
+            "semx_id": "_c2e0a988-3adc-34de-9473-04e6784e823c",
+            "displayorder": 4,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "ISO_IEC_17025_2005"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]\nISO/IEC 17025:2005, General requirements for the competence of testing and calibration laboratories"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "ISO_IEC_17025_2017"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]ISO/IEC 17025:2017, General requirements for the competence of testing and calibration laboratories"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "ISO_IEC_17065"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]ISO/IEC 17065:2012, Conformity assessment — Requirements for bodies certifying products, processes and services"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[4]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[5]OIML-CS PD-01, OIML. Appeals, Resolution of Complaints and Disputes. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[6]OIML-CS OD-02, OIML. Test Laboratories Forum. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[7]OIML-CS PD-02, OIML. Procedures to approve Legal Metrology experts and QMS experts. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_03"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[8]OIML-CS PD-03, OIML. Application and approval of OIML Issuing Authorities, Utilizers and Associates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_04"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[9]OIML-CS PD-04, OIML. Assessment of Test Laboratories. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_05"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[10]OIML-CS PD-05, OIML. Processing an application for an OIML Type Evaluation Report and OIML Certificate. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_06"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[11]OIML-CS PD-06, OIML. Use of OIML Type Evaluation Reports and OIML Certificates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_08"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[12]OIML-CS PD-08, OIML. Signing the OIML-CS Declaration. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[13]OIML B 18:2022, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_20"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[14]OIML B 20:2019, OIML. Rules for the use of OIML logos. OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

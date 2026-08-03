@@ -1,0 +1,1922 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Clarifications and Interpretations of OIML-CS Documents"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_e52462b2-6095-3587-ab6c-50d06b898724",
+            "obligation": "informative",
+            "semx_id": "_e52462b2-6095-3587-ab6c-50d06b898724",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_0cd27ba3-5cc6-c2e8-40e6-05fbec944058",
+                "semx_id": "_0cd27ba3-5cc6-c2e8-40e6-05fbec944058"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the OIML Certification System (OIML-CS) Executive Secretary."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_7818d116-60d6-3344-ad9f-774094beb619",
+                "semx_id": "_7818d116-60d6-3344-ad9f-774094beb619"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Edition 6 of OIML-CS CID-01 was approved for publication by the OIML-CS Management Committee via an online vote on 19 September 2024 and was published on 19 September 2024. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_35781138-95d9-bd03-b196-4b7b120063ab",
+                "semx_id": "_35781138-95d9-bd03-b196-4b7b120063ab"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to OIML B 18 Framework for the OIML Certification System (OIML-CS) and the Operational Documents and Procedural Documents of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796",
+                "semx_id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The text of this publication is based on the following documents:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_6904a379-a223-36b6-0240-86ff4f877e10",
+                "semx_id": "_6904a379-a223-36b6-0240-86ff4f877e10",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_af55422c-bafc-2a6f-1c19-8cc41383c2a2"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_b0b8d261-8b26-abab-a078-77c7745b3af8"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published March 2020"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_c76c62bb-ca4c-e022-3d55-313ebe007b95"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 26 February 2021"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_5ca9f6b7-b039-8ea6-9a85-f68b725473ff"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 10 June 2021"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_dcb5c739-0724-9d66-3b25-6508893918c8"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 4"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 4"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 14 November 2022"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_2a1eb778-b10f-e1ba-ee53-de91ff7068b8"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 5"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 5"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 11 March 2024"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_0959db23-fc65-0485-20bf-d4b38eb2b78d"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 6 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N098"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG 20240607"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_2136983f-f7f9-7116-555c-5e542e026ac8"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "CID-01 Edition 6 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P4_N143"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC approval (20240819)"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_a2af0afa-79ca-4db9-2a49-5be3f3553876",
+                "semx_id": "_a2af0afa-79ca-4db9-2a49-5be3f3553876"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Summary of changes from previous Edition:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_1aa0374e-5373-985c-9cbb-ddac4495a0dd",
+                "semx_id": "_1aa0374e-5373-985c-9cbb-ddac4495a0dd",
+                "title": "Summary of changes from Edition 5"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_99476e82-6319-740b-db6a-3569297aca9a"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Clauses/subclauses"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Change"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_6419c3f0-60e6-287e-f402-3b5fbc84c512"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "B 18"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "4.2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Use of a different OIML Recommendation in the example. Edition of OIML B 6 updated."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_a2089238-647c-6432-02e5-513dcb6ce1c0"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-03"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "5.1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Clarification of requirement for an Issuing Authority to be supported by a Test Laboratory with a corresponding scope."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_d3f9cf36-023d-d897-d04b-68be67df2206"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-05"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "4.3 & 5.3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Clarification of requirement for an Issuing Authority to be supported by a Test Laboratory with a corresponding scope."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_577cf24b-cba8-a231-8f4b-3ba2ba66e4f8",
+            "obligation": "informative",
+            "semx_id": "_577cf24b-cba8-a231-8f4b-3ba2ba66e4f8",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_727a7d1d-d28a-d9ea-92d1-66166320e58f",
+                "obligation": "informative",
+                "semx_id": "_727a7d1d-d28a-d9ea-92d1-66166320e58f"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_e3ee2ed4-0bca-f714-4617-6736b6b42301",
+                    "semx_id": "_e3ee2ed4-0bca-f714-4617-6736b6b42301"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by Operational Documents "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_01",
+                            "citeas": "OIML-CS OD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_02",
+                            "citeas": "OIML-CS OD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", and Procedural Documents PD-01 to PD-08."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_e51e6019-e5e1-950b-6801-be49222631b1",
+                "obligation": "informative",
+                "semx_id": "_e51e6019-e5e1-950b-6801-be49222631b1"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_dd21762e-496a-a1bb-fe7c-6187b33d2c4b",
+                    "semx_id": "_dd21762e-496a-a1bb-fe7c-6187b33d2c4b"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Maintenance Group (MG) of the OIML-CS Management Committee (MC) is responsible for developing and maintaining the OIML-CS documents. The MC approves the Operational Documents and Procedural Documents, and the International Committee of Legal Metrology (CIML) approves OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_7a668469-1db7-8da2-1fa0-6026ca5b218e",
+                "obligation": "informative",
+                "semx_id": "_7a668469-1db7-8da2-1fa0-6026ca5b218e"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_31cb8236-99e9-955f-83b3-ad7baf7f9ad6",
+                    "semx_id": "_31cb8236-99e9-955f-83b3-ad7baf7f9ad6"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "To avoid multiple editions of the OIML-CS documents where potential improvements or modifications have been identified, this document has been developed to provide a single point of reference for clarifications and interpretations of the OIML-CS documents. This document has been developed by the MG and approved by the OIML-CS MC. From time-to-time, the clarifications and interpretations will be incorporated into a new edition of the relevant OIML-CS document."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_67baac72-a6e2-065e-0320-80987b8561fd",
+                "obligation": "informative",
+                "semx_id": "_67baac72-a6e2-065e-0320-80987b8561fd"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_44228724-92ee-c2a6-a499-cddfbc89554e",
+                    "semx_id": "_44228724-92ee-c2a6-a499-cddfbc89554e"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML-CS documents are available from the OIML website at:"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_1af6b083-7bf0-9f82-082e-ad176d23deb7",
+                    "semx_id": "_1af6b083-7bf0-9f82-082e-ad176d23deb7"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections",
+      "content": [
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_c59350b6-056e-9f5f-47c5-ef29646c4871",
+            "obligation": "normative",
+            "type": "scope",
+            "semx_id": "_c59350b6-056e-9f5f-47c5-ef29646c4871",
+            "displayorder": 5,
+            "title": "Scope"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_5b2bf5a2-f1b2-3abd-e66f-b4a6c096ff85",
+                "obligation": "normative",
+                "semx_id": "_5b2bf5a2-f1b2-3abd-e66f-b4a6c096ff85"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_cbf1f441-c826-31e7-6c8d-56ad71849aaa",
+                    "semx_id": "_cbf1f441-c826-31e7-6c8d-56ad71849aaa"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This document provides clarifications and interpretations of OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", Operational Documents "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_01",
+                            "citeas": "OIML-CS OD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_02",
+                            "citeas": "OIML-CS OD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", and Procedural Documents PD-01 to PD-08 agreed by the MC."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_b563e83c-842e-1b59-5d24-30d9f9e77f4f",
+                "obligation": "normative",
+                "semx_id": "_b563e83c-842e-1b59-5d24-30d9f9e77f4f"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5892366d-1d73-0d7a-0a83-5de4f99d834e",
+                    "semx_id": "_5892366d-1d73-0d7a-0a83-5de4f99d834e"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The clarifications and interpretations provided in this document are intended as guidance and additional information and do not supersede the text in the current edition of the relevant OIML-CS document. These clarifications and interpretations may be incorporated into future editions of the relevant OIML-CS documents."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_4b4b60cd-d450-1409-b99e-23a929f8e08c",
+            "obligation": "normative",
+            "semx_id": "_4b4b60cd-d450-1409-b99e-23a929f8e08c",
+            "displayorder": 6,
+            "title": "Clarification and interpretations"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c3883c13-6a30-5250-3117-e857f76b83f5",
+                "obligation": "normative",
+                "semx_id": "_c3883c13-6a30-5250-3117-e857f76b83f5",
+                "title": "OIML B 18"
+              },
+              "content": [
+                {
+                  "type": "table",
+                  "attrs": {
+                    "id": "_e77c1e92-0df7-7e0e-85fa-0319acf3614e",
+                    "semx_id": "_e77c1e92-0df7-7e0e-85fa-0319acf3614e"
+                  },
+                  "content": [
+                    {
+                      "type": "table_head",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_3348d531-7566-9493-3ccf-9a0e6ce4a9b1"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clause/Subclause"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Paragraph/Figure/Table"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clarification/Interpretation"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "MC Decision Reference"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_body",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_08a1fa7d-b4b3-4360-8b8d-bf54995e1d3e"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "4.2"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Note"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "At the time of writing many existing OIML Recommendations are published in three Parts, with the OIML test report format and the OIML type evaluation report format combined as a single Part of the Recommendation. For example, OIML R 50:2014 Continuous totalizing automatic weighing instruments (belt weighers). Part 3: Test report format"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + All new and revised OIML Recommendations must be published in at least four Parts, with the OIML test report format and the OIML type evaluation report format as separate Parts of the Recommendation. For more information see OIML B 6:2023 Directives for OIML technical work. Part 1: Structures and procedures for the development of OIML publications."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + Regardless of the structure of an OIML Recommendation, an OIML test report is issued by an OIML Test Laboratory, and an OIML type evaluation report is issued by an OIML Issuing Authority."
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Eighth Management Committee Meeting 2023 – Action Item 8.8"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f2d91636-34fb-1ea8-2765-8ee1ff3be08a",
+                "obligation": "normative",
+                "semx_id": "_f2d91636-34fb-1ea8-2765-8ee1ff3be08a",
+                "title": "Operational Documents OD-01 and OD-02"
+              },
+              "content": [
+                {
+                  "type": "table",
+                  "attrs": {
+                    "id": "_7dead8aa-52e8-6400-7af2-6266fb0783e3",
+                    "semx_id": "_7dead8aa-52e8-6400-7af2-6266fb0783e3"
+                  },
+                  "content": [
+                    {
+                      "type": "table_head",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_4906f16f-5168-24bd-cf66-2a55c1530362"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Operational Document"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clause/Subclause"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Paragraph/Figure/Table"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clarification/Interpretation"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "MC Decision Reference"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_body",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_fcca57fa-8e13-c28e-d6de-770a73a83a4e"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_cfb4f95b-4a35-748d-e50d-007bde5ac187",
+                "obligation": "normative",
+                "semx_id": "_cfb4f95b-4a35-748d-e50d-007bde5ac187",
+                "title": "Procedural Documents PD-01 to PD-08"
+              },
+              "content": [
+                {
+                  "type": "table",
+                  "attrs": {
+                    "id": "_30a7a341-1a95-f107-4591-39aeb3658836",
+                    "semx_id": "_30a7a341-1a95-f107-4591-39aeb3658836"
+                  },
+                  "content": [
+                    {
+                      "type": "table_head",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_1399b4a4-efa2-1548-f610-30483c254646"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Procedural Document"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clause/Subclause"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Paragraph/Figure/Table"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Clarification/Interpretation"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "MC Decision Reference"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_body",
+                      "content": [
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_ed5bd64b-65f8-d0e1-6abd-c53e3e4789b1"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "PD-03"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "5.2.2 & 5.2.3.5"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "At the Fourth Management Committee Meeting in June 2020 the Management Committee agreed to a set of contingencies to ensure that the OIML-CS could continue to function during the COVID pandemic. These contingencies were as follows: + — * Allowing the use of experts from accreditation bodies instead of Legal Metrology Experts. * Allowing remote assessments of OIML Issuing Authorities and Test Laboratories. — + As of 15 January 2024, the Management Committee has agreed to revoke the above contingencies."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " All assessment activities are to be conducted in accordance with the rules and requirements of the relevant Accreditation Body and the OIML-CS."
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Online approval of revised OIML-CS Procedural Documents (Closing date 15 January 2024)"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_86709e0e-9e70-356b-e21c-23370d9dc046"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "PD-04"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "5.2.2 & 5.2.3.5"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Amendments have been made to OIML-CS PD-03 and OIML-CS PD-04 to provide additional flexibility to support the operational continuity and efficiency of the OIML-CS; particularly in the case of any future international travel restrictions that would impede the operation of the OIML-CS."
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_6eb8b707-2c88-a52a-f33a-4f5462973470"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "PD-03"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "5.1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "At all times, the scope of an OIML Issuing Authority must be supported by an approved Test Laboratory (listed in the OIML Issuing Authority’s Declaration) for each category of measuring instrument included within that scope."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + As such, every OIML Issuing Authority application must be supported by use of an existing Test Laboratory, or via the submission of an accompanying application for a prospective Test Laboratory. The Test Laboratory may be internal, third-party or a Manufacturer Test Laboratory."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + If, at any time, the scope of an OIML Issuing Authority is not supported by an approved Test Laboratory for a category of instrument (listed in the OIML Issuing Authority’s Declaration), the scope of the OIML Issuing Authority must be amended accordingly."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + An OIML Issuing Authority is only permitted to issue OIML certificates and OIML type evaluation reports in accordance with their scope."
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Management Committee online approval (Closing date 19 September 2024)"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_row",
+                          "attrs": {
+                            "id": "_5fa2e0d7-0ec1-342e-0d24-7919ab078318"
+                          },
+                          "content": [
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "PD-05"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "4.3 & 5.3"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "-"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "An OIML Issuing Authority may use test data from a Test Laboratory listed in their Declaration or a Test Laboratory (other than a Manufacturer Test Laboratory) listed in the Declaration of another OIML Issuing Authority."
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " + In either case, the scope of an OIML Issuing Authority must be supported by an approved Test Laboratory (listed in the OIML Issuing Authority’s Declaration) for each category of measuring instrument included within that scope."
+                                }
+                              ]
+                            },
+                            {
+                              "type": "table_cell",
+                              "attrs": {
+                                "align": "left",
+                                "valign": "top"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Management Committee online approval (Closing date 19 September 2024)"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_a745729d-c09e-8431-64a7-4726e110a9f4",
+            "obligation": "informative",
+            "semx_id": "_a745729d-c09e-8431-64a7-4726e110a9f4",
+            "displayorder": 7,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]OIML-CS PD-01, OIML. Appeals, Resolution of Complaints and Disputes. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]OIML-CS OD-02, OIML. Test Laboratories Forum. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[4]OIML-CS PD-02, OIML. Procedures to approve Legal Metrology experts and QMS experts. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_03"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[5]OIML-CS PD-03, OIML. Application and approval of OIML Issuing Authorities, Utilizers and Associates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_04"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[6]OIML-CS PD-04, OIML. Assessment of Test Laboratories. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_05"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[7]OIML-CS PD-05, OIML. Processing an application for an OIML Type Evaluation Report and OIML Certificate. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_06"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[8]OIML-CS PD-06, OIML. Use of OIML Type Evaluation Reports and OIML Certificates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_07"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[9]OIML-CS PD-07, OIML. Transition Arrangements under the OIML-CS. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_08"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[10]OIML-CS PD-08, OIML. Signing the OIML-CS Declaration. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[11]OIML B 18:2022, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

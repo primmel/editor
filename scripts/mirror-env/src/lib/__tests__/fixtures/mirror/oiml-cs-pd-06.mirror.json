@@ -1,0 +1,1505 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Use of OIML Type Evaluation Reports and OIML Certificates"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_03d3e506-68b3-0bc8-e9b0-2ed7945d1ffd",
+            "obligation": "informative",
+            "semx_id": "_03d3e506-68b3-0bc8-e9b0-2ed7945d1ffd",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_852276fe-5b39-c964-b373-b5f0b0182e48",
+                "semx_id": "_852276fe-5b39-c964-b373-b5f0b0182e48"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the Maintenance Group of the OIML Certification System (OIML-CS) Management Committee."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_e165c382-2240-7e82-006c-cacc01b9fdfa",
+                "semx_id": "_e165c382-2240-7e82-006c-cacc01b9fdfa"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Management Committee approved this Edition 4 of OIML-CS PD-06 at its Ninth meeting on 06 March 2024 and it was published on 11 March 2024. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b",
+                "semx_id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to the Framework for the OIML Certification System (OIML-CS) (OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") which contains the framework for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796",
+                "semx_id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The text of this publication is based on the following documents:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_c1f00cb6-17c4-2945-8a08-63de10a3e053",
+                "semx_id": "_c1f00cb6-17c4-2945-8a08-63de10a3e053",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f30f18dc-361e-d36f-6feb-8f9657c63a79"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_952e03dd-a5de-923f-85b8-a6ea0ebc110d"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published July 2017"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_218bb69e-bb27-3c2e-6029-e21594d73ff3"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 20 December 2018"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_57a9e429-718a-8b93-2d65-97ece9fbff0a"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published 26 February 2021"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_a5bb90cf-8e03-3415-4908-a3c86700673f"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 4 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N088"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment – 20231213"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_0cf82878-ecc9-acf7-3abb-43e75b5da936"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-06 Edition 4 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P1_N414"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC vote – 20240228"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_c631773b-5d42-bfe1-6114-50d4ff2a0bca",
+            "obligation": "informative",
+            "semx_id": "_c631773b-5d42-bfe1-6114-50d4ff2a0bca",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_9311728d-f868-ee5c-7bc9-63a7448c4926",
+                "obligation": "informative",
+                "semx_id": "_9311728d-f868-ee5c-7bc9-63a7448c4926"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_b286a3e2-acd5-2eaa-e911-d810268f841f",
+                    "semx_id": "_b286a3e2-acd5-2eaa-e911-d810268f841f"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML certification System (OIML-CS) has been established"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "semx_id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a6612b28-6421-54a8-7065-2fe6adf15852"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb",
+                            "semx_id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to promote the global harmonization, uniform interpretation and implementation of legal metrological requirements for measuring instruments and/or modules,"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bf572391-8389-0684-1582-47046bbdf569"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9",
+                            "semx_id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to avoid unnecessary re-testing when obtaining national type evaluations and approvals, and to support the recognition of measuring instruments and/or modules under legal metrological control, while achieving and maintaining confidence in the results in support of facilitating the global trade of individual instruments, and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c154974c-667c-fafa-81a6-acc78fe24c2c"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb",
+                            "semx_id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to establish rules and procedures for fostering mutual confidence among participating OIML Member States and Corresponding Members in the results of type evaluations that indicate conformity of measuring instruments and/or modules, under legal metrological control, to metrological and technical requirements established in the applicable OIML Recommendation(s)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_8a2a898c-96fd-d195-d807-b7285ba7fbc5",
+                "obligation": "informative",
+                "semx_id": "_8a2a898c-96fd-d195-d807-b7285ba7fbc5"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_94ca187b-beaa-13b8-5905-9d502706221d",
+                    "semx_id": "_94ca187b-beaa-13b8-5905-9d502706221d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by a range of Operational Documents and Procedural Documents which are developed, maintained and approved by the OIML-CS Management Committee."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections",
+      "content": [
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_cfc5c151-ebb2-fc72-fac9-b551ef219a2d",
+            "obligation": "normative",
+            "type": "scope",
+            "semx_id": "_cfc5c151-ebb2-fc72-fac9-b551ef219a2d",
+            "displayorder": 5,
+            "title": "Scope"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_ea3888c0-16b2-0a37-7b9d-08eb65241975",
+                "semx_id": "_ea3888c0-16b2-0a37-7b9d-08eb65241975"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This document is one of a series of Operational Documents and Procedural Documents that define the rules for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_be2da7a9-26f0-b736-0f13-2149c16e08f6",
+                "semx_id": "_be2da7a9-26f0-b736-0f13-2149c16e08f6"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication contains the rules and procedures for using OIML type evaluation/test reports and OIML certificates."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_95c497e9-34a4-21c2-f243-e19ac4c4ff8c",
+                "semx_id": "_95c497e9-34a4-21c2-f243-e19ac4c4ff8c"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "These procedures relate to the framework for the OIML-CS as given in OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", the Operational Rules as given in "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS OD-01",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_OD_01",
+                        "citeas": "OIML-CS OD-01"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS OD-02",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_OD_02",
+                        "citeas": "OIML-CS OD-02"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and the Procedures as given in "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-01",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_01",
+                        "citeas": "OIML-CS PD-01"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-02",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_02",
+                        "citeas": "OIML-CS PD-02"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-03",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_03",
+                        "citeas": "OIML-CS PD-03"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-04",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_04",
+                        "citeas": "OIML-CS PD-04"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-05",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_05",
+                        "citeas": "OIML-CS PD-05"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-07",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_07",
+                        "citeas": "OIML-CS PD-07"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML-CS PD-08",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_CS_PD_08",
+                        "citeas": "OIML-CS PD-08"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_c0b59205-246e-fe79-8993-b86f1f1c8986",
+            "obligation": "normative",
+            "semx_id": "_c0b59205-246e-fe79-8993-b86f1f1c8986",
+            "displayorder": 6,
+            "title": "Terminology and abbreviations"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_fe6c0d06-6286-4d8c-6160-fc7fea4d7710",
+                "semx_id": "_fe6c0d06-6286-4d8c-6160-fc7fea4d7710"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The terminology and abbreviations defined in clause 3 of OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " apply."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_b2cd1cc0-f9e8-33bb-acec-623e34dce91d",
+            "obligation": "normative",
+            "semx_id": "_b2cd1cc0-f9e8-33bb-acec-623e34dce91d",
+            "displayorder": 7,
+            "title": "Use of an OIML certificate and OIML Type Evaluation Report"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_1f3d7d65-9728-1045-1527-0189e2e0ce76",
+                "obligation": "normative",
+                "semx_id": "_1f3d7d65-9728-1045-1527-0189e2e0ce76"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_824c4b13-37cd-c399-98ba-21bd4753b74d",
+                    "semx_id": "_824c4b13-37cd-c399-98ba-21bd4753b74d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An OIML certificate issued by an OIML Issuing Authority under Scheme A or B of the OIML-CS does not bestow any form of legal international approval."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a86a18b4-e550-ca54-3ed1-74685170e7d1",
+                "obligation": "normative",
+                "semx_id": "_a86a18b4-e550-ca54-3ed1-74685170e7d1"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_176892b2-124f-6306-9220-b1a032a192f5",
+                    "semx_id": "_176892b2-124f-6306-9220-b1a032a192f5"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The owner may use a registered OIML certificate and its associated OIML type evaluation report as follows:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_10d5518d-96e8-7419-ce78-2a62a2131c92",
+                    "semx_id": "_10d5518d-96e8-7419-ce78-2a62a2131c92",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a3b4ad46-5d39-bf24-46d7-1931cb920577"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_30dbc54c-97a3-fe2a-28b6-68e6b4564f95",
+                            "semx_id": "_30dbc54c-97a3-fe2a-28b6-68e6b4564f95"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "in support of an application for national or regional type approval in any country or group of countries; it is the responsibility of the applicant to give evidence upon request that the type presented for approval is identical to that identified on the OIML certificate;"
+                            },
+                            {
+                              "type": "note",
+                              "attrs": {
+                                "id": "_02583026-cb25-9d32-6359-36a6557e8937",
+                                "semx_id": "_02583026-cb25-9d32-6359-36a6557e8937"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_760673b0-cd13-0c42-e9b1-3f7790c7455c",
+                                    "semx_id": "_760673b0-cd13-0c42-e9b1-3f7790c7455c"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "If requested by the regional or national approval authority, the complete OIML type evaluation report shall be presented by, or on behalf of, the owner together with the OIML certificate."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c3a66793-73d2-4dc2-bfcf-46381a178a83"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_8388fa0d-1830-80ce-a853-f00e96878c34",
+                            "semx_id": "_8388fa0d-1830-80ce-a853-f00e96878c34"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "in support of the presentation of an individual instrument for initial verification in a country in which type approval is not required; it is the responsibility of the applicant to give evidence upon request that the instrument presented for verification is of the type that is identified on the OIML certificate;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_b4ae91af-0cc2-23df-4ea5-6180e3ea0319"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_7807a885-929b-bc94-1e17-83498f86bcd0",
+                            "semx_id": "_7807a885-929b-bc94-1e17-83498f86bcd0"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to inform buyers, users, and other interested parties that the type of measuring instrument (represented by the tested samples) was found to conform to the requirements of the relevant Recommendation."
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_a5135d1c-b6c1-0250-8417-b0827bbf2696",
+                            "semx_id": "_a5135d1c-b6c1-0250-8417-b0827bbf2696"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "NOTE 1: Such evidence of conformity (and the name of the OIML Issuing Authority which issued the OIML certificate) may be referred to or included in e.g. manufacturer’s catalogues and other marketing literature (however, see "
+                            },
+                            {
+                              "type": "text",
+                              "text": "4.4 and 4.5",
+                              "marks": [
+                                {
+                                  "type": "xref",
+                                  "attrs": {
+                                    "target": "use_of_certificates"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "4.4 and 4.5",
+                              "marks": [
+                                {
+                                  "type": "xref",
+                                  "attrs": {
+                                    "target": "use_of_certificates"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ")."
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_8970dfca-ce91-69c9-c1ae-9e83dabb4108",
+                            "semx_id": "_8970dfca-ce91-69c9-c1ae-9e83dabb4108"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "NOTE 2: In some countries it is an offense to sell instruments that do not conform with the certified type."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_cff1f6d4-8591-0249-4b2c-70846726db2f",
+                "obligation": "normative",
+                "semx_id": "_cff1f6d4-8591-0249-4b2c-70846726db2f"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_332641ca-3f04-e3aa-7a96-2e43ba0666a0",
+                    "semx_id": "_332641ca-3f04-e3aa-7a96-2e43ba0666a0"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "If requested by the regional or national issuing authority, the owner is responsible for providing the Utilizer or Associate with the original, or a certified copy of, the complete OIML type evaluation report and the associated test reports."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_56710d4f-ff40-8af4-31e1-a3dc4fad42ce",
+                "obligation": "normative",
+                "semx_id": "_56710d4f-ff40-8af4-31e1-a3dc4fad42ce"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_71f6966b-d43f-5c07-b172-4f7b63dcab8f",
+                    "semx_id": "_71f6966b-d43f-5c07-b172-4f7b63dcab8f"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An OIML certificate shall not be used as proof of conformity of an individual instrument with the requirements of the relevant Recommendation."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_88683225-aa45-b76b-adb5-7dcc6d7af846",
+                    "semx_id": "_88683225-aa45-b76b-adb5-7dcc6d7af846"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML or OIML-CS logos shall not be affixed to an individual measuring instrument. Requirements regarding the use of the OIML and OIML-CS logo are specified in OIML B 20 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 20:2019",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_20",
+                            "citeas": "OIML B 20:2019"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "use_of_certificates",
+                "obligation": "normative",
+                "semx_id": "_bb2798f1-56fc-f726-eab1-acd27c1bebf7"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_81996c92-efca-b98c-e582-9fe0e87f1855",
+                    "semx_id": "_81996c92-efca-b98c-e582-9fe0e87f1855"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Apart from the mention of the OIML certificate number with the name of the OIML Issuing Authority which issued the OIML certificate, partial quotation of the OIML certificate or of the associated OIML type evaluation report is not permitted, though they may be reproduced in full."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_ba2f2b46-e7b8-1e93-9a0d-bf5311023cfd",
+                "obligation": "normative",
+                "semx_id": "_ba2f2b46-e7b8-1e93-9a0d-bf5311023cfd"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_1889c800-286c-86d4-e34a-e6daed8d2392",
+                    "semx_id": "_1889c800-286c-86d4-e34a-e6daed8d2392"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The legal metrology service (or other responsible body) to which the application for national or regional type approval is made should take into consideration the OIML certificate and its associated OIML type evaluation report to the extent that is possible."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_8e8a2c9d-6aaa-72de-1395-587d4bf1568f",
+                "obligation": "normative",
+                "semx_id": "_8e8a2c9d-6aaa-72de-1395-587d4bf1568f"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_ea57517b-13e6-c38f-db00-8f2dd7686c7c",
+                    "semx_id": "_ea57517b-13e6-c38f-db00-8f2dd7686c7c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML Members are encouraged to adopt mechanisms to recognize and accept OIML certificates and their associated OIML type evaluation reports issued under Scheme B of the OIML-CS through appropriate measures."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_79c3f16e-28ca-d24a-714d-fc34b93b7bd8",
+                "obligation": "normative",
+                "semx_id": "_79c3f16e-28ca-d24a-714d-fc34b93b7bd8"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0fa429b0-33e6-15d2-426d-888e86acd913",
+                    "semx_id": "_0fa429b0-33e6-15d2-426d-888e86acd913"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In the event that questions arise during the review of an OIML certificate and OIML type evaluation report received (including the test data), a Utilizer or Associate shall consult the relevant OIML Issuing Authority for clarification of the matter and take any further appropriate actions. In case the test data are not accepted, written justification for denial shall be sent to the relevant OIML Issuing Authority, the manufacturer and the Executive Secretary. The OIML Issuing Authority may subsequently appeal this decision according to the procedure defined in Procedural Document PD-01 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_01",
+                            "citeas": "OIML-CS PD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_609e6481-035b-c93a-8386-9ea13a5f44d1",
+                "obligation": "normative",
+                "semx_id": "_609e6481-035b-c93a-8386-9ea13a5f44d1"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_ddcb778a-8c2f-4a58-91de-e98c8a3aebd5",
+                    "semx_id": "_ddcb778a-8c2f-4a58-91de-e98c8a3aebd5"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML type evaluation reports that contain test results from a Manufacturer Test Laboratory (MTL) may be accepted by Utilizers and Associates on a voluntary basis. In the event that test results from an MTL are not accepted, a justification or explanation is not required."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_aae3a6c8-cdfe-7704-a520-e2f52a6b4c8b",
+            "obligation": "normative",
+            "semx_id": "_aae3a6c8-cdfe-7704-a520-e2f52a6b4c8b",
+            "displayorder": 8,
+            "title": "Misuse of an OIML certificate by its owner"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_ce8e9f9b-48f2-5832-7809-3636d26ef6ce",
+                "obligation": "normative",
+                "semx_id": "_ce8e9f9b-48f2-5832-7809-3636d26ef6ce"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0be41a81-2449-77a9-1601-0ea3f57045a2",
+                    "semx_id": "_0be41a81-2449-77a9-1601-0ea3f57045a2"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Executive Secretary shall consult the CIML Member of the Member State in which an OIML certificate was issued when documented and substantiated evidence is presented that the OIML certificate is being used by its owner in a manner contrary to the requirements of clause 4. Depending on the conclusions of the consultation, the Executive Secretary shall inform the Management Committee, other Member States, the OIML Issuing Authority and interested parties accordingly and also directly inform the owner that continued misuse of the OIML certificate will lead to corrective actions being taken by the Management Committee that could result in the OIML certificate being deregistered by the BIML."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_8de96e5c-7ed0-f620-53c9-e22a44a928a2",
+                "obligation": "normative",
+                "semx_id": "_8de96e5c-7ed0-f620-53c9-e22a44a928a2"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_01a6c75e-d77c-6274-0564-5ca5b13ab518",
+                    "semx_id": "_01a6c75e-d77c-6274-0564-5ca5b13ab518"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In the event of a proposal to deregister the OIML certificate the owner of the OIML certificate may appeal this decision according to the procedure defined in Procedural Document PD-01 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_01",
+                            "citeas": "OIML-CS PD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a356afe1-d1f9-5871-b306-3365e5dca77b",
+                "obligation": "normative",
+                "semx_id": "_a356afe1-d1f9-5871-b306-3365e5dca77b"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_34e45232-9d07-88f7-f2d0-da902f5e605f",
+                    "semx_id": "_34e45232-9d07-88f7-f2d0-da902f5e605f"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "If the appeal is not upheld and the OIML certificate is to be deregistered, the Executive Secretary shall notify the owner of the OIML certificate, inform the Management Committee, Member States, the OIML Issuing Authority and any other interested parties, and publish a notice in appropriate publications including the OIML Bulletin and the OIML website."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_69290931-4c80-f96d-e05d-6bdee0dc471d",
+            "obligation": "informative",
+            "semx_id": "_69290931-4c80-f96d-e05d-6bdee0dc471d",
+            "displayorder": 9,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]OIML-CS PD-01, OIML. Appeals, Resolution of Complaints and Disputes. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]OIML-CS OD-02, OIML. Test Laboratories Forum. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[4]OIML-CS PD-02, OIML. Procedures to approve Legal Metrology experts and QMS experts. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_03"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[5]OIML-CS PD-03, OIML. Application and approval of OIML Issuing Authorities, Utilizers and Associates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_04"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[6]OIML-CS PD-04, OIML. Assessment of Test Laboratories. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_05"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[7]OIML-CS PD-05, OIML. Processing an application for an OIML Type Evaluation Report and OIML Certificate. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_07"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[8]OIML-CS PD-07, OIML. Transition Arrangements under the OIML-CS. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_08"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[9]OIML-CS PD-08, OIML. Signing the OIML-CS Declaration. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[10]OIML B 18:2022, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_20"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[11]OIML B 20:2019, OIML. Rules for the use of OIML logos. OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

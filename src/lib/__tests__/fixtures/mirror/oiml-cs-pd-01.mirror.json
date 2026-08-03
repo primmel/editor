@@ -1,0 +1,2025 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Appeals, Resolution of Complaints and Disputes"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_b4c00904-145a-6fa2-386b-1c715c7fb9fb",
+            "obligation": "informative",
+            "semx_id": "_b4c00904-145a-6fa2-386b-1c715c7fb9fb",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_852276fe-5b39-c964-b373-b5f0b0182e48",
+                "semx_id": "_852276fe-5b39-c964-b373-b5f0b0182e48"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the Maintenance Group of the OIML Certification System (OIML-CS) Management Committee."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_2f88e937-2a2d-f089-2fba-b9facdf49ac0",
+                "semx_id": "_2f88e937-2a2d-f089-2fba-b9facdf49ac0"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Management Committee approved this Edition 3 of OIML-CS PD-01 by electronic ballot on 26 August 2024. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b",
+                "semx_id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to the Framework for the OIML Certification System (OIML-CS) (OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") which contains the framework for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796",
+                "semx_id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The text of this publication is based on the following documents:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_6cf02313-97be-79dd-16f0-93aff5d3a27a",
+                "semx_id": "_6cf02313-97be-79dd-16f0-93aff5d3a27a",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f30f18dc-361e-d36f-6feb-8f9657c63a79"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_eb5053bd-6275-8c6e-fea9-e3aac410c6ea"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: July 2017"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_0c17e61b-5770-5f0c-d9a1-de40073df0ed"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: 20 December 2018"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_421d1947-09d4-cd26-7a3a-ed816b5df278"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N087"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment-20231213"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_2e5a9bce-ec96-585c-2183-b2f224da9528"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N093"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment-20240227"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f0d61ef2-f0a5-42f1-edc3-8aba9c2447a7"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N097"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment-20240605"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_ca603826-4318-3905-9048-7316c7a588dc"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-01 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P4_N141"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC approval-20240724"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_a1d891ff-f400-182f-a858-9fa88bbad745",
+            "obligation": "informative",
+            "semx_id": "_a1d891ff-f400-182f-a858-9fa88bbad745",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_9fe4a25c-1270-cdff-41a9-56bc4003a00e",
+                "obligation": "informative",
+                "semx_id": "_9fe4a25c-1270-cdff-41a9-56bc4003a00e"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_6c0b98a5-f550-170f-ebf8-3d6356997d8c",
+                    "semx_id": "_6c0b98a5-f550-170f-ebf8-3d6356997d8c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML Certification System (OIML-CS) has been established:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "semx_id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a6612b28-6421-54a8-7065-2fe6adf15852"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb",
+                            "semx_id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to promote the global harmonization, uniform interpretation and implementation of legal metrological requirements for measuring instruments and/or modules,"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bf572391-8389-0684-1582-47046bbdf569"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9",
+                            "semx_id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to avoid unnecessary re-testing when obtaining national type evaluations and approvals, and to support the recognition of measuring instruments and/or modules under legal metrological control, while achieving and maintaining confidence in the results in support of facilitating the global trade of individual instruments, and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c154974c-667c-fafa-81a6-acc78fe24c2c"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb",
+                            "semx_id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to establish rules and procedures for fostering mutual confidence among participating OIML Member States and Corresponding Members in the results of type evaluations that indicate conformity of measuring instruments and/or modules, under legal metrological control, to metrological and technical requirements established in the applicable OIML Recommendation(s)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_b7413f13-72f2-3867-21ef-84355d0258bc",
+                "obligation": "informative",
+                "semx_id": "_b7413f13-72f2-3867-21ef-84355d0258bc"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_78425cd2-6101-ee11-7f26-9270bcb301eb",
+                    "semx_id": "_78425cd2-6101-ee11-7f26-9270bcb301eb"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by a range of Operational Documents and Procedural Documents which are developed, maintained and approved by the OIML-CS Management Committee. == Scope"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea",
+                    "semx_id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This document is one of a series of Operational Documents and Procedural Documents that define the rules for the operation of the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_473004bd-56db-74b6-0133-645a3b6e883d",
+                    "semx_id": "_473004bd-56db-74b6-0133-645a3b6e883d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This publication contains information on appeals, resolution of complaints and disputes associated with the OIML-CS, along with the procedures relating to the operation of the Board of Appeal (BoA)."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c4794e39-6697-5004-9208-58951fbad48f",
+                    "semx_id": "_c4794e39-6697-5004-9208-58951fbad48f"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The information and procedures relate to the framework for the OIML-CS as given in OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", the Operational Rules as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_01",
+                            "citeas": "OIML-CS OD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_02",
+                            "citeas": "OIML-CS OD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", and the Procedures as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_02",
+                            "citeas": "OIML-CS PD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-04",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_04",
+                            "citeas": "OIML-CS PD-04"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-05",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_05",
+                            "citeas": "OIML-CS PD-05"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-06",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_06",
+                            "citeas": "OIML-CS PD-06"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-07",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_07",
+                            "citeas": "OIML-CS PD-07"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-08",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_08",
+                            "citeas": "OIML-CS PD-08"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". == Terminology and abbreviations"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_547f1fd8-d953-fd9f-d404-ddebacd1e3ca",
+                    "semx_id": "_547f1fd8-d953-fd9f-d404-ddebacd1e3ca"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The terminology and abbreviations defined in clause 3 of OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " apply. == Composition and appointment of members of the BoA"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_88331b1a-ed78-4064-5af6-e8e1d37d3024",
+                "obligation": "informative",
+                "semx_id": "_88331b1a-ed78-4064-5af6-e8e1d37d3024",
+                "title": "Composition"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_125f401c-50d7-19fa-7615-8374bd2adb45",
+                    "semx_id": "_125f401c-50d7-19fa-7615-8374bd2adb45"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The composition of the BoA is defined in OIML B 18, 13.1 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_81364071-038a-c196-5c91-9837531f6cb6",
+                "obligation": "informative",
+                "semx_id": "_81364071-038a-c196-5c91-9837531f6cb6",
+                "title": "Appointment of BoA Chairperson and BoA members"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_8ba2c479-11cb-6fdc-051e-1b9193e4d64d",
+                    "obligation": "informative",
+                    "semx_id": "_8ba2c479-11cb-6fdc-051e-1b9193e4d64d"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_7f62b87a-fade-d265-f642-e10667a5872e",
+                        "semx_id": "_7f62b87a-fade-d265-f642-e10667a5872e"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The CIML shall seek nominations for candidates for the roles of BoA Chairperson and members of the BoA. Management Committee Members and representatives cannot be appointed as the BoA Chairperson or as a BoA member. CIML Members shall be given at least one month to review all nominations ahead of a vote."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_2cf97985-6dbf-c567-f2d9-4f5b02409774",
+                    "obligation": "informative",
+                    "semx_id": "_2cf97985-6dbf-c567-f2d9-4f5b02409774"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_2f3ad616-1fa3-c795-6d93-11a34a4632f0",
+                        "semx_id": "_2f3ad616-1fa3-c795-6d93-11a34a4632f0"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For the BoA Chairperson the appointment process shall be as follows:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_61698267-e4b9-d077-47f0-98f4b7569d3e",
+                        "semx_id": "_61698267-e4b9-d077-47f0-98f4b7569d3e",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_0e140f4d-6e67-3a28-88ed-e9a180a6de27"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_87950531-c01e-4459-8365-fcd10d77697b",
+                                "semx_id": "_87950531-c01e-4459-8365-fcd10d77697b"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "In the case that there is only one candidate, that candidate is appointed."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_b047cea6-9885-0e9b-da39-9609c8e7dd9c"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_e973b679-700d-d650-144d-8d4fb5ebcf0b",
+                                "semx_id": "_e973b679-700d-d650-144d-8d4fb5ebcf0b"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Where there is more than one candidate, CIML Members vote for one of the candidates and the candidate who obtained the highest number of votes is appointed."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_a437d05e-ba7f-9beb-b299-9212769915b7"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_8de8d565-0657-7341-2a73-f1459b32d732",
+                                "semx_id": "_8de8d565-0657-7341-2a73-f1459b32d732"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "If there is no candidate a member of the Presidential Council shall be appointed as BoA Chairperson (ex officio) until a new appointment process is conducted."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e57c5aaa-8d3d-2b98-992b-59be1725560c",
+                    "obligation": "informative",
+                    "semx_id": "_e57c5aaa-8d3d-2b98-992b-59be1725560c"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_c28ec865-8db1-d84d-82b5-16eba752ea8a",
+                        "semx_id": "_c28ec865-8db1-d84d-82b5-16eba752ea8a"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For the members of the BoA the appointment process shall be as follows:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_cce8794c-c60d-6e12-cc02-c6407788e0bd",
+                        "semx_id": "_cce8794c-c60d-6e12-cc02-c6407788e0bd",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_c87e54da-6c58-c2c0-8543-df4f5e9247b5"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_7cdef611-18b4-3bdf-fbc0-1117fbf015da",
+                                "semx_id": "_7cdef611-18b4-3bdf-fbc0-1117fbf015da"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "In the case where there are four candidates, those candidates are appointed."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_4bffb808-97d0-2034-9897-88f901d0af92"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_c34ecc07-5655-2dfc-4a46-d9c4bc74dc3d",
+                                "semx_id": "_c34ecc07-5655-2dfc-4a46-d9c4bc74dc3d"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Where there are more than four candidates, CIML Members vote for four of the candidates and the four candidates who obtained the highest number of votes are appointed."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_26643a79-c0ad-6a8b-914f-116e79b477d5"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_ecdcc5fe-4f36-9c93-d642-6d8279fbbbf1",
+                                "semx_id": "_ecdcc5fe-4f36-9c93-d642-6d8279fbbbf1"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "In case there are fewer than four candidates, those candidates are appointed and a member of the Presidential Council or, at the discretion of the CIML President, a CIML Member shall be appointed to each vacant position until a new appointment process is conducted."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_4314e70f-729a-5105-8b81-4d8454e1c9c4",
+                    "obligation": "informative",
+                    "semx_id": "_4314e70f-729a-5105-8b81-4d8454e1c9c4"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_932835e6-5cae-e9b8-b76d-cb9e4430147b",
+                        "semx_id": "_932835e6-5cae-e9b8-b76d-cb9e4430147b"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The terms of office of the BoA Chairperson and the four members of the BoA shall be three years and they shall be immediately eligible for re-appointment for a further period of three years."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_fc651b5c-7c85-f7d3-21c7-e9fd7168f126",
+                    "obligation": "informative",
+                    "semx_id": "_fc651b5c-7c85-f7d3-21c7-e9fd7168f126"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_27835d38-96ca-6dfc-5422-02d0c7654813",
+                        "semx_id": "_27835d38-96ca-6dfc-5422-02d0c7654813"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Neither the BoA Chairperson nor the other members shall serve in a case in which an OIML Issuing Authority or Test Laboratory of their country is involved. When necessary in such an event, a member of the Presidential Council or, at the discretion of the CIML President, a CIML Member from a country not involved in the case shall be appointed. The Executive Secretary shall act as the Secretary of the BoA and shall have no right to vote. == Appeals"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_cd0a59f9-4170-e425-658e-949073cadbd7",
+                        "semx_id": "_cd0a59f9-4170-e425-658e-949073cadbd7"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Decisions made by the Management Committee may be appealed to the BoA. How to make an appeal and the operating rules for the BoA are detailed in clauses 8 and 9 respectively. == Complaints"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_2b71e405-a868-e422-bb8c-0bad0891e963",
+                "obligation": "informative",
+                "semx_id": "_2b71e405-a868-e422-bb8c-0bad0891e963"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_2888a28f-224b-315b-7c4a-37c95e184609",
+                    "semx_id": "_2888a28f-224b-315b-7c4a-37c95e184609"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A complaint may relate to a range of topics including, but not limited to:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_8a194df3-73b0-0ed7-faef-7f468984bf78",
+                    "semx_id": "_8a194df3-73b0-0ed7-faef-7f468984bf78",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_5e736e2f-73db-7a37-af1b-04f399f9bce8"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_f83b608a-c093-79ba-7027-3e9f20b24ca9",
+                            "semx_id": "_f83b608a-c093-79ba-7027-3e9f20b24ca9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "an OIML type evaluation report that has been issued by an OIML Issuing Authority on the basis of incorrect technical conclusions or procedures;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a8fe7ef7-049f-c7da-14da-7ff8a727687b"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_8a7f3a1c-80b1-028e-4956-3119999a6998",
+                            "semx_id": "_8a7f3a1c-80b1-028e-4956-3119999a6998"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "a decision of a Utilizer or Associate to not accept an OIML test report, OIML type evaluation report and/or OIML certificate;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bd9c18aa-e096-2ef9-c8cd-dda0fe341566"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_86e2fe47-50e0-0b7c-4692-86ba5b5cf7d7",
+                            "semx_id": "_86e2fe47-50e0-0b7c-4692-86ba5b5cf7d7"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "any expression of dissatisfaction with the OIML-CS."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_59b09512-c0e6-39f5-5045-c133b17d2958",
+                "obligation": "informative",
+                "semx_id": "_59b09512-c0e6-39f5-5045-c133b17d2958",
+                "title": "Incorrect technical conclusions or procedures"
+              }
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_063656b7-4d9d-0d26-2d51-c574b183c790",
+                "obligation": "informative",
+                "semx_id": "_063656b7-4d9d-0d26-2d51-c574b183c790"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_aefaf43a-c1d7-4437-8638-0fc2614b8a39",
+                    "semx_id": "_aefaf43a-c1d7-4437-8638-0fc2614b8a39"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A complaint may be submitted to the Executive Secretary with documented and substantiated evidence that an OIML type evaluation report was issued by an OIML Issuing Authority on the basis of incorrect technical conclusions or procedures. The Executive Secretary shall notify the owner of the report and the Management Committee of the complaint. The Executive Secretary shall investigate the complaint and will seek the advice of the Review Committee as to whether the complaint should be upheld. If the complaint is upheld then the corresponding OIML certificate will be deregistered from the OIML-CS website and the OIML Issuing Authority shall take appropriate action to correct the OIML type evaluation report. The OIML Issuing Authority has the right to appeal the decision to deregister the OIML certificate."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_9e8ccc28-c45d-4bf6-27e1-7e64a09e037a",
+                "obligation": "informative",
+                "semx_id": "_9e8ccc28-c45d-4bf6-27e1-7e64a09e037a",
+                "title": "Non-acceptance of an OIML test report, OIML type evaluation report and/or OIML certificate"
+              }
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_6835f2a1-5f79-c80f-347f-a9aaceaac739",
+                "obligation": "informative",
+                "semx_id": "_6835f2a1-5f79-c80f-347f-a9aaceaac739"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_b0b0ad00-2edf-f20c-f7b1-97c935829467",
+                    "semx_id": "_b0b0ad00-2edf-f20c-f7b1-97c935829467"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A complaint may be submitted to the Executive Secretary with documented and substantiated evidence regarding a decision of a Utilizer or Associate to not accept an OIML test report, OIML type evaluation report and/or OIML certificate. The Executive Secretary shall notify the Utilizer or Associate and the Management Committee of the complaint. The Executive Secretary shall investigate the complaint. The Executive Secretary will report to the Management Committee with recommended actions as appropriate. Actions may include proposed amendments to the scope of a Utilizer or Associate and potential consequential amendments to the scope of OIML Issuing Authority(ies) from the same OIML Member State. The Utilizer or Associate has the right to appeal any decisions of the Management Committee in this regard."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_2b620e8f-3a73-3562-7ac3-8f504d97ad79",
+                "obligation": "informative",
+                "semx_id": "_2b620e8f-3a73-3562-7ac3-8f504d97ad79",
+                "title": "Expressions of dissatisfaction"
+              }
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_edee3676-9e00-7124-6e30-ce0e826a3d97",
+                "obligation": "informative",
+                "semx_id": "_edee3676-9e00-7124-6e30-ce0e826a3d97"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_3c99c61d-e552-563c-dba3-e1b4169e965e",
+                    "semx_id": "_3c99c61d-e552-563c-dba3-e1b4169e965e"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An expression of dissatisfaction regarding the OIML-CS may be brought to the attention of the Management Committee Chairperson, Management Committee Deputy Chairperson, a Management Committee Member or the Executive Secretary. In the case where an expression of dissatisfaction has been brought to the attention of a person other than the Executive Secretary, the person shall notify the Executive Secretary who will investigate the expression of dissatisfaction. Where the expression of dissatisfaction is upheld the Executive Secretary will report to the Management Committee with recommended actions as appropriate."
+                    },
+                    {
+                      "type": "note",
+                      "attrs": {
+                        "id": "_be0be76e-7a64-5ac9-15d5-131075d0816a",
+                        "semx_id": "_be0be76e-7a64-5ac9-15d5-131075d0816a"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_d3408a44-a362-a01e-31d1-d9279e476169",
+                            "semx_id": "_d3408a44-a362-a01e-31d1-d9279e476169"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The above-mentioned process can also be adopted when a suggestion for improvement is received. == Disputes"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_d3f14998-d10f-1979-ef71-84cb7018d798",
+                "obligation": "informative",
+                "semx_id": "_d3f14998-d10f-1979-ef71-84cb7018d798"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_98f75f72-71b4-f7ac-d9c7-9eb5054d9d60",
+                    "semx_id": "_98f75f72-71b4-f7ac-d9c7-9eb5054d9d60"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Executive Secretary shall be contacted in the event of a dispute initiated by:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_f390040b-9089-08f5-4a34-d8698962293b",
+                    "semx_id": "_f390040b-9089-08f5-4a34-d8698962293b",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_72f8de75-35b7-0d52-43e3-643ed9d499e5"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_0e07973b-edfa-ccb3-dca5-9d243c792803",
+                            "semx_id": "_0e07973b-edfa-ccb3-dca5-9d243c792803"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "an applicant for OIML type evaluation and certification regarding an OIML type evaluation report; or"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_5195bbdb-2fa9-21e2-25b5-141a51b3f2d3"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_2cb704a4-b297-c578-1b8b-ea161a90f0f2",
+                            "semx_id": "_2cb704a4-b297-c578-1b8b-ea161a90f0f2"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "an OIML Issuing Authority, Utilizer or Associate regarding the incorrect application of the operational rules and procedures of the OIML-CS."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a966f1af-0ff1-149b-43b4-6e29c2ccbdf6",
+                "obligation": "informative",
+                "semx_id": "_a966f1af-0ff1-149b-43b4-6e29c2ccbdf6"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c8f92cd1-f211-22e3-db47-b06d4d5101e1",
+                    "semx_id": "_c8f92cd1-f211-22e3-db47-b06d4d5101e1"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The appropriate CIML Member may represent their respective OIML Issuing Authority, Utilizer or Associate involved in a dispute and shall attempt to resolve between the parties in dispute any issue that might arise. If the OIML Issuing Authorities, Utilizers or Associates affected are unable to resolve an issue, they shall provide a written explanation to the Executive Secretary who will then raise it with the BoA."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_0c6112c2-8ccb-fab3-3453-884ab77c4834",
+                "obligation": "informative",
+                "semx_id": "_0c6112c2-8ccb-fab3-3453-884ab77c4834"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d378e9f7-5af3-66de-2a17-507f52149ff9",
+                    "semx_id": "_d378e9f7-5af3-66de-2a17-507f52149ff9"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where a dispute involves an applicant for OIML type evaluation and certification (e.g. a manufacturer), the applicant shall attempt to resolve any issues that might arise with the relevant OIML Issuing Authority, Utilizer, Associate and/or their CIML Members. If the applicant is unable to resolve an issue, they may provide a written explanation to the Executive Secretary who will then raise it with the BoA. == Making an appeal to the BoA"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c82b82d1-5da6-199c-1c3b-f2c7e7527bf3",
+                "obligation": "informative",
+                "semx_id": "_c82b82d1-5da6-199c-1c3b-f2c7e7527bf3"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_b42c6dbe-63da-2ff9-fa1d-5721701781ae",
+                    "semx_id": "_b42c6dbe-63da-2ff9-fa1d-5721701781ae"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Applicants for OIML type evaluation and certification, OIML Issuing Authorities, Utilizers or Associates have the right to submit an appeal to the BoA."
+                    },
+                    {
+                      "type": "note",
+                      "attrs": {
+                        "id": "_f6f54213-82f4-d441-db09-0bd5756cedef",
+                        "semx_id": "_f6f54213-82f4-d441-db09-0bd5756cedef"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_3b1122a9-f6db-03d9-5422-ec76b28c54a0",
+                            "semx_id": "_3b1122a9-f6db-03d9-5422-ec76b28c54a0"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Organizations that have applied to become an OIML Issuing Authority, Utilizer or Associate also have the right to appeal."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_60f4ba09-82e2-fcfe-460a-f31ae5a4d40a",
+                "obligation": "informative",
+                "semx_id": "_60f4ba09-82e2-fcfe-460a-f31ae5a4d40a",
+                "title": "Appeals by applicants for OIML type evaluation and certification"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_ccd03a05-d338-f3b1-7923-9d234ce16ae0",
+                    "obligation": "informative",
+                    "semx_id": "_ccd03a05-d338-f3b1-7923-9d234ce16ae0"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_50ecad62-bebf-7b5c-e32e-c7b1d07a21ba",
+                        "semx_id": "_50ecad62-bebf-7b5c-e32e-c7b1d07a21ba"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "When an applicant for OIML type evaluation and certification wishes to appeal against a decision taken by an OIML Issuing Authority about a matter with which the applicant is concerned, the applicant shall first appeal according to the appeal procedure of the OIML Issuing Authority concerned, when that procedure is applicable."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_f236c58b-5fb6-950f-f673-7a45ccdf0bbb",
+                    "obligation": "informative",
+                    "semx_id": "_f236c58b-5fb6-950f-f673-7a45ccdf0bbb"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_54ebb82c-59a4-ea0f-091a-5a59c3ff1fd4",
+                        "semx_id": "_54ebb82c-59a4-ea0f-091a-5a59c3ff1fd4"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If the applicant is not satisfied with the outcome of the appeal and the applicant is of the opinion that the decision goes against the operating rules and procedures of the OIML-CS, or if the OIML Issuing Authority appeal procedure is not applicable, the applicant may submit an appeal in writing to the Executive Secretary within one month after having been informed of the decision, setting out all reasons for the appeal."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_102299a6-e627-ecc7-d418-7ecc7864cbfe",
+                "obligation": "informative",
+                "semx_id": "_102299a6-e627-ecc7-d418-7ecc7864cbfe",
+                "title": "Appeals by OIML Issuing Authorities, Utilizers or Associates"
+              }
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_cc0e63ba-2d18-5fe2-6dd3-d884dc2a3752",
+                "obligation": "informative",
+                "semx_id": "_cc0e63ba-2d18-5fe2-6dd3-d884dc2a3752"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_98c3bfcc-932f-d5f2-cfbf-1ef5965b495c",
+                    "semx_id": "_98c3bfcc-932f-d5f2-cfbf-1ef5965b495c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "When an OIML Issuing Authority, Utilizer or Associate wishes to submit an appeal against a decision of the Management Committee, it shall do so in writing to the Executive Secretary within one month after having concluded that it cannot reach an agreement, setting out its reasons in full. == BoA Procedure"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c9c3be7f-2d54-8af0-0e4b-ade5ac9f84b7",
+                "obligation": "informative",
+                "semx_id": "_c9c3be7f-2d54-8af0-0e4b-ade5ac9f84b7"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_f7dd36b6-d4c1-c857-8128-cd1a9c5b4a88",
+                    "semx_id": "_f7dd36b6-d4c1-c857-8128-cd1a9c5b4a88"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In order to consider a case, the BoA shall normally meet in-person. Alternatively, the case can be considered in an online meeting or via correspondence if all parties agree."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_b10b8bc3-359f-742a-eaf1-9948792dead9",
+                "obligation": "informative",
+                "semx_id": "_b10b8bc3-359f-742a-eaf1-9948792dead9"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_ad1625aa-d28c-197c-6395-ced2861f2aba",
+                    "semx_id": "_ad1625aa-d28c-197c-6395-ced2861f2aba"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "When the BoA meets to consider a case, either in-person, online or via correspondence, all relevant information shall be made available. The information shall be circulated at least one month before a meeting by the Executive Secretary to the BoA Chairperson and the four members of the BoA. Copies of all of the information shall be sent to the parties."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c9116993-6fed-3558-f337-3ee7ad54fcdc",
+                "obligation": "informative",
+                "semx_id": "_c9116993-6fed-3558-f337-3ee7ad54fcdc"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_7926d120-a671-ca00-4f0c-df3f51eadd27",
+                    "semx_id": "_7926d120-a671-ca00-4f0c-df3f51eadd27"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "It is the duty of the Executive Secretary to assist the members and the parties involved. When the BoA decision is taken by correspondence, notes or minutes relevant to the decision shall be written."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_9717c032-2b3b-4476-4e3a-a60f0d478034",
+                "obligation": "informative",
+                "semx_id": "_9717c032-2b3b-4476-4e3a-a60f0d478034"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_aeb5ac25-dc71-0dc1-86fa-972fe3ac9169",
+                    "semx_id": "_aeb5ac25-dc71-0dc1-86fa-972fe3ac9169"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The BoA shall deal with the case confidentially."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_1fab3e07-b944-dd23-b6d0-51329f4dc3de",
+                "obligation": "informative",
+                "semx_id": "_1fab3e07-b944-dd23-b6d0-51329f4dc3de"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c7b0ebc8-5299-5944-1b21-97f799ee0bee",
+                    "semx_id": "_c7b0ebc8-5299-5944-1b21-97f799ee0bee"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The parties involved each have the right to use an expert to advise on matters relevant to the case. This is applicable both at a meeting of the BoA to adjudicate the case or where the case is adjudicated by correspondence."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_6ac0334a-afc8-03a1-b0a3-2483151579f1",
+                "obligation": "informative",
+                "semx_id": "_6ac0334a-afc8-03a1-b0a3-2483151579f1"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8fb3fb88-6d4a-1ce5-e1d7-1387e171ec08",
+                    "semx_id": "_8fb3fb88-6d4a-1ce5-e1d7-1387e171ec08"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "During the adjudication of the case, only the BoA Chairperson, the four members of the BoA and the Executive Secretary shall be present."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_774fc696-46b2-2038-032f-3e18074ed3a6",
+                "obligation": "informative",
+                "semx_id": "_774fc696-46b2-2038-032f-3e18074ed3a6"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_e238ede1-8575-b349-051a-9c2fac91f325",
+                    "semx_id": "_e238ede1-8575-b349-051a-9c2fac91f325"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Decisions of the BoA shall be taken by a simple majority of the members. If the votes are divided equally, the BoA Chairperson shall decide upon the action to be taken."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_120719fd-313c-c99f-6551-d0f606772a53",
+                "obligation": "informative",
+                "semx_id": "_120719fd-313c-c99f-6551-d0f606772a53"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_7e32ebc9-ffb7-7e95-4366-21875c86d57a",
+                    "semx_id": "_7e32ebc9-ffb7-7e95-4366-21875c86d57a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The BoA shall give its decision in writing, within one month after the case has been considered, to the parties, and, if action with regard to rules and operating procedures is needed, to the Management Committee Chairperson."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_29c5d562-7e89-5a66-8add-d41899323d2c",
+                "obligation": "informative",
+                "semx_id": "_29c5d562-7e89-5a66-8add-d41899323d2c"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_79a2c37b-6f34-8eb8-217c-8613b95dfe02",
+                    "semx_id": "_79a2c37b-6f34-8eb8-217c-8613b95dfe02"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where the appeal relates to a Management Committee decision, the BoA shall give its decision in writing, within one month after the case has been considered, to the party that raised the appeal and the Management Committee Chairperson. If the BoA upholds the appeal against a Management Committee decision, the BoA decision is binding upon the Management Committee and cannot be subsequently appealed."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_0efa402b-2fda-b0d8-b837-5a49b68f94c9",
+                "obligation": "informative",
+                "semx_id": "_0efa402b-2fda-b0d8-b837-5a49b68f94c9"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_34fceb78-2154-7eb8-964a-a2b6253f06c2",
+                    "semx_id": "_34fceb78-2154-7eb8-964a-a2b6253f06c2"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The decisions of the BoA shall be presented to the Management Committee at its next meeting in such a way as not to reveal the identity of the parties, when that is requested by any party to the case. When an OIML Issuing Authority, Utilizer or Associate has not followed a decision from the BoA, the Management Committee shall decide on the appropriate steps to be taken."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections"
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_46a3f439-cda1-aacf-6915-de72d57ac0ff",
+            "obligation": "informative",
+            "semx_id": "_46a3f439-cda1-aacf-6915-de72d57ac0ff",
+            "displayorder": 4,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]OIML-CS OD-02, OIML. Test Laboratories Forum. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]OIML-CS PD-02, OIML. Procedures to approve Legal Metrology experts and QMS experts. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_03"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[4]OIML-CS PD-03, OIML. Application and approval of OIML Issuing Authorities, Utilizers and Associates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_04"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[5]OIML-CS PD-04, OIML. Assessment of Test Laboratories. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_05"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[6]OIML-CS PD-05, OIML. Processing an application for an OIML Type Evaluation Report and OIML Certificate. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_06"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[7]OIML-CS PD-06, OIML. Use of OIML Type Evaluation Reports and OIML Certificates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_07"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[8]OIML-CS PD-07, OIML. Transition Arrangements under the OIML-CS. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_08"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[9]OIML-CS PD-08, OIML. Signing the OIML-CS Declaration. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[10]OIML B 18:2022, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

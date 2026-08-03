@@ -1,0 +1,3517 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Assessment and approval of Test Laboratories"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_fa9a5b12-cc2e-23fc-58ea-d035bd911f24",
+            "obligation": "informative",
+            "semx_id": "_fa9a5b12-cc2e-23fc-58ea-d035bd911f24",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_852276fe-5b39-c964-b373-b5f0b0182e48",
+                "semx_id": "_852276fe-5b39-c964-b373-b5f0b0182e48"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the Maintenance Group of the OIML Certification System (OIML-CS) Management Committee."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_5e2c8c22-141c-6e2e-1678-3aeaa301939b",
+                "semx_id": "_5e2c8c22-141c-6e2e-1678-3aeaa301939b"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Management Committee approved this Edition 5 of OIML-CS PD-04 by electronic ballot on 01 October 2025 and it was published on 24 December 2025. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_bbfbe5b9-2ea9-bd86-622e-c0b02c1b89a0",
+                "semx_id": "_bbfbe5b9-2ea9-bd86-622e-c0b02c1b89a0"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2025",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2025"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " which contains the framework for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796",
+                "semx_id": "_c25f7b8a-dde6-60d6-81a4-6137defbd796"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The text of this publication is based on the following documents:"
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_96f27359-023d-a97d-4bc9-ecd983f73f91",
+                "semx_id": "_96f27359-023d-a97d-4bc9-ecd983f73f91",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f30f18dc-361e-d36f-6feb-8f9657c63a79"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_831e8a28-8b24-2cf5-388d-9a7a998f3be2"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: July 2017"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_30bcbb8f-6b1a-a06d-58cf-86ca3741e147"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: November 2018"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_70d20f16-d86b-3770-cdac-22679f0fcc3b"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 3"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Approved and published: 20221114"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f29eef19-5f04-d7b2-90e8-7963c534e2eb"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 4"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 4"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Approved and published: 20240116"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_29794dc5-bdb5-67f2-d60c-89bfe67d2ee2"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 5 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N101"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG: 20250117"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_2767b9e6-1a30-90eb-7d24-169d7296e5ce"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 5 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N105"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC: 20250319"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_bef22d64-ffa3-f9a2-dffa-ff634a271305"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "PD-04 Edition 5 (Draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P4_N164"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC approval: 20250901"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_6f5aee90-1c13-89ce-eb3b-4b8239422f75",
+            "obligation": "informative",
+            "semx_id": "_6f5aee90-1c13-89ce-eb3b-4b8239422f75",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_180a796e-4cf1-5094-fe08-4b4a0241b5e1",
+                "obligation": "informative",
+                "semx_id": "_180a796e-4cf1-5094-fe08-4b4a0241b5e1"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06",
+                    "semx_id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML Certification System (OIML-CS) has been established"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_82e6bca3-8bc9-24bb-9caa-b4d27250c9cf",
+                    "semx_id": "_82e6bca3-8bc9-24bb-9caa-b4d27250c9cf",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_ff005c21-ae8b-5346-c8f1-a2e73fdc700a"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_bb76322e-247e-2228-27c7-b0179034770e",
+                            "semx_id": "_bb76322e-247e-2228-27c7-b0179034770e"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to promote the global harmonisation, uniform interpretation and implementation of legal metrological requirements for measuring instruments and/or modules,"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bf572391-8389-0684-1582-47046bbdf569"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9",
+                            "semx_id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to avoid unnecessary re-testing when obtaining national type evaluations and approvals, and to support the recognition of measuring instruments and/or modules under legal metrological control, while achieving and maintaining confidence in the results in support of facilitating the global trade of individual instruments, and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c154974c-667c-fafa-81a6-acc78fe24c2c"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb",
+                            "semx_id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to establish rules and procedures for fostering mutual confidence among participating OIML Member States and Corresponding Members in the results of type evaluations that indicate conformity of measuring instruments and/or modules, under legal metrological control, to metrological and technical requirements established in the applicable OIML Recommendation(s)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_dcb2a2c7-441d-8924-3ad8-3fdf117b01cb",
+                "obligation": "informative",
+                "semx_id": "_dcb2a2c7-441d-8924-3ad8-3fdf117b01cb"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_78425cd2-6101-ee11-7f26-9270bcb301eb",
+                    "semx_id": "_78425cd2-6101-ee11-7f26-9270bcb301eb"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2025",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2025"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2025",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2025"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by a range of Operational Documents and Procedural Documents which are developed, maintained and approved by the OIML-CS Management Committee. == Scope"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea",
+                    "semx_id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This document is one of a series of Operational Documents and Procedural Documents that define the rules for the operation of the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_19f9982e-2365-a8f9-6a75-0dc189d3058c",
+                    "semx_id": "_19f9982e-2365-a8f9-6a75-0dc189d3058c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This publication contains the requirements and the associated procedures for including a Test Laboratory in the OIML-CS, including the processes relating to the assessment of a Test Laboratory, the Review Committee review and Management Committee approval. This publication should be used in conjunction with the associated procedures for OIML Issuing Authorities as detailed in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_59f4d412-4a4a-2443-4858-b3a41c8cceb3",
+                    "semx_id": "_59f4d412-4a4a-2443-4858-b3a41c8cceb3"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "These procedures apply to the following Test Laboratories:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_e0da21fb-3885-96cd-db38-94d718568972",
+                    "semx_id": "_e0da21fb-3885-96cd-db38-94d718568972",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a1b7bc41-5d81-634e-03e9-83df31588fb1"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_56a5c778-8b35-bcf4-4337-a8bc9bc01175",
+                            "semx_id": "_56a5c778-8b35-bcf4-4337-a8bc9bc01175"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "An internal Test Laboratory of an OIML Issuing Authority;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_5290fa23-f62f-1239-dbf5-c228cb66517f"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_054468cd-b3f9-fa68-059c-ed5489ad0c40",
+                            "semx_id": "_054468cd-b3f9-fa68-059c-ed5489ad0c40"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A third-party Test Laboratory; and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_e77fec65-b9fb-2abf-ad3a-82cb9d40d378"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_e37b251d-3347-08f5-ab14-48693b19b317",
+                            "semx_id": "_e37b251d-3347-08f5-ab14-48693b19b317"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A Manufacturer Test Laboratory."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_e39abd35-4d19-e1d6-7428-75dc41d8f304",
+                    "semx_id": "_e39abd35-4d19-e1d6-7428-75dc41d8f304"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "These procedures relate to the framework for the OIML-CS as given in OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2025",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2025"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", the Operational Rules as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_01",
+                            "citeas": "OIML-CS OD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS OD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_OD_02",
+                            "citeas": "OIML-CS OD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", and the Procedures as given in "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-01",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_01",
+                            "citeas": "OIML-CS PD-01"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-02",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_02",
+                            "citeas": "OIML-CS PD-02"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-05",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_05",
+                            "citeas": "OIML-CS PD-05"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-06",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_06",
+                            "citeas": "OIML-CS PD-06"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-07",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_07",
+                            "citeas": "OIML-CS PD-07"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-08",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_08",
+                            "citeas": "OIML-CS PD-08"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " and "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-09",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_09",
+                            "citeas": "OIML-CS PD-09"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". == Terminology and abbreviations"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d448a1d0-73f2-2e9a-84f8-32a1908030fd",
+                    "semx_id": "_d448a1d0-73f2-2e9a-84f8-32a1908030fd"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The terminology and abbreviations defined in clause 3 of OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2025",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2025"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " apply. == General"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_25fca89d-8844-eba0-9387-c9331010febb",
+                "obligation": "informative",
+                "semx_id": "_25fca89d-8844-eba0-9387-c9331010febb",
+                "title": "Application"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c81f41f2-9df9-cd72-6726-34154185c9de",
+                    "semx_id": "_c81f41f2-9df9-cd72-6726-34154185c9de"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A certification body in an OIML Member State may apply to be an OIML Issuing Authority. Any application to be an OIML Issuing Authority (see "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ") shall be accompanied by a corresponding application to include one or more Test Laboratories as detailed in this document. An existing OIML Issuing Authority may also apply to add a Test Laboratory using the procedures detailed in this document."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_01c8ca59-72eb-1855-4cf5-4984d966396b",
+                "obligation": "informative",
+                "semx_id": "_01c8ca59-72eb-1855-4cf5-4984d966396b",
+                "title": "Role of the Management Committee and the Review Committee"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8110d0b0-f345-3c8b-6269-9ca549d861ec",
+                    "semx_id": "_8110d0b0-f345-3c8b-6269-9ca549d861ec"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Management Committee is responsible for the approval or rejection of OIML Issuing Authorities applications (see "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ") and their associated Test Laboratories, including extensions to scope, under Scheme A and Scheme B. The Review Committee is used to provide a recommendation to the Management Committee on the approval or rejection of applications for OIML Issuing Authorities (see "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML-CS PD-03",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_CS_PD_03",
+                            "citeas": "OIML-CS PD-03"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ") and their Test Laboratories including extensions to scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_2a0e185b-9313-914b-6b4c-3e291b4a5bfb",
+                "obligation": "informative",
+                "semx_id": "_2a0e185b-9313-914b-6b4c-3e291b4a5bfb",
+                "title": "Requirements for Test Laboratories to demonstrate competence"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_d834be30-83d1-752d-b9e7-875b70f095fa",
+                    "obligation": "informative",
+                    "semx_id": "_d834be30-83d1-752d-b9e7-875b70f095fa"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_0d2a8ce5-526b-aeaf-e8c1-da7e96a042c1",
+                        "semx_id": "_0d2a8ce5-526b-aeaf-e8c1-da7e96a042c1"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Test Laboratories shall demonstrate their competence through compliance with ISO/IEC 17025 "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ISO/IEC 17025:2017",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "ISO_IEC_17025",
+                                "citeas": "ISO/IEC 17025:2017"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_db92096d-bf4c-0348-4bbd-fab1abb75549",
+                    "obligation": "informative",
+                    "semx_id": "_db92096d-bf4c-0348-4bbd-fab1abb75549"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_cbe818ef-459f-5110-ec91-6879d2237c49",
+                        "semx_id": "_cbe818ef-459f-5110-ec91-6879d2237c49"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "OIML publication D 30 "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML D 30:2020",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_D_30",
+                                "citeas": "OIML D 30:2020"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " provides guidance and interpretations regarding the application of ISO/IEC 17025 "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ISO/IEC 17025:2017",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "ISO_IEC_17025",
+                                "citeas": "ISO/IEC 17025:2017"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". == Application for a Test Laboratory under Scheme A"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_0d7e1cdb-7efd-38fb-ba4c-b5ea79c64fc9",
+                "obligation": "informative",
+                "semx_id": "_0d7e1cdb-7efd-38fb-ba4c-b5ea79c64fc9",
+                "title": "Application and accompanying information"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e60a3e4c-b9a2-d037-e296-3415c866d342",
+                    "obligation": "informative",
+                    "semx_id": "_e60a3e4c-b9a2-d037-e296-3415c866d342"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_43ee343d-9435-28b3-2fb6-1a762a729e37",
+                        "semx_id": "_43ee343d-9435-28b3-2fb6-1a762a729e37"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An application to be a Test Laboratory in the OIML-CS under Scheme A shall be made using the Test Laboratory Application Form (hereafter referred to as the “Application Form”) which can be found on the OIML-CS pages of the OIML website. The application form must be endorsed (signed) by a representative of an OIML Issuing Authority, and the Test Laboratory application shall be made in conjunction with a corresponding application by the OIML Issuing Authority (see "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-03",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_03",
+                                "citeas": "OIML-CS PD-03"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") to include the Test Laboratory in its scope."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_7b818062-3ef6-ca2e-7162-ababd32c16f4",
+                    "obligation": "informative",
+                    "semx_id": "_7b818062-3ef6-ca2e-7162-ababd32c16f4"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_2ec2c75f-1b5e-1b92-5eaa-249803e706f7",
+                        "semx_id": "_2ec2c75f-1b5e-1b92-5eaa-249803e706f7"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The following information shall be provided on the Application Form or in accompanying documents:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_0f9b76b2-a847-7ffa-b699-9b16597841b4",
+                        "semx_id": "_0f9b76b2-a847-7ffa-b699-9b16597841b4",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_e48bbd1a-1e47-8f31-de30-e0ab066a1a34"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_d4a609fb-49b7-e95c-5404-205013d3d88a",
+                                "semx_id": "_d4a609fb-49b7-e95c-5404-205013d3d88a"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "information about the assessment of competency (peer assessment and/or accreditation as detailed in 5.2);"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_443a42a6-3951-045b-9120-08738760d636"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_a78e46ec-b80f-6ff9-625d-fe1a5c4270ff",
+                                "semx_id": "_a78e46ec-b80f-6ff9-625d-fe1a5c4270ff"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "designation and contact details of the Test Laboratory and whether it is an internal Test Laboratory, a third-party Test Laboratory or an Manufacturer Test Laboratory;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_5bf6d73a-e852-2514-d559-c823ceb0801a"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_3f84fb96-0103-94fc-cea6-ae7f3b69cdba",
+                                "semx_id": "_3f84fb96-0103-94fc-cea6-ae7f3b69cdba"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a list of the tests and examinations of the relevant OIML Recommendation it performs;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_d459be9c-bf33-a7b9-3cf2-a65e87c4c431"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_2607df3b-3a91-fc62-e342-12e39edd4681",
+                                "semx_id": "_2607df3b-3a91-fc62-e342-12e39edd4681"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "information about its type testing capabilities, including capabilities at sites outside its permanent control;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_da0e7ef9-2a42-af7d-7479-b00e9e3cc064"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_4c5a425c-880c-2a7a-aa6d-549df40fccdd",
+                                "semx_id": "_4c5a425c-880c-2a7a-aa6d-549df40fccdd"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "in the case of a Manufacturer Test Laboratory: the procedures between the OIML Issuing Authority and the Manufacturer Test Laboratory to manage the controlled supervision"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "1)",
+                                  "marks": [
+                                    {
+                                      "type": "footnote",
+                                      "attrs": {
+                                        "id": "_299e798c-d57e-63bb-d749-5456e0fff89e",
+                                        "reference": "1"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ";"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_0cd66c1d-70e1-deff-02a8-eecba8b4e401"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_d132ca1c-ff64-3b76-6835-90aa94878694",
+                                "semx_id": "_d132ca1c-ff64-3b76-6835-90aa94878694"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "in the case of accreditation, a copy of the certificate of accreditation and the scope of accreditation of the Test Laboratory and a copy of the most recent accreditation assessment report which includes the relevant scope of its Declaration and enough information that an assessment of the legal metrology aspects of the accreditation can be determined, if accreditation applies;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_f69d3838-8349-8aa3-3146-9f25c6645854"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_5baaf706-d646-080b-7b13-7679d9c2f83f",
+                                "semx_id": "_5baaf706-d646-080b-7b13-7679d9c2f83f"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "in the case of peer assessment, a copy of the peer assessment report covering the relevant scope of the Test Laboratory;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_1add0c97-0aeb-823d-4c94-b4b73c6c7b9a"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_15bee84c-1163-a98f-afd4-882955f69bf7",
+                                "semx_id": "_15bee84c-1163-a98f-afd4-882955f69bf7"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a copy of the most recent internal audit of the Test Laboratory (whether it is accredited or not) conducted on the basis of ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " and OIML D 30 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "OIML D 30:2020",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "OIML_D_30",
+                                        "citeas": "OIML D 30:2020"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " for the relevant scope;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_ad7fa6fc-d133-733f-2b1e-45fe42db7b10"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_4895d2ae-d874-4313-f980-3dcf29b5d72f",
+                                "semx_id": "_4895d2ae-d874-4313-f980-3dcf29b5d72f"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "the results of intercomparisons conducted in the relevant field, if any;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_27c8f246-08a2-743b-91d6-b8be86968b31"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_ba79c53b-5dec-e4a8-819f-ce7f273aa921",
+                                "semx_id": "_ba79c53b-5dec-e4a8-819f-ce7f273aa921"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a copy of the most recent OIML test report issued"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "2)",
+                                  "marks": [
+                                    {
+                                      "type": "footnote",
+                                      "attrs": {
+                                        "id": "_8f03ebc1-437d-fed7-2bfb-25e9476df080",
+                                        "reference": "2"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " for each of the considered categories."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_c7e30cae-06e4-c237-18c6-eea3744915b5",
+                    "obligation": "informative",
+                    "semx_id": "_c7e30cae-06e4-c237-18c6-eea3744915b5"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_8d3dd766-2b5b-fd8a-1518-7f03340d8722",
+                        "semx_id": "_8d3dd766-2b5b-fd8a-1518-7f03340d8722"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The Application Form and accompanying information shall be sent to the Executive Secretary either by a representative of the OIML Issuing Authority which endorsed the application, or by a representative of the Test Laboratory."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_ed05eb19-9123-9f45-60c6-52d1d2027833",
+                "obligation": "informative",
+                "semx_id": "_ed05eb19-9123-9f45-60c6-52d1d2027833",
+                "title": "Assessment requirements for Test Laboratories"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_100e4cd6-b39c-030d-e214-a5e4f5a7ae1d",
+                    "obligation": "informative",
+                    "semx_id": "_100e4cd6-b39c-030d-e214-a5e4f5a7ae1d",
+                    "title": "General"
+                  },
+                  "content": [
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_253b11e4-3414-91a5-81de-92af74b2b386",
+                        "obligation": "informative",
+                        "semx_id": "_253b11e4-3414-91a5-81de-92af74b2b386"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_d28ecc3b-b127-59e8-37cc-c89f62bb8d02",
+                            "semx_id": "_d28ecc3b-b127-59e8-37cc-c89f62bb8d02"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "All Test Laboratories under Scheme A shall be assessed by accreditation and/or peer assessment using requirements that comply with ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " and OIML D 30 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML D 30:2020",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_D_30",
+                                    "citeas": "OIML D 30:2020"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " for the scope of the measuring instrument category(ies). In either case, the assessment process must comply with the requirements detailed below. An accreditation assessment report and/or peer assessment report that will be used to support an application shall include the name(s) of the OIML expert(s), where applicable (see 5.2.2.3), that participated in the respective assessment."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_deff0903-be49-c9a8-f83e-db34e2d9fad3",
+                        "obligation": "informative",
+                        "semx_id": "_deff0903-be49-c9a8-f83e-db34e2d9fad3"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_5ab32d98-19b1-bc61-70ca-d54d10c97f4b",
+                            "semx_id": "_5ab32d98-19b1-bc61-70ca-d54d10c97f4b"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML Test Laboratories may seek accreditation or peer assessment to perform testing at sites or facilities outside its permanent control as per clause 6.3.5 of ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ". This may include testing measuring instruments at a field site and/or at the site of its installation and use. Under the OIML-CS such testing may be necessary when the measuring instrument is not able to be tested in a controlled laboratory environment due to its size or operational capacity (e.g. continuous totalizing automatic weighing instruments (belt weighers) or automatic rail-weighbridges). Where the scope of the OIML Test Laboratory (supported by their ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " accreditation or peer assessment) allows for such testing to be performed, the test results may be used as part of an OIML test report in accordance with OIML-CS "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML-CS PD-05",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_CS_PD_05",
+                                    "citeas": "OIML-CS PD-05"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_883ee91a-241e-d651-a9a2-05f55eacee33",
+                        "obligation": "informative",
+                        "semx_id": "_883ee91a-241e-d651-a9a2-05f55eacee33"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_13694491-4ba4-bdc7-5ccf-8421ede129f5",
+                            "semx_id": "_13694491-4ba4-bdc7-5ccf-8421ede129f5"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "A combination of accreditation and peer assessment processes (and the associated accreditation assessment reports and/or peer assessment reports) may be used to support the demonstration of competency as part of an application to be an OIML Test Laboratory."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_8c68adbb-d503-02d5-f89e-94315c745aea",
+                    "obligation": "informative",
+                    "semx_id": "_8c68adbb-d503-02d5-f89e-94315c745aea",
+                    "title": "Accreditation"
+                  },
+                  "content": [
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_de47a2a7-e56d-0e87-ebc6-b1d49503e8d0",
+                        "obligation": "informative",
+                        "semx_id": "_de47a2a7-e56d-0e87-ebc6-b1d49503e8d0"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_67daac98-d2bb-4e81-1acf-dbd8e7b8f6f3",
+                            "semx_id": "_67daac98-d2bb-4e81-1acf-dbd8e7b8f6f3"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where accreditation is chosen, the Accreditation Body that carries out the assessment of a Test Laboratory under the OIML-CS shall participate in a mutual recognition arrangement among Accrediting Bodies (regional or international), for instance the ILAC MRA (International Laboratory Accreditation Cooperation Mutual Recognition Arrangement)"
+                            },
+                            {
+                              "type": "text",
+                              "text": "3)",
+                              "marks": [
+                                {
+                                  "type": "footnote",
+                                  "attrs": {
+                                    "id": "_dc8946e8-339f-3dc9-e334-96365634c06a",
+                                    "reference": "3"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_955d1d94-5b2a-d240-2e92-3a43adf8686d",
+                        "obligation": "informative",
+                        "semx_id": "_955d1d94-5b2a-d240-2e92-3a43adf8686d"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_33b59e12-e789-8231-55a3-d11881ca36ef",
+                            "semx_id": "_33b59e12-e789-8231-55a3-d11881ca36ef"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The assessment team shall include a Legal Metrology Expert, approved by the Management Committee, for each category of measuring instrument in the intended scope of the new Test Laboratory in the most recent accreditation assessment. It is possible to use Legal Metrology Experts that have not yet been approved by the Management Committee on the condition that the requirements of "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML-CS PD-02",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_CS_PD_02",
+                                    "citeas": "OIML-CS PD-02"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ", 8.3 are followed."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_4adb1e83-fb91-284c-4e86-fa4e6404b269",
+                        "obligation": "informative",
+                        "semx_id": "_4adb1e83-fb91-284c-4e86-fa4e6404b269"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c693b148-8eba-fce9-869a-d447777b83bf",
+                            "semx_id": "_c693b148-8eba-fce9-869a-d447777b83bf"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The use of an Accreditation Body expert, in place of a Legal Metrology Expert, may be permitted by the Executive Secretary in accordance with the following conditions:"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "ordered_list",
+                          "attrs": {
+                            "id": "_b7707240-fec0-5793-77e2-21c585f94067",
+                            "semx_id": "_b7707240-fec0-5793-77e2-21c585f94067",
+                            "type": "alphabet"
+                          },
+                          "content": [
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_90cc1633-38a0-c199-52bc-2410762dac34"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_1b56601d-f579-db56-78d7-572ad6d97ba4",
+                                    "semx_id": "_1b56601d-f579-db56-78d7-572ad6d97ba4"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "The use of an Accreditation Body expert shall only be permitted for an accreditation assessment of an existing OIML Test Laboratories to support an application to extend its scope or to maintain an existing accreditation. Accreditation assessments intended to support applications for new OIML Test Laboratories shall always include at least one Legal Metrology Expert."
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_246ccac9-e3f3-1bc4-787b-7546482d18ce"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_07178b53-f249-2236-d33d-87239d5c443e",
+                                    "semx_id": "_07178b53-f249-2236-d33d-87239d5c443e"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "The OIML Issuing Authority that has, or is seeking to have, the Test Laboratory on their scope shall make a written request to the Executive Secretary to use an Accreditation Body Expert in place of a Legal Metrology Expert, prior to the assessment taking place. The request shall include a justification for the use of the Accreditation Body expert and information regarding the relevant competences and experience of the Accreditation Body expert."
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_e960a443-f5c0-d7ba-17ea-7f583fd20696"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_e6e8e94d-1989-0029-e40e-7073eb9e1791",
+                                    "semx_id": "_e6e8e94d-1989-0029-e40e-7073eb9e1791"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "The Executive Secretary shall consult with the Management Committee Chairperson and Review Committee Chairperson prior to permitting the use of the Accreditation Body expert."
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_2efc22c8-3f27-e2a5-e420-5b968d352f04"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_c4c065ce-2aae-8657-dc87-7cf03fa6fddf",
+                                    "semx_id": "_c4c065ce-2aae-8657-dc87-7cf03fa6fddf"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "The Review Committee shall be informed when an Accreditation Body expert has been used in place of a Legal Metrology Expert for an accreditation assessment. This should be documented in the accreditation assessment report and as part of the application process."
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list_item",
+                              "attrs": {
+                                "id": "_0c3c91a8-69aa-4b4c-ea1b-6fafa7a60ef9"
+                              },
+                              "content": [
+                                {
+                                  "type": "paragraph",
+                                  "attrs": {
+                                    "id": "_590a60f4-d45f-98a1-403b-54e26e01d067",
+                                    "semx_id": "_590a60f4-d45f-98a1-403b-54e26e01d067"
+                                  },
+                                  "content": [
+                                    {
+                                      "type": "text",
+                                      "text": "A Legal Metrology Expert shall be used at the next available opportunity, e.g. at the next routine surveillance or re-assessment visit."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_c8489334-4e95-2f60-6f94-8b5f66317c10",
+                        "obligation": "informative",
+                        "semx_id": "_c8489334-4e95-2f60-6f94-8b5f66317c10"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_89b60a8a-a17e-41bc-91db-62a678d88e28",
+                            "semx_id": "_89b60a8a-a17e-41bc-91db-62a678d88e28"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The accreditation body shall ensure that all members of the assessment team are impartial and independent and not directly associated with the OIML Issuing Authority and Test Laboratory."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_1b90f170-857b-0dbe-0433-62164afe06ab",
+                        "obligation": "informative",
+                        "semx_id": "_1b90f170-857b-0dbe-0433-62164afe06ab"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_5acdf80c-2e8e-9168-4a0f-fd225cbcbfa3",
+                            "semx_id": "_5acdf80c-2e8e-9168-4a0f-fd225cbcbfa3"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Subject to the rules of the Accreditation Body and the discretion of the team leader, remote assessment techniques may be used to support and supplement on-site accreditation assessments. The use of such techniques shall not compromise the integrity or the findings of the accreditation assessment."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_09ffa7f8-a951-8e77-1d75-74c7d98e7959",
+                        "obligation": "informative",
+                        "semx_id": "_09ffa7f8-a951-8e77-1d75-74c7d98e7959"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_5dee4f57-be50-2e4e-ae9b-a61ac06d3e46",
+                            "semx_id": "_5dee4f57-be50-2e4e-ae9b-a61ac06d3e46"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Further information can be found in the Joint ILAC-OIML Assessment Procedure "
+                            },
+                            {
+                              "type": "text",
+                              "text": "Joint OIML-ILAC",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_ILAC_AP",
+                                    "citeas": "Joint OIML-ILAC"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_3bee30db-e98e-28ed-d73d-1861ece86264",
+                    "obligation": "informative",
+                    "semx_id": "_3bee30db-e98e-28ed-d73d-1861ece86264",
+                    "title": "Peer assessment"
+                  },
+                  "content": [
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_00cf771e-2082-74c3-5cca-7ed0f2da8e61",
+                        "obligation": "informative",
+                        "semx_id": "_00cf771e-2082-74c3-5cca-7ed0f2da8e61"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_a0f7e49e-0ba2-200a-e6d1-ba333dadfadf",
+                            "semx_id": "_a0f7e49e-0ba2-200a-e6d1-ba333dadfadf"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where peer assessment is chosen, the peer assessment shall be carried out by a team of experts that will include a Management System Expert (team leader), approved by the Management Committee, knowledgeable in assessing quality management systems of Test Laboratories on the basis of ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ", and one Legal Metrology Expert, approved by the Management Committee, per category of measuring instrument."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_eff777c6-dc0e-1a2b-c6cb-3bb3b0fee56d",
+                        "obligation": "informative",
+                        "semx_id": "_eff777c6-dc0e-1a2b-c6cb-3bb3b0fee56d"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_a6201ad9-9633-a64f-88df-83b0658fd72f",
+                            "semx_id": "_a6201ad9-9633-a64f-88df-83b0658fd72f"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The assessment team shall include all the necessary competencies required to complete the assessment of the Test Laboratory. The assessment team may comprise any number of people (as agreed to between the applicant and the team leader), however it shall contain a team leader, Experts with suitable assessment experience and Experts with suitable legal metrology knowledge."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_9d4832d3-8ab3-2f84-1870-d205548b1934",
+                        "obligation": "informative",
+                        "semx_id": "_9d4832d3-8ab3-2f84-1870-d205548b1934"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_701759c0-b328-4340-aff2-91d77038aaf5",
+                            "semx_id": "_701759c0-b328-4340-aff2-91d77038aaf5"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The OIML Issuing Authority is responsible for arranging the peer assessment of the Test Laboratory. The OIML Issuing Authority shall make the necessary arrangements for an assessment team to be formed from the list of approved experts and will inform the Executive Secretary. It is possible to use experts that have not yet been approved by the Management Committee on the condition that the requirements of "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML-CS PD-02",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_CS_PD_02",
+                                    "citeas": "OIML-CS PD-02"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ", 8.3 are followed. The team leader and Legal Metrology Expert(s) shall be impartial and independent and shall not be directly associated with the OIML Issuing Authority and Test Laboratory. The team leader and Legal Metrology Expert(s) shall declare their impartiality and independence prior to the assessment. The OIML Issuing Authority or the Test Laboratory is responsible for bearing the cost of the assessment team. The Executive Secretary shall forward the Application Form and all relevant information to the members of the assessment team to enable them to commence their assessment. The assessment team shall review the Application Form and the submitted documentation. If necessary the team leader may request additional information from the OIML Issuing Authority. The initial planning is carried out for the number of days and the number of assessors on site. The date for the assessment is agreed between the Test Laboratory, OIML Issuing Authority and the assessment team."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_ef7073c8-b580-5f35-3af4-ab611985ef0a",
+                        "obligation": "informative",
+                        "semx_id": "_ef7073c8-b580-5f35-3af4-ab611985ef0a"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_7eb4637b-adcf-190b-7338-928133ac9bbd",
+                            "semx_id": "_7eb4637b-adcf-190b-7338-928133ac9bbd"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "The assessment visit shall be undertaken in accordance with ISO/IEC 17025 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "ISO/IEC 17025:2017",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "ISO_IEC_17025",
+                                    "citeas": "ISO/IEC 17025:2017"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " and OIML D 30 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML D 30:2020",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_D_30",
+                                    "citeas": "OIML D 30:2020"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ". The findings will be discussed with the Test Laboratory and OIML Issuing Authority at the end of the assessment. The assessment team will complete a Test Laboratory Peer Assessment Report form. A copy will be given to the Test Laboratory and OIML Issuing Authority and a copy will be sent by the team leader to the Executive Secretary."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_02267c12-9e85-6b8c-afcc-9524514d7f47",
+                        "obligation": "informative",
+                        "semx_id": "_02267c12-9e85-6b8c-afcc-9524514d7f47"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_cd3d19ac-b367-2cfe-d0db-39a3f5db2a94",
+                            "semx_id": "_cd3d19ac-b367-2cfe-d0db-39a3f5db2a94"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Any issues or non-compliances identified during the assessment process must be resolved by the Test Laboratory to the satisfaction of the assessment team. In some cases, it may be necessary for a follow-up visit by one or more members of the assessment team. The final peer assessment reports are sent by the team leader for submission to the Executive Secretary. Where non-conformities identified during the site visit require rectification or corrective action by the Test Laboratory, the team leader shall review the corrective actions and determine whether the item(s) raised have been sufficiently addressed in order to close the issue. Where non-compliances, identified during the site visit, remain unresolved more than 12 months beyond the site visit, the Executive Secretary shall manage the difficulties in consultation with the team leader."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_5d56a5d9-e5f5-22d8-3d4e-0e50c8620aaa",
+                        "obligation": "informative",
+                        "semx_id": "_5d56a5d9-e5f5-22d8-3d4e-0e50c8620aaa"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_1f76e064-0b3d-1667-6e47-f271e15ae5d0",
+                            "semx_id": "_1f76e064-0b3d-1667-6e47-f271e15ae5d0"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Subject to the discretion of the team leader, remote assessment techniques may be used to support and supplement on-site peer assessments. The use of such techniques shall not compromise the integrity or the findings of the peer assessment."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_9a238d93-dd6e-5682-a7af-9863369ffebe",
+                "obligation": "informative",
+                "semx_id": "_9a238d93-dd6e-5682-a7af-9863369ffebe",
+                "title": "Approval process"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_fec82118-a042-be73-2b00-0553992f8a79",
+                    "obligation": "informative",
+                    "semx_id": "_fec82118-a042-be73-2b00-0553992f8a79"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_28e46377-84ca-8a74-a1b6-91c59cdf0e5a",
+                        "semx_id": "_28e46377-84ca-8a74-a1b6-91c59cdf0e5a"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The Executive Secretary will review the Application Form and the accompanying information and will complete the Executive Secretary Review section of the Application Form. The Executive Secretary may request further information to be supplied by the OIML Issuing Authority and/or the Test Laboratory."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_f745cece-c22e-4bea-0e41-d0949cd001f8",
+                    "obligation": "informative",
+                    "semx_id": "_f745cece-c22e-4bea-0e41-d0949cd001f8",
+                    "title": "Documentation review and approval"
+                  },
+                  "content": [
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_9b6af169-fc6c-7856-d361-cde0369a8209",
+                        "obligation": "informative",
+                        "semx_id": "_9b6af169-fc6c-7856-d361-cde0369a8209"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_f6386e89-d5e9-4c59-7b89-fd8516e3fd5a",
+                            "semx_id": "_f6386e89-d5e9-4c59-7b89-fd8516e3fd5a"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Once the Executive Secretary has reviewed the Application Form and the accompanying information, including the relevant accreditation assessment report and/or peer assessment report, and is satisfied that all information is present the Executive Secretary will distribute the Application Form and all of the accompanying information to the Review Committee for review. Where the Review Committee review raises questions and/or dissatisfaction the Executive Secretary will refer the matter to the OIML Issuing Authority/Test Laboratory, or to the team leader in the case of questions/concerns being raised regarding the peer assessment report, to seek additional information. Any additional information supplied will be circulated to the Review Committee members."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_799e53c7-35b1-2d90-67de-68d54ba617f3",
+                        "obligation": "informative",
+                        "semx_id": "_799e53c7-35b1-2d90-67de-68d54ba617f3"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_cfa21fd7-26ba-1366-d44f-8eddb55e8f88",
+                            "semx_id": "_cfa21fd7-26ba-1366-d44f-8eddb55e8f88"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "When the members of the Review Committee have completed their review of the Application Form and accompanying information the Review Committee will provide a recommendation to the Management Committee on the approval or rejection of the Test Laboratory. The recommendation is recorded in the Review Committee Recommendation section of the Application Form and is sent to the Executive Secretary. In the event that the Review Committee makes a recommendation to approve the Test Laboratory the Executive Secretary shall forward the Application Form (including, where relevant, the corresponding application from the OIML Issuing Authority (see "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML-CS PD-03",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_CS_PD_03",
+                                    "citeas": "OIML-CS PD-03"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": ") to the Management Committee for approval. In the event that the Review Committee does not make a recommendation to approve the Test Laboratory the Executive Secretary shall notify the OIML Issuing Authority and the Test Laboratory of the decision and the reason(s) for rejection."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_1efb677a-e0c4-3607-b510-bbd2bd230e08",
+                        "obligation": "informative",
+                        "semx_id": "_1efb677a-e0c4-3607-b510-bbd2bd230e08"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_023880b8-1670-6299-6f69-615c9eb44718",
+                            "semx_id": "_023880b8-1670-6299-6f69-615c9eb44718"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where the Review Committee has made a positive recommendation, the Management Committee shall vote on the approval of the Test Laboratory. If the Management Committee rejects the application then the Management Committee shall specify the reason(s) for the rejection. The Executive Secretary shall notify the OIML Issuing Authority and the Test Laboratory of the rejection and the associated reasons and further action will be discussed at the next Management Committee meeting or by correspondence. If the application is approved the Executive Secretary shall notify the OIML Issuing Authority of the approval."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "clause",
+                      "attrs": {
+                        "id": "_1a3d5510-62f8-6bda-f6ae-dbfe73e0b017",
+                        "obligation": "informative",
+                        "semx_id": "_1a3d5510-62f8-6bda-f6ae-dbfe73e0b017"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_171692d3-2bd6-3b1c-31c7-5e46b17d79d4",
+                            "semx_id": "_171692d3-2bd6-3b1c-31c7-5e46b17d79d4"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "When the Declaration of the OIML Issuing Authority has been updated to include the Test Laboratory the Executive Secretary will also update the list of Test Laboratories on the OIML-CS pages of the OIML website. == Application for a Test Laboratory under Scheme B"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_19fabb04-ffd0-4e44-a414-a2879567871b",
+                "obligation": "informative",
+                "semx_id": "_19fabb04-ffd0-4e44-a414-a2879567871b",
+                "title": "Application and accompanying information"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_2e1299fc-a2db-f706-034d-55db177214ea",
+                    "obligation": "informative",
+                    "semx_id": "_2e1299fc-a2db-f706-034d-55db177214ea"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_1fece799-c2ef-4e1f-bcb7-f084711eef86",
+                        "semx_id": "_1fece799-c2ef-4e1f-bcb7-f084711eef86"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An application to be a Test Laboratory in the OIML-CS under Scheme B shall be made using the Test Laboratory Application Form (hereafter referred to as the “Application Form”) which can be found on the OIML-CS pages of the OIML website. The application form must be endorsed (signed) by a representative of an OIML Issuing Authority, and the Test Laboratory application shall be made in conjunction with a corresponding application by the OIML Issuing Authority (see "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OIML-CS PD-03",
+                          "marks": [
+                            {
+                              "type": "eref",
+                              "attrs": {
+                                "target": "OIML_CS_PD_03",
+                                "citeas": "OIML-CS PD-03"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") to include the Test Laboratory in its scope."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_2b11897d-8fd2-a3b8-fc56-ba7807793069",
+                    "obligation": "informative",
+                    "semx_id": "_2b11897d-8fd2-a3b8-fc56-ba7807793069"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_c81264d8-fd69-952f-5ee4-651dd103b694",
+                        "semx_id": "_c81264d8-fd69-952f-5ee4-651dd103b694"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The following information shall be provided on the Application Form or in accompanying documents:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "id": "_49e57bab-77c2-efc0-55b9-d0a15a4be3c9",
+                        "semx_id": "_49e57bab-77c2-efc0-55b9-d0a15a4be3c9",
+                        "type": "alphabet"
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_7c382581-c557-4d42-8b09-a93aa1ead505"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_dd327f33-9eff-22d6-3c35-3f20a60767f5",
+                                "semx_id": "_dd327f33-9eff-22d6-3c35-3f20a60767f5"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "information about the assessment of competency (on the basis of a self-declaration);"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_195ba382-a0bc-31ae-777f-2c527dcb20b8"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_30feccf1-f388-6e2b-4ed8-807c7281a59e",
+                                "semx_id": "_30feccf1-f388-6e2b-4ed8-807c7281a59e"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "designation and contact details of the Test Laboratory and whether it is an internal Test Laboratory, a third-party Test Laboratory or a Manufacturer Test Laboratory;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_2254a8e5-5c59-c6b6-e7d2-397792bbe2bd"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_261a331d-4c2b-5151-fd26-06f8e195d5b9",
+                                "semx_id": "_261a331d-4c2b-5151-fd26-06f8e195d5b9"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "a definition of the capability of the Test Laboratory in terms of the tests and examinations of the relevant OIML Recommendation(s) and of additional national requirements included in its Declaration, if applicable, it performs;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_50e1026b-2598-5fbd-5bd8-da7cc9dc70b0"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_2573705c-0a9b-0587-1491-bd2f6f0fc7fc",
+                                "semx_id": "_2573705c-0a9b-0587-1491-bd2f6f0fc7fc"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "information about its type testing capabilities, e.g. flow range, temperature range, etc.;"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "attrs": {
+                            "id": "_b26d643c-6fe1-bad0-0293-3a21d79cd464"
+                          },
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "attrs": {
+                                "id": "_32038425-8880-b545-8c1c-c58266632cea",
+                                "semx_id": "_32038425-8880-b545-8c1c-c58266632cea"
+                              },
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "evidence to support the self-declaration, e.g. internal assessment reports on the basis of ISO/IEC 17025 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "ISO/IEC 17025:2017",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "ISO_IEC_17025",
+                                        "citeas": "ISO/IEC 17025:2017"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " and OIML D 30 "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "OIML D 30:2020",
+                                  "marks": [
+                                    {
+                                      "type": "eref",
+                                      "attrs": {
+                                        "target": "OIML_D_30",
+                                        "citeas": "OIML D 30:2020"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " for the relevant scope."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_e570e1ab-016c-2082-9998-ac4a2e491d36",
+                    "obligation": "informative",
+                    "semx_id": "_e570e1ab-016c-2082-9998-ac4a2e491d36"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_0a2be054-b8ee-6700-9487-1a1162fc131a",
+                        "semx_id": "_0a2be054-b8ee-6700-9487-1a1162fc131a"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The Application Form and accompanying information shall be sent to the Executive Secretary either by a representative of the OIML Issuing Authority which endorsed the application, or a representative of the Test Laboratory."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a53a0b72-3713-3763-1de8-ca1a6b35024f",
+                "obligation": "informative",
+                "semx_id": "_a53a0b72-3713-3763-1de8-ca1a6b35024f",
+                "title": "Application review and approval"
+              },
+              "content": [
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_f27c9a94-986b-553f-cd31-8ce145256b7b",
+                    "obligation": "informative",
+                    "semx_id": "_f27c9a94-986b-553f-cd31-8ce145256b7b"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_4fae36a1-5924-aabd-73ab-41e39ae75abc",
+                        "semx_id": "_4fae36a1-5924-aabd-73ab-41e39ae75abc"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Once the Executive Secretary has reviewed the Application Form and accompanying information, including the relevant self-declaration, and is satisfied that all information is present the Executive Secretary will complete the Executive Secretary Review section of the Application Form. The Executive Secretary may request further information to be supplied by the OIML Issuing Authority and/or the Test Laboratory."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "clause",
+                  "attrs": {
+                    "id": "_8928476d-ab9e-2e5c-fc89-75bf43dd748b",
+                    "obligation": "informative",
+                    "semx_id": "_8928476d-ab9e-2e5c-fc89-75bf43dd748b"
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "attrs": {
+                        "id": "_e49043b8-982f-f77f-1854-98f05d60d481",
+                        "semx_id": "_e49043b8-982f-f77f-1854-98f05d60d481"
+                      },
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure in 5.3.2 shall be followed. == Additional requirements for Manufacturer Test Laboratories"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_abd3a6a3-c686-71a4-9206-be42aff5e500",
+                "obligation": "informative",
+                "semx_id": "_abd3a6a3-c686-71a4-9206-be42aff5e500"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_2dec2deb-197c-49d5-709c-efc9e1cd046a",
+                    "semx_id": "_2dec2deb-197c-49d5-709c-efc9e1cd046a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In order to address potential conflicts of interest the Manufacturer Test Laboratory shall operate under the controlled supervision of at least one OIML Issuing Authority that is identified in its Declaration. In the case where two or more OIML Issuing Authorities want to make use of the same Manufacturer Test Laboratory, this must be clearly stated in its Declaration and the OIML Issuing Authority responsible for the supervision of the Manufacturer Test Laboratory must also be identified. The controlled supervision includes at least the following safeguards:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_97bd656f-a257-5664-f5b4-3f07ca30a97b",
+                    "semx_id": "_97bd656f-a257-5664-f5b4-3f07ca30a97b",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c24bc07e-c150-9552-07ba-6145979438d8"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_62fd63ff-d8ea-7ccb-b05a-fc8bfc30ce90",
+                            "semx_id": "_62fd63ff-d8ea-7ccb-b05a-fc8bfc30ce90"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the OIML Issuing Authority has clear and documented instructions (quality system procedures) for the Manufacturer Test Laboratory concerning the test program and the equipment under test (EUT);"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_0b660155-36d2-2698-33bf-7e3f264456b6"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_90ffa75e-32d3-9ce2-6963-148a1eadd027",
+                            "semx_id": "_90ffa75e-32d3-9ce2-6963-148a1eadd027"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the OIML Issuing Authority has clear and documented instructions (quality system procedures) for the Manufacturer Test Laboratory in the case that the EUT fails before the test program is finished;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_4edfc44e-7703-68dd-5e11-14072db3efde"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_df22f056-438c-767a-50b6-41f8d35ba33a",
+                            "semx_id": "_df22f056-438c-767a-50b6-41f8d35ba33a"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the OIML Issuing Authority is informed when the Manufacturer Test Laboratory starts and finishes the agreed tests;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_dea98915-9172-e45d-0c52-7af5f918a4c9"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_3aa91c75-a797-e7ef-ac10-26ff24d0e080",
+                            "semx_id": "_3aa91c75-a797-e7ef-ac10-26ff24d0e080"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the OIML Issuing Authority or an authorised representative is allowed to make short-notice visits to the manufacturer’s site to witness tests performed at the Manufacturer Test Laboratory as considered necessary by the OIML Issuing Authority;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_3f87c7ec-55cc-6a3b-d73a-585c2a9cdd29"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_59c570cd-5446-9efd-e8e1-fd2597e721e7",
+                            "semx_id": "_59c570cd-5446-9efd-e8e1-fd2597e721e7"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "after finishing the tests, the OIML Issuing Authority may request that the EUT tested by the Manufacturer Test Laboratory be submitted to its internal and/or subcontracting laboratory for re-tests (spot checks) that the OIML Issuing Authority considers necessary; for these re-tests the OIML Issuing Authority may — with the applicant’s consent — use another OIML Issuing Authority’s registered laboratory;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_ef19642c-ec1c-66b3-0d8c-c6a2a23c3b01"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_1cdaee87-986f-e609-dadb-c12ae4355b7a",
+                            "semx_id": "_1cdaee87-986f-e609-dadb-c12ae4355b7a"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "a Manufacturer Test Laboratory shall not subcontract testing."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f14e95e9-242b-224e-8d29-69f12f1438ec",
+                "obligation": "informative",
+                "semx_id": "_f14e95e9-242b-224e-8d29-69f12f1438ec"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0c578115-cc58-8fdf-2448-b9bb5525163d",
+                    "semx_id": "_0c578115-cc58-8fdf-2448-b9bb5525163d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML Issuing Authority shall exercise a controlled supervision as defined in 7.1. The safeguards and actions to be taken in the case of EUT failure have to be documented by written procedures in the quality management systems of both the Manufacturer Test Laboratory and the OIML Issuing Authority. Their effectiveness is subject to regular surveillance audits as part of the accreditation assessment or peer assessment under Scheme A, or the internal audits in the case of Scheme B."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_0e4e48ed-ec13-3288-6b75-896053e5f6ff",
+                "obligation": "informative",
+                "semx_id": "_0e4e48ed-ec13-3288-6b75-896053e5f6ff"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c858c765-d01e-fdd8-4dd2-bec611e80787",
+                    "semx_id": "_c858c765-d01e-fdd8-4dd2-bec611e80787"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In order to ensure sufficient independence and impartiality of the Manufacturer Test Laboratory as part of a larger organisation (company) the quality manual and other supporting documents of the organisation shall demonstrate that there are suitable provisions that ensure that the Manufacturer Test Laboratory’s personnel are free from any undue commercial, financial or other pressures which might influence their technical judgement. In particular, the following is mandatory:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_50c28340-9d5a-817f-7154-2a8b5da37004",
+                    "semx_id": "_50c28340-9d5a-817f-7154-2a8b5da37004",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_71bce5fa-8ea8-1285-f4c8-3504a2de8223"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c371afd5-a602-eafb-aeb7-3379566f22a8",
+                            "semx_id": "_c371afd5-a602-eafb-aeb7-3379566f22a8"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the Manufacturer Test Laboratory is a clearly defined Organisational Unit (OU) within the company, or part of such an OU, where procedures exist that define the specific responsibilities of the Manufacturer Test Laboratory and the interactions between the Manufacturer Test Laboratory and other OUs of the company;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_123de650-9bda-7049-ddd0-7b42a763a62e"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_e40f32bf-bbdf-2200-7885-dfaf9435ac38",
+                            "semx_id": "_e40f32bf-bbdf-2200-7885-dfaf9435ac38"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "there is an organisational chart that shows the existence of the Manufacturer Test Laboratory and its position in the organisational structure;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_73ad1304-e705-aac1-72c2-cabb6ba0f1cf"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_cdbeac5b-98cd-c359-8306-fae9e82f79da",
+                            "semx_id": "_cdbeac5b-98cd-c359-8306-fae9e82f79da"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the Manufacturer Test Laboratory staff members, including the head of the Manufacturer Test Laboratory, are identified and their competencies and responsibilities are described;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_8e8eb30d-029c-f01a-ebcf-65a71ba0b228"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_5b572246-0e8b-fc58-5d92-c3dc374ffc64",
+                            "semx_id": "_5b572246-0e8b-fc58-5d92-c3dc374ffc64"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "there is evidence that the head of the Manufacturer Test Laboratory is free of any responsibilities or other pressures which may influence his/her technical judgement, and that he/she is responsible to a member of the top management in all technical conclusions."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f68b5481-224f-c1a4-9a04-5e40b9d22888",
+                "obligation": "informative",
+                "semx_id": "_f68b5481-224f-c1a4-9a04-5e40b9d22888"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_86dcedf9-4c84-f4fb-1c2e-29214a3f02c1",
+                    "semx_id": "_86dcedf9-4c84-f4fb-1c2e-29214a3f02c1"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Under Scheme A, the suitability and effectiveness of the procedures described above are evaluated as part of the ISO/IEC 17025 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "ISO/IEC 17025:2017",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "ISO_IEC_17025",
+                            "citeas": "ISO/IEC 17025:2017"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " accreditation or included in the scope of the peer assessment of the corresponding OIML Issuing Authority. Under Scheme B, the suitability and effectiveness of the procedures described above are evaluated as part of the internal audit of the corresponding OIML Issuing Authority."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_99511060-ffe6-6d36-59ae-b990102c8e54",
+                "obligation": "informative",
+                "semx_id": "_99511060-ffe6-6d36-59ae-b990102c8e54"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_027ceede-d022-5951-4b1b-c8f52273d9a2",
+                    "semx_id": "_027ceede-d022-5951-4b1b-c8f52273d9a2"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Several OIML Issuing Authorities may designate the same Manufacturer Test Laboratory"
+                    },
+                    {
+                      "type": "text",
+                      "text": "4)",
+                      "marks": [
+                        {
+                          "type": "footnote",
+                          "attrs": {
+                            "id": "_850dc9c3-deae-d2c2-675b-3369fe188849",
+                            "reference": "4"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". In this case, upon agreement among the OIML Issuing Authorities, one of them may be identified in its Declaration as the principal OIML Issuing Authority that is responsible for the procedures and information required according to 7.1 through 7.4. Nevertheless, the remaining OIML Issuing Authorities that include the Manufacturer Test Laboratory on their Declarations still retain responsibility for confirming that the procedures and information required according to 7.1 through 7.4 are satisfied prior to utilising the Manufacturer Test Laboratory.\n== Extension or reduction of scope of a Test Laboratory"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_fed21ffa-92b9-8033-4fb0-1459be84f8fc",
+                "obligation": "informative",
+                "semx_id": "_fed21ffa-92b9-8033-4fb0-1459be84f8fc"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_2498d488-55a8-7903-06a6-88eaf5434d59",
+                    "semx_id": "_2498d488-55a8-7903-06a6-88eaf5434d59"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where a Test Laboratory wishes to reduce its scope the relevant OIML Issuing Authority shall inform the Executive Secretary. The Executive Secretary shall amend the scope of the Test Laboratory on the OIML-CS pages of the OIML website. Approval of the Management Committee is not required in this situation, although the Executive Secretary will notify the Management Committee of the change."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a7feb012-596e-d812-6989-a8a0138d4111",
+                "obligation": "informative",
+                "semx_id": "_a7feb012-596e-d812-6989-a8a0138d4111"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_85261418-9860-3c00-3b88-a55992db722f",
+                    "semx_id": "_85261418-9860-3c00-3b88-a55992db722f"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A Test Laboratory may apply to extend its scope by completing the Application Form and selecting the option for Modification/extension to scope in section 4. The Application Form must be endorsed by an OIML Issuing Authority. The Application Form and relevant accompanying information shall be sent to the Executive Secretary, either by a representative of the OIML Issuing Authority which endorsed the application, or a representative of the Test Laboratory. The Executive Secretary will process the application in accordance with the relevant and appropriate procedures detailed above."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_a9461fc9-8ee4-d225-99e2-a031f24e58f0",
+                "obligation": "informative",
+                "semx_id": "_a9461fc9-8ee4-d225-99e2-a031f24e58f0"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_96ea2d82-205f-8771-08aa-ebdd5e3fc9f6",
+                    "semx_id": "_96ea2d82-205f-8771-08aa-ebdd5e3fc9f6"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Where the Test Laboratory already has an edition of an OIML Recommendation in its scope, and it wishes to add a new edition of the OIML Recommendation to its scope following an update of the OIML Recommendation, it is sufficient for the Test Laboratory to provide a gap analysis as evidence of its competence. An accreditation assessment and/or peer assessment, according to the new edition of the OIML Recommendation, is not required in this instance."
+                    },
+                    {
+                      "type": "note",
+                      "attrs": {
+                        "id": "_8fff56e2-51b9-f78f-ca6e-3fa0ca6a52c1",
+                        "semx_id": "_8fff56e2-51b9-f78f-ca6e-3fa0ca6a52c1"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_dc626553-4053-290b-5114-72ed6e8a4f17",
+                            "semx_id": "_dc626553-4053-290b-5114-72ed6e8a4f17"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "This process for an extension of scope does not apply in the case where an OIML Recommendation has been revised. See OIML B 6-1 "
+                            },
+                            {
+                              "type": "text",
+                              "text": "OIML B 6-1:2023",
+                              "marks": [
+                                {
+                                  "type": "eref",
+                                  "attrs": {
+                                    "target": "OIML_B_6_1",
+                                    "citeas": "OIML B 6-1:2023"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": " for information regarding the review process for OIML publications. == Withdrawal of a Test Laboratory from the OIML-CS"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_75411bb2-10f9-9ec3-a403-11d481147ec6",
+                "obligation": "informative",
+                "semx_id": "_75411bb2-10f9-9ec3-a403-11d481147ec6"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_58733b88-1a16-f099-fc77-950255e7f208",
+                    "semx_id": "_58733b88-1a16-f099-fc77-950255e7f208"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A Test Laboratory may decide, for operational, business or commercial reasons, to withdraw as a Test Laboratory from the OIML-CS, or to reduce their scope. In the event that a Test Laboratory wishes to withdraw from the OIML-CS or to reduce their scope, the Test Laboratory shall give notice, via the relevant OIML Issuing Authority, to the Executive Secretary of its intention, but shall meet all current obligations to customers before actual withdrawal or reduction of scope."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_3599c143-93ad-d00a-3760-d2709ea2aa3e",
+                "obligation": "informative",
+                "semx_id": "_3599c143-93ad-d00a-3760-d2709ea2aa3e"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_b19883e3-b91e-4100-7f51-4a799db1674d",
+                    "semx_id": "_b19883e3-b91e-4100-7f51-4a799db1674d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "If the Test Laboratory is withdrawn from the OIML-CS at the proposal of the Management Committee, any ongoing applications shall be completed under the conditions defined by the Management Committee. These conditions should take into account the fact that tests and examinations may already have started."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections"
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_94ab3529-a085-07a0-8c9b-e6443a70a90d",
+            "obligation": "informative",
+            "semx_id": "_94ab3529-a085-07a0-8c9b-e6443a70a90d",
+            "displayorder": 4,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "ISO_IEC_17025"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]ISO/IEC 17025:2017, General requirements for the competence of testing and calibration laboratories"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_ILAC_AP"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]Joint OIML-ILAC, Joint ILAC-OIML Assessment Procedure in the field of legal metrology (February 2018)"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[4]OIML-CS PD-01, OIML. Appeals, Resolution of Complaints and Disputes. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[5]OIML-CS OD-02, OIML. Test Laboratories Forum. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_02"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[6]OIML-CS PD-02, OIML. Procedures to approve Legal Metrology experts and QMS experts. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_03"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[7]OIML-CS PD-03, OIML. Application and approval of OIML Issuing Authorities. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_05"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[8]OIML-CS PD-05, OIML. Processing an application for an OIML Type Evaluation Report and OIML Certificate. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_06"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[9]OIML-CS PD-06, OIML. Use of OIML Type Evaluation Reports and OIML Certificates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_6_1"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[10]OIML B 6-1:2023, OIML. Directives for OIML technical work. Part 1: Structures and procedures for the development of OIML publications. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_07"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[11]OIML-CS PD-07, OIML. Transition Arrangements under the OIML-CS. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_08"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[12]OIML-CS PD-08, OIML. Signing the OIML-CS Declaration. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_PD_09"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[13]OIML-CS PD-09, OIML. Admission of Utilizers and Associates. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[14]OIML B 18:2025, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_D_30"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[15]OIML D 30:2020, OIML. Guide for the application of ISO/IEC 17025 to assessment of Testing Laboratories involved in legal metrology testing. OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

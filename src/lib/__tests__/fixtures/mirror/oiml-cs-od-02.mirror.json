@@ -1,0 +1,1150 @@
+{
+  "type": "doc",
+  "attrs": {
+    "flavor": "iso",
+    "type": "presentation",
+    "schema_version": "v2.1.6",
+    "title": "Test Laboratories Forum"
+  },
+  "content": [
+    {
+      "type": "preface",
+      "content": [
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_34a6edf6-5e94-d94f-84dd-cb20731cd55e",
+            "obligation": "informative",
+            "semx_id": "_34a6edf6-5e94-d94f-84dd-cb20731cd55e",
+            "displayorder": 2,
+            "title": "Foreword"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_852276fe-5b39-c964-b373-b5f0b0182e48",
+                "semx_id": "_852276fe-5b39-c964-b373-b5f0b0182e48"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication has been prepared by the Maintenance Group of the OIML Certification System (OIML-CS) Management Committee."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_8f58c4f1-6ad1-fc2d-ab23-7f08776fd721",
+                "semx_id": "_8f58c4f1-6ad1-fc2d-ab23-7f08776fd721"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The Management Committee approved this Edition 3 of OIML-CS OD-02 at its Ninth meeting on 06 March 2024 and it was published on 11 March 2024. This edition takes effect immediately upon publication."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b",
+                "semx_id": "_1703809d-0e27-7ca5-4f7a-2b53f8cde45b"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "This publication is directly related to the Framework for the OIML Certification System (OIML-CS) (OIML B 18 "
+                },
+                {
+                  "type": "text",
+                  "text": "OIML B 18:2022",
+                  "marks": [
+                    {
+                      "type": "eref",
+                      "attrs": {
+                        "target": "OIML_B_18",
+                        "citeas": "OIML B 18:2022"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") which contains the framework for the operation of the OIML-CS."
+                }
+              ]
+            },
+            {
+              "type": "table",
+              "attrs": {
+                "id": "_7c560494-58df-ea69-a0f1-ad65cb879ea1",
+                "semx_id": "_7c560494-58df-ea69-a0f1-ad65cb879ea1",
+                "title": "Edition history"
+              },
+              "content": [
+                {
+                  "type": "table_head",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_f30f18dc-361e-d36f-6feb-8f9657c63a79"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Edition"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Document"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Report on Voting/Acceptance"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "table_body",
+                  "content": [
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_ec96bdab-e316-bf14-5c7f-350ad1e6ab13"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: July 2017"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_939321cc-e1c0-2c28-6e1c-f63d198fa55c"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 2"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Published: 20 December 2018"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_b1743088-7251-8565-449d-89101bbeb543"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC3_P1_SG3_N086"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MG comment-20231213"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table_row",
+                      "attrs": {
+                        "id": "_e4ce0e08-778f-da50-cfb6-70833f5ec167"
+                      },
+                      "content": [
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OD-02 Edition 3 (draft)"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "OIML-CS_SC1_P1_N413"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "table_cell",
+                          "attrs": {
+                            "align": "left",
+                            "valign": "top"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Draft for MC vote-20240228"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "clause",
+          "attrs": {
+            "id": "_eb600ce1-ea3f-99d7-37a5-7ab429864ddb",
+            "obligation": "informative",
+            "semx_id": "_eb600ce1-ea3f-99d7-37a5-7ab429864ddb",
+            "displayorder": 3,
+            "title": "Introduction"
+          },
+          "content": [
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_d0482303-3e98-7a9c-d1d1-277fc9b2915b",
+                "obligation": "informative",
+                "semx_id": "_d0482303-3e98-7a9c-d1d1-277fc9b2915b"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06",
+                    "semx_id": "_8e98d5d7-e4a4-79a9-b81b-6d40f1298b06"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The OIML Certification System (OIML-CS) has been established"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "semx_id": "_b232c17d-33e1-1070-45f7-6296ae5da946",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_a6612b28-6421-54a8-7065-2fe6adf15852"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb",
+                            "semx_id": "_28d9a5d2-2695-5bce-7a9c-8e9200a1ddbb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to promote the global harmonization, uniform interpretation and implementation of legal metrological requirements for measuring instruments and/or modules,"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_bf572391-8389-0684-1582-47046bbdf569"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9",
+                            "semx_id": "_c6a8216f-794d-7656-4deb-f1e9271adcb9"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to avoid unnecessary re-testing when obtaining national type evaluations and approvals, and to support the recognition of measuring instruments and/or modules under legal metrological control, while achieving and maintaining confidence in the results in support of facilitating the global trade of individual instruments, and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_c154974c-667c-fafa-81a6-acc78fe24c2c"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb",
+                            "semx_id": "_c066d89f-7d6c-3175-cc63-d0c8652fe6bb"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "to establish rules and procedures for fostering mutual confidence among participating OIML Member States and Corresponding Members in the results of type evaluations that indicate conformity of measuring instruments and/or modules, under legal metrological control, to metrological and technical requirements established in the applicable OIML Recommendation(s)."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_fabc661b-ed3e-f350-8666-07a7779f2fbd",
+                "obligation": "informative",
+                "semx_id": "_fabc661b-ed3e-f350-8666-07a7779f2fbd"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_78425cd2-6101-ee11-7f26-9270bcb301eb",
+                    "semx_id": "_78425cd2-6101-ee11-7f26-9270bcb301eb"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "OIML B 18 Framework for the OIML Certification System (OIML-CS) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " establishes the rules for a framework for the OIML-CS. OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " is supplemented by a range of Operational Documents and Procedural Documents which are developed, maintained and approved by the OIML-CS Management Committee. == Scope"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea",
+                    "semx_id": "_c6f2a91c-5b15-4ee0-1161-a0d2ac13f6ea"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This document is one of a series of Operational Documents and Procedural Documents that define the rules for the operation of the OIML-CS."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_27f5b1f3-a252-7574-21e5-cdf3e459330d",
+                    "semx_id": "_27f5b1f3-a252-7574-21e5-cdf3e459330d"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "This publication contains the Operational Rules of the OIML-CS Test Laboratories Forum (TLF) which specify how the TLF shall perform its duties and responsibilities. These Operational Rules relate to the framework for the OIML-CS, as given in OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ". == Terminology and abbreviations"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0cb42bc1-a454-ee8d-8d52-eaab7f7ec651",
+                    "semx_id": "_0cb42bc1-a454-ee8d-8d52-eaab7f7ec651"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The terminology and abbreviations defined in clause 3 of OIML B 18 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " apply. == Composition and appointment of members of the TLF"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_bf659480-9cb7-5128-129b-41b0cba14996",
+                "obligation": "informative",
+                "semx_id": "_bf659480-9cb7-5128-129b-41b0cba14996",
+                "title": "Composition"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d0bb8eaa-05ac-69d8-8c93-3bb521f097de",
+                    "semx_id": "_d0bb8eaa-05ac-69d8-8c93-3bb521f097de"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The composition of the TLF is defined in OIML B 18, 12.1 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f935052d-63f6-1df3-af0d-cdce112940b3",
+                "obligation": "informative",
+                "semx_id": "_f935052d-63f6-1df3-af0d-cdce112940b3",
+                "title": "Participation"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d66ebeb1-c1aa-7b75-7b97-4ad67ddf6c8c",
+                    "semx_id": "_d66ebeb1-c1aa-7b75-7b97-4ad67ddf6c8c"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "A representative from each Test Laboratory listed in the Declaration of an OIML Issuing Authority may participate in the activities and/or meetings of the TLF. The Management Committee Member from each OIML Member State that has at least one OIML Issuing Authority shall notify the Executive Secretary of the name(s) of the TLF representative(s) and any changes in representation."
+                    },
+                    {
+                      "type": "note",
+                      "attrs": {
+                        "id": "_027296a9-3314-9737-1405-adbe2c598497",
+                        "semx_id": "_027296a9-3314-9737-1405-adbe2c598497"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_e5872960-4b26-01b8-6124-8d8d2395a5be",
+                            "semx_id": "_e5872960-4b26-01b8-6124-8d8d2395a5be"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "Where a Test Laboratory provides testing services for more than one category of measuring instrument a representative for each measuring instrument category is permitted."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_29218019-e835-75e5-b7de-f5374167f0d6",
+                    "semx_id": "_29218019-e835-75e5-b7de-f5374167f0d6"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "An up-to-date list of the representatives from Test Laboratories in the TLF is maintained by the Executive Secretary. == Duties, roles and responsibilities of the TLF and its members"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_f15c418e-ba77-96ef-7ff3-3250b5394e10",
+                "obligation": "informative",
+                "semx_id": "_f15c418e-ba77-96ef-7ff3-3250b5394e10",
+                "title": "Duties and responsibilities of the TLF"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_654766d5-d383-be48-a9cb-3561bdff675a",
+                    "semx_id": "_654766d5-d383-be48-a9cb-3561bdff675a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The tasks of the TLF are defined in OIML B 18, 12.2 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_ccbae22a-c7af-d64d-d877-5adfdebff882",
+                    "semx_id": "_ccbae22a-c7af-d64d-d877-5adfdebff882"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In respect of inter-laboratory comparison programs, as specified in OIML B 18, 12.2 d) "
+                    },
+                    {
+                      "type": "text",
+                      "text": "OIML B 18:2022",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "OIML_B_18",
+                            "citeas": "OIML B 18:2022"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ", the role of the TLF is to encourage inter-laboratory comparison programs amongst OIML Issuing Authorities and their Test Laboratories. For example, the TLF could encourage the development of an inter-laboratory comparison program at a regional level, with the support of the relevant Regional Legal Metrology Organization (RLMO). When encouraging the development of an inter-laboratory comparison program, the TLF should encourage the adoption of the applicable requirements of ISO/IEC 17043 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "ISO/IEC 17043:2023",
+                      "marks": [
+                        {
+                          "type": "eref",
+                          "attrs": {
+                            "target": "ISO_IEC_17043",
+                            "citeas": "ISO/IEC 17043:2023"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_4b35f46e-4693-991a-f8a9-dbdef5844f97",
+                "obligation": "informative",
+                "semx_id": "_4b35f46e-4693-991a-f8a9-dbdef5844f97",
+                "title": "Obligations of Members"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5a726c51-9f01-af7c-4c1b-87fbcc6edf5a",
+                    "semx_id": "_5a726c51-9f01-af7c-4c1b-87fbcc6edf5a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Representatives from Test Laboratories are chosen to participate in the activities of the TLF for their technical and metrological expertise and knowledge of the relevant test procedures for a range of measuring instruments and modules."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5c782feb-2c03-6ae0-0b30-eb945920e1cf",
+                    "semx_id": "_5c782feb-2c03-6ae0-0b30-eb945920e1cf"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Members of the TLF are encouraged to participate in the activities of the TLF for the respective measuring instrument(s) or module(s) for which they have been designated as an expert."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_094770f8-6305-8dd1-6d9f-77f19ac00d21",
+                "obligation": "informative",
+                "semx_id": "_094770f8-6305-8dd1-6d9f-77f19ac00d21",
+                "title": "Executive Secretary"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_b9322250-79ab-e22d-0549-013498fb51b7",
+                    "semx_id": "_b9322250-79ab-e22d-0549-013498fb51b7"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Executive Secretary provides the administrative and secretarial services to the TLF. This will include convening and chairing meetings of the TLF and reporting to the Management Committee. == Principles of operation of the TLF"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_c0dc78ea-5530-b53f-1572-0cd70bbbac95",
+                "obligation": "informative",
+                "semx_id": "_c0dc78ea-5530-b53f-1572-0cd70bbbac95",
+                "title": "Conduct of work"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_00433404-248c-52d5-c6fa-9245e64c5d7a",
+                    "semx_id": "_00433404-248c-52d5-c6fa-9245e64c5d7a"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The TLF shall perform their activities primarily by correspondence, although meetings of the TLF may be held as and when deemed necessary. A TLF Workspace is provided on the OIML-CS website for use by the TLF, with members of the TLF provided with a username and password to access the TLF Workspace."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_3c010aa3-490c-e9a4-4d44-6330a850dc2f",
+                "obligation": "informative",
+                "semx_id": "_3c010aa3-490c-e9a4-4d44-6330a850dc2f",
+                "title": "Communication"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_fff3e1a9-b0d4-9559-dc2a-98e15b5f32f1",
+                    "semx_id": "_fff3e1a9-b0d4-9559-dc2a-98e15b5f32f1"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Executive Secretary shall keep all TLF Members informed of all developments within the TLF. Such communication should as far as possible be electronic and additionally make full use of the TLF Workspace on the OIML-CS website. However, the Executive Secretary shall take account of any problems which the TLF Members may have with electronic communication, so as not to exclude members from its work."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_79d3ffff-2b85-bdf0-fcf9-4c4ccc73d7d5",
+                "obligation": "informative",
+                "semx_id": "_79d3ffff-2b85-bdf0-fcf9-4c4ccc73d7d5",
+                "title": "Meetings"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_d94736dc-d512-91a3-1165-b2daca2d1381",
+                    "semx_id": "_d94736dc-d512-91a3-1165-b2daca2d1381"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Meetings of the TLF may be convened either if decided upon by the Executive Secretary or if requested by a TLF Member in writing to the Executive Secretary. Meetings may be held in-person and/or online as determined by the Executive Secretary in collaboration with TLF members."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_8b2034ea-188f-feec-cc9a-9a98560414c4",
+                    "semx_id": "_8b2034ea-188f-feec-cc9a-9a98560414c4"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Notice of the meetings shall be circulated by the Executive Secretary at least three months prior to the meeting. The agenda and proposal documents shall be circulated at least two months prior to the meeting. Shorter time periods are permitted with the prior agreement of TLF Members."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_9853fa40-fffc-88b7-6bb6-949cee5bce27",
+                    "semx_id": "_9853fa40-fffc-88b7-6bb6-949cee5bce27"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "In preparing the agenda, the Executive Secretary shall, as far as possible, list and identify all the documents related to the various items for discussion."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5a103750-8bf9-7723-380b-3da7bbd48804",
+                    "semx_id": "_5a103750-8bf9-7723-380b-3da7bbd48804"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The TLF may refuse to consider matters set before it if the relevant documents have not been circulated in accordance with the above."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_0dd2afd3-5b36-a665-6d74-4c22f00ea09e",
+                    "semx_id": "_0dd2afd3-5b36-a665-6d74-4c22f00ea09e"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Participants in meetings of the TLF shall be appointed by the Management Committee Members and shall be experts from Test Laboratories. The names of the participants shall be communicated to the Executive Secretary in due time before each meeting. The number of participants appointed by each Management Committee Member simultaneously present at a meeting shall not exceed three. The participants may, however, change during a particular meeting according to the subject to be discussed."
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_854cf160-c4f4-8dce-102a-4cf2ea133d0e",
+                    "semx_id": "_854cf160-c4f4-8dce-102a-4cf2ea133d0e"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "The Executive Secretary shall, as soon as possible after a meeting, prepare and distribute a report and the minutes for consideration by the Management Committee. They shall embody all conclusions of the relevant meeting, together with a brief account of the discussions, covering:"
+                    }
+                  ]
+                },
+                {
+                  "type": "ordered_list",
+                  "attrs": {
+                    "id": "_74216c57-2de3-4bc9-64f9-a661aec95cb4",
+                    "semx_id": "_74216c57-2de3-4bc9-64f9-a661aec95cb4",
+                    "type": "alphabet"
+                  },
+                  "content": [
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_3e4d6eee-3c88-b7fa-2392-4fc93dd8f87a"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_73cf6412-587f-4825-d421-7868d9ca0495",
+                            "semx_id": "_73cf6412-587f-4825-d421-7868d9ca0495"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "the results of the meeting;"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_36141b8e-6585-ac3d-f1c7-a97a9565629d"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_2954ac91-66f2-ddd9-0c08-93adb66a4990",
+                            "semx_id": "_2954ac91-66f2-ddd9-0c08-93adb66a4990"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "proposals being submitted to TCs and SCs; and"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list_item",
+                      "attrs": {
+                        "id": "_f63e9608-c87b-e3ef-3737-a240448d4f5b"
+                      },
+                      "content": [
+                        {
+                          "type": "paragraph",
+                          "attrs": {
+                            "id": "_4c8ac95e-24ec-2d32-aad1-0bfe414b9264",
+                            "semx_id": "_4c8ac95e-24ec-2d32-aad1-0bfe414b9264"
+                          },
+                          "content": [
+                            {
+                              "type": "text",
+                              "text": "proposals submitted to the Management Committee for discussion."
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_629faef3-db8c-c3f2-267b-d9fcefdccdae",
+                "obligation": "informative",
+                "semx_id": "_629faef3-db8c-c3f2-267b-d9fcefdccdae",
+                "title": "Recommendations of the TLF"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_5ea2c067-68c1-e332-2051-9c1e0ba50e60",
+                    "semx_id": "_5ea2c067-68c1-e332-2051-9c1e0ba50e60"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Recommendations of the TLF shall be arrived at by consensus. Where consensus cannot be achieved the matter shall be referred, as appropriate, to the Management Committee or to the relevant OIML TC/SC."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "clause",
+              "attrs": {
+                "id": "_2da386ac-2a77-fe1d-9f8f-3302ab2dba5f",
+                "obligation": "informative",
+                "semx_id": "_2da386ac-2a77-fe1d-9f8f-3302ab2dba5f",
+                "title": "Interface with OIML TCs/SCs"
+              },
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "id": "_2ff2bd91-d03b-396c-60c1-1b051fdf2ecc",
+                    "semx_id": "_2ff2bd91-d03b-396c-60c1-1b051fdf2ecc"
+                  },
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "If the TLF decides that it is necessary to revise the testing requirements in an OIML Recommendation, a proposal detailing the changes shall be submitted, by the Executive Secretary, to the relevant OIML TC/SC. The Management Committee Chairperson shall be notified of the proposal."
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content_section",
+          "attrs": {
+            "id": "_13d7055e-30fc-845a-c60e-8972faf092d9",
+            "type": "toc",
+            "displayorder": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": "sections"
+    },
+    {
+      "type": "bibliography",
+      "content": [
+        {
+          "type": "references",
+          "attrs": {
+            "id": "_a7387cf1-93f9-7fcf-78ee-8a50ba6b5abe",
+            "obligation": "informative",
+            "semx_id": "_a7387cf1-93f9-7fcf-78ee-8a50ba6b5abe",
+            "displayorder": 4,
+            "title": "Bibliography",
+            "normative": false,
+            "hidden": null
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "ISO_IEC_17043"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[1]ISO/IEC 17043:2023, Conformity assessment — General requirements for the competence of proficiency testing providers"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_CS_OD_01"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[2]OIML-CS OD-01, OIML. Management Committee. OIML"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "attrs": {
+                "id": "OIML_B_18"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "text": "[3]OIML B 18:2022, OIML. Framework for the OIML Certification System (OIML-CS). OIML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

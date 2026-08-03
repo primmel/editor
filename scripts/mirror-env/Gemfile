@@ -1,0 +1,9 @@
+# The mirror converter's isolated bundle (TODO.editor/37) — the
+# resolved matrix that runs `metanorma-document to-mirror`:
+# metanorma-document from git main + the iso/generic flavors (the
+# flavor inference needs a flavor-named module for the input's
+# basename; the wrapper prefixes `iso-`).
+source 'https://rubygems.org'
+gem 'metanorma-document', git: 'https://github.com/metanorma/metanorma-document.git', branch: 'main'
+gem 'metanorma-iso'
+gem 'metanorma-generic'
