@@ -124,7 +124,12 @@ the mapping calculus must match the kernel's numbers exactly (item
 | 28 | the validation close-out (VALIDATION.md) | P0 | validation |
 | 29 | validation throughout (the Primmel validation surface) | P0 | validation | ✅ 648c8f4 |
 | 30 | the Studio user guide (the audience manual) | P0 | docs | ✅ fa0d0b8 |
-| 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs | ✅ ed729d9 |
+| 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs |
+| 32 | the flow-type seam (kill the structural mirror) | P0 | audit |
+| 33 | the typing-discipline audit | P1 | audit |
+| 34 | the render-layer specs + the scale proof | P1 | audit |
+| 35 | the dependency + security audit | P0 | audit |
+| 36 | the audit close-out (AGENTS.md + AUDIT.md) | P1 | audit | ✅ ed729d9 |
 
 The contract: create new Primmel models (reference/implementation),
 import old MMEL models (all ten), do mappings with coverage, navigate,
