@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Processing an application for an OIML Type Evaluation Report and OIML Certificate"
+    "title": "Processing an application for an OIML Type Evaluation Report and OIML Certificate",
+    "docidentifier": "OIML-CS PD-05 Edition 6 (Amendment 1)",
+    "bibdataDate": "2024-08-27"
   },
   "content": [
     {

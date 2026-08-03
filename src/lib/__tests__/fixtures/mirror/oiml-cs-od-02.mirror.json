@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Test Laboratories Forum"
+    "title": "Test Laboratories Forum",
+    "docidentifier": "OIML-CS OD-02 Edition 3",
+    "bibdataDate": "2024-03-11"
   },
   "content": [
     {

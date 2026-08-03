@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Signing a Declaration"
+    "title": "Signing a Declaration",
+    "docidentifier": "OIML-CS PD-08 Edition 3",
+    "bibdataDate": "2024-03-11"
   },
   "content": [
     {

@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Utilizers and Associates"
+    "title": "Utilizers and Associates",
+    "docidentifier": "OIML-CS PD-09 Edition 1",
+    "bibdataDate": "2025-12-24"
   },
   "content": [
     {

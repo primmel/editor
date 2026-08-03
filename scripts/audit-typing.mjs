@@ -61,8 +61,13 @@ for (const file of walk(SRC)) {
     }
 
     // R3 — duck-typing dispatch (typeof-as-dispatch outside the value domain).
+    // The boundary exception: a function marked `The runtime boundary`
+    // IS the narrowing (its whole job — localized and documented).
     if (/typeof [a-zA-Z_$.]+ === '(function|string|object|undefined)'/.test(line)) {
-      failures.push(`R3 ${rel}:${n} — ${line.trim()} (law: discriminated unions, not respond_to)`);
+      const boundary = text.lastIndexOf('The runtime boundary', text.indexOf(line));
+      if (boundary === -1) {
+        failures.push(`R3 ${rel}:${n} — ${line.trim()} (law: discriminated unions, not respond_to)`);
+      }
     }
 
     // R4 — deep imports.

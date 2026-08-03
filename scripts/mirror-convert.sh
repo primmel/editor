@@ -34,6 +34,21 @@ cp "$INPUT" "$TMP"
 
 (cd "$ENV_DIR" && bundle exec metanorma-document to-mirror "$TMP" -o "$OUTPUT" 2>/dev/null)
 
+# The mirror output carries no docidentifier — embed it (and the
+# bibdata date) from the source XML so the fixture is self-contained
+# (the URN mint needs it).
+node -e "
+const fs = require('fs');
+const xml = fs.readFileSync('$INPUT', 'utf8');
+const docid = (xml.match(/<docidentifier[^>]*>([^<]+)/) ?? [])[1] ?? 'document';
+const date = (xml.match(/<date[^>]*>\s*<on>([0-9-]+)/) ?? [])[1] ?? '';
+const doc = JSON.parse(fs.readFileSync('$OUTPUT', 'utf8'));
+doc.attrs = doc.attrs ?? {};
+doc.attrs.docidentifier = docid.trim();
+doc.attrs.bibdataDate = date;
+fs.writeFileSync('$OUTPUT', JSON.stringify(doc, null, 2));
+"
+
 # The honest check: the JSON parses and carries text leaves.
 node -e "
 const fs = require('fs');

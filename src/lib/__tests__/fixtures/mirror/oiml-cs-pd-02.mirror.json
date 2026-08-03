@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Approval of Legal Metrology Experts and Management System Experts"
+    "title": "Approval of Legal Metrology Experts and Management System Experts",
+    "docidentifier": "OIML-CS PD-02 Edition 3",
+    "bibdataDate": "2022-11-14"
   },
   "content": [
     {

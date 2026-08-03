@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Assessment and approval of Test Laboratories"
+    "title": "Assessment and approval of Test Laboratories",
+    "docidentifier": "OIML-CS PD-04 Edition 5",
+    "bibdataDate": "2025-12-24"
   },
   "content": [
     {

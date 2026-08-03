@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Use of OIML Type Evaluation Reports and OIML Certificates"
+    "title": "Use of OIML Type Evaluation Reports and OIML Certificates",
+    "docidentifier": "OIML-CS PD-06 Edition 4",
+    "bibdataDate": "2024-03-11"
   },
   "content": [
     {

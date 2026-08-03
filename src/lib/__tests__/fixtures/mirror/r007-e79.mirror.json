@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Clinical thermometers (mercury-in-glass, with maximum device)"
+    "title": "Clinical thermometers (mercury-in-glass, with maximum device)",
+    "docidentifier": "OIML R 7",
+    "bibdataDate": "1979"
   },
   "content": [
     {

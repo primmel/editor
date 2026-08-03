@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Clarifications and Interpretations of OIML-CS Documents"
+    "title": "Clarifications and Interpretations of OIML-CS Documents",
+    "docidentifier": "OIML-CS CID-01 Edition 6",
+    "bibdataDate": "2024-09-19"
   },
   "content": [
     {

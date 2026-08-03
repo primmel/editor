@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Appeals, Resolution of Complaints and Disputes"
+    "title": "Appeals, Resolution of Complaints and Disputes",
+    "docidentifier": "OIML-CS PD-01 Edition 3",
+    "bibdataDate": "2024-08-26"
   },
   "content": [
     {

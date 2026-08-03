@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Transition Arrangements under the OIML-CS"
+    "title": "Transition Arrangements under the OIML-CS",
+    "docidentifier": "OIML-CS PD-07 Edition 4",
+    "bibdataDate": "2024-01-16"
   },
   "content": [
     {

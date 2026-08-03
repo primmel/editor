@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Framework for the OIML Certification System (OIML-CS)"
+    "title": "Framework for the OIML Certification System (OIML-CS)",
+    "docidentifier": "OIML B 18",
+    "bibdataDate": "2018-10-01"
   },
   "content": [
     {

@@ -4,7 +4,9 @@
     "flavor": "iso",
     "type": "presentation",
     "schema_version": "v2.1.6",
-    "title": "Management Committee"
+    "title": "Management Committee",
+    "docidentifier": "OIML-CS OD-01 Edition 4",
+    "bibdataDate": "2024-03-11"
   },
   "content": [
     {

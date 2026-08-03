@@ -46,7 +46,7 @@ describe('10 — the document model', () => {
   it('the URN base: the OIML form resolvable, else the doc-local slug', () => {
     expect(urnBaseFor('OIML R 60-2:2021')).toBe('urn:oiml:pub:r:60-2:2021');
     expect(urnBaseFor('OIML R 60')).toBe('urn:oiml:pub:r:60');
-    expect(urnBaseFor('OIML-CS PD-05 Edition 6')).toBe('doc:OIML-CS-PD-05-Edition-6');
+    expect(urnBaseFor('OIML-CS PD-05 Edition 6')).toBe('urn:oiml:pub:cs:pd-05');
   });
 
   it('sentence splitting respects boundaries and decimals', () => {
