@@ -123,6 +123,8 @@ the mapping calculus must match the kernel's numbers exactly (item
 | 27 | the dual-demo tutorial (model YOUR Recommendation) | P1 | docs |
 | 28 | the validation close-out (VALIDATION.md) | P0 | validation |
 | 29 | validation throughout (the Primmel validation surface) | P0 | validation |
+| 30 | the Studio user guide (the audience manual) | P0 | docs |
+| 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs |
 
 The contract: create new Primmel models (reference/implementation),
 import old MMEL models (all ten), do mappings with coverage, navigate,
