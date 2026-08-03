@@ -1,4 +1,4 @@
-# 36 — The audit close-out (AGENTS.md + AUDIT.md)
+# 36 — The audit close-out (AGENTS.md + AUDIT.md) ✅ DONE (4e1cf72)
 
 **Wave:** audit · **Depends on:** 32–35 · **Priority:** P1
 

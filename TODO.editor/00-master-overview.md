@@ -125,10 +125,10 @@ the mapping calculus must match the kernel's numbers exactly (item
 | 29 | validation throughout (the Primmel validation surface) | P0 | validation | ✅ 648c8f4 |
 | 30 | the Studio user guide (the audience manual) | P0 | docs | ✅ fa0d0b8 |
 | 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs |
-| 32 | the flow-type seam (kill the structural mirror) | P0 | audit |
-| 33 | the typing-discipline audit | P1 | audit |
-| 34 | the render-layer specs + the scale proof | P1 | audit |
-| 35 | the dependency + security audit | P0 | audit |
+| 32 | the flow-type seam (kill the structural mirror) | P0 | audit | ✅ 6016991 |
+| 33 | the typing-discipline audit | P1 | audit | ✅ 314f250 |
+| 34 | the render-layer specs + the scale proof | P1 | audit | ✅ b13f393 |
+| 35 | the dependency + security audit | P0 | audit | ✅ ebebc2d |
 | 36 | the audit close-out (AGENTS.md + AUDIT.md) | P1 | audit | ✅ ed729d9 |
 
 The contract: create new Primmel models (reference/implementation),
@@ -144,3 +144,13 @@ All items 21–31 landed; the capability contract is proven in
 with its leg and proof), the recorded close-out sweep, and the honest
 "not yet" list (form-field builder, requirement/test inspectors,
 multi-file packages, the formal review workflow, collaboration).
+
+## The audit wave closes
+
+The audit (32–36) is complete: the four constraint classes closed
+(encapsulation breaks 26 → 3 documented seams; duck-typing dispatch 1
+justified value domain; lazy any 1 → 0; import discipline clean; seam
+duplicates 2 → 1), every lib module tested (28 files / 169 tests),
+the scale proof holds (262 processes / 77 pages), 0 vulnerabilities
+on both trees, and the typing gate runs in the build. The record:
+[AUDIT.md](AUDIT.md).

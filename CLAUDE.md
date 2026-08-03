@@ -44,7 +44,15 @@ The full feature map lives in `README.md`; the work program in
    ALWAYS the type export upstream (the kernel's public API is the
    only seam). Genuine runtime boundaries (the dev-only window hooks,
    the raw `_relations` parse lens) carry one comment saying so —
-   everything else is a bug to fix, not a cast to write.
+   everything else is a bug to fix, not a cast to write. The typing
+   gate (`scripts/audit-typing.mjs`, R1–R6) runs in `npm run build`
+   and also covers: no lazy `any`, no duck-typing dispatch, module
+   boundaries only, no require-style loads, one home per seam.
+7. **The viewport cull is the frame budget.** Render work is bounded
+   by what's visible; scorer work is budgeted by a cheap pre-score
+   (the automap's edit distance runs only for token-competitive
+   candidates). The scale proof (`e2e/scale-smoke.ts`) holds the
+   numbers.
 
 ## Layout
 
