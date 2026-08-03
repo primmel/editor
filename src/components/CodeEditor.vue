@@ -191,7 +191,8 @@ function openFile() {
 
 async function openNative() {
   try {
-    const [handle] = await (window as any).showOpenFilePicker({
+    if (!window.showOpenFilePicker) throw new Error('unsupported');
+    const [handle] = await window.showOpenFilePicker({
       types: [{
         description: 'Primmel model',
         accept: { 'text/plain': ['.prl', '.mmel', '.txt'] },

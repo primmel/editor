@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "build": "node scripts/audit-typing.mjs && vue-tsc && vite build",
+    "preview": "vite preview",
+    "audit:types": "node scripts/audit-typing.mjs"
   },
   "dependencies": {
     "@primmel/primmel": "file:../primmel-ts/packages/primmel",

@@ -157,6 +157,9 @@ export function evaluateCondition(src: string, registers: Record<string, string>
   }
 
   function compare(op: string, left: Value, right: Value): boolean {
+    // The value domain is a genuine three-case union (number | string |
+    // boolean from user-authored expressions) — the typeof narrows the
+    // numeric case; everything else compares as strings. Not dispatch.
     if (typeof left === 'number' && typeof right === 'number') {
       switch (op) {
         case '>': return left > right;
