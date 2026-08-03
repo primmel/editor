@@ -19,15 +19,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # TRANSITIONAL (TODO.ops/04's blocker): @oimlsmart/oiml-pubid is
+      # not yet on npm (the first publish needs npm-side auth), so the
+      # file: dependency's target is checked out alongside. When the
+      # registry carries it, this step and the file: spec retire
+      # together.
+      - name: Checkout oiml-pubid (the file: dependency)
+        uses: actions/checkout@v4
+        with:
+          repository: oimlsmart/oiml-pubid
+          path: ../oimlsmart/oiml-pubid
+
       - name: Set up Node 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
+
       - name: Install
         run: npm ci
+
+      - name: Verify (typing gate + vue-tsc + the unit suite)
+        run: |
+          node scripts/audit-typing.mjs
+          npx vue-tsc --noEmit
+          npm test
+
       - name: Build
         run: npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
