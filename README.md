@@ -15,13 +15,32 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
+## The doc map (audiences → their page)
+
+- **The user guide** — [`docs/`](docs/README.md): the audience manual
+  (quickstart, the workspace, modelling, mapping, review & save,
+  importing legacy, authoring OIML, glossary) with 15 teaching
+  diagrams in `docs/diagrams/`.
+- **The Primmel product site** — [primmel.github.io/docs/studio](https://primmel.github.io/docs/studio)
+  for the language audience (publishers, implementers, auditors).
+- **The OIML SMART site** — [oimlsmart.github.io/docs/guides/primmel-studio](https://www.oimlsmart.org/docs/guides/primmel-studio/)
+  for the metrology audience (authoring a Recommendation).
+- **The architecture chapter** — [docs/architecture/21-primmel-studio.md](https://github.com/oimlsmart/smart/blob/main/docs/architecture/21-primmel-studio.md)
+  in the smart repo.
+- **The federation volumes** — [platform ch.08](https://primmel.github.io/primmel-smart-docs/platform/08-primmel-studio/)
+  and [learn Tier 5 — the dual demo](https://primmel.github.io/primmel-smart-docs/learn/05-the-dual-demo/).
+- **The R 7 tutorial** — [`demo/r7-clinical-thermometer/`](demo/r7-clinical-thermometer/README.md):
+  a complete OIML Recommendation modelled with the Studio, dual-demo
+  with the smart-r60 classroom.
+- **Developers/agents** — [CLAUDE.md](CLAUDE.md) (the laws + gotchas).
+
 ## The gates
 
 ```bash
 npx vue-tsc --noEmit     # type check
-npx vitest run           # unit tests (103 tests)
+npx vitest run           # unit tests (148 tests)
 npm run build            # the production build
-./e2e/run-all.sh         # 17 e2e legs against the dev server
+./e2e/run-all.sh         # 22 e2e legs against the dev server
 ```
 
 ## The architecture, in one paragraph
