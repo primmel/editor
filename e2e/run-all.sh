@@ -28,6 +28,7 @@ for leg in \
   plugin-smoke \
   capability-walk \
   r7-smoke \
+  oiml-cs-smoke \
   scale-smoke \
   save-smoke
 do

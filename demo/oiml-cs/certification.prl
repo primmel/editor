@@ -1,0 +1,229 @@
+root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "OIML-CS type evaluation and certification workflow (PD-05:2024)"
+  schema "Primmel 0.1"
+  namespace "OIML.CS"
+  author "Primmel Studio demo"
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// The OIML-CS certification chain as a simulatable process: the
+// applicant's type evaluation application travels review → acceptance
+// → testing → test report → evaluation report → certificate → BIML
+// registration. Every step names the scheme provisions it realizes
+// (validate_provision → the /req/cs requirements of model.prl).
+//
+// Three paths, routed by the registers:
+//   application_complete = 1, tests_passed = 1, evaluation_approved = 1
+//     → the certificate is issued and registered at the BIML;
+//   application_complete = 0
+//     → the IA requests additional information (PD-05 4.2.1);
+//   tests_passed = 0 (or evaluation_approved = 0)
+//     → the applicant is informed of the reasons; no certificate.
+// ─────────────────────────────────────────────────────────────────────
+
+role Applicant { name "Applicant (the manufacturer or its authorised representative)" }
+role IssuingAuthority { name "OIML Issuing Authority (IA)" }
+role TestLaboratory { name "OIML-CS Test Laboratory (TL)" }
+role BIML { name "International Bureau of Legal Metrology — the certificate registrar" }
+
+variable application_complete {
+  type float
+  definition "1 when the application satisfies the PD-05 4.1.2 contents and 4.2.1 completeness review, else 0"
+}
+
+variable tests_passed {
+  type float
+  definition "1 when every tested sample conforms to the relevant OIML Recommendation, else 0"
+}
+
+variable evaluation_approved {
+  type float
+  definition "1 when the Issuing Authority approves the type evaluation report, else 0"
+}
+
+start_event ApplicationSubmitted { }
+end_event CertificateRegistered { }
+end_event InformationRequested { }
+end_event CertificateRefused { }
+
+exclusive_gateway ApplicationComplete { }
+exclusive_gateway TestsConform { }
+exclusive_gateway EvaluationApproved { }
+
+// ── The chain ────────────────────────────────────────────────────────
+
+process SubmitApplication {
+  name "Submit the type evaluation application to the chosen Issuing Authority"
+  actor Applicant
+  modality SHALL
+  description "The application identifies the applicant and manufacturer(s), describes the type (single model or family) with its declared metrological characteristics, and includes the type evaluation documentation (PD-05 4.1.2)."
+  validate_provision {
+    "/req/cs/application-contents"
+  }
+}
+
+process ReviewApplication {
+  name "Review the application for completeness"
+  actor IssuingAuthority
+  modality SHALL
+  description "The IA reviews the application; incomplete applications may draw a request for additional information, and refusal grounds are assessed (PD-05 4.2.1, 4.2.2)."
+  validate_provision {
+    "/req/cs/application-completeness"
+    "/req/cs/rejection-reason"
+  }
+}
+
+process RequestAdditionalInformation {
+  name "Request the additional information and documents from the applicant"
+  actor IssuingAuthority
+  modality MAY
+  description "Prior to further processing, the IA may request the applicant to provide the missing information and documents (PD-05 4.2.1)."
+  validate_provision {
+    "/req/cs/application-completeness"
+  }
+}
+
+process AcceptApplication {
+  name "Accept the application: rules, fee estimate, time estimate, sample count"
+  actor IssuingAuthority
+  modality SHALL
+  description "On acceptance the IA informs the applicant of the OIML-CS rules, the fee estimate, the approximate evaluation time in writing, and the number of samples required for testing (PD-05 4.2.6, 4.2.8, 4.2.9)."
+  validate_provision {
+    "/req/cs/fee-estimate"
+    "/req/cs/application-time-estimate"
+    "/req/cs/sample-count"
+  }
+}
+
+process PerformTesting {
+  name "Perform the type evaluation tests on the samples"
+  actor TestLaboratory
+  modality SHALL
+  description "Tests and examinations per the relevant OIML Recommendation, performed by Test Laboratories listed in the OIML-CS Declaration; several TLs each cover their scope (PD-05 4.3.1, 4.4.1)."
+  validate_provision {
+    "/req/cs/test-laboratory-eligibility"
+    "/req/cs/multiple-test-laboratories"
+  }
+}
+
+process CompileTestReport {
+  name "Compile, authorize and issue the OIML test report"
+  actor TestLaboratory
+  modality SHALL
+  description "The test report covers the full checklist (identification, samples, methods, conditions, results with uncertainties, pass/fail conclusions, sign-off), dated, signed and uniquely identified by the responsible person (PD-05 4.4.3–4.4.5)."
+  validate_provision {
+    "/req/cs/test-report-18-elements"
+    "/req/cs/test-report-authorization"
+    "/req/cs/test-report-language"
+  }
+}
+
+process CompileEvaluationReport {
+  name "Compile the OIML type evaluation report from the test reports"
+  actor IssuingAuthority
+  modality SHALL
+  description "The evaluation report assembles the test reports and gives the general conformity conclusion; dated and signed by the responsible persons, bearing the OIML-CS logo (PD-05 4.5.1–4.5.5)."
+  validate_provision {
+    "/req/cs/evaluation-report-contents"
+    "/req/cs/evaluation-report-id"
+    "/req/cs/evaluation-report-logo"
+    "/req/cs/evaluation-report-language"
+  }
+}
+
+process IssueCertificate {
+  name "Issue the OIML certificate and deliver it with the reports"
+  actor IssuingAuthority
+  modality SHALL
+  description "A conforming type receives the certificate drawn up per Annex A with its unique number; the certificate, evaluation report and test reports are delivered to the applicant (PD-05 4.6.3–4.6.7)."
+  validate_provision {
+    "/req/cs/certificate-requirements"
+    "/req/cs/certificate-format"
+    "/req/cs/certificate-number"
+    "/req/cs/certificate-delivery"
+  }
+}
+
+process RegisterCertificate {
+  name "Register the certificate at the BIML"
+  actor BIML
+  modality SHALL
+  description "The IA sends a copy of each issued certificate to the BIML; the BIML invoices the registration fee, and the certificate joins the published register (PD-05 clause 6)."
+  validate_provision {
+    "/req/cs/biml-registration"
+    "/req/cs/registration-fee"
+    "/req/cs/registration-withdrawal"
+  }
+}
+
+process NotifyFailure {
+  name "Inform the applicant in writing of the reasons for refusal"
+  actor IssuingAuthority
+  modality SHALL
+  description "Where the samples do not meet the requirements, the applicant is informed in writing of the reasons; a new application may follow (PD-05 4.6.1, 4.6.2)."
+  validate_provision {
+    "/req/cs/failure-notice"
+    "/req/cs/re-application"
+  }
+}
+
+// ── The routing ──────────────────────────────────────────────────────
+
+canvas Root {
+  elements {
+    ApplicationSubmitted { x 0 y 0 }
+    SubmitApplication { x 0 y 70 }
+    ReviewApplication { x 0 y 140 }
+    ApplicationComplete { x 0 y 210 }
+    RequestAdditionalInformation { x 260 y 210 }
+    InformationRequested { x 260 y 280 }
+    AcceptApplication { x 0 y 280 }
+    PerformTesting { x 0 y 350 }
+    CompileTestReport { x 0 y 420 }
+    TestsConform { x 0 y 490 }
+    CompileEvaluationReport { x 0 y 560 }
+    EvaluationApproved { x 0 y 630 }
+    IssueCertificate { x 0 y 700 }
+    RegisterCertificate { x 0 y 770 }
+    CertificateRegistered { x 0 y 840 }
+    NotifyFailure { x 260 y 560 }
+    CertificateRefused { x 260 y 700 }
+  }
+  process_flow {
+    E1 { from ApplicationSubmitted to SubmitApplication }
+    E2 { from SubmitApplication to ReviewApplication }
+    E3 { from ReviewApplication to ApplicationComplete }
+    E4 { from ApplicationComplete to AcceptApplication
+      condition "application_complete >= 1"
+    }
+    E5 { from ApplicationComplete to RequestAdditionalInformation
+      condition "application_complete < 1"
+    }
+    E6 { from RequestAdditionalInformation to InformationRequested }
+    E7 { from AcceptApplication to PerformTesting }
+    E8 { from PerformTesting to CompileTestReport }
+    E9 { from CompileTestReport to TestsConform }
+    E10 { from TestsConform to CompileEvaluationReport
+      condition "tests_passed >= 1"
+    }
+    E11 { from TestsConform to NotifyFailure
+      condition "tests_passed < 1"
+    }
+    E12 { from CompileEvaluationReport to EvaluationApproved }
+    E13 { from EvaluationApproved to IssueCertificate
+      condition "evaluation_approved >= 1"
+    }
+    E14 { from EvaluationApproved to NotifyFailure
+      condition "evaluation_approved < 1"
+    }
+    E15 { from IssueCertificate to RegisterCertificate }
+    E16 { from RegisterCertificate to CertificateRegistered }
+    E17 { from NotifyFailure to CertificateRefused }
+  }
+  data {
+  }
+}
