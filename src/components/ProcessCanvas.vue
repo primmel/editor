@@ -268,7 +268,7 @@ function onPaletteDrop(e: DragEvent) {
   const payload = e.dataTransfer?.getData('application/x-primmel-palette');
   if (!payload || !canvas.value) return;
   const entry = JSON.parse(payload) as PaletteKind;
-  const p = worldPoint(e as unknown as MouseEvent);
+  const p = worldPoint(e);
   modelStore.execute(createFromPalette(props.model, entry, p, canvas.value.id));
 }
 

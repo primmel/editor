@@ -15,29 +15,13 @@ import type {
   Process,
   Standard,
 } from '@primmel/primmel';
+import type { Edge, Subprocess, SubprocessComponent } from '@primmel/primmel';
+import { edgeEnds } from './edges';
 
-// The flow shapes (Subprocess/Edge) aren't in the package's public
-// exports — declared structurally here (the kernel's flow.d.ts is the
-// contract; these mirror it exactly).
-export interface SubprocessComponent {
-  name: string;
-  element: { id: string } | null;
-  x: number;
-  y: number;
-}
-export interface Edge {
-  id: string;
-  from: SubprocessComponent | null;
-  to: SubprocessComponent | null;
-  description: string;
-  condition: string;
-}
-export interface Subprocess {
-  id: string;
-  childs: SubprocessComponent[];
-  edges: Edge[];
-  data: SubprocessComponent[];
-}
+// The flow shapes (Subprocess/Edge/SubprocessComponent) are the
+// KERNEL's public types (TODO.editor/32 — the structural mirror and
+// its casts retired); `edgeEnds` has ONE home (./edges).
+export type { Edge, Subprocess, SubprocessComponent };
 
 export interface Command {
   /** Human label for the history list. */
@@ -119,18 +103,6 @@ function pageOf(ast: Standard, pageId: string): Subprocess {
   return page;
 }
 
-/** An edge's endpoint ids. Resolved edges carry SubprocessComponent
- *  endpoints (name + element.id); the raw form carries `_relations`. */
-function edgeEnds(e: Edge): { from?: string; to?: string } {
-  const rel = (e as unknown as { _relations?: { from?: string; to?: string } })._relations;
-  const comFrom = e.from as { name?: string; element?: { id?: string } | null } | null;
-  const comTo = e.to as { name?: string; element?: { id?: string } | null } | null;
-  return {
-    from: comFrom?.element?.id ?? comFrom?.name ?? rel?.from,
-    to: comTo?.element?.id ?? comTo?.name ?? rel?.to,
-  };
-}
-
 // ── createElement ───────────────────────────────────────────────────
 
 const ELEMENT_DEFAULTS: Record<ElementKind, (id: string) => Process | Approval | DataClass | EventNode | Gateway | Subprocess> = {
@@ -159,16 +131,16 @@ export function createElement(
     apply(ast) {
       const list = listFor(ast, kind);
       if (list.some(x => x.id === id)) throw new Error(`duplicate id ${id}`);
-      list.push(ELEMENT_DEFAULTS[kind](id) as never);
+      list.push(ELEMENT_DEFAULTS[kind](id));
       if (kind !== 'subprocess' && position) {
         // The data discipline: dataclasses live in the page's DATA
         // section (the dashed data nodes), everything else in the flow.
         const page = pageOf(ast, pageId);
-        const placement = { name: id, element: { id }, x: position.x, y: position.y };
+        const placement: SubprocessComponent = { name: id, element: { id }, x: position.x, y: position.y };
         if (kind === 'dataclass') {
-          page.data.push(placement as never);
+          page.data.push(placement);
         } else {
-          page.childs.push(placement as never);
+          page.childs.push(placement);
         }
       }
     },
@@ -210,7 +182,7 @@ export function deleteElement(kind: ElementKind, id: string): Command {
               return false;
             }
             return true;
-          }) as never;
+          });
         }
         page.edges = page.edges.filter(e => {
           const ends = edgeEnds(e);
@@ -223,10 +195,10 @@ export function deleteElement(kind: ElementKind, id: string): Command {
       }
     },
     revert(ast) {
-      listFor(ast, kind).push(captured.element as never);
+      listFor(ast, kind).push(captured.element as ElementOf<ElementKind>);
       for (const p of captured.placements) {
         const page = p.pageId === 'root' ? ast.root! : ast.pages.find(pg => pg.id === p.pageId)!;
-        page[p.section].splice(Math.min(p.index, page[p.section].length), 0, p.child as never);
+        page[p.section].splice(Math.min(p.index, page[p.section].length), 0, p.child as SubprocessComponent);
       }
       for (const e of captured.edges) {
         const page = e.pageId === 'root' ? ast.root! : ast.pages.find(pg => pg.id === e.pageId)!;
@@ -250,7 +222,7 @@ export function updateElement<T extends { id: string }>(
     apply(ast) {
       const el = listOf(ast).find(x => x.id === id);
       if (!el) throw new Error(`unknown element ${id}`);
-      before = Object.fromEntries(Object.keys(patch).map(k => [k, (el as unknown as Record<string, unknown>)[k]])) as Partial<T>;
+      before = Object.fromEntries((Object.keys(patch) as (keyof T)[]).map(k => [k, el[k]])) as Partial<T>;
       Object.assign(el, patch);
     },
     revert(ast) {
@@ -328,7 +300,7 @@ export function updateAttribute(
       if (!cls) throw new Error(`unknown dataclass ${classId}`);
       const attr = cls.attributes.find(a => a.id === attrId);
       if (!attr) throw new Error(`unknown attribute ${classId}.${attrId}`);
-      before = Object.fromEntries(Object.keys(patch).map(k => [k, (attr as unknown as Record<string, unknown>)[k]])) as Partial<DataAttribute>;
+      before = Object.fromEntries((Object.keys(patch) as (keyof DataAttribute)[]).map(k => [k, attr[k]])) as Partial<DataAttribute>;
       Object.assign(attr, patch);
     },
     revert(ast) {
@@ -452,7 +424,7 @@ export function updateMeta(patch: Partial<Metadata>): Command {
   return {
     label: 'update metadata',
     apply(ast) {
-      before = Object.fromEntries(Object.keys(patch).map(k => [k, (ast.meta as unknown as Record<string, unknown>)[k]]) as never);
+      before = Object.fromEntries((Object.keys(patch) as (keyof Metadata)[]).map(k => [k, ast.meta[k]])) as Partial<Metadata>;
       Object.assign(ast.meta, patch);
     },
     revert(ast) {
@@ -521,7 +493,7 @@ export function updateMappingMeta(
     apply(ast) {
       const pair = ast.mapProfiles.find(p => p.namespace === namespace)?.mappings[sourceId]?.find(p => p.target === target);
       if (!pair) throw new Error(`no mapping ${sourceId} ⇒ ${target}`);
-      before = Object.fromEntries(Object.keys(patch).map(k => [k, (pair as unknown as Record<string, unknown>)[k]]) as never);
+      before = Object.fromEntries((Object.keys(patch) as (keyof typeof pair)[]).map(k => [k, pair[k]])) as typeof patch;
       Object.assign(pair, patch);
     },
     revert(ast) {
@@ -580,7 +552,7 @@ export function createPageForProcess(processId: string): Command {
       if (proc.page) throw new Error(`${processId} already has a page`);
       if (mintedId === null) mintedId = mintId(ast, 'Page');
       if (ast.pages.some(p => p.id === mintedId)) throw new Error(`duplicate page ${mintedId}`);
-      const page = { id: mintedId, childs: [], edges: [], data: [] } as never;
+      const page: Subprocess = { id: mintedId, childs: [], edges: [], data: [] };
       ast.pages.push(page);
       (proc as { page: unknown }).page = ast.pages.find(p => p.id === mintedId);
     },

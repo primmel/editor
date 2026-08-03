@@ -3,7 +3,7 @@
 // Approval / event / gateway / subprocess inspectors (TODO.editor/04).
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
-import type { Standard } from '@primmel/primmel';
+import type { Approval, EventNode, Gateway, SignalCatchEvent, Standard, TimerEvent } from '@primmel/primmel';
 import { updateElement } from '../../lib/commands';
 import { useModelStore } from '../../stores/model';
 import InspectorField from '../fields/InspectorField.vue';
@@ -23,20 +23,30 @@ const page = computed(() => { void modelStore.version; return props.model.pages.
 const roleOptions = computed(() => { void modelStore.version; return props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })); });
 const registryOptions = computed(() => { void modelStore.version; return props.model.regs.map(r => r.id); });
 
-function patchApproval(p: Record<string, unknown>) {
-  modelStore.execute(updateElement((a: Standard) => a.approvals, props.elementId, p as never));
+function patchApproval(p: Partial<Approval>) {
+  modelStore.execute(updateElement((a: Standard) => a.approvals, props.elementId, p));
 }
-function patchEvent(p: Record<string, unknown>) {
-  modelStore.execute(updateElement((a: Standard) => a.events, props.elementId, p as never));
+function patchEvent(p: Partial<EventNode>) {
+  modelStore.execute(updateElement((a: Standard) => a.events, props.elementId, p));
 }
-function patchGateway(p: Record<string, unknown>) {
-  modelStore.execute(updateElement((a: Standard) => a.gateways, props.elementId, p as never));
+function patchGateway(p: Partial<Gateway>) {
+  modelStore.execute(updateElement((a: Standard) => a.gateways, props.elementId, p));
 }
 
-// Timer/signal extras live outside the Event type's declared fields —
-// read them through a record lens, write them through one handler.
-const eventExtra = computed<Record<string, string>>(() =>
-  (event.value ?? {}) as unknown as Record<string, string>);
+// Timer/signal extras narrow by eventType (the kernel's typed events).
+const eventExtra = computed<Record<string, string>>(() => {
+  const out: Record<string, string> = {};
+  const e = event.value;
+  if (!e) return out;
+  if (e.eventType === 'signalcatch') {
+    out['signal'] = (e as SignalCatchEvent).signal ?? '';
+  } else if (e.eventType === 'timer') {
+    const t = e as TimerEvent;
+    out['type'] = t.type ?? '';
+    out['para'] = t.para ?? '';
+  }
+  return out;
+});
 
 function onEventExtra(key: string, e: Event) {
   patchEvent({ [key]: (e.target as HTMLInputElement).value });
@@ -80,7 +90,7 @@ function onEventExtra(key: string, e: Event) {
     <InspectorField label="id"><code class="readonly-id">{{ event.id }}</code></InspectorField>
     <InspectorField label="event type">
       <select class="select-input" :value="event.eventType" data-testid="inspector-event-type"
-        @change="patchEvent({ eventType: ($event.target as HTMLSelectElement).value })">
+        @change="patchEvent({ eventType: ($event.target as HTMLSelectElement).value as EventNode['eventType'] })">
         <option value="start">start</option>
         <option value="end">end</option>
         <option value="timer">timer</option>
@@ -106,7 +116,7 @@ function onEventExtra(key: string, e: Event) {
     <InspectorField label="id"><code class="readonly-id">{{ gateway.id }}</code></InspectorField>
     <InspectorField label="gateway type">
       <select class="select-input" :value="gateway.gatewayType" data-testid="inspector-gateway-type"
-        @change="patchGateway({ gatewayType: ($event.target as HTMLSelectElement).value })">
+        @change="patchGateway({ gatewayType: ($event.target as HTMLSelectElement).value as Gateway['gatewayType'] })">
         <option value="exclusive_gateway">exclusive</option>
         <option value="parallel_gateway">parallel</option>
       </select>

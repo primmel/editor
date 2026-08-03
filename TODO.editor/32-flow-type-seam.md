@@ -1,4 +1,4 @@
-# 32 — The flow-type seam (kill the structural mirror)
+# 32 — The flow-type seam (kill the structural mirror) ✅ DONE (99e10cf)
 
 **Wave:** audit · **Depends on:** 01–06 · **Priority:** P0
 

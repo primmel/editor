@@ -7,7 +7,7 @@
 // list, never silent).
 // ─────────────────────────────────────────────────────────────────────
 
-import { componentIds, type Standard } from '@primmel/primmel';
+import { componentIds, type MapProfile, type Standard } from '@primmel/primmel';
 import type { Command } from './commands';
 import { splitTargetRef, targetRef } from './mapper';
 
@@ -62,10 +62,10 @@ export function seedProfileFrom(
       if (ast.mapProfiles.some(p => p.namespace === targetNs)) {
         throw new Error(`${targetNs} already has a profile`);
       }
-      const profile = {
+      const profile: MapProfile = {
         namespace: targetNs,
         description: `seeded from ${sourceNs} — review the unmatched list`,
-        mappings: {} as Record<string, { target: string; description: string; justification: string; coverage: '' | 'full' | 'minimal' | 'partial' | 'none' }[]>,
+        mappings: {},
         coverage: {},
       };
       outcome.carried = 0;
@@ -86,7 +86,7 @@ export function seedProfileFrom(
           }
         }
       }
-      ast.mapProfiles.push(profile as never);
+      ast.mapProfiles.push(profile);
     },
     revert(ast) {
       const i = ast.mapProfiles.findIndex(p => p.namespace === targetNs);

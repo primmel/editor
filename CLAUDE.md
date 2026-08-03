@@ -40,6 +40,11 @@ The full feature map lives in `README.md`; the work program in
 5. **Ephemeral stays ephemeral.** Simulation registers, measurement
    run values, mapping rejections live in their own stores — never
    the AST, never serialized.
+6. **No `as never` / `as unknown` for kernel shapes.** The fix is
+   ALWAYS the type export upstream (the kernel's public API is the
+   only seam). Genuine runtime boundaries (the dev-only window hooks,
+   the raw `_relations` parse lens) carry one comment saying so —
+   everything else is a bug to fix, not a cast to write.
 
 ## Layout
 

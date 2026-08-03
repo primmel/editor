@@ -5,7 +5,7 @@
 // edit a command.
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
-import type { DataAttribute, Standard } from '@primmel/primmel';
+import type { DataAttribute, DataClass, Standard } from '@primmel/primmel';
 import {
   addAttribute,
   removeAttribute,
@@ -24,9 +24,9 @@ const cls = computed(() => { void modelStore.version; return props.model.datacla
 const classOptions = computed(() => { void modelStore.version; return props.model.dataclasses.map(d => d.id); });
 const referenceOptions = computed(() => { void modelStore.version; return props.model.references.map(r => r.id); });
 
-function patch(p: Record<string, unknown>) {
+function patch(p: Partial<DataClass>) {
   modelStore.execute(
-    updateElement((a: Standard) => a.dataclasses, props.classId, p as never),
+    updateElement((a: Standard) => a.dataclasses, props.classId, p),
   );
 }
 

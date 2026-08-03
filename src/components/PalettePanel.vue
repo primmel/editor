@@ -8,7 +8,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { PALETTE, type PaletteKind } from '../lib/factory';
-import { nodeColor, nodeShape, NODE_SIZE } from '../lib/render';
+import { nodeColor, nodeShape, NODE_SIZE, type NodeKind } from '../lib/render';
 import { activePlugins } from '../plugins';
 import type { PluginPaletteEntry } from '../plugins/types';
 import { useModelStore } from '../stores/model';
@@ -34,20 +34,20 @@ function pickPlugin(entry: PluginPaletteEntry) {
 
 function glyphColor(entry: PaletteKind): { fill: string; stroke: string } {
   if (entry.kind === 'event') {
-    const kind = entry.eventType === 'start' ? 'start_event'
+    const kind: NodeKind = entry.eventType === 'start' ? 'start_event'
       : entry.eventType === 'end' ? 'end_event'
       : entry.eventType === 'timer' ? 'timer_event' : 'signal_event';
-    return nodeColor(kind as never);
+    return nodeColor(kind);
   }
   if (entry.kind === 'gateway') return nodeColor('exclusive_gateway');
-  return nodeColor(entry.kind as never);
+  return nodeColor(entry.kind as NodeKind);
 }
 
 function glyphShape(entry: PaletteKind): string {
   if (entry.kind === 'event') return 'circle';
   if (entry.kind === 'subprocess') return 'frame';
   if (entry.kind === 'gateway') return 'diamond';
-  return nodeShape(entry.kind as never);
+  return nodeShape(entry.kind as NodeKind);
 }
 </script>
 
