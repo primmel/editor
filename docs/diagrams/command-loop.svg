@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="monospace">
+  <!-- The command loop: one AST store, four projections, edits only through commands -->
+  <defs>
+    <style>
+      .box { fill: #252019; stroke: #3a322a; stroke-width: 1.5; rx: 8; }
+      .store { fill: #252019; stroke: #d49442; stroke-width: 2; rx: 10; }
+      .proj { fill: #1c1814; stroke: #7a9e5e; stroke-width: 1.5; rx: 8; }
+      .title { fill: #e9e0d2; font-size: 14px; font-weight: bold; }
+      .label { fill: #8a8f98; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke: #d49442; stroke-width: 1.5; fill: none; }
+      .arrowR { stroke: #7a9e5e; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d49442"/></marker>
+    <marker id="arrG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7a9e5e"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#1c1814"/>
+  <text class="title" x="30" y="40">One AST, four projections — edits only through the command layer</text>
+
+  <!-- The store -->
+  <rect class="store" x="360" y="80" width="240" height="90"/>
+  <text class="title accent" x="400" y="115">The model store</text>
+  <text class="label" x="388" y="138">the PRL AST (the single truth)</text>
+  <text class="small" x="372" y="156">history · undo/redo · dirty cursor</text>
+
+  <!-- Commands below -->
+  <rect class="box" x="330" y="230" width="300" height="64"/>
+  <text class="title" x="392" y="256" font-size="12">the command layer</text>
+  <text class="label" x="342" y="276">apply + revert — every mutation, exactly</text>
+
+  <!-- Projections -->
+  <rect class="proj" x="60" y="380" width="190" height="80"/>
+  <text class="title sage" x="120" y="410" font-size="12">tree</text>
+  <text class="small" x="86" y="432">structure by kind</text>
+
+  <rect class="proj" x="280" y="380" width="190" height="80"/>
+  <text class="title sage" x="340" y="410" font-size="12">canvas</text>
+  <text class="small" x="306" y="432">the diagram</text>
+
+  <rect class="proj" x="500" y="380" width="190" height="80"/>
+  <text class="title sage" x="566" y="410" font-size="12">code</text>
+  <text class="small" x="522" y="432">the text projection</text>
+
+  <rect class="proj" x="720" y="380" width="190" height="80"/>
+  <text class="title sage" x="766" y="410" font-size="12">inspector</text>
+  <text class="small" x="748" y="432">the facets</text>
+
+  <!-- Arrows: commands up, projections down -->
+  <path class="arrow" d="M 480 230 L 480 176" marker-end="url(#arr)"/>
+  <text class="small accent" x="492" y="208">execute(command)</text>
+
+  <path class="arrowR" d="M 420 170 L 180 372" marker-end="url(#arrG)"/>
+  <path class="arrowR" d="M 450 170 L 380 372" marker-end="url(#arrG)"/>
+  <path class="arrowR" d="M 510 170 L 590 372" marker-end="url(#arrG)"/>
+  <path class="arrowR" d="M 545 170 L 800 372" marker-end="url(#arrG)"/>
+  <text class="small sage" x="640" y="300">each projection re-derives per version</text>
+
+  <!-- Edits flow back through commands -->
+  <path class="arrow" d="M 380 380 L 430 296" marker-end="url(#arr)"/>
+  <path class="arrow" d="M 810 380 L 590 296" marker-end="url(#arr)"/>
+  <text class="small accent" x="356" y="336">drags · edits</text>
+  <text class="small accent" x="700" y="336">facet edits</text>
+
+  <text class="label" x="30" y="530">Rules: the kernel owns the semantics · projections never write the AST directly · undo/redo is exact, never a re-derive.</text>
+</svg>

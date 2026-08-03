@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="monospace">
+  <!-- The validation surface: five places the kernel's verdict appears -->
+  <defs>
+    <style>
+      .surf { fill: #252019; stroke-width: 1.5; rx: 8; }
+      .badge { stroke: #7a9e5e; }
+      .tab { stroke: #7a9e5e; }
+      .editor { stroke: #5b6bc0; }
+      .import { stroke: #d49442; }
+      .save { stroke: #d49442; }
+      .kern { fill: #252019; stroke: #d49442; stroke-width: 2.5; rx: 12; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .blue { fill: #5b6bc0; }
+      .red { fill: #b85555; }
+      .arrow { stroke: #8a8f98; stroke-width: 1.3; fill: none; }
+    </style>
+    <marker id="arrV" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8a8f98"/></marker>
+  </defs>
+  <rect width="960" height="540" fill="#1c1814"/>
+  <text class="title" x="30" y="38">Validation is a surface, not a gate — the verdict is always on</text>
+
+  <!-- The kernel -->
+  <rect class="kern" x="380" y="230" width="200" height="80"/>
+  <text class="head accent" x="410" y="262">the KERNEL</text>
+  <text class="small" x="396" y="284">validate(model)</text>
+
+  <!-- The five surfaces -->
+  <rect class="surf badge" x="60" y="90" width="240" height="90"/>
+  <text class="head sage" x="76" y="116">1 · the topbar badge</text>
+  <text class="small" x="76" y="138">always visible, per edit:</text>
+  <text class="label" x="76" y="158">✓ clean · N warnings · N errors</text>
+  <path class="arrow" d="M 300 160 L 390 220" marker-end="url(#arrV)"/>
+
+  <rect class="surf tab" x="60" y="360" width="240" height="110"/>
+  <text class="head sage" x="76" y="386">2 · the Validate tab</text>
+  <text class="small" x="76" y="408">the issue list: severity, code,</text>
+  <text class="small" x="76" y="426">construct, element, message —</text>
+  <text class="small" x="76" y="444">click to select the element</text>
+  <path class="arrow" d="M 300 400 L 390 300" marker-end="url(#arrV)"/>
+
+  <rect class="surf editor" x="380" y="70" width="200" height="80"/>
+  <text class="head blue" x="396" y="96">3 · editor markers</text>
+  <text class="small" x="396" y="118">parse errors inline +</text>
+  <text class="small" x="396" y="136">issues as warnings</text>
+  <path class="arrow" d="M 480 150 L 480 226" marker-end="url(#arrV)"/>
+
+  <rect class="surf import" x="660" y="90" width="240" height="100"/>
+  <text class="head accent" x="676" y="116">4 · the import report</text>
+  <text class="small" x="676" y="138">mandatory before the swap:</text>
+  <text class="small" x="676" y="156">clean: "valid Primmel v3" ·</text>
+  <text class="small" x="676" y="174">issues: "import anyway (N)"</text>
+  <path class="arrow" d="M 660 160 L 586 220" marker-end="url(#arrV)"/>
+
+  <rect class="surf save" x="660" y="360" width="240" height="80"/>
+  <text class="head accent" x="676" y="386">5 · the save review</text>
+  <text class="small" x="676" y="408">the validation line inside</text>
+  <text class="small" x="676" y="426">the commit decision</text>
+  <path class="arrow" d="M 660 380 L 586 300" marker-end="url(#arrV)"/>
+
+  <text class="label" x="60" y="510">the checks are the kernel's own — the Studio displays; the kernel judges. Fixing clears every surface live.</text>
+</svg>

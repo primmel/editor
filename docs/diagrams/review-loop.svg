@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" font-family="monospace">
+  <!-- The review loop: edit → badge → comment → diff → validate → save -->
+  <defs>
+    <style>
+      .step { fill: #252019; stroke: #d49442; stroke-width: 1.5; rx: 8; }
+      .gate { fill: #252019; stroke: #7a9e5e; stroke-width: 1.5; rx: 8; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke: #d49442; stroke-width: 1.5; fill: none; }
+      .back { stroke: #5b6bc0; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+    </style>
+    <marker id="arrR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d49442"/></marker>
+    <marker id="arrB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5b6bc0"/></marker>
+  </defs>
+  <rect width="960" height="440" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The review loop — you never write a change you haven't reviewed</text>
+
+  <rect class="step" x="30" y="90" width="130" height="80"/>
+  <text class="head accent" x="46" y="116">1 · edit</text>
+  <text class="small" x="46" y="138">every mutation</text>
+  <text class="small" x="46" y="154">a command</text>
+
+  <rect class="step" x="185" y="90" width="130" height="80"/>
+  <text class="head accent" x="201" y="116">2 · badge</text>
+  <text class="small" x="201" y="138">the validation</text>
+  <text class="small" x="201" y="154">badge stays on</text>
+
+  <rect class="step" x="340" y="90" width="130" height="80"/>
+  <text class="head accent" x="356" y="116">3 · comment</text>
+  <text class="small" x="356" y="138">discuss on the</text>
+  <text class="small" x="356" y="154">element threads</text>
+
+  <rect class="step" x="495" y="90" width="130" height="80"/>
+  <text class="head accent" x="511" y="116">4 · diff</text>
+  <text class="small" x="511" y="138">the kernel's diff,</text>
+  <text class="small" x="511" y="154">facet by facet</text>
+
+  <rect class="gate" x="650" y="90" width="130" height="80"/>
+  <text class="head sage" x="666" y="116">5 · validate</text>
+  <text class="small" x="666" y="138">the issue list,</text>
+  <text class="small" x="666" y="154">click to locate</text>
+
+  <rect class="gate" x="805" y="90" width="130" height="80"/>
+  <text class="head sage" x="821" y="116">6 · save</text>
+  <text class="small" x="821" y="138">the preview,</text>
+  <text class="small" x="821" y="154">then the write</text>
+
+  <path class="arrow" d="M 162 130 L 181 130" marker-end="url(#arrR)"/>
+  <path class="arrow" d="M 317 130 L 336 130" marker-end="url(#arrR)"/>
+  <path class="arrow" d="M 472 130 L 491 130" marker-end="url(#arrR)"/>
+  <path class="arrow" d="M 627 130 L 646 130" marker-end="url(#arrR)"/>
+  <path class="arrow" d="M 782 130 L 801 130" marker-end="url(#arrR)"/>
+
+  <!-- The undo loop -->
+  <path class="back" d="M 870 170 C 870 280, 100 280, 95 174" marker-end="url(#arrB)"/>
+  <text class="small" x="380" y="270" fill="#5b6bc0">undo/redo is exact at every step — the history is the audit trail</text>
+
+  <!-- The discipline -->
+  <rect x="30" y="320" width="900" height="80" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="46" y="346">the dirty discipline: dirty = history cursor ≠ saved cursor — undo past the saved point and the dot returns.</text>
+  <text class="small" x="46" y="366">the save review carries BOTH the validation verdict and the change preview; the write keeps a .bak.</text>
+  <text class="small" x="46" y="386">comments are authoring scratch with author + timestamp — never certification evidence.</text>
+</svg>

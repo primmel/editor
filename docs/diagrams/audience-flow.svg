@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" font-family="monospace">
+  <!-- The audience flow: who meets the Studio where -->
+  <defs>
+    <style>
+      .aud { fill: #252019; stroke: #d49442; stroke-width: 1.5; rx: 8; }
+      .door { fill: #1c1814; stroke: #7a9e5e; stroke-width: 1.2; rx: 6; }
+      .guide { fill: #252019; stroke: #7a9e5e; stroke-width: 2; rx: 10; }
+      .title { fill: #e9e0d2; font-size: 14px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke: #7a9e5e; stroke-width: 1.3; fill: none; stroke-dasharray: 5 4; }
+    </style>
+    <marker id="arrA" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7a9e5e"/></marker>
+  </defs>
+  <rect width="960" height="640" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The audience flow — every audience meets the Studio in their own terms</text>
+
+  <!-- Audiences -->
+  <rect class="aud" x="30" y="70" width="250" height="66"/>
+  <text class="label accent" x="46" y="94">standards publishers</text>
+  <text class="small" x="46" y="112">author + validate + doc-map a standard</text>
+
+  <rect class="aud" x="30" y="156" width="250" height="66"/>
+  <text class="label accent" x="46" y="180">implementers / compliance</text>
+  <text class="small" x="46" y="198">implementation models + coverage</text>
+
+  <rect class="aud" x="30" y="242" width="250" height="66"/>
+  <text class="label accent" x="46" y="266">auditors / reviewers</text>
+  <text class="small" x="46" y="284">diff · comments · save preview · lenses</text>
+
+  <rect class="aud" x="30" y="328" width="250" height="66"/>
+  <text class="label accent" x="46" y="352">OIML-CS participants / NMIs</text>
+  <text class="small" x="46" y="370">author a Recommendation (the R 7 story)</text>
+
+  <rect class="aud" x="30" y="414" width="250" height="66"/>
+  <text class="label accent" x="46" y="438">legacy MMEL users</text>
+  <text class="small" x="46" y="456">import the v1/v2 corpus (the ten)</text>
+
+  <rect class="aud" x="30" y="500" width="250" height="66"/>
+  <text class="label accent" x="46" y="524">developers / agents</text>
+  <text class="small" x="46" y="542">the laws, the gates, the gotchas</text>
+
+  <!-- Their doors -->
+  <rect class="door" x="360" y="70" width="220" height="66"/>
+  <text class="label sage" x="376" y="94">primmel.github.io</text>
+  <text class="small" x="376" y="112">docs/studio + the audience pages</text>
+
+  <rect class="door" x="360" y="156" width="220" height="66"/>
+  <text class="label sage" x="376" y="180">primmel.github.io</text>
+  <text class="small" x="376" y="198">audiences/implementers</text>
+
+  <rect class="door" x="360" y="242" width="220" height="66"/>
+  <text class="label sage" x="376" y="266">primmel.github.io</text>
+  <text class="small" x="376" y="284">audiences/auditors</text>
+
+  <rect class="door" x="360" y="328" width="220" height="66"/>
+  <text class="label sage" x="376" y="352">oimlsmart.github.io</text>
+  <text class="small" x="376" y="370">docs/guides/primmel-studio</text>
+
+  <rect class="door" x="360" y="414" width="220" height="66"/>
+  <text class="label sage" x="376" y="438">the import dialog</text>
+  <text class="small" x="376" y="456">MMEL → Primmel + the report</text>
+
+  <rect class="door" x="360" y="500" width="220" height="66"/>
+  <text class="label sage" x="376" y="524">CLAUDE.md + README</text>
+  <text class="small" x="376" y="542">the repo itself</text>
+
+  <!-- The guide at the center-right -->
+  <rect class="guide" x="680" y="200" width="250" height="180"/>
+  <text class="label sage" x="712" y="236">The Studio user guide</text>
+  <text class="small" x="700" y="262">docs/ in the editor repo:</text>
+  <text class="small" x="700" y="282">quickstart · the workspace ·</text>
+  <text class="small" x="700" y="300">modelling · mapping · review ·</text>
+  <text class="small" x="700" y="318">importing · authoring OIML ·</text>
+  <text class="small" x="700" y="336">glossary + the SVG diagrams</text>
+
+  <rect class="door" x="680" y="420" width="250" height="66"/>
+  <text class="label sage" x="696" y="444">the federation volumes</text>
+  <text class="small" x="696" y="462">platform ch.08 · learn Tier 5</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M 280 103 L 355 103" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 280 189 L 355 189" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 280 275 L 355 275" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 280 361 L 355 361" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 280 447 L 355 447" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 280 533 L 355 533" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 103 C 640 103, 640 230, 676 250" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 189 C 630 189, 640 240, 676 262" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 275 L 676 285" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 361 L 676 320" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 447 C 630 447, 640 360, 676 340" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 580 533 C 640 533, 640 380, 676 360" marker-end="url(#arrA)"/>
+  <path class="arrow" d="M 805 380 L 805 416" marker-end="url(#arrA)"/>
+</svg>

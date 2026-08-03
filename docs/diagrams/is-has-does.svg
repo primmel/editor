@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="monospace">
+  <!-- The IS-HAS-DOES anatomy: the primary model and its facets -->
+  <defs>
+    <style>
+      .core { fill: #252019; stroke: #d49442; stroke-width: 2.5; rx: 12; }
+      .facet { fill: #252019; stroke-width: 2; rx: 8; }
+      .is { stroke: #d49442; }
+      .has { stroke: #2f7d6b; }
+      .does { stroke: #5b6bc0; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 13px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .teal { fill: #2f7d6b; }
+      .blue { fill: #5b6bc0; }
+    </style>
+  </defs>
+  <rect width="960" height="600" fill="#1c1814"/>
+  <text class="title" x="30" y="40">The anatomy — every subject is IS + HAS + DOES</text>
+
+  <!-- The subject at center -->
+  <rect class="core" x="380" y="250" width="200" height="100"/>
+  <text class="title accent" x="408" y="292">the SUBJECT</text>
+  <text class="label" x="396" y="316">(the instrument)</text>
+  <text class="small" x="392" y="334">the PRIMARY model</text>
+
+  <!-- IS -->
+  <rect class="facet is" x="60" y="90" width="300" height="150"/>
+  <text class="head accent" x="80" y="118">IS — identity</text>
+  <text class="small" x="80" y="140">what individuates the subject —</text>
+  <text class="small" x="80" y="158">lose it and the subject dissolves:</text>
+  <text class="label" x="80" y="182">metadata · provenance ·</text>
+  <text class="label" x="80" y="200">design parameters · promises</text>
+  <text class="small accent" x="80" y="224">invariant truths</text>
+  <path d="M 360 200 L 420 246" stroke="#d49442" stroke-width="2" fill="none"/>
+
+  <!-- HAS -->
+  <rect class="facet has" x="600" y="90" width="300" height="150"/>
+  <text class="head teal" x="620" y="118">HAS — exhibition</text>
+  <text class="small" x="620" y="140">what the subject holds —</text>
+  <text class="small" x="620" y="158">properties with values (they change):</text>
+  <text class="label" x="620" y="182">attributes · dimensions · state ·</text>
+  <text class="label" x="620" y="200">characteristics · environment</text>
+  <text class="small teal" x="620" y="224">what a test measures</text>
+  <path d="M 600 200 L 540 246" stroke="#2f7d6b" stroke-width="2" fill="none"/>
+
+  <!-- DOES -->
+  <rect class="facet does" x="330" y="440" width="300" height="130"/>
+  <text class="head blue" x="350" y="468">DOES — behavior</text>
+  <text class="small" x="350" y="490">processes the subject performs</text>
+  <text class="small" x="350" y="508">or undergoes:</text>
+  <text class="label" x="350" y="530">input → steps → output (state moves)</text>
+  <text class="small blue" x="350" y="552">what a test drives</text>
+  <path d="M 480 350 L 480 436" stroke="#5b6bc0" stroke-width="2" fill="none"/>
+
+  <!-- The rule -->
+  <text class="label" x="60" y="580">Requirements constrain these facets · tests interrogate them for evidence · forms record the evidence. The secondary models hang on the primary one.</text>
+</svg>

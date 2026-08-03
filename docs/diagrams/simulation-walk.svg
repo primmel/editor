@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="monospace">
+  <!-- The simulation walk: a token through gates, registers deciding -->
+  <defs>
+    <style>
+      .node { fill: #252019; stroke: #d49442; stroke-width: 1.5; rx: 8; }
+      .gate { fill: #252019; stroke: #c47550; stroke-width: 1.5; }
+      .done { fill: #252019; stroke: #7a9e5e; stroke-width: 2; rx: 20; }
+      .start { fill: #252019; stroke: #7a9e5e; stroke-width: 2; rx: 20; }
+      .reg { fill: #1c1814; stroke: #5b6bc0; stroke-width: 1.5; rx: 6; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .blue { fill: #5b6bc0; }
+      .flow { stroke: #8a8f98; stroke-width: 1.5; fill: none; }
+      .walked { stroke: #5b6bc0; stroke-width: 2.5; fill: none; }
+    </style>
+    <marker id="arrS" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8a8f98"/></marker>
+    <marker id="arrW" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5b6bc0"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The simulation — a token walks the flow; registers decide the gates</text>
+
+  <!-- The walked path -->
+  <rect class="start" x="40" y="100" width="80" height="40"/>
+  <text class="small sage" x="58" y="124">start</text>
+  <rect class="node" x="190" y="100" width="120" height="40"/>
+  <text class="small" x="214" y="124">process</text>
+  <polygon class="gate" points="400,120 430,90 460,120 430,150"/>
+  <rect class="node" x="530" y="60" width="140" height="40"/>
+  <text class="small" x="548" y="84">branch A (true)</text>
+  <rect class="node" x="530" y="150" width="140" height="40"/>
+  <text class="small" x="548" y="174">branch B (default)</text>
+  <rect class="done" x="760" y="100" width="80" height="40"/>
+  <text class="small sage" x="778" y="124">end</text>
+
+  <!-- The token's trajectory -->
+  <path class="walked" d="M 120 120 L 186 120" marker-end="url(#arrW)"/>
+  <path class="walked" d="M 310 120 L 396 120" marker-end="url(#arrW)"/>
+  <path class="walked" d="M 452 106 L 526 84" marker-end="url(#arrW)"/>
+  <path class="flow" d="M 452 134 L 526 166" marker-end="url(#arrS)"/>
+  <path class="walked" d="M 670 84 C 730 84, 720 108, 756 116" marker-end="url(#arrW)"/>
+  <path class="flow" d="M 670 170 C 730 170, 720 128, 756 122" marker-end="url(#arrS)"/>
+
+  <text class="small accent" x="452" y="66">[temperature > 36] is true</text>
+  <text class="small" x="470" y="196">default when nothing is true</text>
+
+  <!-- The registers -->
+  <rect class="reg" x="40" y="260" width="240" height="110"/>
+  <text class="head blue" x="56" y="286">registers</text>
+  <text class="label" x="56" y="310">temperature = 37.5</text>
+  <text class="label" x="56" y="332">error_of_indication = 0.05</text>
+  <text class="small" x="56" y="356">edit at a blocked gate, step again</text>
+
+  <!-- The trajectory -->
+  <rect class="reg" x="340" y="260" width="340" height="110"/>
+  <text class="head blue" x="356" y="286">the trajectory</text>
+  <text class="small" x="356" y="308">1 start — run starts</text>
+  <text class="small" x="356" y="326">2 process</text>
+  <text class="small" x="356" y="344">3 branch A — [temperature > 36] is true</text>
+  <text class="small" x="356" y="362">4 end — run completes</text>
+
+  <!-- The wall -->
+  <rect x="40" y="420" width="880" height="60" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="56" y="446">the honest wall: a run is EPHEMERAL.</text>
+  <text class="small" x="56" y="464">register values never persist into the model — simulation is a teaching surface.</text>
+
+  <text class="label" x="40" y="530">a conditioned edge beats an earlier default from ANY node; a gate with no true branch</text>
+  <text class="label" x="40" y="548">and no default BLOCKS — edit a register and step again.</text>
+</svg>

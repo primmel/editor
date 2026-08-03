@@ -1,4 +1,4 @@
-# 30 — The Studio user guide (the audience manual)
+# 30 — The Studio user guide (the audience manual) ✅ DONE (107eaa4)
 
 **Wave:** docs · **Depends on:** all product items · **Priority:** P0
 

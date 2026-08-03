@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="monospace">
+  <!-- Reference vs implementation: the relationship, not a type -->
+  <defs>
+    <style>
+      .model { fill: #252019; stroke-width: 2; rx: 10; }
+      .ref { stroke: #d49442; }
+      .imp { stroke: #7a9e5e; }
+      .prof { fill: #1c1814; stroke: #7a9e5e; stroke-width: 1.5; rx: 6; stroke-dasharray: 6 4; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrM" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7a9e5e"/></marker>
+  </defs>
+  <rect width="960" height="520" fill="#1c1814"/>
+  <text class="title" x="30" y="40">Reference vs implementation — a relationship, not a type</text>
+
+  <!-- Reference models -->
+  <rect class="model ref" x="40" y="90" width="240" height="110"/>
+  <text class="head accent" x="60" y="118">REFERENCE model</text>
+  <text class="small" x="60" y="140">the standard you comply with</text>
+  <text class="label" x="60" y="162">namespace: QMS</text>
+  <text class="small" x="60" y="184">(OIML R 60 · ISO 9001 · …)</text>
+
+  <rect class="model ref" x="40" y="240" width="240" height="110"/>
+  <text class="head accent" x="60" y="268">REFERENCE model</text>
+  <text class="small" x="60" y="290">another standard</text>
+  <text class="label" x="60" y="312">namespace: ISMS</text>
+
+  <!-- Implementation -->
+  <rect class="model imp" x="640" y="160" width="280" height="160"/>
+  <text class="head sage" x="660" y="190">IMPLEMENTATION model</text>
+  <text class="small" x="660" y="212">your operations that comply</text>
+  <rect class="prof" x="660" y="226" width="240" height="36"/>
+  <text class="small sage" x="672" y="249">map_profile QMS { pairs… }</text>
+  <rect class="prof" x="660" y="268" width="240" height="36"/>
+  <text class="small sage" x="672" y="291">map_profile ISMS { pairs… }</text>
+
+  <!-- The arrows -->
+  <path class="arrow sage" d="M 280 145 C 420 145, 500 180, 636 210" marker-end="url(#arrM)"/>
+  <path class="arrow sage" d="M 280 295 C 420 295, 520 290, 636 285" marker-end="url(#arrM)"/>
+  <text class="small sage" x="380" y="130">one profile per reference</text>
+  <text class="small sage" x="380" y="310">pairs live in the IMPLEMENTATION</text>
+
+  <text class="label" x="30" y="400">Any model can be a reference for another. The mapping is never in the reference —</text>
+  <text class="label" x="30" y="420">the implementation claims the relationship, one profile per namespace, no merged claims.</text>
+
+  <!-- The auditor lens note -->
+  <rect class="model" x="30" y="445" width="900" height="56" stroke="#524838" stroke-width="1"/>
+  <text class="small" x="46" y="470">the auditor's lens: view the SAME implementation through ONE standard at a time —</text>
+  <text class="small" x="46" y="488">the switcher swaps the REF pane, the edges, and the coverage (each profile computed on its own).</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" font-family="monospace">
+  <!-- The legacy import pipeline: MMEL in, validated Primmel out -->
+  <defs>
+    <style>
+      .stage { fill: #252019; stroke-width: 1.5; rx: 8; }
+      .mmel { stroke: #8a8f98; }
+      .kern { stroke: #7a9e5e; }
+      .rep { stroke: #d49442; }
+      .prl { stroke: #7a9e5e; stroke-width: 2; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .grey { fill: #8a8f98; }
+      .arrow { stroke: #d49442; stroke-width: 1.5; fill: none; }
+    </style>
+    <marker id="arrI" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d49442"/></marker>
+  </defs>
+  <rect width="960" height="480" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The legacy import — MMEL in, validated Primmel out</text>
+
+  <!-- Stage 1: the file -->
+  <rect class="stage mmel" x="30" y="90" width="180" height="120"/>
+  <text class="head grey" x="46" y="116">the .mmel file</text>
+  <text class="small" x="46" y="138">the v1/v2 corpus:</text>
+  <text class="small" x="46" y="156">PAS2060 · ISO 27001</text>
+  <text class="small" x="46" y="174">BS 13485 · ISO 14971</text>
+  <text class="small" x="46" y="192">BS 6004 · BS 16341 · acme</text>
+
+  <!-- Stage 2: strict parse -->
+  <rect class="stage kern" x="270" y="90" width="190" height="120"/>
+  <text class="head sage" x="286" y="116">strict parse</text>
+  <text class="small" x="286" y="138">the KERNEL parses it</text>
+  <text class="small" x="286" y="156">(Primmel is the</text>
+  <text class="small" x="286" y="174">descendant — the old</text>
+  <text class="small" x="286" y="192">grammar is native)</text>
+
+  <!-- Stage 3: the report -->
+  <rect class="stage rep" x="520" y="70" width="200" height="160"/>
+  <text class="head accent" x="536" y="96">the honest report</text>
+  <text class="small" x="536" y="118">converted (counts)</text>
+  <text class="small accent" x="536" y="138">renamed:</text>
+  <text class="small" x="546" y="156">measurement→variable</text>
+  <text class="small" x="546" y="174">subprocess→canvas</text>
+  <text class="small" x="546" y="192">view→view_profile</text>
+  <text class="small" x="536" y="212">no v3 home (named)</text>
+
+  <!-- Stage 4: Primmel out -->
+  <rect class="stage prl" x="780" y="90" width="150" height="120"/>
+  <text class="head sage" x="796" y="116">Primmel v3</text>
+  <text class="small" x="796" y="138">the canonical .prl</text>
+  <text class="small" x="796" y="156">validated clean</text>
+  <text class="small" x="796" y="174">byte-stable dump</text>
+  <text class="small" x="796" y="192">replaces the model</text>
+
+  <path class="arrow" d="M 212 150 L 264 150" marker-end="url(#arrI)"/>
+  <path class="arrow" d="M 462 150 L 514 150" marker-end="url(#arrI)"/>
+  <path class="arrow" d="M 722 150 L 774 150" marker-end="url(#arrI)"/>
+
+  <!-- The legacy vocabulary note -->
+  <rect x="270" y="260" width="450" height="100" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="286" y="286">the legacy vocabulary is carried, not dropped:</text>
+  <text class="small" x="286" y="306">note types EXAMPLE · COMMENTARY — verbatim</text>
+  <text class="small" x="286" y="324">v2 comments: username→author · message→text · bare resolved→true</text>
+  <text class="small" x="286" y="342">feedback { X } — the v2 direction — inverts into X's reply_to</text>
+
+  <text class="label" x="30" y="420">validation is IN the report before the swap — clean: "the output is valid Primmel v3";</text>
+  <text class="label" x="30" y="440">with issues: "import anyway (N issues)" — acknowledged, never hidden.</text>
+</svg>

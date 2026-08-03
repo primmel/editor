@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="monospace">
+  <!-- The mapping lifecycle: suggest → confirm → coverage -->
+  <defs>
+    <style>
+      .stage { fill: #252019; stroke: #d49442; stroke-width: 1.5; rx: 8; }
+      .kern { fill: #252019; stroke: #7a9e5e; stroke-width: 1.5; rx: 8; }
+      .title { fill: #e9e0d2; font-size: 14px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke: #d49442; stroke-width: 1.5; fill: none; }
+    </style>
+    <marker id="arrL" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d49442"/></marker>
+  </defs>
+  <rect width="960" height="420" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The mapping lifecycle — suggestions are proposals, confirmations are claims</text>
+
+  <rect class="stage" x="40" y="90" width="200" height="110"/>
+  <text class="label accent" x="56" y="118">1 · automap</text>
+  <text class="small" x="56" y="140">ranked suggestions</text>
+  <text class="small" x="56" y="158">(name + structure),</text>
+  <text class="small" x="56" y="176">never asserted</text>
+
+  <rect class="stage" x="290" y="90" width="200" height="110"/>
+  <text class="label accent" x="306" y="118">2 · confirm / reject</text>
+  <text class="small" x="306" y="140">confirm → pair with the</text>
+  <text class="small" x="306" y="158">provenance justification;</text>
+  <text class="small" x="306" y="176">reject → never re-suggested</text>
+
+  <rect class="stage" x="540" y="90" width="200" height="110"/>
+  <text class="label accent" x="556" y="118">3 · the profile</text>
+  <text class="small" x="556" y="140">the v3 MapProfile —</text>
+  <text class="small" x="556" y="158">pairs with description,</text>
+  <text class="small" x="556" y="176">justification, coverage</text>
+
+  <rect class="kern" x="790" y="90" width="150" height="110"/>
+  <text class="label sage" x="806" y="118">4 · coverage</text>
+  <text class="small" x="806" y="140">the KERNEL's</text>
+  <text class="small" x="806" y="158">calculus — tints</text>
+  <text class="small" x="806" y="176">+ the C23 marker</text>
+
+  <path class="arrow" d="M 242 145 L 284 145" marker-end="url(#arrL)"/>
+  <path class="arrow" d="M 492 145 L 534 145" marker-end="url(#arrL)"/>
+  <path class="arrow" d="M 742 145 L 784 145" marker-end="url(#arrL)"/>
+
+  <!-- The loop back -->
+  <path class="arrow" d="M 865 200 C 865 320, 140 320, 140 205" stroke-dasharray="6 4" marker-end="url(#arrL)"/>
+  <text class="small accent" x="380" y="310">a new pair re-tints both panes; a conflicted assertion is found, fixed, and re-asserted</text>
+
+  <text class="label" x="30" y="390">Honesty rule: a suggestion is never an assertion — every auto-mapped pair names its provenance (score + reasons + "confirmed by operator").</text>
+</svg>

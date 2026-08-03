@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="monospace">
+  <!-- The OIML doctrine: the subject is primary; requirements, tests, forms are secondary -->
+  <defs>
+    <style>
+      .prim { fill: #252019; stroke: #d49442; stroke-width: 2.5; rx: 10; }
+      .sec { fill: #252019; stroke-width: 1.5; rx: 8; }
+      .req { stroke: #b85555; }
+      .test { stroke: #5b6bc0; }
+      .form { stroke: #2f7d6b; }
+      .cert { stroke: #7a9e5e; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .red { fill: #b85555; }
+      .blue { fill: #5b6bc0; }
+      .teal { fill: #2f7d6b; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke-width: 1.5; fill: none; }
+    </style>
+    <marker id="arrO" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8a8f98"/></marker>
+  </defs>
+  <rect width="960" height="620" fill="#1c1814"/>
+  <text class="title" x="30" y="40">The OIML doctrine — one primary model, three secondary models, one rendering</text>
+
+  <!-- The subject -->
+  <rect class="prim" x="330" y="70" width="300" height="110"/>
+  <text class="head accent" x="350" y="98">the SUBJECT (primary)</text>
+  <text class="small" x="350" y="120">IS — identity · design parameters</text>
+  <text class="small" x="350" y="138">HAS — attributes · characteristics</text>
+  <text class="small" x="350" y="156">DOES — behaviors</text>
+
+  <!-- Requirements -->
+  <rect class="sec req" x="40" y="260" width="270" height="130"/>
+  <text class="head red" x="56" y="286">REQUIREMENTS</text>
+  <text class="small" x="56" y="308">constraints ON the subject's</text>
+  <text class="small" x="56" y="326">facets, with clause URNs:</text>
+  <text class="label" x="56" y="350">"error within +0.1/−0.15 °C"</text>
+  <text class="label" x="56" y="370">source { doc, clause "8" }</text>
+  <path class="arrow red" d="M 310 300 L 430 184" marker-end="url(#arrO)"/>
+  <text class="small red" x="300" y="240">constrain</text>
+
+  <!-- Tests -->
+  <rect class="sec test" x="345" y="260" width="270" height="130"/>
+  <text class="head blue" x="361" y="286">CONFORMANCE TESTS</text>
+  <text class="small" x="361" y="308">processes that INTERROGATE the</text>
+  <text class="small" x="361" y="326">facets to produce evidence:</text>
+  <text class="label" x="361" y="350">preconditions · procedure</text>
+  <text class="label" x="361" y="370">acceptance rule</text>
+  <path class="arrow blue" d="M 480 260 L 480 184" marker-end="url(#arrO)"/>
+  <text class="small blue" x="490" y="222">interrogate</text>
+
+  <!-- Forms -->
+  <rect class="sec form" x="650" y="260" width="270" height="130"/>
+  <text class="head teal" x="666" y="286">FORMS</text>
+  <text class="small" x="666" y="308">the evidence skeleton —</text>
+  <text class="small" x="666" y="326">the test report table:</text>
+  <text class="label" x="666" y="350">error per scale point</text>
+  <text class="label" x="666" y="370">+ per-test verdicts</text>
+  <path class="arrow teal" d="M 700 260 L 560 184" marker-end="url(#arrO)"/>
+  <text class="small teal" x="610" y="222">record</text>
+
+  <!-- The certificate -->
+  <rect class="sec cert" x="330" y="470" width="300" height="100"/>
+  <text class="head sage" x="350" y="498">the CERTIFICATE</text>
+  <text class="small" x="350" y="520">a RENDERING of the subject —</text>
+  <text class="small" x="350" y="538">never a separate artifact</text>
+  <path class="arrow sage" d="M 480 390 L 480 466" marker-end="url(#arrO)" stroke="#7a9e5e"/>
+  <text class="small sage" x="490" y="432">renders</text>
+
+  <!-- The verdict chain note -->
+  <rect x="40" y="470" width="260" height="100" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="56" y="496">evidence flows up:</text>
+  <text class="small" x="56" y="516">run → form (evidence) →</text>
+  <text class="small" x="56" y="534">test verdict → requirement</text>
+  <text class="small" x="56" y="552">conformance → certificate</text>
+
+  <rect x="660" y="470" width="260" height="100" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="676" y="496">nothing free-floats:</text>
+  <text class="small" x="676" y="516">every secondary model</text>
+  <text class="small" x="676" y="534">references the subject —</text>
+  <text class="small" x="676" y="552">that is the auditability.</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="monospace">
+  <!-- The data axis: dataclass, registry, the data section, data links -->
+  <defs>
+    <style>
+      .box { fill: #252019; stroke-width: 1.5; rx: 8; }
+      .dc { stroke: #2f7d6b; }
+      .reg { stroke: #d49442; }
+      .proc { stroke: #d49442; }
+      .zone { fill: none; stroke: #2f7d6b; stroke-width: 1.5; stroke-dasharray: 6 4; rx: 8; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .teal { fill: #2f7d6b; }
+      .flow { stroke: #8a8f98; stroke-width: 1.5; fill: none; }
+      .dlink { stroke: #2f7d6b; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+    </style>
+    <marker id="arrD" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8a8f98"/></marker>
+  </defs>
+  <rect width="960" height="540" fill="#1c1814"/>
+  <text class="title" x="30" y="38">The data axis — classes, registers, and the data section</text>
+
+  <!-- The dataclass -->
+  <rect class="box dc" x="40" y="80" width="300" height="220"/>
+  <text class="head teal" x="56" y="106">class LoadCell {</text>
+  <text class="label" x="64" y="132">capacity: QuantityValue[1..1]</text>
+  <text class="label" x="64" y="156">accuracyClass: enum[1..1]</text>
+  <text class="label" x="64" y="180">certificate: reference(Cert)[0..1]</text>
+  <text class="small" x="64" y="208">attributes: datatype · cardinality</text>
+  <text class="small" x="64" y="226">modality · unit · enum values</text>
+  <text class="head teal" x="56" y="262">}</text>
+
+  <!-- The registry -->
+  <rect class="box reg" x="40" y="340" width="300" height="90"/>
+  <text class="head accent" x="56" y="366">data_registry Instruments {</text>
+  <text class="label" x="64" y="390">data_class LoadCell</text>
+  <text class="head accent" x="56" y="418">}</text>
+  <path class="dlink" d="M 190 340 L 190 304"/>
+  <text class="small teal" x="200" y="326">carries the class</text>
+
+  <!-- The canvas with the data section -->
+  <rect class="box" x="420" y="80" width="500" height="350" stroke="#3a322a"/>
+  <text class="head" x="436" y="106" fill="#c9c0b2">the canvas — two sections</text>
+  <rect class="box proc" x="460" y="130" width="130" height="50"/>
+  <text class="small" x="482" y="158">process</text>
+  <rect class="box proc" x="460" y="230" width="130" height="50"/>
+  <text class="small" x="482" y="258">process</text>
+  <path class="flow" d="M 525 180 L 525 226" marker-end="url(#arrD)"/>
+  <text class="small" x="460" y="310">the FLOW section (childs)</text>
+
+  <rect class="zone" x="640" y="130" width="250" height="150"/>
+  <rect class="box dc" x="680" y="160" width="130" height="46"/>
+  <text class="small teal" x="700" y="187">LoadCell</text>
+  <text class="small teal" x="652" y="144">the DATA section (data) — dashed</text>
+
+  <path class="dlink" d="M 590 255 C 630 255, 640 210, 676 195"/>
+  <text class="small teal" x="610" y="240">a data link (dashed)</text>
+
+  <!-- The rule -->
+  <text class="label" x="40" y="490">a dataclass is a record shape; a registry carries it; processes produce/consume registries;</text>
+  <text class="label" x="40" y="510">on canvas, dataclasses live in the data section and link through dashed data links.</text>
+</svg>

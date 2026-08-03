@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="monospace">
+  <!-- Document mapping: clauses → paragraphs → statements → URNs → pairs -->
+  <defs>
+    <style>
+      .doc { fill: #252019; stroke: #7a9e5e; stroke-width: 1.5; rx: 8; }
+      .clause { fill: #1c1814; stroke: #7a9e5e; stroke-width: 1; rx: 6; }
+      .stmt { fill: #1c1814; stroke: #8a8f98; stroke-width: 1; rx: 4; }
+      .mapped { stroke: #d49442; stroke-width: 2; }
+      .urn { fill: #252019; stroke: #d49442; stroke-width: 1.5; rx: 6; }
+      .model { fill: #252019; stroke: #d49442; stroke-width: 2; rx: 8; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .sage { fill: #7a9e5e; }
+      .arrow { stroke: #d49442; stroke-width: 1.5; fill: none; }
+      .nest { stroke: #524838; stroke-width: 1; fill: none; }
+    </style>
+    <marker id="arrU" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d49442"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#1c1814"/>
+  <text class="title" x="30" y="38">Document mapping — a document becomes addressable statements</text>
+
+  <!-- The document tree -->
+  <rect class="doc" x="30" y="70" width="380" height="420"/>
+  <text class="head sage" x="46" y="96">the document (presentation XML)</text>
+  <rect class="clause" x="46" y="110" width="350" height="110"/>
+  <text class="label sage" x="58" y="130">clause "Maximum permissible errors"</text>
+  <rect class="stmt" x="58" y="140" width="326" height="24"/>
+  <text class="small" x="66" y="157">p1.s1 — "The maximum permissible errors are…"</text>
+  <rect class="stmt" x="58" y="170" width="326" height="24"/>
+  <text class="small" x="66" y="187">p1.s2 — "…valid for readings after cooling…"</text>
+  <rect class="clause" x="46" y="236" width="350" height="110"/>
+  <text class="label sage" x="58" y="256">clause "Determination of errors (A.3)"</text>
+  <rect class="stmt" x="58" y="266" width="326" height="24"/>
+  <text class="small" x="66" y="283">p1.s1 — "must be examined for compliance…"</text>
+  <rect class="stmt mapped" x="58" y="296" width="326" height="24"/>
+  <text class="small accent" x="66" y="313">p1.s2 — "…in well-stirred water baths" ✓</text>
+
+  <text class="small" x="46" y="380">paragraphs split into statements (sentences,</text>
+  <text class="small" x="46" y="398">decimals safe); list items map individually.</text>
+  <text class="small" x="46" y="430">ids are ordinal when titles carry no numbers —</text>
+  <text class="small" x="46" y="448">semantic clauses live in source { clause }.</text>
+
+  <!-- The URN mint -->
+  <rect class="urn" x="470" y="140" width="220" height="90"/>
+  <text class="head accent" x="486" y="166">the URN mint</text>
+  <text class="small" x="486" y="188">base + # + id:</text>
+  <text class="small accent" x="486" y="208">urn:oiml:pub:r:7:1979#s8.p1</text>
+  <path class="arrow" d="M 398 152 L 466 172" marker-end="url(#arrU)"/>
+
+  <!-- The pair -->
+  <rect class="model" x="470" y="300" width="220" height="120"/>
+  <text class="head accent" x="486" y="326">the model element</text>
+  <text class="label" x="486" y="350">REQ-MPE</text>
+  <text class="small" x="486" y="372">map_profile</text>
+  <text class="small accent" x="486" y="390">"urn:oiml:pub:r:7:1979"</text>
+  <path class="arrow" d="M 580 230 L 580 296" marker-end="url(#arrU)"/>
+
+  <!-- The edge -->
+  <path class="arrow" d="M 470 360 L 386 310" marker-end="url(#arrU)" stroke-dasharray="6 4"/>
+  <text class="small accent" x="400" y="345">the pair</text>
+
+  <!-- The payoff -->
+  <rect x="30" y="500" width="900" height="46" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="46" y="528">provenance is bidirectional: the model points at the document (source facets) AND the document points at the model (the profile).</text>
+</svg>

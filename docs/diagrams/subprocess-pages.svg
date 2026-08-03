@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="monospace">
+  <!-- Subprocess pages: the drill-down discipline -->
+  <defs>
+    <style>
+      .page { fill: #252019; stroke: #5b6bc0; stroke-width: 2; rx: 10; }
+      .node { fill: #1c1814; stroke: #d49442; stroke-width: 1.5; rx: 8; }
+      .sub { fill: #1c1814; stroke: #5b6bc0; stroke-width: 1.5; rx: 8; stroke-dasharray: 6 4; }
+      .title { fill: #e9e0d2; font-size: 15px; font-weight: bold; }
+      .head { font-size: 12px; font-weight: bold; }
+      .label { fill: #c9c0b2; font-size: 11px; }
+      .small { fill: #8a8f98; font-size: 10px; }
+      .accent { fill: #d49442; }
+      .blue { fill: #5b6bc0; }
+      .red { fill: #b85555; }
+      .flow { stroke: #8a8f98; stroke-width: 1.5; fill: none; }
+      .no { stroke: #b85555; stroke-width: 2; fill: none; stroke-dasharray: 6 4; }
+    </style>
+    <marker id="arrP" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8a8f98"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#1c1814"/>
+  <text class="title" x="30" y="38">Subprocess pages — drill in, but edges never cross pages</text>
+
+  <!-- Root page -->
+  <rect class="page" x="40" y="70" width="420" height="220"/>
+  <text class="head blue" x="56" y="96">canvas Root</text>
+  <rect class="node" x="70" y="120" width="110" height="44"/>
+  <text class="small" x="86" y="147">process</text>
+  <rect class="sub" x="240" y="120" width="110" height="44"/>
+  <text class="small blue" x="254" y="147">subprocess</text>
+  <rect class="node" x="70" y="200" width="110" height="44"/>
+  <text class="small" x="92" y="227">event</text>
+  <path class="flow" d="M 180 142 L 236 142" marker-end="url(#arrP)"/>
+  <path class="flow" d="M 125 164 L 125 196" marker-end="url(#arrP)"/>
+
+  <!-- The drill-down page -->
+  <rect class="page" x="540" y="70" width="380" height="220"/>
+  <text class="head blue" x="556" y="96">canvas Page1 (its content)</text>
+  <rect class="node" x="570" y="120" width="100" height="44"/>
+  <text class="small" x="586" y="147">step A</text>
+  <rect class="node" x="730" y="120" width="100" height="44"/>
+  <text class="small" x="746" y="147">step B</text>
+  <path class="flow" d="M 670 142 L 726 142" marker-end="url(#arrP)"/>
+
+  <!-- The descend link -->
+  <path d="M 350 142 C 420 142, 460 142, 536 142" stroke="#5b6bc0" stroke-width="2" fill="none" stroke-dasharray="8 4"/>
+  <text class="small blue" x="392" y="128">double-click</text>
+
+  <!-- The forbidden edge -->
+  <path class="no" d="M 125 244 C 200 400, 500 400, 620 168"/>
+  <text class="small red" x="180" y="420">✕ the cross-page edge — REFUSED:</text>
+  <text class="small red" x="180" y="438">"edges cannot cross pages — link through the subprocess node"</text>
+
+  <!-- The rule -->
+  <rect x="40" y="470" width="880" height="66" fill="#252019" stroke="#524838" rx="8"/>
+  <text class="label" x="56" y="496">the discipline: a page is a boundary — communication flows THROUGH the subprocess node.</text>
+  <text class="small" x="56" y="516">the page tree shows the hierarchy; unlinked pages (no process points at them) are listed apart.</text>
+</svg>
