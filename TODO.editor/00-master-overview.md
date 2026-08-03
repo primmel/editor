@@ -114,20 +114,28 @@ the mapping calculus must match the kernel's numbers exactly (item
 
 | # | Item | Priority | Wave |
 |---|---|---|---|
-| 21 | the legacy corpus complete (view alias + note EXAMPLE) | P0 | migration |
-| 22 | the new-model flow (File → New) | P0 | foundation |
-| 23 | the data section (dataclasses in `page.data`) | P0 | foundation |
-| 24 | the corpus matrix (the ten, vendored and proven) | P0 | migration |
-| 25 | the capability walk (the ultimate e2e validation) | P0 | validation |
-| 26 | the R 7 tutorial model (Clinical thermometers) | P0 | program |
-| 27 | the dual-demo tutorial (model YOUR Recommendation) | P1 | docs |
+| 21 | the legacy corpus complete (view alias + note EXAMPLE) | P0 | migration | ✅ b7b4d07 |
+| 22 | the new-model flow (File → New) | P0 | foundation | ✅ b412967 |
+| 23 | the data section (dataclasses in `page.data`) | P0 | foundation | ✅ 5f12117 |
+| 24 | the corpus matrix (the ten, vendored and proven) | P0 | migration | ✅ 9b0ead3 |
+| 25 | the capability walk (the ultimate e2e validation) | P0 | validation | ✅ 73cd4d3 |
+| 26 | the R 7 tutorial model (Clinical thermometers) | P0 | program | ✅ 5e1605b |
+| 27 | the dual-demo tutorial (model YOUR Recommendation) | P1 | docs | ✅ 1d758d4 |
 | 28 | the validation close-out (VALIDATION.md) | P0 | validation |
-| 29 | validation throughout (the Primmel validation surface) | P0 | validation |
-| 30 | the Studio user guide (the audience manual) | P0 | docs |
-| 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs |
+| 29 | validation throughout (the Primmel validation surface) | P0 | validation | ✅ 648c8f4 |
+| 30 | the Studio user guide (the audience manual) | P0 | docs | ✅ fa0d0b8 |
+| 31 | the audience-flow integration (Primmel + OIML SMART) | P1 | docs | ✅ ed729d9 |
 
 The contract: create new Primmel models (reference/implementation),
 import old MMEL models (all ten), do mappings with coverage, navigate,
 create data registers and processes, drill in and out, show diagrams,
 run execution, and model a new OIML Recommendation (R 7, Clinical
 thermometers) as the dual demo with the smart-r60 classroom.
+
+## The validation wave closes
+
+All items 21–31 landed; the capability contract is proven in
+[VALIDATION.md](VALIDATION.md) — the full matrix (22 promises, each
+with its leg and proof), the recorded close-out sweep, and the honest
+"not yet" list (form-field builder, requirement/test inspectors,
+multi-file packages, the formal review workflow, collaboration).

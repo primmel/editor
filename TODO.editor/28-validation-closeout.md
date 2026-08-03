@@ -1,4 +1,4 @@
-# 28 — The validation close-out (the capability contract, proven)
+# 28 — The validation close-out (the capability contract, proven) ✅ DONE (791cf5b)
 
 **Wave:** validation · **Depends on:** 21–27 · **Priority:** P0
 
