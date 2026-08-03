@@ -36,6 +36,14 @@ export interface PluginPanel {
   component: Component;
 }
 
+/** An inspector a plugin contributes: when the selection's type
+ *  matches `type`, the ElementInspector renders `component` (props:
+ *  `model`, `elementId`) instead of the kernel fallback. */
+export interface PluginInspector {
+  type: string;
+  component: Component;
+}
+
 export interface StudioPlugin {
   id: string;
   /** Activation: the plugin applies to this model (e.g. the OIML
@@ -44,4 +52,5 @@ export interface StudioPlugin {
   palettes?: PluginPaletteEntry[];
   actions?: PluginAction[];
   panels?: PluginPanel[];
+  inspectors?: PluginInspector[];
 }

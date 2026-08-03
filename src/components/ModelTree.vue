@@ -47,6 +47,11 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Enums', type: 'enum', createPrefix: 'EN', items: m.enums.map((e) => ({ id: e.id, detail: `${e.values.length} values` })) },
     { label: 'Variables', type: 'measurement', items: m.variables.map((v) => ({ id: v.id })) },
     { label: 'Notes', type: 'reference', items: m.notes.map((n) => ({ id: n.id })) },
+    // The program constructs (TODO.editor/40): palette-created, listed
+    // here — selecting one opens the plugin's inspector.
+    { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
+    { label: 'Requirements', type: 'requirement', items: m.requirements.map((r) => ({ id: r.id, detail: r.name })) },
+    { label: 'Conformance Tests', type: 'conformanceTest', items: m.conformanceTests.map((t) => ({ id: t.id, detail: t.name })) },
   ];
   return result.filter((g) => g.items.length > 0 || g.createPrefix);
 });

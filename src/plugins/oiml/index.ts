@@ -10,6 +10,9 @@ import type { Standard } from '@primmel/primmel';
 import { createInList, mintId, type Command } from '../../lib/commands';
 import type { StudioPlugin } from '../types';
 import CertificatePreview from './CertificatePreview.vue';
+import RequirementInspector from './RequirementInspector.vue';
+import ConformanceTestInspector from './ConformanceTestInspector.vue';
+import PackageManifestPanel from './PackageManifestPanel.vue';
 
 function mintAndCreate<T extends { id: string }>(
   prefix: string,
@@ -42,6 +45,9 @@ export const oimlPlugin: StudioPlugin = {
     || model.conformanceTests.length > 0
     || model.forms.length > 0
     || model.subjects.length > 0
+    // A package model (the package.primmel form) activates the plugin
+    // too — the manifest panel is its surface (TODO.editor/40).
+    || !!model.packageManifest
     || /oiml/i.test(`${model.meta.namespace} ${model.meta.schema} ${model.meta.title}`),
 
   palettes: [
@@ -169,5 +175,18 @@ export const oimlPlugin: StudioPlugin = {
       label: 'Certificate preview',
       component: CertificatePreview,
     },
+    {
+      id: 'package-manifest',
+      label: 'Package manifest',
+      component: PackageManifestPanel,
+    },
+  ],
+
+  // The program constructs' inspectors (TODO.editor/40) — the
+  // ElementInspector's plugin slot: a requirement or conformance test
+  // selected in the tree opens these, never a kernel branch.
+  inspectors: [
+    { type: 'requirement', component: RequirementInspector },
+    { type: 'conformanceTest', component: ConformanceTestInspector },
   ],
 };

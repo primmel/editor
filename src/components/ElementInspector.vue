@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { useUiStore } from '../stores/ui';
+import { activePlugins } from '../plugins';
 import ProcessInspector from './inspectors/ProcessInspector.vue';
 import OtherInspectors from './inspectors/OtherInspectors.vue';
 import DataClassInspector from './inspectors/DataClassInspector.vue';
@@ -14,6 +15,18 @@ const ui = useUiStore();
 const target = computed(() => {
   if (!ui.selection) return null;
   return ui.selection;
+});
+
+/** The plugin inspector for the selection's type (TODO.editor/40 —
+ *  the registry's `inspectors` slot: a program's constructs are
+ *  inspected by the program's components, never a kernel branch). */
+const pluginInspector = computed(() => {
+  if (!target.value) return null;
+  for (const plugin of activePlugins(props.model)) {
+    const hit = (plugin.inspectors ?? []).find(i => i.type === target.value!.type);
+    if (hit) return hit.component;
+  }
+  return null;
 });
 </script>
 
@@ -50,6 +63,12 @@ const target = computed(() => {
         v-else-if="target.type === 'enum'"
         :model="props.model"
         :enum-id="target.id"
+      />
+      <component
+        :is="pluginInspector"
+        v-else-if="pluginInspector"
+        :model="props.model"
+        :element-id="target.id"
       />
       <div v-else class="inspector-note">
         The {{ target.type }} inspector arrives with its wave (mapper: 07, measurements: 16).

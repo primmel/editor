@@ -4,7 +4,8 @@ import { ref, computed } from 'vue';
 export type SelectionType =
   | 'role' | 'process' | 'provision' | 'event' | 'gateway'
   | 'canvas' | 'dataclass' | 'registry' | 'measurement' | 'reference' | 'note'
-  | 'approval' | 'subprocess' | 'enum';
+  | 'approval' | 'subprocess' | 'enum'
+  | 'requirement' | 'conformanceTest' | 'requirementClass';
 
 export interface Selection {
   id: string;

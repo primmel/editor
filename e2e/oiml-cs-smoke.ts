@@ -83,7 +83,67 @@ state = await page.evaluate(`(() => ({
 console.log('doc map:', JSON.stringify(state))
 // (47 pairs land on 45 distinct PD-05 statements; the map sources are
 // requirements — not canvas nodes — so no overlay edges are drawn.)
-const ok = state.docMode && state.urn === 'urn:oiml:pub:cs:pd-05:2024' && state.mappedStatements >= 40
+if (!(state.docMode && state.urn === 'urn:oiml:pub:cs:pd-05:2024' && state.mappedStatements >= 40)) {
+  await fail('the doc map did not resolve')
+}
+
+// 3. The authoring surface (TODO.editor/40): the tree lists the
+//    requirement class + the requirements; selecting one opens the
+//    plugin's inspector; an edit lands through the command path.
+await page.evaluate(`(() => { const s = window.__stores; s.ui.view = 'model'; s.ui.rightPanel = 'inspector' })()`)
+await new Promise(r => setTimeout(r, 500))
+state = await page.evaluate(`(() => {
+  const groups = Array.from(document.querySelectorAll('.tree-group .group-header')).map((g) => g.textContent.trim())
+  return { groups }
+})()`)
+console.log('tree groups:', JSON.stringify(state.groups))
+if (!state.groups.some((g) => g.startsWith('Requirement Classes (1)')) || !state.groups.some((g) => g.startsWith('Requirements (34)'))) {
+  await fail('the tree does not list the requirement constructs')
+}
+await page.evaluate(`(() => {
+  const item = Array.from(document.querySelectorAll('.item-id')).find((el) => el.textContent === '/req/cs/sample-count')
+  item.closest('li').click()
+})()`)
+await new Promise(r => setTimeout(r, 400))
+state = await page.evaluate(`(() => ({
+  inspector: !!document.querySelector('[data-testid="requirement-inspector"]'),
+  statement: document.querySelector('[data-testid="req-statement"]')?.value?.slice(0, 220) ?? null,
+  sourceDoc: document.querySelector('[data-testid="req-source-doc"]')?.value ?? null,
+}))()`)
+console.log('inspector:', JSON.stringify(state))
+if (!state.inspector || !state.statement?.includes('number of samples') || !state.sourceDoc?.startsWith('PD-05')) {
+  await fail('the requirement inspector did not open with the provenance facets')
+}
+await page.evaluate(`(() => {
+  const el = document.querySelector('[data-testid="req-name"]')
+  el.value = 'Sample count (edited live)'
+  el.dispatchEvent(new Event('change', { bubbles: true }))
+})()`)
+await new Promise(r => setTimeout(r, 300))
+state = await page.evaluate(`(() => ({
+  name: window.__stores.model.standard.requirements.find((r) => r.id === '/req/cs/sample-count')?.name,
+}))()`)
+if (state.name !== 'Sample count (edited live)') await fail('the inspector edit did not land')
+console.log('inspector edit: OK')
+
+// 4. The package manifest panel renders the oiml-cs manifest.
+await page.evaluate(`(async () => {
+  const res = await fetch('/demo/oiml-cs/package.primmel?raw')
+  const text = await res.text()
+  window.__stores.model.loadText(text)
+})()`)
+await new Promise(r => setTimeout(r, 600))
+await page.evaluate(`(() => { document.querySelector('[data-testid="open-panel-package-manifest"]').click() })()`)
+await new Promise(r => setTimeout(r, 400))
+state = await page.evaluate(`(() => ({
+  panel: !!document.querySelector('[data-testid="package-manifest-panel"]'),
+  id: document.querySelector('[data-testid="manifest-id"]')?.textContent ?? null,
+  kind: document.querySelector('[data-testid="manifest-kind"]')?.textContent ?? null,
+  uses: document.querySelectorAll('[data-testid="manifest-uses"] li').length,
+}))()`)
+console.log('manifest:', JSON.stringify(state))
+await page.evaluate(`(() => { document.querySelector('.panel-modal-head button').click() })()`)
+const ok = state.panel && state.id === 'oiml-cs' && state.kind === 'core' && state.uses === 4
 console.log(ok ? 'OIML-CS OK' : 'OIML-CS FAILED')
 await browser.close()
 process.exit(ok ? 0 : 1)

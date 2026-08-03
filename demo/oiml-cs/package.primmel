@@ -1,0 +1,10 @@
+package {
+  id oiml-cs
+  kind core
+  title "OIML SMART oiml-cs layer package"
+  description "OIML-CS reference package — the certification-scheme content no Recommendation owns: the B 18:2025 framework model (participants, schemes + category lifecycle, declarations, governing documents, governance — TODO.roadmap/40), the /req/cs/* scheme provisions (PD-05), the 7-step certification process as abstract processes with roles and evidence requirements, the 18-element test-report-form checklist (PD-05 §4.4.3), the certificate requirements (PD-05 §4.6 + Annexes A/B), the participant-competence document modules (TODO.roadmap/42 — documents/pd-03 IA approval, documents/pd-04 TL approval, documents/pd-02 expert approval, with the D 30/D 32 application guides annexed informatively), the scheme-governance document modules (TODO.roadmap/43 — documents/pd-01 appeals, documents/pd-06 certificate use, documents/pd-07 transitions, documents/pd-08 Declarations, documents/pd-09 Utilizers/Associates, documents/cid-01 clarifications, documents/od-01 MC rules, documents/od-02 TLF rules), and the scheme-completeness map to ISO/IEC 17067 (oiml-cs-to-17067.prm + the cs-scheme-coverage gate). Composed into each Recommendation via `uses: [oiml-cs]` ahead of core."
+  uses { iso-iec-17000 iso-iec-17065 iso-iec-17025 iso-iec-17067 }
+  requires { iso-iec-17000 iso-iec-17065 iso-iec-17025 iso-iec-17067 }
+  provides { oiml-cs cs-process-requirements cs-certificate-requirements }
+  default_spelling eng-Latn
+}

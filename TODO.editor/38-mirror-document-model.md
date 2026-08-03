@@ -1,4 +1,4 @@
-# 38 — The mirror document-model ✅ DONE (8f4fe36)
+# 38 — The mirror document-model ✅ DONE (e4f0287 + d279842, the pubid SSOT)
 
 **Wave:** oiml-cs · **Depends on:** 37 · **Priority:** P0
 

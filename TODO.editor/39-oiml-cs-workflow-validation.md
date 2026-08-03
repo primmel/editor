@@ -1,4 +1,4 @@
-# 39 — The OIML-CS corpus + the certification-workflow model
+# 39 — The OIML-CS corpus + the certification-workflow model ✅ DONE (4606a65)
 
 **Wave:** oiml-cs · **Depends on:** 38 · **Priority:** P0
 
