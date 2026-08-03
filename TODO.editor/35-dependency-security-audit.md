@@ -1,4 +1,4 @@
-# 35 — The dependency + security audit
+# 35 — The dependency + security audit ✅ DONE (960ef85)
 
 **Wave:** audit · **Depends on:** all · **Priority:** P0
 

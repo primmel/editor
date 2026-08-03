@@ -3,12 +3,13 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 import fs from 'node:fs';
 import path from 'node:path';
+import { guardSavePath } from './scripts/save-api-guard';
 
 // ─────────────────────────────────────────────────────────────────────
 // The save API (TODO.editor/18) — the dev server's write path: POST
 // /api/save { path, text } writes the file with a .bak backup,
-// constrained to .prl/.mmel under the project root. GET answers a
-// small status document (the panel's availability probe).
+// constrained by scripts/save-api-guard.mjs (unit-tested). GET
+// answers a small status document (the panel's availability probe).
 // ─────────────────────────────────────────────────────────────────────
 function saveApi(): Plugin {
   return {
@@ -30,10 +31,7 @@ function saveApi(): Plugin {
         req.on('end', () => {
           try {
             const { path: relPath, text } = JSON.parse(body) as { path: string; text: string };
-            const root = process.cwd();
-            const full = path.resolve(root, relPath);
-            if (!full.startsWith(root + path.sep)) throw new Error('path escapes the project root');
-            if (!/\.(prl|mmel)$/.test(full)) throw new Error('only .prl/.mmel writes are accepted');
+            const full = guardSavePath(process.cwd(), relPath);
             fs.mkdirSync(path.dirname(full), { recursive: true });
             const backup = fs.existsSync(full);
             if (backup) fs.copyFileSync(full, full + '.bak');
