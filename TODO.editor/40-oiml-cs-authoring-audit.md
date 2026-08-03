@@ -1,4 +1,4 @@
-# 40 — The OIML-CS authoring audit (the plugin gaps)
+# 40 — The OIML-CS authoring audit (the plugin gaps) ✅ DONE (dd13908)
 
 **Wave:** oiml-cs · **Depends on:** 17, 39 · **Priority:** P1
 
