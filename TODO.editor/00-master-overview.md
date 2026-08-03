@@ -129,7 +129,11 @@ the mapping calculus must match the kernel's numbers exactly (item
 | 33 | the typing-discipline audit | P1 | audit | ✅ 314f250 |
 | 34 | the render-layer specs + the scale proof | P1 | audit | ✅ b13f393 |
 | 35 | the dependency + security audit | P0 | audit | ✅ ebebc2d |
-| 36 | the audit close-out (AGENTS.md + AUDIT.md) | P1 | audit | ✅ ed729d9 |
+| 36 | the audit close-out (AGENTS.md + AUDIT.md) | P1 | audit |
+| 37 | the mirror converter pipeline (Metanorma → JSON) | P0 | oiml-cs |
+| 38 | the mirror document-model | P0 | oiml-cs |
+| 39 | the OIML-CS corpus + the certification-workflow model | P0 | oiml-cs |
+| 40 | the OIML-CS authoring audit (the plugin gaps) | P1 | oiml-cs | ✅ ed729d9 |
 
 The contract: create new Primmel models (reference/implementation),
 import old MMEL models (all ten), do mappings with coverage, navigate,
