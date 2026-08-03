@@ -9,22 +9,27 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { urnForIdentifier } from '@oimlsmart/oiml-pubid';
+import corpus from '@oimlsmart/oiml-pubid/conformance';
 import { loadDocument, parseMirrorJson, urnBaseFor } from '../document-model';
+
+// The URN expectations come from THE package's conformance corpus
+// (SSOT — never hand-pinned here).
+const urnOf = (id: string, year?: string) => {
+  const c = corpus.cases.find((x: { identifier: string; bibdataYear?: string; urn: string }) =>
+    x.identifier === id && (year === undefined || x.bibdataYear === year));
+  if (!c) throw new Error(`no conformance case for ${id}`);
+  return c.urn;
+};
 
 const mirror = (name: string) =>
   readFileSync(join(__dirname, 'fixtures/mirror', `${name}.mirror.json`), 'utf8');
 
-describe('38 — the URN families', () => {
-  it('B 18, R with year, CS PD/OD/CID, D/G/E, and the slug fallback', () => {
-    expect(urnBaseFor('OIML B 18:2025(E)')).toBe('urn:oiml:pub:b:18:2025');
-    expect(urnBaseFor('OIML R 7', '1979')).toBe('urn:oiml:pub:r:7:1979');
-    expect(urnBaseFor('OIML R 60-2:2021')).toBe('urn:oiml:pub:r:60-2:2021');
-    expect(urnBaseFor('OIML-CS PD-05 Edition 6 (Amendment 1)', '2024')).toBe('urn:oiml:pub:cs:pd-05:2024');
-    expect(urnBaseFor('OIML-CS OD-01 Edition 4', '2024')).toBe('urn:oiml:pub:cs:od-01:2024');
-    expect(urnBaseFor('OIML-CS CID-01 Edition 6')).toBe('urn:oiml:pub:cs:cid-01');
-    expect(urnBaseFor('OIML D 11:2013')).toBe('urn:oiml:pub:d:11:2013');
-    expect(urnBaseFor('OIML G 21:2017')).toBe('urn:oiml:pub:g:21:2017');
-    expect(urnBaseFor('OIML E 6:2011')).toBe('urn:oiml:pub:e:6:2011');
+describe('38 — the URN families (against THE conformance corpus)', () => {
+  it('urnBaseFor matches the corpus, case for case', () => {
+    for (const c of corpus.cases) {
+      expect(urnBaseFor(c.identifier, c.bibdataYear ?? ''), c.identifier).toBe(c.urn);
+    }
     expect(urnBaseFor('Some Other Document')).toBe('doc:Some-Other-Document');
   });
 });
@@ -32,7 +37,7 @@ describe('38 — the URN families', () => {
 describe('38 — the mirror path', () => {
   it('pd-01 parses with real clauses and real text (was empty under the DOM path)', () => {
     const doc = parseMirrorJson(JSON.parse(mirror('oiml-cs-pd-01')));
-    expect(doc.urnBase).toBe('urn:oiml:pub:cs:pd-01:2024');
+    expect(doc.urnBase).toBe(urnOf('OIML-CS PD-01 Edition 3', '2024'));
     expect(doc.title).toContain('Appeals');
     // The grain: 3 top-level units (Foreword, Introduction, the body
     // section) with the numbered body folded in — real text throughout.
@@ -43,12 +48,12 @@ describe('38 — the mirror path', () => {
     expect(all).toContain('appeal');
     // Statement URNs are well-formed.
     const first = [...doc.statements.values()][0]!;
-    expect(first.urn.startsWith('urn:oiml:pub:cs:pd-01:2024#')).toBe(true);
+    expect(first.urn.startsWith(urnOf('OIML-CS PD-01 Edition 3', '2024') + '#')).toBe(true);
   });
 
   it('pd-05 parses the full clause structure (13 top clauses, the annex content)', () => {
     const doc = parseMirrorJson(JSON.parse(mirror('oiml-cs-pd-05')));
-    expect(doc.urnBase).toBe('urn:oiml:pub:cs:pd-05:2024');
+    expect(doc.urnBase).toBe(urnOf('OIML-CS PD-05 Edition 6 (Amendment 1)', '2024'));
     expect(doc.title).toContain('Processing an application');
     expect(doc.clauses.length).toBeGreaterThanOrEqual(13);
     expect(doc.statements.size).toBeGreaterThan(100);
@@ -59,19 +64,19 @@ describe('38 — the mirror path', () => {
 
   it('b018-e25 parses with its framework content', () => {
     const doc = parseMirrorJson(JSON.parse(mirror('b018-e25')));
-    expect(doc.urnBase).toBe('urn:oiml:pub:b:18:2025');
+    expect(doc.urnBase).toBe(urnOf('OIML B 18:2025(E)'));
     expect(doc.statements.size).toBeGreaterThan(100);
   });
 
   it('r007 keeps its own URN (the R family with the bibdata year)', () => {
     const doc = parseMirrorJson(JSON.parse(mirror('r007-e79')));
-    expect(doc.urnBase).toBe('urn:oiml:pub:r:7:1979');
+    expect(doc.urnBase).toBe(urnOf('OIML R 7', '1979'));
     expect(doc.statements.size).toBeGreaterThan(100);
   });
 
   it('loadDocument dispatches on the mirror shape', () => {
     const doc = loadDocument(mirror('oiml-cs-pd-01'));
-    expect(doc.urnBase).toBe('urn:oiml:pub:cs:pd-01:2024');
+    expect(doc.urnBase).toBe(urnOf('OIML-CS PD-01 Edition 3', '2024'));
     expect(() => loadDocument('{"type":"other"}')).toThrow('not a Mirror JSON');
   });
 

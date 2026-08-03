@@ -11,7 +11,7 @@
 // pair/overlay/party machinery works unchanged.
 // ─────────────────────────────────────────────────────────────────────
 
-import { parseOimlPubid, urnForOimlPubid } from './oiml-pubid';
+import { parseOimlPubid, urnForOimlPubid } from '@oimlsmart/oiml-pubid';
 
 export interface DocStatement {
   /** The doc-local id (`2.10.1.p1.s2`), stable for the document. */
