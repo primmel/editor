@@ -14,6 +14,7 @@ import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
+import ValidationPanel from './components/validation/ValidationPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
 import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
@@ -21,6 +22,7 @@ import SavePanel from './components/SavePanel.vue';
 import NewModelDialog from './components/NewModelDialog.vue';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
+import { validationSummary } from './lib/validation';
 import { activePlugins } from './plugins';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
@@ -78,6 +80,16 @@ function onPaletteDragStart(entry: PaletteKind, ev: DragEvent) {
 }
 
 const model = computed(() => modelStore.model);
+
+// ── The validation badge (TODO.editor/29) — the kernel's verdict,
+//    always visible: clean (green), warnings (amber), errors (red). ──
+const validationPill = computed(() => {
+  void modelStore.version;
+  const s = validationSummary(modelStore.standard);
+  if (s.errors > 0) return { num: s.errors, label: s.errors === 1 ? 'error' : 'errors', class: 'val-errors' };
+  if (s.warnings > 0) return { num: s.warnings, label: s.warnings === 1 ? 'warning' : 'warnings', class: 'val-warnings' };
+  return { num: '✓', label: 'valid', class: 'val-clean' };
+});
 
 // ── The simulation highlight (TODO.editor/13) — the current node in
 //    accent, the walked trajectory dimmer, tooltips off. ─────────────
@@ -152,6 +164,10 @@ const view = computed<ViewMode>({
           <span class="stat-num error">!</span>
           <span class="stat-label">error</span>
         </div>
+        <div class="stat-pill" v-else :class="validationPill.class" data-testid="validation-badge">
+          <span class="stat-num">{{ validationPill.num }}</span>
+          <span class="stat-label">{{ validationPill.label }}</span>
+        </div>
       </div>
 
       <nav class="panel-nav">
@@ -214,6 +230,11 @@ const view = computed<ViewMode>({
               :class="{ active: ui.rightPanel === 'simulation' }"
               @click="ui.rightPanel = 'simulation'"
             >Simulate</button>
+            <button
+              :class="{ active: ui.rightPanel === 'validation' }"
+              data-testid="tab-validation"
+              @click="ui.rightPanel = 'validation'"
+            >Validate</button>
           </div>
         </template>
       </nav>
@@ -238,7 +259,8 @@ const view = computed<ViewMode>({
           <Transition name="fade" mode="out-in">
             <ElementInspector v-if="ui.rightPanel === 'inspector'" :model="model" key="inspector" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
-            <SimulationPanel v-else :model="model" key="simulation" />
+            <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
+            <ValidationPanel v-else :model="model" key="validation" />
           </Transition>
           <CommentPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
           <MeasurementPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
@@ -372,6 +394,9 @@ const view = computed<ViewMode>({
   color: var(--text);
 }
 .stat-num.error { color: var(--burgundy); }
+.stat-pill.val-clean .stat-num { color: var(--sage); }
+.stat-pill.val-warnings .stat-num { color: #d49442; }
+.stat-pill.val-errors .stat-num { color: #b85555; }
 .stat-label {
   font-size: 0.65rem;
   color: var(--text-muted);

@@ -312,10 +312,52 @@ await new Promise(r => setTimeout(r, 600))
 }
 console.log('leg 9 (save preview):', results['9-save-preview'])
 
+// ── Leg 10: validation throughout — break it, see it, fix it ────────
+await page.evaluate(`(() => {
+  document.querySelector('[data-testid="save-close"]')?.click()
+  // A form referencing a missing conformance process (a real kernel issue).
+  const s = window.__stores
+  s.model.execute({
+    label: 'add broken form',
+    apply(ast) {
+      ast.forms.push({ id: 'BrokenForm', name: '', description: '', dataClassId: '', headerFormId: '', conformanceProcessId: 'GhostProcess', section: '', requirements: [], formNotes: [], scope: '', formReferences: [], calculationContext: null, formInstances: [], formConstraints: [], applicability: [], fields: [], passFail: null, referenceIds: [], ref: [] })
+    },
+    revert(ast) { ast.forms = ast.forms.filter((f) => f.id !== 'BrokenForm') },
+  })
+})()`)
+await new Promise(r => setTimeout(r, 500))
+await page.evaluate(`(() => { document.querySelector('[data-testid="tab-validation"]').click() })()`)
+await new Promise(r => setTimeout(r, 400))
+{
+  const s = await page.evaluate(`(() => ({
+    badge: document.querySelector('[data-testid="validation-badge"]')?.textContent ?? null,
+    errors: document.querySelector('[data-testid="val-errors"]')?.textContent ?? null,
+    issue: document.querySelector('[data-testid="issue-0"]')?.textContent ?? null,
+  }))()`)
+  results['10-validation-flag'] = !!s.badge?.includes('error')
+    && s.errors === '1 error'
+    && !!s.issue?.includes('form-conformance-process-missing')
+    && !!s.issue?.includes('GhostProcess')
+}
+console.log('leg 10a (flags the break):', results['10-validation-flag'])
+
+await page.evaluate(`(() => {
+  window.__stores.model.undo()  // the broken form reverts
+})()`)
+await new Promise(r => setTimeout(r, 500))
+{
+  const s = await page.evaluate(`(() => ({
+    clean: !!document.querySelector('[data-testid="val-clean"]'),
+    badge: document.querySelector('[data-testid="validation-badge"]')?.textContent ?? null,
+  }))()`)
+  results['10-validation-clean'] = s.clean && !!s.badge?.includes('valid')
+}
+console.log('leg 10b (clears on fix):', results['10-validation-clean'])
+
 // ── The verdict ──────────────────────────────────────────────────────
 const legs = Object.entries(results)
 for (const [name, ok] of legs) console.log(`${ok ? '✓' : '✗'} ${name}`)
 const allOk = legs.every(([, ok]) => ok)
-console.log(allOk ? 'CAPABILITY WALK OK (9/9)' : 'CAPABILITY WALK FAILED')
+console.log(allOk ? 'CAPABILITY WALK OK' : 'CAPABILITY WALK FAILED')
 await browser.close()
 process.exit(allOk ? 0 : 1)

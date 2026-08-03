@@ -13,6 +13,7 @@ import {
   writeApiAvailable, writeToFile,
 } from '../lib/save';
 import { DIFF_TINTS, type DiffStatus } from '../lib/diff-view';
+import { validationSummary } from '../lib/validation';
 import { useModelStore } from '../stores/model';
 
 const props = defineProps<{ model: Standard }>();
@@ -31,6 +32,18 @@ onMounted(async () => {
 
 const preview = computed(() => serializeForSave(props.model, modelStore.loadedText));
 const STATUS_ORDER: DiffStatus[] = ['added', 'removed', 'changed', 'moved'];
+
+/** The validation line in the review (TODO.editor/29) — the commit
+ *  decision includes the kernel's verdict. */
+const validation = computed(() => {
+  void modelStore.version;
+  const s = validationSummary(props.model);
+  if (s.errors === 0 && s.warnings === 0) return { clean: true, text: '' };
+  const parts: string[] = [];
+  if (s.errors > 0) parts.push(`${s.errors} error${s.errors === 1 ? '' : 's'}`);
+  if (s.warnings > 0) parts.push(`${s.warnings} warning${s.warnings === 1 ? '' : 's'}`);
+  return { clean: false, text: `the model has ${parts.join(' and ')} (see the Validate tab)` };
+});
 
 function doDownload() {
   downloadText(fileName.value, preview.value.text);
@@ -59,6 +72,11 @@ const ssotNote = computed(() =>
   <div class="dialog-backdrop" data-testid="save-panel" @click.self="emit('close')">
     <div class="dialog">
       <div class="dialog-title">save — review the change</div>
+
+      <div class="save-validation" data-testid="save-validation">
+        <span v-if="validation.clean" class="val-line clean">✓ the model validates clean</span>
+        <span v-else class="val-line issues">⚠ {{ validation.text }}</span>
+      </div>
 
       <div class="save-diff" v-if="preview.diff">
         <div class="diff-counts">
@@ -219,4 +237,8 @@ const ssotNote = computed(() =>
   border-radius: var(--radius-sm);
   padding: 0.35rem 0.5rem;
 }
+.save-validation { margin-bottom: 0.5rem; }
+.val-line { font-size: 0.72rem; font-family: var(--font-mono); }
+.val-line.clean { color: var(--sage); }
+.val-line.issues { color: #d49442; }
 </style>

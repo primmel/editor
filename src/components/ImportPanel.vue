@@ -56,7 +56,7 @@ function doImport() {
 <template>
   <div class="dialog-backdrop" data-testid="import-panel" @click.self="emit('close')">
     <div class="dialog">
-      <div class="dialog-title">import legacy model (.mmel)</div>
+      <div class="dialog-title">import MMEL → Primmel</div>
 
       <div class="import-actions">
         <button type="button" class="import-btn" data-testid="import-pick" @click="pickFile">choose file…</button>
@@ -90,9 +90,12 @@ function doImport() {
           </div>
         </div>
 
-        <div v-if="report.validationIssues.length" class="import-section warning">
-          <div class="import-label">validation issues</div>
-          <div class="import-row" v-for="(v, i) in report.validationIssues" :key="i">
+        <div class="import-section" :class="{ warning: report.validationIssues.length > 0 }">
+          <div class="import-label">validation (the kernel, on the converted Primmel model)</div>
+          <div v-if="!report.validationIssues.length" class="import-clean" data-testid="import-validation-clean">
+            ✓ validates clean — the output is valid Primmel v3
+          </div>
+          <div v-else class="import-row" v-for="(v, i) in report.validationIssues" :key="i" data-testid="import-validation-issue">
             <span class="import-kind">{{ v }}</span>
           </div>
         </div>
@@ -103,7 +106,7 @@ function doImport() {
             class="import-btn primary"
             data-testid="import-confirm"
             @click="doImport"
-          >import (replaces the working model)</button>
+          >{{ report.validationIssues.length ? `import anyway (${report.validationIssues.length} issues)` : 'import as Primmel (.prl)' }}</button>
           <span v-if="imported" class="import-done" data-testid="import-done">imported ✓</span>
         </div>
       </template>
@@ -194,5 +197,9 @@ function doImport() {
 .import-done {
   color: var(--sage);
   font-size: 0.74rem;
+}
+.import-clean {
+  color: var(--sage);
+  font-size: 0.72rem;
 }
 </style>

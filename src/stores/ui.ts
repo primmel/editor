@@ -18,7 +18,7 @@ export const useUiStore = defineStore('ui', () => {
   const panX = ref(0);
   const panY = ref(0);
   const leftPanel = ref<'tree' | 'code'>('tree');
-  const rightPanel = ref<'inspector' | 'compliance' | 'simulation'>('inspector');
+  const rightPanel = ref<'inspector' | 'compliance' | 'simulation' | 'validation'>('inspector');
   const view = ref<'model' | 'registry' | 'mapping' | 'diff'>('model');
 
   function select(id: string, type: SelectionType) {
