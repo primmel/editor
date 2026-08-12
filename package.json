@@ -1,6 +1,6 @@
 {
   "name": "@primmel/editor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "private": false,
   "description": "The Primmel Studio editor — the model canvas, inspectors, mapper, and review surface for the Primmel v3 kernel. Program layers (OIML SMART first) plug in via the registry; the editor stays program-agnostic.",

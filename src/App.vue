@@ -26,13 +26,19 @@ import { validationSummary } from './lib/validation';
 import { activePlugins } from './plugins';
 import PalettePanel from './components/PalettePanel.vue';
 import type { PaletteKind } from './lib/factory';
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 
 const modelStore = useModelStore();
 const ui = useUiStore();
 const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
 const importOpen = ref(false);
+
+const brand = inject('brand', {
+  name: 'Primmel',
+  sub: 'Atelier',
+  logoUrl: null as string | null,
+});
 const saveOpen = ref(false);
 const newOpen = ref(false);
 const openPanelId = ref<string | null>(null);
@@ -135,15 +141,16 @@ const view = computed<ViewMode>({
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <img v-if="brand.logoUrl" :src="brand.logoUrl" alt="" width="28" height="28" />
+          <svg v-else width="28" height="28" viewBox="0 0 28 28" fill="none">
             <rect x="2" y="2" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
             <path d="M8 18 L8 10 L14 18 L14 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="20" cy="10" r="2" fill="currentColor"/>
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-name">Primmel</span>
-          <span class="brand-sub">Atelier</span>
+          <span class="brand-name">{{ brand.name }}</span>
+          <span class="brand-sub" v-if="brand.sub">{{ brand.sub }}</span>
         </div>
       </div>
 
