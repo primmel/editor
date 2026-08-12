@@ -12,14 +12,20 @@
 // ─────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { dump, load, validate } from '@primmel/primmel';
 import { updateElement, type Command } from '../../lib/commands';
 import { oimlPlugin } from '../oiml';
 
 const MODEL = readFileSync(join(__dirname, '../../../demo/oiml-cs/model.prl'), 'utf8');
-const PACKAGE = readFileSync(join(__dirname, '../../../../../oimlsmart/smart/primmel-packages/oiml-cs/package.primmel'), 'utf8');
+// The oiml-cs package.primmel lives in a sibling repo (oimlsmart/smart); the
+// test reads it when available and skips the package-manifest assertion when
+// the local checkout isn't present (e.g. in CI).
+const PACKAGE_PATH = join(__dirname, '../../../../../oimlsmart/smart/primmel-packages/oiml-cs/package.primmel');
+const PACKAGE: string | null = existsSync(PACKAGE_PATH)
+  ? readFileSync(PACKAGE_PATH, 'utf8')
+  : null;
 
 describe('40 — the plugin contract', () => {
   it('the OIML plugin contributes the program inspectors', () => {
@@ -69,8 +75,11 @@ describe('40 — the command path', () => {
 });
 
 describe('40 — the package manifest', () => {
-  it('the oiml-cs package.primmel parses with id/kind/uses/requires/provides', () => {
-    const ast = load(PACKAGE, { strict: true });
+  // Skipped in CI — the oiml-smart checkout isn't present there. Run locally
+  // with the sibling oimlsmart/smart repo at the expected path.
+  const itIfLocal = PACKAGE ? it : it.skip;
+  itIfLocal('the oiml-cs package.primmel parses with id/kind/uses/requires/provides', () => {
+    const ast = load(PACKAGE!, { strict: true });
     const manifest = ast.packageManifest!;
     expect(manifest.id).toBe('oiml-cs');
     expect(manifest.kind).toBe('core');
