@@ -1,8 +1,24 @@
 {
   "name": "primmel-editor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "private": true,
+  "private": false,
+  "description": "The Primmel Studio editor — the model canvas, inspectors, mapper, and review surface for the Primmel v3 kernel. Program layers (OIML SMART first) plug in via the registry; the editor stays program-agnostic.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/primmel/editor.git"
+  },
+  "homepage": "https://github.com/primmel/editor#readme",
+  "license": "MIT",
+  "author": "Ribose Inc. <open.source@ribose.com>",
+  "keywords": ["primmel", "oiml", "smart", "metrology", "editor", "modelling", "recommendation"],
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/components/*",
+    "./styles/*": "./src/styles/*"
+  },
+  "files": ["src"],
+  "publishConfig": { "access": "public" },
   "scripts": {
     "dev": "vite",
     "build": "node scripts/audit-typing.mjs && vue-tsc && vite build",
@@ -10,14 +26,15 @@
     "test": "vitest run",
     "audit:types": "node scripts/audit-typing.mjs"
   },
-  "dependencies": {
-    "@oimlsmart/oiml-pubid": "file:../../oimlsmart/oiml-pubid",
+  "peerDependencies": {
+    "vue": ">=3.5",
+    "pinia": ">=3",
+    "monaco-editor": ">=0.50",
     "@primmel/primmel": "^1.4.0",
-    "js-yaml": "^5.2.1",
-    "monaco-editor": "^0.52.0",
-    "pinia": "^3.0.0",
-    "vue": "^3.5.0"
+    "@oimlsmart/oiml-pubid": "*",
+    "js-yaml": ">=4"
   },
+  "dependencies": {},
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
