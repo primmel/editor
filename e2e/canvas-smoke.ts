@@ -5,7 +5,7 @@ const page = await browser.newPage()
 await page.setViewport({ width: 1280, height: 900 })
 page.on('pageerror', e => console.log('PAGE ERROR:', String(e).slice(0, 300)))
 page.on('console', m => { if (m.text().includes('finishConnect')) console.log('LOG:', m.text()) })
-await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
 
 const state = await page.evaluate(() => ({

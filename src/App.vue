@@ -34,6 +34,10 @@ const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
 const importOpen = ref(false);
 
+/** The viewer mode (Wave 4): one flag, consulted at the store (every
+ *  mutation refuses) and here (the editing chrome hides). */
+const readOnly = computed(() => modelStore.readOnly);
+
 const brand = inject('brand', {
   name: 'Primmel',
   sub: 'Atelier',
@@ -46,6 +50,7 @@ const openPanelId = ref<string | null>(null);
 // ── The dirty discipline (TODO.editor/18) — Ctrl+S saves; leaving with
 //    unsaved changes warns (dirty = history cursor ≠ saved cursor). ──
 function onKeydown(e: KeyboardEvent) {
+  if (readOnly.value) return; // the viewer has no save/new hotkeys
   if ((e.metaKey || e.ctrlKey) && e.key === 's') {
     e.preventDefault();
     saveOpen.value = true;
@@ -167,6 +172,9 @@ const view = computed<ViewMode>({
           <span class="stat-num">{{ model.pages.length }}</span>
           <span class="stat-label">canvases</span>
         </div>
+        <div class="stat-pill" v-if="readOnly" data-testid="readonly-badge">
+          <span class="stat-label">read only</span>
+        </div>
         <div class="stat-pill" v-if="modelStore.parseError">
           <span class="stat-num error">!</span>
           <span class="stat-label">error</span>
@@ -195,15 +203,17 @@ const view = computed<ViewMode>({
             :class="{ active: view === 'diff' }"
             @click="view = 'diff'"
           >Diff</button>
-          <span class="nav-sep"></span>
-          <button data-testid="open-new" @click="newOpen = true">New</button>
-          <button
-            class="save-nav-btn"
-            :class="{ dirty: modelStore.dirty }"
-            data-testid="open-save"
-            @click="saveOpen = true"
-          >Save<span v-if="modelStore.dirty" class="dirty-dot" data-testid="dirty-dot" /></button>
-          <button data-testid="open-import" @click="importOpen = true">Import</button>
+          <template v-if="!readOnly">
+            <span class="nav-sep"></span>
+            <button data-testid="open-new" @click="newOpen = true">New</button>
+            <button
+              class="save-nav-btn"
+              :class="{ dirty: modelStore.dirty }"
+              data-testid="open-save"
+              @click="saveOpen = true"
+            >Save<span v-if="modelStore.dirty" class="dirty-dot" data-testid="dirty-dot" /></button>
+            <button data-testid="open-import" @click="importOpen = true">Import</button>
+          </template>
           <button
             v-for="panel in pluginPanels"
             :key="panel.id"
@@ -250,7 +260,7 @@ const view = computed<ViewMode>({
     <template v-if="view === 'model' && model">
       <main class="workspace">
         <aside class="panel panel-left">
-          <PalettePanel :model="model" @pick="onPalettePick" @dragstart="onPaletteDragStart" />
+          <PalettePanel v-if="!readOnly" :model="model" @pick="onPalettePick" @dragstart="onPaletteDragStart" />
           <PageTree :model="model" />
           <Transition name="fade" mode="out-in">
             <ModelTree v-if="ui.leftPanel === 'tree'" :model="model" key="tree" />
@@ -264,7 +274,12 @@ const view = computed<ViewMode>({
 
         <aside class="panel panel-right">
           <Transition name="fade" mode="out-in">
-            <ElementInspector v-if="ui.rightPanel === 'inspector'" :model="model" key="inspector" />
+            <!-- The viewer keeps the inspector as a READ-ONLY summary:
+                 the disabled fieldset switches every field and button
+                 inside off (store-level, the commands refuse too). -->
+            <fieldset v-if="ui.rightPanel === 'inspector'" class="inspector-frame" :disabled="readOnly" key="inspector">
+              <ElementInspector :model="model" />
+            </fieldset>
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
             <ValidationPanel v-else :model="model" key="validation" />
@@ -306,9 +321,9 @@ const view = computed<ViewMode>({
       <aside class="panel panel-right"></aside>
     </div>
 
-    <ImportPanel v-if="importOpen" @close="importOpen = false" />
-    <SavePanel v-if="saveOpen && model" :model="model" @close="saveOpen = false" />
-    <NewModelDialog v-if="newOpen" @close="newOpen = false" />
+    <ImportPanel v-if="importOpen && !readOnly" @close="importOpen = false" />
+    <SavePanel v-if="saveOpen && model && !readOnly" :model="model" @close="saveOpen = false" />
+    <NewModelDialog v-if="newOpen && !readOnly" @close="newOpen = false" />
 
     <div v-if="openPanel" class="panel-modal-backdrop" @click.self="openPanelId = null">
       <div class="panel-modal" :data-testid="`panel-${openPanel.id}`">
@@ -456,6 +471,18 @@ const view = computed<ViewMode>({
 }
 
 .panel-left, .panel-right { border-bottom: none; }
+
+/* The viewer's read-only inspector frame: fill the panel, no fieldset chrome. */
+.inspector-frame {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
 .error-state .panel-center {
   display: flex;

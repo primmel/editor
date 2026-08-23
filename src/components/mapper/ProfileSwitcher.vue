@@ -56,6 +56,7 @@ function seedSourcesFor(ns: string): string[] {
     >
       {{ ns }}
       <span
+        v-if="!modelStore.readOnly"
         class="switcher-remove"
         :data-testid="`lens-remove-${ns}`"
         title="remove this reference"
@@ -63,7 +64,7 @@ function seedSourcesFor(ns: string): string[] {
       >✕</span>
     </button>
 
-    <template v-if="mapping.activeNs && !hasProfile(mapping.activeNs) && seedSourcesFor(mapping.activeNs).length">
+    <template v-if="!modelStore.readOnly && mapping.activeNs && !hasProfile(mapping.activeNs) && seedSourcesFor(mapping.activeNs).length">
       <span class="seed-label">seed from</span>
       <select v-model="seedSource" class="seed-select" data-testid="seed-source">
         <option value="">—</option>

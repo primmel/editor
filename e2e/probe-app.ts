@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer'
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
-await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 3500))
 const info = await page.evaluate(() => ({
   workspace: document.querySelector('.workspace, .workspace-registry, .workspace-mapping, .error-state')?.className ?? 'NONE',

@@ -5,7 +5,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { load, type Standard } from '@primmel/primmel';
-import { autoLayout, SPACING_X, SPACING_Y } from '../layout';
+import { autoLayout, autoLayoutUnpositioned, SPACING_X, SPACING_Y } from '../layout';
 import { extractCanvas } from '../render';
 
 const TEXT = `root Root
@@ -111,5 +111,131 @@ canvas Root {
     const pos = Object.fromEntries(canvas.childs.map(c => [c.name, [c.x, c.y]]));
     expect(pos['A']).toEqual([0, 0]);
     expect(pos['B']).toEqual([0, SPACING_Y]);
+  });
+});
+
+describe('W4 — the viewer layout pass (autoLayoutUnpositioned)', () => {
+  it('an all-at-origin page (positions omitted parse to 0) gets the level walk', () => {
+    // The parser defaults missing x/y to 0, so an unpositioned page
+    // reads as every component stacked at the origin.
+    const model = load(`root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+start_event Start { }
+process A { }
+end_event Done { }
+
+canvas Root {
+  elements {
+    Start { }
+    A { }
+    Done { }
+  }
+  process_flow {
+    E1 { from Start to A }
+    E2 { from A to Done }
+  }
+}`);
+    expect(autoLayoutUnpositioned(model)).toBe(1);
+    const canvas = extractCanvas(model, null)!;
+    const pos = Object.fromEntries(canvas.childs.map(c => [c.name, [c.x, c.y]]));
+    expect(pos['Start']).toEqual([0, 0]);
+    expect(pos['A']).toEqual([SPACING_X, 0]);
+    expect(pos['Done']).toEqual([2 * SPACING_X, 0]);
+  });
+
+  it('an authored page (any off-origin component) is left exactly as written', () => {
+    const model = load(`root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+start_event Start { }
+process A { }
+end_event Done { }
+
+canvas Root {
+  elements {
+    Start { x 0 y 0 }
+    A { x 160 y 40 }
+    Done { x 320 y 0 }
+  }
+  process_flow {
+    E1 { from Start to A }
+    E2 { from A to Done }
+  }
+}`);
+    expect(autoLayoutUnpositioned(model)).toBe(0);
+    const canvas = extractCanvas(model, null)!;
+    const pos = Object.fromEntries(canvas.childs.map(c => [c.name, [c.x, c.y]]));
+    expect(pos['A']).toEqual([160, 40]); // the authored position survives
+  });
+
+  it('a model with no pages is a no-op', () => {
+    const model = load(`root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+process A { }`);
+    expect(autoLayoutUnpositioned(model)).toBe(0);
+  });
+
+  it('the data section stacks in a column right of the laid-out flow', () => {
+    const model = load(`root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+start_event Start { }
+process A { }
+end_event Done { }
+class D1 { }
+class D2 { }
+
+canvas Root {
+  elements {
+    Start { }
+    A { }
+    Done { }
+  }
+  data {
+    D1 { }
+    D2 { }
+  }
+  process_flow {
+    E1 { from Start to A }
+    E2 { from A to Done }
+  }
+}`);
+    expect(autoLayoutUnpositioned(model)).toBe(1);
+    const canvas = extractCanvas(model, null)!;
+    const flow = Object.fromEntries(canvas.childs.map(c => [c.name, [c.x, c.y]]));
+    expect(flow['Done']).toEqual([2 * SPACING_X, 0]);
+    const data = Object.fromEntries((canvas.data ?? []).map(c => [c.name, [c.x, c.y]]));
+    expect(data['D1']).toEqual([3 * SPACING_X, 0]);
+    expect(data['D2']).toEqual([3 * SPACING_X, SPACING_Y]);
   });
 });

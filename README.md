@@ -38,10 +38,30 @@ npm run dev        # http://localhost:5173
 
 ```bash
 npx vue-tsc --noEmit     # type check
-npx vitest run           # unit tests (148 tests)
+npx vitest run           # unit tests (213 tests)
 npm run build            # the production build
-./e2e/run-all.sh         # 22 e2e legs against the dev server
+./e2e/run-all.sh         # 24 e2e legs against the dev server (E2E_BASE overrides the port)
 ```
+
+## Embedding
+
+```ts
+import { mount } from '@primmel/editor';
+
+mount('#app', {
+  initialText,          // the .prl text to open (optional)
+  brand: { name, sub, logoUrl },  // the consumer's wordmark (optional)
+  readOnly: true,       // the viewer mode (optional)
+});
+```
+
+`readOnly: true` mounts the **viewer**: the store refuses every
+mutation (commands, code-editor writes, format, undo/redo) and the
+editing chrome (palette, New/Save/Import, inspector editing) hides;
+the tree, canvas, code view, mapping lenses, diff view and validation
+badge stay. Pages whose canvas components carry no authored layout get
+an in-memory `autoLayout` pass on load — never persisted back. The dev
+harness previews it at `http://localhost:5173/?readonly`.
 
 ## The architecture, in one paragraph
 
