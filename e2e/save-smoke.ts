@@ -1,10 +1,15 @@
 import puppeteer from 'puppeteer'
+import { rmSync } from 'node:fs'
+
+// The leg's write target lands in the repo root; never leave it behind
+// (covers every exit path below, green or red).
+process.on('exit', () => rmSync('tmp-save-smoke.prl', { force: true }))
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
 await page.setViewport({ width: 1440, height: 950 })
 page.on('pageerror', e => console.log('PAGEERROR:', String(e)))
-await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
 
 // 1. An edit dirties the model (the dot appears).
