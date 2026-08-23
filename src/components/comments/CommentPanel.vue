@@ -65,7 +65,7 @@ function reply(parentId: string) {
           <span class="comment-author">{{ c.author }}</span>
           <span class="comment-time">{{ c.timestamp.slice(0, 16).replace('T', ' ') }}</span>
           <span v-if="c.replyTo" class="comment-replyto">↳ {{ c.replyTo }}</span>
-          <span class="comment-actions">
+          <span class="comment-actions" v-if="!modelStore.readOnly">
             <button
               type="button"
               class="comment-action"
@@ -104,7 +104,7 @@ function reply(parentId: string) {
         </div>
       </div>
 
-      <div class="comment-add">
+      <div class="comment-add" v-if="!modelStore.readOnly">
         <input
           class="comment-input"
           v-model="draft"

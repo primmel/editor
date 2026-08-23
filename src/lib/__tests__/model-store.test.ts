@@ -61,3 +61,77 @@ describe('the model store', () => {
     expect(store.standard).toBe(before);
   });
 });
+
+describe('W4 — the read-only store (the viewer mode)', () => {
+  const UNPOSITIONED = `root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+start_event Start { }
+process A { }
+end_event Done { }
+
+canvas Root {
+  elements {
+    Start { }
+    A { }
+    Done { }
+  }
+  process_flow {
+    E1 { from Start to A }
+    E2 { from A to Done }
+  }
+}`;
+
+  it('every mutation path refuses; loading still works', () => {
+    const store = useModelStore();
+    store.setReadOnly(true);
+    store.loadText(store.rawText);
+    expect(store.standard).toBeTruthy();
+    expect(store.parseError).toBeNull();
+
+    const processes = store.standard!.processes.length;
+    store.execute(createElement('process', 'PX1', { x: 1, y: 2 }));
+    expect(store.standard!.processes.length).toBe(processes);
+    expect(store.dirty).toBe(false);
+    expect(store.canUndo).toBe(false);
+
+    const text = store.rawText;
+    store.setText('root X');
+    store.loadFile('root X');
+    store.format();
+    expect(store.rawText).toBe(text);
+    expect(store.parseError).toBeNull();
+
+    store.undo();
+    store.redo();
+    expect(store.standard!.processes.length).toBe(processes);
+  });
+
+  it('the layout pass fires on load: unpositioned pages draw, authored pages keep their positions', () => {
+    const store = useModelStore();
+    store.setReadOnly(true);
+    store.loadText(UNPOSITIONED);
+    const canvas = store.standard!.pages[0]!;
+    const pos = Object.fromEntries(canvas.childs.map(c => [c.name, [c.x, c.y]]));
+    expect(pos['Start']).toEqual([0, 0]);
+    expect(pos['A']).toEqual([160, 0]);
+    expect(pos['Done']).toEqual([320, 0]);
+    // The pass is a display projection: the code view's text is untouched.
+    expect(store.rawText).toBe(UNPOSITIONED);
+    expect(store.dirty).toBe(false);
+  });
+
+  it('edit mode (the default) never repositions on load', () => {
+    const store = useModelStore();
+    store.loadText(UNPOSITIONED);
+    const canvas = store.standard!.pages[0]!;
+    expect(canvas.childs.every(c => c.x === 0 && c.y === 0)).toBe(true);
+  });
+});

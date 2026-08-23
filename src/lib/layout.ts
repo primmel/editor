@@ -67,4 +67,42 @@ export function autoLayout(canvas: Canvas, model: Standard): void {
   }
 }
 
+/**
+ * The viewer's layout pass (Wave 4, the read-only mount): pages whose
+ * components carry NO authored layout get one autoLayout walk. The
+ * parser defaults missing x/y to 0, so "unpositioned" reads as every
+ * component stacked at the origin — never an authored arrangement. A
+ * page with any off-origin component is left exactly as written (mixed
+ * pages are an authoring act in progress, not the viewer's call), as is
+ * the single-component page (one node at the origin renders fine).
+ * In memory only — persisting positions back into files stays an
+ * authoring act, out of the viewer's scope. Returns the pages laid out.
+ */
+export function autoLayoutUnpositioned(model: Standard): number {
+  let laidOut = 0;
+  for (const page of model.pages) {
+    const childs = page.childs ?? [];
+    const data = page.data ?? [];
+    if (childs.length + data.length < 2) continue;
+    const allAtOrigin = [...childs, ...data].every(
+      (c) => (c.x ?? 0) === 0 && (c.y ?? 0) === 0,
+    );
+    if (!allAtOrigin) continue;
+    autoLayout(page, model);
+    // autoLayout walks the flow childs only; the data section stacks in
+    // a column right of the laid-out flow.
+    if (data.length > 0) {
+      const columnX = childs.length
+        ? Math.max(...childs.map((c) => c.x ?? 0)) + SPACING_X
+        : 0;
+      data.forEach((c, i) => {
+        c.x = columnX;
+        c.y = i * SPACING_Y;
+      });
+    }
+    laidOut++;
+  }
+  return laidOut;
+}
+
 export { SPACING_X, SPACING_Y };

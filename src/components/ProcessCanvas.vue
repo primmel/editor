@@ -178,6 +178,8 @@ function onNodeDoubleClick(node: RenderNode) {
 function onNodeMouseDown(e: MouseEvent, node: RenderNode) {
   e.stopPropagation();
   if (props.mode === 'select') return; // pick happens on click
+  // The viewer: no drag, no connect — the click selects (onNodeClick).
+  if (modelStore.readOnly) return;
   if (e.shiftKey) {
     // Shift+drag = connect (the port-to-port edge creation).
     connectFrom.value = node;
@@ -241,14 +243,14 @@ function commitDrag() {
 
 // ── Edge interactions ────────────────────────────────────────────────
 function onEdgeClick(edgeId: string) {
-  if (props.mode !== 'edit') return;
+  if (props.mode !== 'edit' || modelStore.readOnly) return;
   selectedEdgeId.value = edgeId;
   const edge = canvas.value?.edges.find(e => e.id === edgeId);
   edgeCondition.value = edge?.condition ?? '';
 }
 
 function onEdgeDoubleClick(edgeId: string) {
-  if (props.mode !== 'edit') return;
+  if (props.mode !== 'edit' || modelStore.readOnly) return;
   if (!canvas.value) return;
   modelStore.execute(removeEdge(canvas.value.id, edgeId));
   selectedEdgeId.value = null;
@@ -264,7 +266,7 @@ function applyEdgeCondition() {
 // ── Palette drops (TODO.editor/03) ───────────────────────────────────
 function onPaletteDrop(e: DragEvent) {
   e.preventDefault();
-  if (props.mode !== 'edit') return;
+  if (props.mode !== 'edit' || modelStore.readOnly) return;
   const payload = e.dataTransfer?.getData('application/x-primmel-palette');
   if (!payload || !canvas.value) return;
   const entry = JSON.parse(payload) as PaletteKind;
@@ -273,7 +275,7 @@ function onPaletteDrop(e: DragEvent) {
 }
 
 function onPaletteDragOver(e: DragEvent) {
-  if (props.mode !== 'edit') return;
+  if (props.mode !== 'edit' || modelStore.readOnly) return;
   if (e.dataTransfer?.types.includes('application/x-primmel-palette')) {
     e.preventDefault();
   }
@@ -469,14 +471,19 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
       <button class="ctrl-btn" @click="onEdgeDoubleClick(selectedEdgeId)" title="Delete edge">✕</button>
     </div>
 
-    <div class="canvas-hint" v-if="mode === 'edit' && !draggingNode && !connectFrom">
+    <div class="canvas-hint" v-if="mode === 'edit' && !modelStore.readOnly && !draggingNode && !connectFrom">
       <kbd>drag</kbd> nodes · <kbd>shift+drag</kbd> to connect · <kbd>dbl-click</kbd> to enter · <kbd>scroll</kbd> to zoom
+    </div>
+
+    <div class="canvas-hint" v-else-if="mode === 'edit' && modelStore.readOnly">
+      <kbd>drag</kbd> to pan · <kbd>scroll</kbd> to zoom · <kbd>dbl-click</kbd> to enter
     </div>
 
     <div v-if="refusal" class="canvas-refusal" data-testid="canvas-refusal">{{ refusal }}</div>
 
     <div v-if="!canvas" class="canvas-empty">
-      No canvas in this model. Add a <code>canvas Root &#123; &#125;</code> block.
+      <template v-if="modelStore.readOnly">This model declares no canvas.</template>
+      <template v-else>No canvas in this model. Add a <code>canvas Root &#123; &#125;</code> block.</template>
     </div>
   </div>
 </template>

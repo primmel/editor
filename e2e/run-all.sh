@@ -1,7 +1,8 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────────
 # The e2e suite (TODO.editor/19) — every leg, in order, against the
-# dev server (npm run dev on :5173). Any leg's failure stops the run.
+# dev server (npm run dev on :5173; override with E2E_BASE when the
+# port is taken). Any leg's failure stops the run.
 # ─────────────────────────────────────────────────────────────────────
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -30,7 +31,8 @@ for leg in \
   r7-smoke \
   oiml-cs-smoke \
   scale-smoke \
-  save-smoke
+  save-smoke \
+  viewer-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

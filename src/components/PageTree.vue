@@ -31,6 +31,7 @@ const renameDraft = ref('');
 const renameError = ref('');
 
 function beginRename(id: string) {
+  if (modelStore.readOnly) return; // the viewer never renames
   renamingId.value = id;
   renameDraft.value = id;
   renameError.value = '';
@@ -64,7 +65,7 @@ function createPage() {
   <div class="page-tree" data-testid="page-tree">
     <div class="page-tree-header">
       Pages
-      <button type="button" class="page-add" title="new page" data-testid="page-add" @click="createPage">+</button>
+      <button v-if="!modelStore.readOnly" type="button" class="page-add" title="new page" data-testid="page-add" @click="createPage">+</button>
     </div>
 
     <PageTreeNode
@@ -91,7 +92,7 @@ function createPage() {
           :data-testid="`page-orphan-${id}`"
           @click="ui.setCanvas(id)"
         >{{ id }}</button>
-        <button type="button" class="page-rename" title="rename" @click="beginRename(id)">✎</button>
+        <button v-if="!modelStore.readOnly" type="button" class="page-rename" title="rename" @click="beginRename(id)">✎</button>
       </div>
       <div v-if="renamingId && orphans.includes(renamingId)" class="rename-row">
         <input

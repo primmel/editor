@@ -103,7 +103,7 @@ function selectItem(type: SelectionType, id: string) {
       <div class="group-header">
         {{ group.label }} ({{ group.items.length }})
         <button
-          v-if="group.createPrefix"
+          v-if="group.createPrefix && !modelStore.readOnly"
           type="button"
           class="group-add"
           :title="`new ${group.label.toLowerCase()}`"

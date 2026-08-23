@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, shallowRef } from 'vue';
 import { dump, load, type Standard } from '@primmel/primmel';
 import type { Command } from '../lib/commands';
+import { autoLayoutUnpositioned } from '../lib/layout';
 
 // ─────────────────────────────────────────────────────────────────────
 // The model store (TODO.editor/01) — the AST is the single source of
@@ -19,6 +20,15 @@ export const useModelStore = defineStore('model', () => {
   const history = ref<Command[]>([]);
   const cursor = ref(0);
   const savedCursor = ref(0);
+
+  /** The viewer flag (Wave 4): when set by mount(), EVERY mutation path
+   *  refuses — commands, the code editor's text writes, format, undo/redo.
+   *  The tree, code view, canvas, mapper lenses, diff and validation stay
+   *  readable; loading stays allowed (it is how the model arrives). */
+  const readOnly = ref(false);
+  function setReadOnly(on: boolean) {
+    readOnly.value = on;
+  }
 
   /** The text projection — derived; synced after every command and
    *  editable in the code editor. */
@@ -46,6 +56,9 @@ export const useModelStore = defineStore('model', () => {
       savedCursor.value = 0;
       rawText.value = text;
       loadedText.value = text;
+      // The viewer's layout pass: unpositioned pages get an in-memory
+      // autoLayout so the canvas can draw them. Never persisted.
+      if (readOnly.value && standard.value) autoLayoutUnpositioned(standard.value);
       version.value++;
     } catch (e) {
       parseError.value = (e as Error).message;
@@ -53,7 +66,7 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function execute(command: Command) {
-    if (!standard.value) return;
+    if (readOnly.value || !standard.value) return;
     command.apply(standard.value);
     history.value.splice(cursor.value);
     history.value.push(command);
@@ -63,7 +76,7 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function undo() {
-    if (!standard.value || cursor.value <= 0) return;
+    if (readOnly.value || !standard.value || cursor.value <= 0) return;
     cursor.value--;
     history.value[cursor.value]!.revert(standard.value);
     syncProjection();
@@ -71,7 +84,7 @@ export const useModelStore = defineStore('model', () => {
   }
 
   function redo() {
-    if (!standard.value || cursor.value >= history.value.length) return;
+    if (readOnly.value || !standard.value || cursor.value >= history.value.length) return;
     history.value[cursor.value]!.apply(standard.value);
     cursor.value++;
     syncProjection();
@@ -89,8 +102,9 @@ export const useModelStore = defineStore('model', () => {
   }
 
   /** The code editor's write path: text → AST (parse errors surface,
-   *  the AST stays until the text parses). */
+   *  the AST stays until the text parses). Refused in the viewer. */
   function setText(text: string) {
+    if (readOnly.value) return;
     rawText.value = text;
     try {
       const m = load(text, { strict: true });
@@ -106,11 +120,12 @@ export const useModelStore = defineStore('model', () => {
 
   /** File-open path (CodeEditor): identical to setText. */
   function loadFile(content: string) {
+    if (readOnly.value) return;
     setText(content);
   }
 
   function format() {
-    if (!standard.value) return;
+    if (readOnly.value || !standard.value) return;
     rawText.value = dump(standard.value);
   }
 
@@ -124,6 +139,7 @@ export const useModelStore = defineStore('model', () => {
   return {
     standard, model, parseError, version, rawText, loadedText,
     history, cursor, dirty, canUndo, canRedo,
+    readOnly, setReadOnly,
     loadText, setText, loadFile, format, execute, undo, redo, serialize, markSaved,
   };
 });

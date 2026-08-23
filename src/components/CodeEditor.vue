@@ -100,6 +100,9 @@ onMounted(async () => {
     value: model.rawText,
     language: 'primmel',
     theme: 'primmel-atelier',
+    // The viewer mounts the code VIEW: the text is read-only (the store
+    // refuses setText too — one flag, two doors).
+    readOnly: model.readOnly,
     fontFamily: "'SF Mono', Menlo, 'JetBrains Mono', monospace",
     fontSize: 13,
     lineHeight: 1.7 * 13,
@@ -247,6 +250,7 @@ function download() {
 
 function onDrop(e: DragEvent) {
   e.preventDefault();
+  if (model.readOnly) return; // the viewer never loads files
   const file = e.dataTransfer?.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -259,7 +263,7 @@ function onDrop(e: DragEvent) {
   <div class="code-editor" @drop="onDrop" @dragover.prevent>
     <div class="editor-header">
       <span class="filename">{{ fileName }}</span>
-      <div class="editor-actions">
+      <div class="editor-actions" v-if="!model.readOnly">
         <button class="action-btn" @click="openFile">Open</button>
         <button class="action-btn save" @click="saveFile" title="Save (native file picker)">Save</button>
         <button class="action-btn" @click="model.format()">Format</button>

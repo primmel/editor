@@ -4,7 +4,7 @@ const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] 
 const page = await browser.newPage()
 await page.setViewport({ width: 1440, height: 950 })
 page.on('pageerror', e => console.log('PAGEERROR:', String(e)))
-await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' })
+await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
 
 // 1. The Code tab mounts Monaco (no worker errors).

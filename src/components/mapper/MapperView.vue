@@ -108,6 +108,7 @@ function loadDocumentFile() {
 
 // ── The pick flow (click one side, then the other) ───────────────────
 function onPick(side: 'ref' | 'imp', id: string) {
+  if (modelStore.readOnly) return; // the viewer's mapper is a read-only lens
   const prev = mapping.picked;
   if (!prev || prev.side === side) {
     mapping.picked = { side, id };
@@ -127,6 +128,7 @@ function onPick(side: 'ref' | 'imp', id: string) {
 }
 
 function onEditPair(impId: string, refId: string) {
+  if (modelStore.readOnly) return; // the viewer's mapper is a read-only lens
   const existing = profile.value?.mappings[impId]?.find(
     p => p.target === targetRef(namespace.value!, refId),
   );
@@ -227,7 +229,7 @@ const hoveredEdge = ref<string | null>(null);
   <div class="mapper" ref="container">
     <ProfileSwitcher />
 
-    <div class="mapper-toolbar">
+    <div class="mapper-toolbar" v-if="!modelStore.readOnly">
       <button class="mapper-btn" data-testid="load-ref" @click="loadReference">
         {{ refModel ? 'load another reference' : 'load reference model' }}
       </button>
@@ -247,6 +249,10 @@ const hoveredEdge = ref<string | null>(null);
       </span>
     </div>
 
+    <div class="mapper-toolbar" v-else-if="namespace">
+      <span class="mapper-ns" data-testid="ref-namespace">{{ namespace }}</span>
+    </div>
+
     <div v-if="mapping.lastSeed" class="seed-review" data-testid="seed-review">
       <span class="seed-review-title">
         seeded {{ mapping.lastSeed.toNs }} from {{ mapping.lastSeed.fromNs }}:
@@ -264,7 +270,7 @@ const hoveredEdge = ref<string | null>(null);
     <CoverageLegend v-if="refModel && !mapping.docMode" />
 
     <AutoMapPanel
-      v-if="refModel && !mapping.docMode && namespace"
+      v-if="refModel && !mapping.docMode && namespace && !modelStore.readOnly"
       :implementation-model="implementationModel"
       :reference-model="refModel"
       :namespace="namespace"

@@ -20,6 +20,14 @@ export interface MountOptions {
   plugins?: StudioPlugin[];
   initialText?: string;
   /**
+   * The viewer mode (Wave 4): when true, the store refuses every mutation
+   * (commands, code-editor writes, format, undo/redo) and the editing
+   * chrome — palette, New/Save/Import, inspector editing — hides. The
+   * tree, canvas, code view, mapping lenses, diff view and validation
+   * badge stay. Unpositioned pages get an in-memory autoLayout on load.
+   */
+  readOnly?: boolean;
+  /**
    * Program-specific branding. The editor stays program-agnostic by default
    * ("Primmel Atelier"); consumers override at mount time. The brand is
    * surfaced via `provide('brand')` and read by App.vue.
@@ -34,9 +42,11 @@ export function mount(el: string | Element, opts: MountOptions = {}): VueApp {
   const app = createApp(App).use(pinia);
   if (opts.brand) app.provide('brand', opts.brand);
   opts.ready?.(app);
+  const modelStore = useModelStore(pinia);
+  if (opts.readOnly) modelStore.setReadOnly(true);
   app.mount(el);
   if (opts.initialText !== undefined) {
-    useModelStore(pinia).loadText(opts.initialText);
+    modelStore.loadText(opts.initialText);
   }
   return app;
 }
