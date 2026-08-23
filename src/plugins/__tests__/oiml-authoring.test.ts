@@ -19,10 +19,13 @@ import { updateElement, type Command } from '../../lib/commands';
 import { oimlPlugin } from '../oiml';
 
 const MODEL = readFileSync(join(__dirname, '../../../demo/oiml-cs/model.prl'), 'utf8');
-// The oiml-cs package.primmel lives in a sibling repo (oimlsmart/smart); the
-// test reads it when available and skips the package-manifest assertion when
-// the local checkout isn't present (e.g. in CI).
-const PACKAGE_PATH = join(__dirname, '../../../../../oimlsmart/smart/primmel-packages/oiml-cs/package.primmel');
+// The package-manifest fixture lives in a sibling repo (oimlsmart/smart);
+// the test reads it when available and skips the package-manifest assertion
+// when the local checkout isn't present (e.g. in CI). The fixture is
+// oiml-smart-core: the former oiml-cs package's content merged into it on
+// 2026-08-13 (its own manifest description says so), so it is also the
+// retarget for the wave's original oiml-cs path.
+const PACKAGE_PATH = join(__dirname, '../../../../../oimlsmart/smart/primmel-packages/oiml-smart-core/package.primmel');
 const PACKAGE: string | null = existsSync(PACKAGE_PATH)
   ? readFileSync(PACKAGE_PATH, 'utf8')
   : null;
@@ -78,10 +81,10 @@ describe('40 — the package manifest', () => {
   // Skipped in CI — the oiml-smart checkout isn't present there. Run locally
   // with the sibling oimlsmart/smart repo at the expected path.
   const itIfLocal = PACKAGE ? it : it.skip;
-  itIfLocal('the oiml-cs package.primmel parses with id/kind/uses/requires/provides', () => {
+  itIfLocal('the oiml-smart-core package.primmel parses with id/kind/uses/requires/provides', () => {
     const ast = load(PACKAGE!, { strict: true });
     const manifest = ast.packageManifest!;
-    expect(manifest.id).toBe('oiml-cs');
+    expect(manifest.id).toBe('oiml-smart-core');
     expect(manifest.kind).toBe('core');
     expect(manifest.uses).toEqual(['iso-iec-17000', 'iso-iec-17065', 'iso-iec-17025', 'iso-iec-17067']);
     expect(manifest.requires).toEqual(manifest.uses);
