@@ -20,16 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # TRANSITIONAL (TODO.ops/04's blocker): @oimlsmart/oiml-pubid is
-      # not yet on npm (the first publish needs npm-side auth), so the
-      # file: dependency's target is checked out alongside. When the
-      # registry carries it, this step and the file: spec retire
-      # together.
-      - name: Checkout oiml-pubid (the file: dependency)
-        uses: actions/checkout@v4
-        with:
-          repository: oimlsmart/oiml-pubid
-          path: ../oimlsmart/oiml-pubid
+      # @oimlsmart/oiml-pubid is a github: dependency — npm ci fetches it
+      # from the public repo directly; no sibling checkout (an earlier
+      # revision checked it out at ../oimlsmart/oiml-pubid, a path outside
+      # the workspace that failed every run at workflow-parse time).
 
       - name: Set up Node 24
         uses: actions/setup-node@v4
