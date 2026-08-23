@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { useUiStore } from '../stores/ui';
+import { useModelStore } from '../stores/model';
 import { activePlugins } from '../plugins';
 import ProcessInspector from './inspectors/ProcessInspector.vue';
 import OtherInspectors from './inspectors/OtherInspectors.vue';
@@ -11,6 +12,10 @@ import EnumInspector from './inspectors/EnumInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
+const modelStore = useModelStore();
+
+/** The viewer (Wave 4): the inspector renders read-only summaries. */
+const readOnly = computed(() => modelStore.readOnly);
 
 const target = computed(() => {
   if (!ui.selection) return null;
@@ -75,7 +80,9 @@ const pluginInspector = computed(() => {
       </div>
     </template>
     <div v-else class="inspector-empty">
-      Click an element in the tree or canvas to inspect and edit its properties.
+      {{ readOnly
+        ? 'Click an element in the tree or canvas to inspect its properties.'
+        : 'Click an element in the tree or canvas to inspect and edit its properties.' }}
     </div>
   </div>
 </template>

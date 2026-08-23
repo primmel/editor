@@ -381,8 +381,14 @@ const hoveredEdge = ref<string | null>(null);
     </div>
 
     <div v-else class="mapper-empty">
-      <p>Load a reference model (.prl) or a document (.xml) to start mapping.</p>
-      <p class="hint">The reference is the standard being adopted; the implementation is the working model. Pairs land in the implementation's <code>map_profile</code>.</p>
+      <template v-if="modelStore.readOnly">
+        <p>This model declares no mapping profiles.</p>
+        <p class="hint">The mapping lenses appear when the model carries a <code>map_profile</code>.</p>
+      </template>
+      <template v-else>
+        <p>Load a reference model (.prl) or a document (.xml) to start mapping.</p>
+        <p class="hint">The reference is the standard being adopted; the implementation is the working model. Pairs land in the implementation's <code>map_profile</code>.</p>
+      </template>
     </div>
 
     <MapPairDialog
