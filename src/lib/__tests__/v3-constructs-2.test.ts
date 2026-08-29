@@ -17,19 +17,26 @@ import {
   type Command,
 } from '../commands';
 import {
+  newActivityArchetype,
   newArtifactDefinition,
   newArtifactInstance,
   newAttributeDefinition,
+  newCompetenceKind,
   newConformanceClass,
   newConnectorProfile,
+  newDiscrepancyRecord,
   newDual,
+  newFormulasUsed,
   newInstance,
   newInstrument,
+  newInvariant,
   newMonitor,
   newPassport,
+  newPredicate,
   newQuantityRegister,
   newReferenceMaterial,
   newSymbol,
+  newTextContent,
 } from '../factory';
 
 /** Apply commands against a fresh strict parse, returning the state. */
@@ -962,5 +969,166 @@ describe('W3.2 the passport vocabularies — the browser-bundle gap pin', () => 
     expect(kernel.PASSPORT_ACCESS_CLASSES).toEqual(['public', 'restricted', 'authority']);
     expect(kernel.PASSPORT_CONTENT_CLASSES).toEqual(['identity', 'composition', 'promises_as_verified', 'live_compliance_status', 'artifacts', 'sustainability']);
     expect(kernel.PASSPORT_UPI_LEVELS).toEqual(['model', 'batch', 'item']);
+  });
+});
+
+describe('W3.2 the registry plane — invariants, formulas-used, texts, archetypes, competence kinds, predicates, discrepancy records', () => {
+  const REGISTRY = `invariant INV-1 {
+  name "No bare numbers"
+  statement "every physical quantity is a QuantityValue"
+  severity error
+  applies_to { QuantityValue }
+  source "docs/oiml-core/09-invariants.md#9.2"
+  enforcement { kernel:C32 gate:schema-quantity-value }
+}
+
+formulas_used /conf/metrological/mdlo {
+  name "MDLO evaluation formulas"
+  description "The evaluation-level quantities"
+  formulas { conversion_factor_f e_l }
+  source { doc "urn:oiml:pub:r:60-3:2021" clause "2.1" }
+}
+
+text load-cell.definition {
+  spell de "Wägezelle"
+  spell fr "Capteur de force"
+}
+
+activity_archetype peer-assessment {
+  label "peer assessment"
+  clause "6.2"
+  definition "assessment of a body by others in the same field"
+  parent assessment
+}
+
+competence_kind force-measurement {
+  label "Force measurement"
+  definition "d"
+  source { doc "urn:iso:std:iso-iec:17025:2017" clause "6.2" }
+  method_standard iec-61000-4-4 "IEC 61000-4-4 — bursts"
+}
+
+predicate derives-from {
+  kind citation
+  description "the clause-URN provenance"
+  subject_kinds { requirement }
+  target_kinds { document }
+  resolution must-resolve
+  inverse derived-in
+  transitive true
+}
+
+discrepancy_record dr-1 {
+  status open
+  summary "The 2017 and 2021 editions disagree on the creep band"
+  sources { "urn:oiml:pub:r:60:2017" "urn:oiml:pub:r:60:2021" }
+}
+`;
+
+  it('creates all seven kinds with the parse defaults; the dump round-trips', () => {
+    const ast = run(
+      REGISTRY,
+      createConstruct(a => a.invariants, newInvariant('INV-2')),
+      createConstruct(a => a.formulasUsed, newFormulasUsed('/conf/other')),
+      createConstruct(a => a.texts, newTextContent('t.x')),
+      createConstruct(a => a.activityArchetypes, newActivityArchetype('aa-new')),
+      createConstruct(a => a.competenceKinds, newCompetenceKind('ck-new')),
+      createConstruct(a => a.predicates, newPredicate('cites')),
+      createConstruct(a => a.discrepancyRecords, newDiscrepancyRecord('dr-2')),
+    );
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.invariants.map(i => i.id)).toContain('INV-2');
+    expect(reloaded.formulasUsed.map(f => f.id)).toContain('/conf/other');
+    expect(reloaded.texts.map(t => t.id)).toContain('t.x');
+    expect(reloaded.activityArchetypes.map(a => a.id)).toContain('aa-new');
+    expect(reloaded.competenceKinds.map(c => c.id)).toContain('ck-new');
+    expect(reloaded.predicates.map(p => p.id)).toContain('cites');
+    expect(reloaded.discrepancyRecords.map(d => d.id)).toContain('dr-2');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('the invariant enforcement edits as the C90 XOR (claims list XOR aspirational)', () => {
+    const ast = run(REGISTRY, updateConstruct(a => a.invariants, 'INV-1', {
+      enforcement: { aspirational: true, claims: [] },
+    }));
+    const text = dump(ast);
+    expect(text).toContain('enforcement aspirational');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.invariants[0]?.enforcement.aspirational).toBe(true);
+    expect(validate(reloaded)).toEqual([]);
+    const back = run(REGISTRY, updateConstruct(a => a.invariants, 'INV-1', {
+      enforcement: { aspirational: false, claims: ['kernel:C32', 'linker:quantity-coherence'] },
+    }));
+    expect(dump(back)).toContain('enforcement { kernel:C32 linker:quantity-coherence }');
+  });
+
+  it('the formulas-used trace edits its formulas + sourceRefs (the repeated source blocks)', () => {
+    const patch = updateConstruct(a => a.formulasUsed, '/conf/metrological/mdlo', {
+      formulas: ['conversion_factor_f', 'e_l', 'e_r'],
+      sourceRefs: [{ doc: 'urn:oiml:pub:r:60-3:2021', clause: '2.1' }, { doc: 'urn:oiml:pub:r:60-3:2021', clause: '2.2' }],
+    });
+    const ast = run(REGISTRY, patch);
+    const text = dump(ast);
+    expect(text).toContain('formulas { conversion_factor_f e_l e_r }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.formulasUsed[0]?.sourceRefs).toHaveLength(2);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
+  });
+
+  it('the text spellings edit (incl. the via marker)', () => {
+    const patch = updateConstruct(a => a.texts, 'load-cell.definition', {
+      entries: [
+        { spelling: 'de', value: 'Wägezelle' },
+        { spelling: 'fr', value: 'Capteur de force (normalisé)', via: 'iso24229:latn:fr:x-derive' },
+      ],
+    });
+    const ast = run(REGISTRY, patch);
+    const text = dump(ast);
+    expect(text).toContain('spell de "Wägezelle"');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.texts[0]?.entries[1]?.via).toBe('iso24229:latn:fr:x-derive');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
+  });
+
+  it('the archetype, competence kind (with method standards), predicate, and discrepancy record edit and undo', () => {
+    const ast = load(REGISTRY, { strict: true });
+    const edits = [
+      updateConstruct(a => a.activityArchetypes, 'peer-assessment', { label: 'peer assessment (edited)', parent: '' }),
+      updateConstruct(a => a.competenceKinds, 'force-measurement', { methodStandards: [{ id: 'iec-61000-4-4', title: 'IEC 61000-4-4 — bursts' }, { id: 'iec-60068-2-30', title: 'Damp heat' }] }),
+      updateConstruct(a => a.predicates, 'derives-from', { symmetric: true, resolution: 'best-effort' }),
+      updateConstruct(a => a.discrepancyRecords, 'dr-1', { status: 'resolved', resolution: 'follows_clause_x', governing: 'urn:oiml:pub:r:60:2021', rationale: 'the 2021 edition supersedes' }),
+    ];
+    for (const c of edits) c.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('label "peer assessment (edited)"');
+    expect(text).toContain('method_standard iec-60068-2-30 "Damp heat"');
+    expect(text).toContain('symmetric true');
+    expect(text).toContain('resolution follows_clause_x');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.competenceKinds[0]?.methodStandards).toHaveLength(2);
+    expect(reloaded.discrepancyRecords[0]?.governing).toBe('urn:oiml:pub:r:60:2021');
+    expect(validate(reloaded)).toEqual([]);
+    for (const c of [...edits].reverse()) c.revert(ast);
+    expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
+  });
+
+  it('deletes each registry kind; the removals revert to the exact slots', () => {
+    const dels = [
+      deleteConstruct(a => a.invariants, 'INV-1'),
+      deleteConstruct(a => a.formulasUsed, '/conf/metrological/mdlo'),
+      deleteConstruct(a => a.texts, 'load-cell.definition'),
+      deleteConstruct(a => a.activityArchetypes, 'peer-assessment'),
+      deleteConstruct(a => a.competenceKinds, 'force-measurement'),
+      deleteConstruct(a => a.predicates, 'derives-from'),
+      deleteConstruct(a => a.discrepancyRecords, 'dr-1'),
+    ];
+    const ast = run(REGISTRY, ...dels);
+    expect(dump(ast)).toBe(dump(load('', { strict: true })));
+    for (const d of [...dels].reverse()) d.revert(ast);
+    expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
   });
 });

@@ -12,7 +12,9 @@ export type SelectionType =
   | 'symbol' | 'attributeDefinition'
   | 'quantityRegister' | 'dual' | 'instrument' | 'conformanceClass'
   | 'instance' | 'artifactDefinition' | 'artifactInstance'
-  | 'connectorProfile' | 'monitor' | 'passport';
+  | 'connectorProfile' | 'monitor' | 'passport'
+  | 'invariant' | 'formulasUsed' | 'text' | 'activityArchetype'
+  | 'competenceKind' | 'predicate' | 'discrepancyRecord';
 
 export interface Selection {
   id: string;

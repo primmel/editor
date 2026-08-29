@@ -34,6 +34,13 @@ import ArtifactInstanceInspector from './inspectors/ArtifactInstanceInspector.vu
 import ConnectorProfileInspector from './inspectors/ConnectorProfileInspector.vue';
 import MonitorInspector from './inspectors/MonitorInspector.vue';
 import PassportInspector from './inspectors/PassportInspector.vue';
+import InvariantInspector from './inspectors/InvariantInspector.vue';
+import FormulasUsedInspector from './inspectors/FormulasUsedInspector.vue';
+import TextInspector from './inspectors/TextInspector.vue';
+import ActivityArchetypeInspector from './inspectors/ActivityArchetypeInspector.vue';
+import CompetenceKindInspector from './inspectors/CompetenceKindInspector.vue';
+import PredicateInspector from './inspectors/PredicateInspector.vue';
+import DiscrepancyRecordInspector from './inspectors/DiscrepancyRecordInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -216,6 +223,41 @@ const pluginInspector = computed(() => {
       />
       <PassportInspector
         v-else-if="target.type === 'passport'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <InvariantInspector
+        v-else-if="target.type === 'invariant'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <FormulasUsedInspector
+        v-else-if="target.type === 'formulasUsed'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <TextInspector
+        v-else-if="target.type === 'text'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ActivityArchetypeInspector
+        v-else-if="target.type === 'activityArchetype'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <CompetenceKindInspector
+        v-else-if="target.type === 'competenceKind'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <PredicateInspector
+        v-else-if="target.type === 'predicate'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <DiscrepancyRecordInspector
+        v-else-if="target.type === 'discrepancyRecord'"
         :model="props.model"
         :element-id="target.id"
       />
