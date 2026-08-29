@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 213 tests
+cd ~/src/primmel/editor && npx vitest run           # 228 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 24 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 25 legs, needs npm run dev on :5173
 ```
 
 ## The laws
@@ -32,8 +32,8 @@ cd ~/src/primmel/editor && ./e2e/run-all.sh         # 24 legs, needs npm run dev
 2. **The kernel owns the semantics.** Parsing, serialization, the
    coverage calculus, model-diff, the type vocabulary — import from
    `@primmel/primmel`, never reimplement. Bridges live in `src/lib/`.
-   The kernel is the LOCAL package (`file:../primmel-ts/packages/primmel`)
-   — rebuild its `dist/` AND `dist-browser/` after upstream changes.
+   The kernel is the PUBLISHED package (`^1.8.0`, the package-load API:
+   `loadPackageWithProvenance` + `groupBySourceFile`).
 3. **Programs plug in, they don't branch the kernel.** The registry
    (`src/plugins/`) carries program conveniences; `activePlugins(model)`
    decides.
@@ -55,21 +55,24 @@ cd ~/src/primmel/editor && ./e2e/run-all.sh         # 24 legs, needs npm run dev
 
 ```
 src/
-├── stores/        model (AST+history), ui, mapping, diff, simulation, measurement
+├── stores/        model (AST+history, the package session), ui, mapping, diff, simulation, measurement
 ├── lib/           pure logic: commands, render, layout, edges, pages, factory,
 │                  mapper, multi-map, coverage, automap, diff-view, simulator,
 │                  comments, measurement, document-model, mmel-import, save,
-│                  monaco-language, monaco-prl, templates, validation (+ __tests__)
+│                  package (the package-API bridge), package-save (the per-file
+│                  write plan), monaco-language, monaco-prl, templates,
+│                  validation (+ __tests__)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel, CodeEditor,
 │                  ElementInspector + inspectors/ + fields/, mapper/, diff/,
 │                  simulation/, comments/, measurement/, validation/,
-│                  ImportPanel, SavePanel, NewModelDialog
+│                  ImportPanel, SavePanel, NewModelDialog, OpenPackageDialog
 ├── plugins/       the registry (types, index) + oiml/ (the first program)
 └── App.vue        the workspace shell + the dev/e2e window.__stores hook
 demo/              the R 7 tutorial model (the dual demo with smart-r60)
 docs/              the user guide + diagrams
 e2e/               the puppeteer legs + run-all.sh
-scripts/           audit-typing.mjs (the typing gate), save-api-guard.ts
+scripts/           audit-typing.mjs (the typing gate), save-api-guard.ts,
+                   package-api-guard.ts + package-open.ts (the package API)
 ```
 
 ## The dev/e2e hook
