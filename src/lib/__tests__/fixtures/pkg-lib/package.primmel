@@ -1,0 +1,8 @@
+package {
+  id pkg-lib
+  kind module
+  title "Probe Library"
+  version "1.0.0"
+  editions { "1.0.0" }
+  baseUrn "urn:example:pkg-lib:1.0.0"
+}

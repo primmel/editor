@@ -10,6 +10,12 @@ const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
 const modelStore = useModelStore();
 
+/** The package file map (TODO.editor wave 1) — when the unit of work
+ *  is a package, the tree opens with its files (construct counts from
+ *  the provenance load); imported packages' files follow, dimmed (they
+ *  are context, never the unit of work). */
+const pkg = computed(() => modelStore.pkg);
+
 interface TreeGroup {
   label: string;
   type: SelectionType;
@@ -99,6 +105,33 @@ function selectItem(type: SelectionType, id: string) {
 
 <template>
   <div class="model-tree">
+    <template v-if="pkg">
+      <div class="tree-group" data-testid="package-files">
+        <div class="group-header">package {{ pkg.id }} — files ({{ pkg.files.length }})</div>
+        <ul class="group-items">
+          <li
+            v-for="f in pkg.files"
+            :key="f.path"
+            class="pkg-file"
+            :data-testid="`package-file-${f.path}`"
+            :title="f.path"
+          >
+            <span class="item-id">{{ f.path }}</span>
+            <span class="item-detail">{{ f.role === 'manifest' ? 'manifest' : `${f.constructs} constructs` }}</span>
+          </li>
+        </ul>
+      </div>
+      <div v-for="imp in pkg.imports" :key="imp.package" class="tree-group" :data-testid="`package-import-${imp.package}`">
+        <div class="group-header">uses {{ imp.package }}</div>
+        <ul class="group-items">
+          <li v-for="f in imp.files" :key="imp.package + '/' + f.path" class="pkg-file import" :title="`${imp.package}/${f.path}`">
+            <span class="item-id">{{ f.path }}</span>
+            <span class="item-detail">{{ f.constructs }} constructs</span>
+          </li>
+        </ul>
+      </div>
+    </template>
+
     <div v-for="group in groups" :key="group.label" class="tree-group">
       <div class="group-header">
         {{ group.label }} ({{ group.items.length }})
@@ -235,4 +268,8 @@ li.active .item-detail { color: var(--text-soft); font-style: normal; }
   padding: 2rem 1rem;
   text-align: center;
 }
+/* The package file map (Wave 1): structure rows, not selections. */
+.pkg-file { cursor: default; }
+.pkg-file:hover { background: none; }
+.pkg-file.import .item-id { color: var(--text-faint); }
 </style>

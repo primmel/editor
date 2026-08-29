@@ -1,0 +1,5 @@
+// The app's process file — a comment the save must never strip
+// when OTHER files change.
+process assemble {
+  name "Assemble widgets"
+}

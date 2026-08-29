@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, shallowRef } from 'vue';
 import { dump, load, type Standard } from '@primmel/primmel';
 import type { Command } from '../lib/commands';
+import type { PackageOpenResult } from '../lib/package';
 import { autoLayoutUnpositioned } from '../lib/layout';
 
 // ─────────────────────────────────────────────────────────────────────
@@ -38,6 +39,15 @@ export const useModelStore = defineStore('model', () => {
    *  save preview diffs against THIS, not the live projection). */
   const loadedText = ref(SAMPLE_MODEL);
 
+  /** The package session (TODO.editor wave 1) — set when the unit of
+   *  work is a v3 PACKAGE directory (the dev server's provenance load):
+   *  the package identity, the file inventory, and the per-file
+   *  provenance the package-aware save splits by. Null in single-file
+   *  mode. Loading a new unit of work (loadText / loadFile) clears it;
+   *  code-editor edits (setText) keep it — the provenance keys on
+   *  (field, id), which a reparse preserves. */
+  const pkg = shallowRef<PackageOpenResult | null>(null);
+
   const dirty = computed(() => cursor.value !== savedCursor.value);
   const canUndo = computed(() => cursor.value > 0);
   const canRedo = computed(() => cursor.value < history.value.length);
@@ -56,12 +66,26 @@ export const useModelStore = defineStore('model', () => {
       savedCursor.value = 0;
       rawText.value = text;
       loadedText.value = text;
+      pkg.value = null;
       // The viewer's layout pass: unpositioned pages get an in-memory
       // autoLayout so the canvas can draw them. Never persisted.
       if (readOnly.value && standard.value) autoLayoutUnpositioned(standard.value);
       version.value++;
     } catch (e) {
       parseError.value = (e as Error).message;
+    }
+  }
+
+  /** Package-open path (TODO.editor wave 1): the merged dump becomes the
+   *  working text and the save baseline; the session payload (identity,
+   *  file inventory, provenance) rides along for the file map and the
+   *  package-aware save. The dump does not carry the manifest (a known
+   *  kernel dump gap) — re-attached from the payload. */
+  function openPackage(result: PackageOpenResult) {
+    loadText(result.dump);
+    if (!parseError.value) {
+      pkg.value = result;
+      if (standard.value) standard.value.packageManifest = result.manifest;
     }
   }
 
@@ -99,6 +123,12 @@ export const useModelStore = defineStore('model', () => {
     savedCursor.value = cursor.value;
     // After a save the working text IS the new baseline.
     loadedText.value = rawText.value;
+    // The package session's manifest baseline follows a save (a changed
+    // manifest is written once, then the session's copy is the new
+    // baseline the plan diffs against).
+    if (pkg.value && standard.value?.packageManifest) {
+      pkg.value = { ...pkg.value, manifest: structuredClone(standard.value.packageManifest) };
+    }
   }
 
   /** The code editor's write path: text → AST (parse errors surface,
@@ -112,15 +142,21 @@ export const useModelStore = defineStore('model', () => {
       parseError.value = null;
       history.value = [];
       cursor.value = 0;
+      // A reparse drops the manifest (the dump gap); in a package
+      // session it re-attaches from the payload — the provenance keys
+      // on (field, id), which the reparse preserves.
+      if (pkg.value) standard.value.packageManifest = pkg.value.manifest;
       version.value++;
     } catch (e) {
       parseError.value = (e as Error).message;
     }
   }
 
-  /** File-open path (CodeEditor): identical to setText. */
+  /** File-open path (CodeEditor): a loose file ends the package session
+   *  (a new unit of work), then behaves like setText. */
   function loadFile(content: string) {
     if (readOnly.value) return;
+    pkg.value = null;
     setText(content);
   }
 
@@ -140,6 +176,7 @@ export const useModelStore = defineStore('model', () => {
     standard, model, parseError, version, rawText, loadedText,
     history, cursor, dirty, canUndo, canRedo,
     readOnly, setReadOnly,
+    pkg, openPackage,
     loadText, setText, loadFile, format, execute, undo, redo, serialize, markSaved,
   };
 });

@@ -1,0 +1,14 @@
+// The app's entity file.
+class Widget#data {
+  description { "A widget under test." }
+
+  weight: decimal {
+    modality SHALL
+    definition "The widget's weight"
+  }
+}
+
+enum WidgetKind {
+  standard { description "Standard widget" }
+  deluxe { description "Deluxe widget" }
+}

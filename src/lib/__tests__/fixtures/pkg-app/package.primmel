@@ -1,0 +1,9 @@
+package {
+  id pkg-app
+  kind rec
+  title "Probe App"
+  version "1.0.0"
+  editions { "1.0.0" }
+  baseUrn "urn:example:pkg-app:1.0.0"
+  uses { pkg-lib }
+}
