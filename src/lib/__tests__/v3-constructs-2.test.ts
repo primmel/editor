@@ -21,9 +21,12 @@ import {
   newArtifactInstance,
   newAttributeDefinition,
   newConformanceClass,
+  newConnectorProfile,
   newDual,
   newInstance,
   newInstrument,
+  newMonitor,
+  newPassport,
   newQuantityRegister,
   newReferenceMaterial,
   newSymbol,
@@ -805,5 +808,159 @@ artifact_instance ai-1 {
     delD.revert(ast);
     delI.revert(ast);
     expect(dump(ast)).toBe(dump(load(PLANE, { strict: true })));
+  });
+});
+
+describe('W3.2 the twin family — connector profiles, monitors, passports', () => {
+  const TWIN = `connector_profile rest_https {
+  protocol "REST/JSON"
+  description "Query/subscribe over HTTPS"
+}
+
+monitor fleet_watch {
+  over { LoadCellModel }
+  triggers {
+    every 1h
+    on signal artifact_arrived
+    on change state
+  }
+  evaluate {
+    requirements applicable_to(this.classification)
+    promises all
+  }
+  emit {
+    evidence -> workspace
+    verdicts -> verdict_log
+  }
+  escalate {
+    on fail { flag_certificate open_service_case }
+    on invalid { notify admin }
+  }
+}
+
+passport lc500_passport {
+  upi { pattern upi:acme:lc500 level model }
+  carrier { kind qr payload "https://passport.acme.example/p.json" }
+  public { identity composition }
+  authority { live_compliance_status }
+}
+`;
+
+  it('creates the three kinds with the parse defaults; the dump round-trips', () => {
+    const ast = run(
+      TWIN,
+      createConstruct(a => a.connectorProfiles, newConnectorProfile('cp_new')),
+      createConstruct(a => a.monitors, newMonitor('m_new')),
+      createConstruct(a => a.passports, newPassport('p_new')),
+    );
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.connectorProfiles.map(c => c.id)).toContain('cp_new');
+    expect(reloaded.monitors.map(m => m.id)).toContain('m_new');
+    expect(reloaded.passports.map(p => p.id)).toContain('p_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the monitor triggers (the one-field-per-kind discipline); undo restores', () => {
+    const ast = load(TWIN, { strict: true });
+    const m = ast.monitors[0]!;
+    const patch = updateConstruct(a => a.monitors, 'fleet_watch', {
+      triggers: [
+        { kind: 'timer', every: '30min', signal: '', aspect: '' },
+        { kind: 'change', every: '', signal: '', aspect: 'parameters.e_max' },
+      ],
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('every 30min');
+    expect(text).toContain('on change parameters.e_max');
+    expect(text).not.toContain('artifact_arrived');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.monitors[0]?.triggers).toHaveLength(2);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(TWIN, { strict: true })));
+  });
+
+  it('the evaluate selectors edit across all three kinds (all / applicable_to / refs block)', () => {
+    const ast = load(TWIN, { strict: true });
+    const m = ast.monitors[0]!;
+    updateConstruct(a => a.monitors, 'fleet_watch', {
+      evaluate: {
+        requirements: { kind: 'refs', expression: '', refs: ['/req/metrological/mpe'] },
+        promises: { kind: 'applicable_to', expression: 'this.classification', refs: [] },
+      },
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('requirements { /req/metrological/mpe }');
+    expect(text).toContain('promises applicable_to(this.classification)');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.monitors[0]?.evaluate.requirements.refs).toEqual(['/req/metrological/mpe']);
+    expect(reloaded.monitors[0]?.evaluate.promises.kind).toBe('applicable_to');
+    expect(validate(reloaded)).toEqual([]);
+    void m;
+  });
+
+  it('the emit sinks and escalation rules edit', () => {
+    const ast = load(TWIN, { strict: true });
+    updateConstruct(a => a.monitors, 'fleet_watch', {
+      emit: [{ stream: 'verdicts', target: 'audit_log' }],
+      escalate: [{ outcome: 'fail', actions: [{ action: 'notify', role: 'metrologist' }, { action: 'flag_certificate', role: '' }] }],
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('verdicts -> audit_log');
+    expect(text).toContain('on fail { notify metrologist flag_certificate }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.monitors[0]?.escalate[0]?.actions[0]).toEqual({ action: 'notify', role: 'metrologist' });
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the passport upi, carriers, and the access-classed entries; undo restores', () => {
+    const patch = updateConstruct(a => a.passports, 'lc500_passport', {
+      upi: { pattern: 'upi:acme:lc500:{serial}', level: 'item' },
+      carriers: [{ kind: 'qr', payload: 'https://passport.acme.example/p.json' }, { kind: 'nfc', payload: 'https://passport.acme.example/n' }],
+      entries: [
+        { access: 'public', contentClass: 'identity', ref: '' },
+        { access: 'restricted', contentClass: 'artifacts', ref: 'evidence_file' },
+        { access: 'authority', contentClass: 'live_compliance_status', ref: '' },
+      ],
+    });
+    const ast = run(TWIN, patch);
+    const text = dump(ast);
+    expect(text).toContain('upi { pattern "upi:acme:lc500:{serial}" level item }');
+    expect(text).toContain('carrier { kind nfc payload https://passport.acme.example/n }');
+    expect(text).toContain('restricted { artifacts.evidence_file }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.passports[0]?.entries).toHaveLength(3);
+    expect(reloaded.passports[0]?.entries[1]?.ref).toBe('evidence_file');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(TWIN, { strict: true })));
+  });
+
+  it('deletes each kind; the removals revert to the exact slots', () => {
+    const delC = deleteConstruct(a => a.connectorProfiles, 'rest_https');
+    const delM = deleteConstruct(a => a.monitors, 'fleet_watch');
+    const delP = deleteConstruct(a => a.passports, 'lc500_passport');
+    const ast = run(TWIN, delC, delM, delP);
+    expect(ast.connectorProfiles).toHaveLength(0);
+    expect(ast.monitors).toHaveLength(0);
+    expect(ast.passports).toHaveLength(0);
+    delP.revert(ast);
+    delM.revert(ast);
+    delC.revert(ast);
+    expect(dump(ast)).toBe(dump(load(TWIN, { strict: true })));
+  });
+});
+
+describe('W3.2 the passport vocabularies — the browser-bundle gap pin', () => {
+  it('the inspector-local PASSPORT_* option lists equal the kernel node-side constants', async () => {
+    // The node build exports the vocabularies; the browser bundle
+    // (dist-browser/index.mjs) does not (the kernel packaging gap the
+    // PassportInspector's local lists stand in for). Vitest resolves the
+    // node build — this pins the local lists against the kernel's truth.
+    const kernel = await import('@primmel/primmel');
+    expect(kernel.PASSPORT_ACCESS_CLASSES).toEqual(['public', 'restricted', 'authority']);
+    expect(kernel.PASSPORT_CONTENT_CLASSES).toEqual(['identity', 'composition', 'promises_as_verified', 'live_compliance_status', 'artifacts', 'sustainability']);
+    expect(kernel.PASSPORT_UPI_LEVELS).toEqual(['model', 'batch', 'item']);
   });
 });

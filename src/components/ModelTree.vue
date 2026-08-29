@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConstraint, newDual, newInstance, newInstrument, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
+import { newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDual, newInstance, newInstrument, newMonitor, newPassport, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -77,6 +77,9 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Instances', type: 'instance', createPrefix: 'Inst', items: m.instances.map((i) => ({ id: i.id, detail: i.of ? `of ${i.of}` : undefined })) },
     { label: 'Artifact Definitions', type: 'artifactDefinition', createPrefix: 'ArtDef', items: m.artifactDefinitions.map((a) => ({ id: a.id, detail: a.name })) },
     { label: 'Artifact Instances', type: 'artifactInstance', createPrefix: 'ArtInst', items: m.artifactInstances.map((a) => ({ id: a.id, detail: a.of ? `of ${a.of}` : undefined })) },
+    { label: 'Connector Profiles', type: 'connectorProfile', createPrefix: 'CP', items: m.connectorProfiles.map((c) => ({ id: c.id, detail: c.protocol })) },
+    { label: 'Monitors', type: 'monitor', createPrefix: 'Mon', items: m.monitors.map((x) => ({ id: x.id, detail: `${x.triggers.length} triggers` })) },
+    { label: 'Passports', type: 'passport', createPrefix: 'PP', items: m.passports.map((p) => ({ id: p.id, detail: p.upi.pattern || undefined })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -167,6 +170,15 @@ function createIn(group: TreeGroup) {
       break;
     case 'artifactInstance':
       modelStore.execute(createConstruct((a: Standard) => a.artifactInstances, newArtifactInstance(id), `create artifact instance ${id}`));
+      break;
+    case 'connectorProfile':
+      modelStore.execute(createConstruct((a: Standard) => a.connectorProfiles, newConnectorProfile(id), `create connector profile ${id}`));
+      break;
+    case 'monitor':
+      modelStore.execute(createConstruct((a: Standard) => a.monitors, newMonitor(id), `create monitor ${id}`));
+      break;
+    case 'passport':
+      modelStore.execute(createConstruct((a: Standard) => a.passports, newPassport(id), `create passport ${id}`));
       break;
     default:
       return;

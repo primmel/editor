@@ -11,7 +11,8 @@ export type SelectionType =
   | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial'
   | 'symbol' | 'attributeDefinition'
   | 'quantityRegister' | 'dual' | 'instrument' | 'conformanceClass'
-  | 'instance' | 'artifactDefinition' | 'artifactInstance';
+  | 'instance' | 'artifactDefinition' | 'artifactInstance'
+  | 'connectorProfile' | 'monitor' | 'passport';
 
 export interface Selection {
   id: string;
