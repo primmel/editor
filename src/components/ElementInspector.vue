@@ -12,6 +12,7 @@ import EnumInspector from './inspectors/EnumInspector.vue';
 import TermInspector from './inspectors/TermInspector.vue';
 import ConstraintInspector from './inspectors/ConstraintInspector.vue';
 import CalculationInspector from './inspectors/CalculationInspector.vue';
+import TableInspector from './inspectors/TableInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -84,6 +85,11 @@ const pluginInspector = computed(() => {
       />
       <CalculationInspector
         v-else-if="target.type === 'calculation'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <TableInspector
+        v-else-if="target.type === 'table'"
         :model="props.model"
         :element-id="target.id"
       />

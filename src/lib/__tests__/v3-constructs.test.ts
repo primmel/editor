@@ -18,6 +18,7 @@ import {
 import {
   newCalculation,
   newConstraint,
+  newTable,
   newTerm,
 } from '../factory';
 
@@ -273,5 +274,69 @@ describe('W3 calculations — the calculation surface', () => {
     expect(ast.calculations[0]?.inputs[0]?.defaultValue).toBe('0');
     const quoted = load('calculation c {\n  name "c"\n  description "d"\n  inputs {\n    x : number { unit "v" default "500" }\n  }\n  output : number { unit "v" }\n  expression "ocl{x}"\n}\n', { strict: true });
     expect(quoted.calculations[0]?.inputs[0]?.defaultValue).toBe('500');
+  });
+});
+
+describe('W3 tables — the lookup-table surface', () => {
+  const TABLES = `table mpe_tiers {
+  description "MPE tier breakpoints per accuracy class (R 60-1, Table 4)"
+  columns {
+    accuracy_class: string
+    load_min: number "v"
+    load_max: number "v"
+    limit_factor: number
+  }
+  data {
+    "A" 0 50000 0.5
+    "B" 0 5000 0.5
+  }
+}
+`;
+
+  it('creates a table with the parse defaults; the dump round-trips', () => {
+    const ast = run(TABLES, createConstruct(a => a.tables, newTable('t_new')));
+    expect(ast.tables.map(t => t.id)).toContain('t_new');
+    const text = dump(ast);
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.tables.map(t => t.id)).toContain('t_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits cells, adds a row, and adds a column (the grid stays rectangular)', () => {
+    const ast = load(TABLES, { strict: true });
+    const table = ast.tables[0]!;
+    // Cell edit — whole-array replacement.
+    updateConstruct(a => a.tables, 'mpe_tiers', {
+      data: table.data.map((r, ri) => ri === 0 ? r.map((c, ci) => ci === 3 ? '0.6' : c) : r),
+    }).apply(ast);
+    // Row add.
+    updateConstruct(a => a.tables, 'mpe_tiers', { data: [...ast.tables[0]!.data, ['C', '0', '500', '0.5']] }).apply(ast);
+    // Column add — the columnDef plus one cell per row.
+    updateConstruct(a => a.tables, 'mpe_tiers', {
+      columnDefs: [...(ast.tables[0]!.columnDefs ?? []), { name: 'note', type: 'string', unit: '' }],
+      data: ast.tables[0]!.data.map(r => [...r, '']),
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('"A" "0" "50000" "0.6" ""');
+    expect(text).toContain('"C" "0" "500" "0.5" ""');
+    expect(text).toContain('note: string');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.tables[0]?.data).toHaveLength(3);
+    expect(reloaded.tables[0]?.columnDefs).toHaveLength(5);
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('removes a column with its cells; undo restores both facets', () => {
+    const patch = updateConstruct(a => a.tables, 'mpe_tiers', {
+      columnDefs: (load(TABLES, { strict: true }).tables[0]!.columnDefs ?? []).filter(c => c.name !== 'load_max'),
+      data: load(TABLES, { strict: true }).tables[0]!.data.map(r => r.filter((_, i) => i !== 2)),
+    });
+    const ast = run(TABLES, patch);
+    expect(ast.tables[0]?.columnDefs?.map(c => c.name)).toEqual(['accuracy_class', 'load_min', 'limit_factor']);
+    expect(ast.tables[0]?.data[0]).toEqual(['A', '0', '0.5']);
+    patch.revert(ast);
+    expect(ast.tables[0]?.columnDefs).toHaveLength(4);
+    expect(ast.tables[0]?.data[0]).toEqual(['A', '0', '50000', '0.5']);
+    expect(dump(ast)).toBe(dump(load(TABLES, { strict: true })));
   });
 });
