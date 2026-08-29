@@ -20,6 +20,8 @@ import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
 import SavePanel from './components/SavePanel.vue';
 import NewModelDialog from './components/NewModelDialog.vue';
+import OpenPackageDialog from './components/OpenPackageDialog.vue';
+import { packageApiAvailable } from './lib/package';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
 import { validationSummary } from './lib/validation';
@@ -45,6 +47,11 @@ const brand = inject('brand', {
 });
 const saveOpen = ref(false);
 const newOpen = ref(false);
+const packageOpen = ref(false);
+/** The package API probe (Wave 1): the dev server answers, a static
+ *  host 404s — the package chrome then stays hidden (the save probe's
+ *  pattern). */
+const packageApi = ref(false);
 const openPanelId = ref<string | null>(null);
 
 // ── The dirty discipline (TODO.editor/18) — Ctrl+S saves; leaving with
@@ -68,6 +75,7 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
 onMounted(() => {
   window.addEventListener('keydown', onKeydown);
   window.addEventListener('beforeunload', onBeforeUnload);
+  void packageApiAvailable().then((ok) => { packageApi.value = ok; });
 });
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKeydown);
@@ -172,6 +180,10 @@ const view = computed<ViewMode>({
           <span class="stat-num">{{ model.pages.length }}</span>
           <span class="stat-label">canvases</span>
         </div>
+        <div class="stat-pill" v-if="modelStore.pkg" data-testid="package-pill">
+          <span class="stat-num">{{ modelStore.pkg.files.length }}</span>
+          <span class="stat-label">files · {{ modelStore.pkg.id }}</span>
+        </div>
         <div class="stat-pill" v-if="readOnly" data-testid="readonly-badge">
           <span class="stat-label">read only</span>
         </div>
@@ -206,6 +218,11 @@ const view = computed<ViewMode>({
           <template v-if="!readOnly">
             <span class="nav-sep"></span>
             <button data-testid="open-new" @click="newOpen = true">New</button>
+            <button
+              v-if="packageApi"
+              data-testid="open-package"
+              @click="packageOpen = true"
+            >Open pkg</button>
             <button
               class="save-nav-btn"
               :class="{ dirty: modelStore.dirty }"
@@ -324,6 +341,7 @@ const view = computed<ViewMode>({
     <ImportPanel v-if="importOpen && !readOnly" @close="importOpen = false" />
     <SavePanel v-if="saveOpen && model && !readOnly" :model="model" @close="saveOpen = false" />
     <NewModelDialog v-if="newOpen && !readOnly" @close="newOpen = false" />
+    <OpenPackageDialog v-if="packageOpen && !readOnly" @close="packageOpen = false" />
 
     <div v-if="openPanel" class="panel-modal-backdrop" @click.self="openPanelId = null">
       <div class="panel-modal" :data-testid="`panel-${openPanel.id}`">

@@ -1,0 +1,13 @@
+// The library's terms — a comment the save must never strip
+// (the tests' edits never touch this file).
+term widget {
+  label "widget"
+  definition "a measurable thing"
+  language "en"
+}
+
+term gizmo {
+  label "gizmo"
+  definition "another measurable thing"
+  language "en"
+}

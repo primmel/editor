@@ -7,11 +7,13 @@
 // primmel-packages paths.
 // ─────────────────────────────────────────────────────────────────────
 import { computed, onMounted, ref } from 'vue';
-import type { Standard } from '@primmel/primmel';
+import { load, type Standard } from '@primmel/primmel';
 import {
   downloadText, serializeForSave, suggestedFileName,
   writeApiAvailable, writeToFile,
 } from '../lib/save';
+import { writePackageFiles } from '../lib/package';
+import { planPackageSave, type PackageSavePlan } from '../lib/package-save';
 import { DIFF_TINTS, type DiffStatus } from '../lib/diff-view';
 import { validationSummary } from '../lib/validation';
 import { useModelStore } from '../stores/model';
@@ -33,6 +35,39 @@ onMounted(async () => {
 const preview = computed(() => serializeForSave(props.model, modelStore.loadedText));
 const STATUS_ORDER: DiffStatus[] = ['added', 'removed', 'changed', 'moved'];
 
+/** The package save plan (TODO.editor wave 1) — when the unit of work
+ *  is a package, the write splits per source file (the kernel's
+ *  groupBySourceFile over the load's provenance); only touched files
+ *  are written. The plan is best-effort like the diff: a baseline that
+ *  no longer parses degrades to a warning, never a block. */
+const planResult = computed<{ plan: PackageSavePlan | null; error: string }>(() => {
+  const session = modelStore.pkg;
+  if (!session || !modelStore.standard) return { plan: null, error: '' };
+  void modelStore.version; // commands mutate the AST in place — re-derive
+  try {
+    const baseline = load(modelStore.loadedText, { strict: true });
+    return { plan: planPackageSave(baseline, modelStore.standard, session), error: '' };
+  } catch (e) {
+    return { plan: null, error: (e as Error).message };
+  }
+});
+const plan = computed(() => planResult.value.plan);
+const planError = computed(() => planResult.value.error);
+
+async function doPackageWrite() {
+  const session = modelStore.pkg;
+  const p = plan.value;
+  if (!session || !p || p.writes.length === 0) return;
+  writeError.value = '';
+  try {
+    await writePackageFiles(session.dir, p.writes.map((w) => ({ path: w.path, text: w.text })));
+    modelStore.markSaved();
+    saved.value = 'write';
+  } catch (e) {
+    writeError.value = (e as Error).message;
+  }
+}
+
 /** The validation line in the review (TODO.editor/29) — the commit
  *  decision includes the kernel's verdict. */
 const validation = computed(() => {
@@ -46,7 +81,8 @@ const validation = computed(() => {
 });
 
 function doDownload() {
-  downloadText(fileName.value, preview.value.text);
+  const name = modelStore.pkg ? `${modelStore.pkg.id}.prl` : fileName.value;
+  downloadText(name, preview.value.text);
   modelStore.markSaved();
   saved.value = 'download';
 }
@@ -62,10 +98,12 @@ async function doWrite() {
   }
 }
 
-const ssotNote = computed(() =>
-  writePath.value.includes('primmel-packages')
+const ssotNote = computed(() => {
+  const path = modelStore.pkg?.dir ?? writePath.value;
+  return path.includes('primmel-packages')
     ? 'authored package saved — regenerate the downstream trees with `npm run gen:data` in the app (the drift gate depends on it)'
-    : '');
+    : '';
+});
 </script>
 
 <template>
@@ -107,7 +145,48 @@ const ssotNote = computed(() =>
         </div>
       </div>
 
-      <div class="save-actions">
+      <!-- Package mode (Wave 1): the per-file write plan — the save
+           splits the merged model back into its source files. -->
+      <div v-if="modelStore.pkg" class="save-actions">
+        <div class="pkg-plan" data-testid="pkg-save-plan">
+          <div class="pkg-plan-label">package {{ modelStore.pkg.id }} — the save writes per source file (untouched files keep their authored bytes)</div>
+          <div v-if="planError" class="save-error" data-testid="pkg-save-plan-error">the plan is unavailable: {{ planError }}</div>
+          <template v-else-if="plan">
+            <div v-if="plan.writes.length === 0" class="save-identical" data-testid="pkg-save-empty">no file changes since load</div>
+            <div v-for="w in plan.writes" :key="w.path" class="pkg-plan-row" :data-testid="`pkg-save-row-${w.path}`">
+              <span class="pkg-plan-path">{{ w.path }}</span>
+              <span class="pkg-plan-counts">
+                <span v-if="w.added.length" class="pkg-plus">+{{ w.added.length }}</span>
+                <span v-if="w.removed.length" class="pkg-minus">−{{ w.removed.length }}</span>
+                <span v-if="w.changed.length" class="pkg-tilde">~{{ w.changed.length }}</span>
+              </span>
+            </div>
+            <div v-for="f in plan.foreignTouched" :key="f.kind + ':' + f.id" class="pkg-warning" data-testid="pkg-save-foreign">
+              {{ f.kind }} {{ f.id }} {{ f.status }} — owned by package {{ f.package }}; not written
+            </div>
+            <div v-for="(w, i) in plan.warnings" :key="i" class="pkg-warning" data-testid="pkg-save-warning">{{ w }}</div>
+          </template>
+        </div>
+        <button
+          type="button"
+          class="save-btn primary"
+          :disabled="!plan || plan.writes.length === 0"
+          data-testid="pkg-save-write"
+          @click="doPackageWrite"
+        >write {{ plan?.writes.length ?? 0 }} file{{ (plan?.writes.length ?? 0) === 1 ? '' : 's' }} to the package (.bak kept)</button>
+        <button type="button" class="save-btn" data-testid="save-download" @click="doDownload">
+          download merged .prl
+        </button>
+
+        <div v-if="writeError" class="save-error" data-testid="save-error">{{ writeError }}</div>
+        <div v-if="saved" class="save-done" data-testid="save-done">
+          saved ({{ saved === 'write' ? 'written to the package' : 'downloaded' }}) — the dirty flag is clear
+        </div>
+        <div v-if="ssotNote" class="save-ssot" data-testid="save-ssot">{{ ssotNote }}</div>
+      </div>
+
+      <!-- Single-file mode: the download + the guarded write path. -->
+      <div v-else class="save-actions">
         <label class="save-field">
           <span>file name</span>
           <input v-model="fileName" class="save-input" data-testid="save-filename" />
@@ -241,4 +320,33 @@ const ssotNote = computed(() =>
 .val-line { font-size: 0.72rem; font-family: var(--font-mono); }
 .val-line.clean { color: var(--sage); }
 .val-line.issues { color: #d49442; }
+/* The package write plan (Wave 1). */
+.pkg-plan { margin-bottom: 0.25rem; }
+.pkg-plan-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 0.3rem;
+}
+.pkg-plan-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.12rem 0;
+  font-size: 0.72rem;
+}
+.pkg-plan-path { font-family: var(--font-mono); color: var(--text); }
+.pkg-plan-counts { display: flex; gap: 0.5rem; font-family: var(--font-mono); }
+.pkg-plus { color: #7a9e5e; }
+.pkg-minus { color: #b85555; }
+.pkg-tilde { color: #d49442; }
+.pkg-warning {
+  font-size: 0.68rem;
+  color: #d49442;
+  font-family: var(--font-mono);
+  padding: 0.15rem 0;
+}
 </style>

@@ -1,0 +1,5 @@
+// The app's requirements.
+requirement /req/app/weight {
+  name "Widget weight"
+  statement "The widget SHALL be weighed."
+}
