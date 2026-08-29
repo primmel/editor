@@ -120,11 +120,15 @@ export function newTable(id: string): Table {
 }
 
 export function newStateMachine(entityName: string): StateMachine {
+  // The skeleton carries one state the initial marker points at: the
+  // kernel's dump writes `initial <name>` unconditionally, and an empty
+  // marker would dump `initial ` — text that does not reparse (a kernel
+  // dump gap; the seeded skeleton never authors it).
   return {
     entityName,
     kind: 'lifecycle',
-    initialState: '',
-    states: [],
+    initialState: 'initial',
+    states: [{ name: 'initial' }],
     transitions: [],
     referenceIds: [],
   };

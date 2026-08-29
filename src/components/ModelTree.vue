@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newCalculation, newConstraint, newTable, newTerm } from '../lib/factory';
+import { newCalculation, newConstraint, newStateMachine, newTable, newTerm } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -60,6 +60,7 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Constraints', type: 'constraint', createPrefix: 'Constraint', items: m.constraints.map((c) => ({ id: c.id, detail: c.name })) },
     { label: 'Calculations', type: 'calculation', createPrefix: 'Calc', items: m.calculations.map((c) => ({ id: c.id, detail: c.name || c.identifier })) },
     { label: 'Tables', type: 'table', createPrefix: 'Table', items: m.tables.map((t) => ({ id: t.id, detail: t.title || `${t.data.length} rows` })) },
+    { label: 'State Machines', type: 'stateMachine', createPrefix: 'Machine', items: m.stateMachines.map((s) => ({ id: s.entityName, detail: s.kind })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -95,6 +96,9 @@ function createIn(group: TreeGroup) {
       break;
     case 'table':
       modelStore.execute(createConstruct((a: Standard) => a.tables, newTable(id), `create table ${id}`));
+      break;
+    case 'stateMachine':
+      modelStore.execute(createConstruct((a: Standard) => a.stateMachines, newStateMachine(id), `create state machine ${id}`));
       break;
     default:
       return;
