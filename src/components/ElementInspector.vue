@@ -14,6 +14,8 @@ import ConstraintInspector from './inspectors/ConstraintInspector.vue';
 import CalculationInspector from './inspectors/CalculationInspector.vue';
 import TableInspector from './inspectors/TableInspector.vue';
 import StateMachineInspector from './inspectors/StateMachineInspector.vue';
+import TestSequenceInspector from './inspectors/TestSequenceInspector.vue';
+import TestPointSetInspector from './inspectors/TestPointSetInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -96,6 +98,16 @@ const pluginInspector = computed(() => {
       />
       <StateMachineInspector
         v-else-if="target.type === 'stateMachine'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <TestSequenceInspector
+        v-else-if="target.type === 'testSequence'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <TestPointSetInspector
+        v-else-if="target.type === 'testPointSet'"
         :model="props.model"
         :element-id="target.id"
       />
