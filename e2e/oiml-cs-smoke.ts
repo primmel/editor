@@ -1,9 +1,20 @@
 import puppeteer from 'puppeteer'
+import { readFileSync } from 'node:fs'
 
 // The OIML-CS demo, live in the Studio (TODO.editor/39): the scheme
 // model opens with its 34 PD-05 requirements, the doc map resolves
 // against the real PD-05 mirror, and the certification workflow
 // simulates application → certificate → BIML registration.
+
+// The corpus texts travel from node (the v3 legs' convention — an
+// in-page fetch through the dev server yields the CDP evaluate to the
+// event loop, and under host load Chrome GCs the pending promise:
+// "Promise was collected", the 2026-08-29 flake. The fixture content
+// was never the thing under test; the doc-map resolution is).
+const CERTIFICATION = readFileSync(new URL('../demo/oiml-cs/certification.prl', import.meta.url), 'utf8')
+const SCHEME = readFileSync(new URL('../demo/oiml-cs/model.prl', import.meta.url), 'utf8')
+const MIRROR = readFileSync(new URL('../demo/oiml-cs/oiml-cs-pd-05.mirror.json', import.meta.url), 'utf8')
+const MANIFEST = readFileSync(new URL('../demo/oiml-cs/package.primmel', import.meta.url), 'utf8')
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
@@ -19,11 +30,7 @@ const fail = async (why) => {
 }
 
 // 1. The certification workflow opens and simulates to registration.
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/oiml-cs/certification.prl?raw')
-  const text = await res.text()
-  window.__stores.model.loadText(text)
-})()`)
+await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(CERTIFICATION)}) })()`)
 await new Promise(r => setTimeout(r, 800))
 
 let state = await page.evaluate(`(() => ({
@@ -54,11 +61,7 @@ if (!state.done || !state.steps.includes('IssueCertificate') || !state.steps.inc
 }
 
 // 2. The scheme model's doc map resolves against the real PD-05 mirror.
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/oiml-cs/model.prl?raw')
-  const text = await res.text()
-  window.__stores.model.loadText(text)
-})()`)
+await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(SCHEME)}) })()`)
 await new Promise(r => setTimeout(r, 800))
 state = await page.evaluate(`(() => ({
   requirements: window.__stores.model.standard.requirements.length,
@@ -67,12 +70,10 @@ state = await page.evaluate(`(() => ({
 console.log('scheme model:', JSON.stringify(state))
 if (state.requirements !== 34) await fail('the scheme model did not open')
 
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/oiml-cs/oiml-cs-pd-05.mirror.json?raw')
-  const text = await res.text()
+await page.evaluate(`(() => {
   const s = window.__stores
   s.ui.view = 'mapping'
-  s.mapping.loadDocumentText(text)
+  s.mapping.loadDocumentText(${JSON.stringify(MIRROR)})
 })()`)
 await new Promise(r => setTimeout(r, 900))
 state = await page.evaluate(`(() => ({
@@ -127,11 +128,7 @@ if (state.name !== 'Sample count (edited live)') await fail('the inspector edit 
 console.log('inspector edit: OK')
 
 // 4. The package manifest panel renders the oiml-cs manifest.
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/oiml-cs/package.primmel?raw')
-  const text = await res.text()
-  window.__stores.model.loadText(text)
-})()`)
+await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(MANIFEST)}) })()`)
 await new Promise(r => setTimeout(r, 600))
 await page.evaluate(`(() => { document.querySelector('[data-testid="open-panel-package-manifest"]').click() })()`)
 await new Promise(r => setTimeout(r, 400))
