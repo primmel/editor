@@ -21,6 +21,8 @@ import BehaviorInspector from './inspectors/BehaviorInspector.vue';
 import CapabilityInspector from './inspectors/CapabilityInspector.vue';
 import ConditionSetInspector from './inspectors/ConditionSetInspector.vue';
 import VerdictInspector from './inspectors/VerdictInspector.vue';
+import SymbolInspector from './inspectors/SymbolInspector.vue';
+import AttributeDefinitionInspector from './inspectors/AttributeDefinitionInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -138,6 +140,16 @@ const pluginInspector = computed(() => {
       />
       <VerdictInspector
         v-else-if="target.type === 'verdict'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <SymbolInspector
+        v-else-if="target.type === 'symbol'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <AttributeDefinitionInspector
+        v-else-if="target.type === 'attributeDefinition'"
         :model="props.model"
         :element-id="target.id"
       />
