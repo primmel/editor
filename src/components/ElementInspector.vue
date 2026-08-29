@@ -41,6 +41,8 @@ import ActivityArchetypeInspector from './inspectors/ActivityArchetypeInspector.
 import CompetenceKindInspector from './inspectors/CompetenceKindInspector.vue';
 import PredicateInspector from './inspectors/PredicateInspector.vue';
 import DiscrepancyRecordInspector from './inspectors/DiscrepancyRecordInspector.vue';
+import DataspaceInspector from './inspectors/DataspaceInspector.vue';
+import PolicyInspector from './inspectors/PolicyInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -258,6 +260,16 @@ const pluginInspector = computed(() => {
       />
       <DiscrepancyRecordInspector
         v-else-if="target.type === 'discrepancyRecord'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <DataspaceInspector
+        v-else-if="target.type === 'dataspace'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <PolicyInspector
+        v-else-if="target.type === 'policy'"
         :model="props.model"
         :element-id="target.id"
       />

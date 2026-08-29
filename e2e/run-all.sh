@@ -51,7 +51,8 @@ for leg in \
   v3-conformance-classes-smoke \
   v3-instances-smoke \
   v3-twin-smoke \
-  v3-registries-smoke
+  v3-registries-smoke \
+  v3-governance-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newActivityArchetype, newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newCompetenceKind, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDiscrepancyRecord, newDual, newFormulasUsed, newInstance, newInstrument, newInvariant, newMonitor, newPassport, newPredicate, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newTextContent, newVerdict } from '../lib/factory';
+import { newActivityArchetype, newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newCompetenceKind, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDataspace, newDiscrepancyRecord, newDual, newFormulasUsed, newInstance, newInstrument, newInvariant, newMonitor, newPassport, newPolicy, newPredicate, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newTextContent, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -87,6 +87,8 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Competence Kinds', type: 'competenceKind', createPrefix: 'CK', items: m.competenceKinds.map((c) => ({ id: c.id, detail: c.label })) },
     { label: 'Predicates', type: 'predicate', createPrefix: 'Pred', items: m.predicates.map((p) => ({ id: p.id, detail: p.kind })) },
     { label: 'Discrepancy Records', type: 'discrepancyRecord', createPrefix: 'DR', items: m.discrepancyRecords.map((d) => ({ id: d.id, detail: d.status })) },
+    { label: 'Dataspaces', type: 'dataspace', createPrefix: 'DS', items: m.dataspaces.map((d) => ({ id: d.id, detail: d.name })) },
+    { label: 'Policies', type: 'policy', createPrefix: 'Pol', items: m.policies.map((p) => ({ id: p.id, detail: p.name })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -207,6 +209,12 @@ function createIn(group: TreeGroup) {
       break;
     case 'discrepancyRecord':
       modelStore.execute(createConstruct((a: Standard) => a.discrepancyRecords, newDiscrepancyRecord(id), `create discrepancy record ${id}`));
+      break;
+    case 'dataspace':
+      modelStore.execute(createConstruct((a: Standard) => a.dataspaces, newDataspace(id), `create dataspace ${id}`));
+      break;
+    case 'policy':
+      modelStore.execute(createConstruct((a: Standard) => a.policies, newPolicy(id), `create policy ${id}`));
       break;
     default:
       return;

@@ -14,7 +14,8 @@ export type SelectionType =
   | 'instance' | 'artifactDefinition' | 'artifactInstance'
   | 'connectorProfile' | 'monitor' | 'passport'
   | 'invariant' | 'formulasUsed' | 'text' | 'activityArchetype'
-  | 'competenceKind' | 'predicate' | 'discrepancyRecord';
+  | 'competenceKind' | 'predicate' | 'discrepancyRecord'
+  | 'dataspace' | 'policy';
 
 export interface Selection {
   id: string;

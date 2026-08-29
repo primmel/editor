@@ -102,6 +102,8 @@ export type ActivityArchetype = Standard['activityArchetypes'][number];
 export type CompetenceKind = Standard['competenceKinds'][number];
 export type RefPredicate = Standard['predicates'][number];
 export type DiscrepancyRecord = Standard['discrepancyRecords'][number];
+export type Dataspace = Standard['dataspaces'][number];
+export type Policy = Standard['policies'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -428,4 +430,24 @@ export function newPredicate(id: string): RefPredicate {
 
 export function newDiscrepancyRecord(id: string): DiscrepancyRecord {
   return { id, status: '', summary: '', sources: [], resolution: '', governing: '', rationale: '' };
+}
+
+export function newDataspace(id: string): Dataspace {
+  return {
+    id,
+    name: '',
+    description: '',
+    participantClasses: [],
+    artifactClasses: [],
+    policies: [],
+    defaultPolicy: '',
+    trustAnchors: [],
+    compatibleWith: [],
+    source: null,
+    sourceRefs: [],
+  };
+}
+
+export function newPolicy(id: string): Policy {
+  return { id, name: '', description: '', governs: [], defaultPosture: null, rules: [], source: null, sourceRefs: [] };
 }
