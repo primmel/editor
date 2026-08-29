@@ -27,6 +27,7 @@ import QuantityRegisterInspector from './inspectors/QuantityRegisterInspector.vu
 import DualInspector from './inspectors/DualInspector.vue';
 import ReferenceMaterialInspector from './inspectors/ReferenceMaterialInspector.vue';
 import InstrumentInspector from './inspectors/InstrumentInspector.vue';
+import ConformanceClassInspector from './inspectors/ConformanceClassInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -174,6 +175,11 @@ const pluginInspector = computed(() => {
       />
       <InstrumentInspector
         v-else-if="target.type === 'instrument'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ConformanceClassInspector
+        v-else-if="target.type === 'conformanceClass'"
         :model="props.model"
         :element-id="target.id"
       />
