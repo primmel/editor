@@ -85,7 +85,9 @@ export type Verdict = Standard['verdicts'][number];
 export type ReferenceMaterial = Standard['referenceMaterials'][number];
 export type Symbol = Standard['symbols'][number];
 export type AttributeDefinition = Standard['attributeDefinitions'][number];
-
+export type QuantityRegister = Standard['quantityRegisters'][number];
+export type Dual = Standard['duals'][number];
+export type Instrument = Standard['instruments'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -282,5 +284,37 @@ export function newAttributeDefinition(id: string): AttributeDefinition {
     irdi: '',
     derived: '',
     referenceIds: [],
+  };
+}
+
+export function newQuantityRegister(id: string): QuantityRegister {
+  return { id, kinds: [], units: [], referenceIds: [] };
+}
+
+export function newDual(id: string): Dual {
+  return { id, attribute: '', referenceIds: [] };
+}
+
+export function newReferenceMaterial(id: string): ReferenceMaterial {
+  return { id, kind: '', name: '', definition: '', source: null, identityFields: [], constraints: [] };
+}
+
+export function newInstrument(id: string): Instrument {
+  return {
+    id,
+    extends: '',
+    definition: '',
+    variants: [],
+    dimensions: [],
+    perChannel: '',
+    familyCriteria: [],
+    familyDefaultDimensions: [],
+    familyDefaultParameters: [],
+    modelGroup: null,
+    referenceIds: [],
+    measurand: null,
+    components: [],
+    structure: [],
+    source: null,
   };
 }
