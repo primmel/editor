@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConstraint, newDual, newInstrument, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
+import { newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConstraint, newDual, newInstance, newInstrument, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -74,6 +74,9 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Quantity Registers', type: 'quantityRegister', createPrefix: 'QR', items: m.quantityRegisters.map((q) => ({ id: q.id, detail: `${q.units.length} units` })) },
     { label: 'Duals', type: 'dual', createPrefix: 'Dual', items: m.duals.map((d) => ({ id: d.id, detail: d.attribute })) },
     { label: 'Reference Materials', type: 'referenceMaterial', createPrefix: 'RM', items: m.referenceMaterials.map((r) => ({ id: r.id, detail: r.name || r.kind })) },
+    { label: 'Instances', type: 'instance', createPrefix: 'Inst', items: m.instances.map((i) => ({ id: i.id, detail: i.of ? `of ${i.of}` : undefined })) },
+    { label: 'Artifact Definitions', type: 'artifactDefinition', createPrefix: 'ArtDef', items: m.artifactDefinitions.map((a) => ({ id: a.id, detail: a.name })) },
+    { label: 'Artifact Instances', type: 'artifactInstance', createPrefix: 'ArtInst', items: m.artifactInstances.map((a) => ({ id: a.id, detail: a.of ? `of ${a.of}` : undefined })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -155,6 +158,15 @@ function createIn(group: TreeGroup) {
       break;
     case 'conformanceClass':
       modelStore.execute(createConstruct((a: Standard) => a.conformanceClasses, newConformanceClass(id), `create conformance class ${id}`));
+      break;
+    case 'instance':
+      modelStore.execute(createConstruct((a: Standard) => a.instances, newInstance(id), `create instance ${id}`));
+      break;
+    case 'artifactDefinition':
+      modelStore.execute(createConstruct((a: Standard) => a.artifactDefinitions, newArtifactDefinition(id), `create artifact definition ${id}`));
+      break;
+    case 'artifactInstance':
+      modelStore.execute(createConstruct((a: Standard) => a.artifactInstances, newArtifactInstance(id), `create artifact instance ${id}`));
       break;
     default:
       return;
