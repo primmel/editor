@@ -92,6 +92,9 @@ export type ConformanceClass = Standard['conformanceClasses'][number];
 export type Instance = Standard['instances'][number];
 export type ArtifactDefinition = Standard['artifactDefinitions'][number];
 export type ArtifactInstance = Standard['artifactInstances'][number];
+export type ConnectorProfile = Standard['connectorProfiles'][number];
+export type Monitor = Standard['monitors'][number];
+export type Passport = Standard['passports'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -367,4 +370,27 @@ export function newArtifactDefinition(id: string): ArtifactDefinition {
 
 export function newArtifactInstance(id: string): ArtifactInstance {
   return { id, of: '', producedAt: '', by: '', content: {}, links: [], referenceIds: [] };
+}
+
+export function newConnectorProfile(id: string): ConnectorProfile {
+  return { id, protocol: '', description: '', referenceIds: [] };
+}
+
+export function newMonitor(id: string): Monitor {
+  return {
+    id,
+    over: [],
+    triggers: [],
+    evaluate: {
+      requirements: { kind: '', expression: '', refs: [] },
+      promises: { kind: '', expression: '', refs: [] },
+    },
+    emit: [],
+    escalate: [],
+    referenceIds: [],
+  };
+}
+
+export function newPassport(id: string): Passport {
+  return { id, upi: { pattern: '', level: '' }, carriers: [], entries: [], referenceIds: [] };
 }

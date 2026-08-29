@@ -31,6 +31,9 @@ import ConformanceClassInspector from './inspectors/ConformanceClassInspector.vu
 import InstanceInspector from './inspectors/InstanceInspector.vue';
 import ArtifactDefinitionInspector from './inspectors/ArtifactDefinitionInspector.vue';
 import ArtifactInstanceInspector from './inspectors/ArtifactInstanceInspector.vue';
+import ConnectorProfileInspector from './inspectors/ConnectorProfileInspector.vue';
+import MonitorInspector from './inspectors/MonitorInspector.vue';
+import PassportInspector from './inspectors/PassportInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -198,6 +201,21 @@ const pluginInspector = computed(() => {
       />
       <ArtifactInstanceInspector
         v-else-if="target.type === 'artifactInstance'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ConnectorProfileInspector
+        v-else-if="target.type === 'connectorProfile'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <MonitorInspector
+        v-else-if="target.type === 'monitor'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <PassportInspector
+        v-else-if="target.type === 'passport'"
         :model="props.model"
         :element-id="target.id"
       />
