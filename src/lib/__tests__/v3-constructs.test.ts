@@ -18,6 +18,7 @@ import {
 import {
   newCalculation,
   newConstraint,
+  newStateMachine,
   newTable,
   newTerm,
 } from '../factory';
@@ -338,5 +339,81 @@ describe('W3 tables — the lookup-table surface', () => {
     expect(ast.tables[0]?.columnDefs).toHaveLength(4);
     expect(ast.tables[0]?.data[0]).toEqual(['A', '0', '50000', '0.5']);
     expect(dump(ast)).toBe(dump(load(TABLES, { strict: true })));
+  });
+});
+
+describe('W3 state machines — the machine surface', () => {
+  const MACHINE = `state_machine LoadCellOperational {
+  kind operational
+  initial off
+  states {
+    off
+    warming
+    ready
+  }
+  transition off -> warming action power_on
+  transition warming -> ready action warm_up_complete {
+    guard "elapsed since power_on >= warm_up_time"
+  }
+  transition [warming, ready] -> off action power_off
+}
+`;
+
+  it('creates a machine keyed on entityName; the dump round-trips', () => {
+    const ast = run(MACHINE, createConstruct(a => a.stateMachines, newStateMachine('Workflow')));
+    expect(ast.stateMachines.map(s => s.entityName)).toContain('Workflow');
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.stateMachines.map(s => s.entityName)).toContain('Workflow');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('the multi-source transition form expands on parse and re-groups on dump', () => {
+    const ast = load(MACHINE, { strict: true });
+    // [warming, ready] -> off power_off arrives as TWO entries.
+    const offs = ast.stateMachines[0]!.transitions.filter(t => t.actionName === 'power_off');
+    expect(offs.map(t => t.from)).toEqual(['warming', 'ready']);
+    const text = dump(ast);
+    expect(text).toContain('transition [warming, ready] -> off action power_off');
+  });
+
+  it('a state rename re-points the initial marker and every transition endpoint', () => {
+    const ast = load(MACHINE, { strict: true });
+    const m = ast.stateMachines[0]!;
+    updateConstruct(a => a.stateMachines, 'LoadCellOperational', {
+      states: m.states.map(s => s.name === 'off' ? { name: 'powered_down' } : s),
+      initialState: 'powered_down',
+      transitions: m.transitions.map(t => ({
+        ...t,
+        from: t.from === 'off' ? 'powered_down' : t.from,
+        to: t.to === 'off' ? 'powered_down' : t.to,
+      })),
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('initial powered_down');
+    expect(text).toContain('transition powered_down -> warming action power_on');
+    expect(text).toContain('transition [warming, ready] -> powered_down action power_off');
+    expect(validate(ast)).toEqual([]);
+  });
+
+  it('removing a state drops its transitions; undo restores the whole machine', () => {
+    const ast = load(MACHINE, { strict: true });
+    const m = ast.stateMachines[0]!;
+    const cmd = updateConstruct(a => a.stateMachines, 'LoadCellOperational', {
+      states: m.states.filter(s => s.name !== 'ready'),
+      transitions: m.transitions.filter(t => t.from !== 'ready' && t.to !== 'ready'),
+    });
+    cmd.apply(ast);
+    const text = dump(ast);
+    expect(text).not.toContain('ready');
+    cmd.revert(ast);
+    expect(dump(ast)).toBe(dump(load(MACHINE, { strict: true })));
+  });
+
+  it('deletes a machine by entityName; the removal reverts to the exact slot', () => {
+    const del = deleteConstruct(a => a.stateMachines, 'LoadCellOperational');
+    const ast = run(MACHINE, del);
+    expect(ast.stateMachines).toHaveLength(0);
+    del.revert(ast);
+    expect(ast.stateMachines.map(s => s.entityName)).toEqual(['LoadCellOperational']);
   });
 });

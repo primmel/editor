@@ -38,7 +38,8 @@ for leg in \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
-  v3-tables-smoke
+  v3-tables-smoke \
+  v3-state-machines-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

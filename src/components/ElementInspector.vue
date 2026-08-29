@@ -13,6 +13,7 @@ import TermInspector from './inspectors/TermInspector.vue';
 import ConstraintInspector from './inspectors/ConstraintInspector.vue';
 import CalculationInspector from './inspectors/CalculationInspector.vue';
 import TableInspector from './inspectors/TableInspector.vue';
+import StateMachineInspector from './inspectors/StateMachineInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -90,6 +91,11 @@ const pluginInspector = computed(() => {
       />
       <TableInspector
         v-else-if="target.type === 'table'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <StateMachineInspector
+        v-else-if="target.type === 'stateMachine'"
         :model="props.model"
         :element-id="target.id"
       />
