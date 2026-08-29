@@ -41,7 +41,8 @@ for leg in \
   v3-tables-smoke \
   v3-state-machines-smoke \
   v3-test-ordering-smoke \
-  v3-subjects-smoke
+  v3-subjects-smoke \
+  v3-compliance-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1
