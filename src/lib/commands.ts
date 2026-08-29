@@ -17,6 +17,7 @@ import type {
 } from '@primmel/primmel';
 import type { Edge, Subprocess, SubprocessComponent } from '@primmel/primmel';
 import { edgeEnds } from './edges';
+import { CONSTRUCT_FIELDS, constructId } from './package-save';
 
 // The flow shapes (Subprocess/Edge/SubprocessComponent) are the
 // KERNEL's public types (TODO.editor/32 — the structural mirror and
@@ -79,11 +80,17 @@ function listFor(ast: Standard, kind: ElementKind): Array<{ id: string }> {
   }
 }
 
-/** Mint the smallest free `{prefix}{n}` id in the package. */
+/** Mint the smallest free `{prefix}{n}` id in the package. The scan
+ *  covers EVERY top-level construct collection (the save layer's
+ *  census + its id rule), so a minted id never collides with a v3
+ *  construct the canvas-era lists do not know. */
 export function mintId(ast: Standard, prefix: string): string {
   const taken = new Set<string>();
-  for (const list of [ast.processes, ast.approvals, ast.dataclasses, ast.events, ast.gateways, ast.pages, ast.regs, ast.enums, ast.variables, ast.comments]) {
-    for (const x of list) taken.add((x as { id: string }).id);
+  for (const f of CONSTRUCT_FIELDS) {
+    for (const x of ast[f] as object[]) {
+      const id = constructId(x);
+      if (id !== undefined) taken.add(id);
+    }
   }
   for (let n = 1; ; n++) {
     const id = `${prefix}${n}`;
@@ -407,6 +414,80 @@ export function deleteInList<T extends { id: string }>(
       const list = listOf(ast);
       const index = list.findIndex(x => x.id === id);
       if (index < 0) throw new Error(`unknown element ${id}`);
+      captured = { index, element: list[index]! };
+      list.splice(index, 1);
+    },
+    revert(ast) {
+      const list = listOf(ast);
+      list.splice(Math.min(captured.index, list.length), 0, captured.element);
+    },
+  };
+}
+
+// ── Construct CRUD keyed on the save layer's identity rule ──────────
+// The v3 collections key on `id` — except stateMachines, keyed on
+// `entityName` (package-save.ts's constructId). The wave-03 surfaces
+// (tree create, the inspectors) use this family so every construct kind
+// shares ONE identity rule with the package save. The legacy id-only
+// family above stays for the canvas-era callers.
+
+export function createConstruct<T extends object>(
+  listOf: (ast: Standard) => T[],
+  element: T,
+  label?: string,
+): Command {
+  const key = constructId(element);
+  if (key === undefined) throw new Error('a construct needs an id (or entityName)');
+  return {
+    label: label ?? `create ${key}`,
+    apply(ast) {
+      const list = listOf(ast);
+      if (list.some(x => constructId(x) === key)) throw new Error(`duplicate id ${key}`);
+      list.push(element);
+    },
+    revert(ast) {
+      const list = listOf(ast);
+      const i = list.findIndex(x => constructId(x) === key);
+      if (i >= 0) list.splice(i, 1);
+    },
+  };
+}
+
+export function updateConstruct<T extends object>(
+  listOf: (ast: Standard) => T[],
+  key: string,
+  patch: Partial<T>,
+  label?: string,
+): Command {
+  let before: Partial<T>;
+  return {
+    label: label ?? `update ${key}`,
+    apply(ast) {
+      const el = listOf(ast).find(x => constructId(x) === key);
+      if (!el) throw new Error(`unknown construct ${key}`);
+      before = Object.fromEntries((Object.keys(patch) as (keyof T)[]).map(k => [k, el[k]])) as Partial<T>;
+      Object.assign(el, patch);
+    },
+    revert(ast) {
+      const el = listOf(ast).find(x => constructId(x) === key);
+      if (!el) return;
+      Object.assign(el, before);
+    },
+  };
+}
+
+export function deleteConstruct<T extends object>(
+  listOf: (ast: Standard) => T[],
+  key: string,
+  label?: string,
+): Command {
+  let captured: { index: number; element: T };
+  return {
+    label: label ?? `delete ${key}`,
+    apply(ast) {
+      const list = listOf(ast);
+      const index = list.findIndex(x => constructId(x) === key);
+      if (index < 0) throw new Error(`unknown construct ${key}`);
       captured = { index, element: list[index]! };
       list.splice(index, 1);
     },

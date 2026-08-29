@@ -5,7 +5,9 @@ export type SelectionType =
   | 'role' | 'process' | 'provision' | 'event' | 'gateway'
   | 'canvas' | 'dataclass' | 'registry' | 'measurement' | 'reference' | 'note'
   | 'approval' | 'subprocess' | 'enum'
-  | 'requirement' | 'conformanceTest' | 'requirementClass';
+  | 'requirement' | 'conformanceTest' | 'requirementClass'
+  | 'term' | 'constraint' | 'calculation' | 'table'
+  | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject';
 
 export interface Selection {
   id: string;

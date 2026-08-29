@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
-import { createElement, createInList, mintId } from '../lib/commands';
+import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
+import { newConstraint, newTerm } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -53,6 +54,10 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Enums', type: 'enum', createPrefix: 'EN', items: m.enums.map((e) => ({ id: e.id, detail: `${e.values.length} values` })) },
     { label: 'Variables', type: 'measurement', items: m.variables.map((v) => ({ id: v.id })) },
     { label: 'Notes', type: 'reference', items: m.notes.map((n) => ({ id: n.id })) },
+    // The v3 construct surfaces (TODO.editor wave 03): the kernel's
+    // non-canvas collections — tree section, in-tree create, inspector.
+    { label: 'Terms', type: 'term', createPrefix: 'Term', items: m.terms.map((t) => ({ id: t.id, detail: t.label })) },
+    { label: 'Constraints', type: 'constraint', createPrefix: 'Constraint', items: m.constraints.map((c) => ({ id: c.id, detail: c.name })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -76,6 +81,12 @@ function createIn(group: TreeGroup) {
       break;
     case 'enum':
       modelStore.execute(createInList((a: Standard) => a.enums, { id, values: [] }, `create enum ${id}`));
+      break;
+    case 'term':
+      modelStore.execute(createConstruct((a: Standard) => a.terms, newTerm(id), `create term ${id}`));
+      break;
+    case 'constraint':
+      modelStore.execute(createConstruct((a: Standard) => a.constraints, newConstraint(id), `create constraint ${id}`));
       break;
     default:
       return;
