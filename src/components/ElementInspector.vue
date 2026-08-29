@@ -16,6 +16,7 @@ import TableInspector from './inspectors/TableInspector.vue';
 import StateMachineInspector from './inspectors/StateMachineInspector.vue';
 import TestSequenceInspector from './inspectors/TestSequenceInspector.vue';
 import TestPointSetInspector from './inspectors/TestPointSetInspector.vue';
+import SubjectInspector from './inspectors/SubjectInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -108,6 +109,11 @@ const pluginInspector = computed(() => {
       />
       <TestPointSetInspector
         v-else-if="target.type === 'testPointSet'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <SubjectInspector
+        v-else-if="target.type === 'subject'"
         :model="props.model"
         :element-id="target.id"
       />

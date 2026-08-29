@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newCalculation, newConstraint, newStateMachine, newTable, newTerm, newTestPointSet, newTestSequence } from '../lib/factory';
+import { newCalculation, newConstraint, newStateMachine, newSubject, newTable, newTerm, newTestPointSet, newTestSequence } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -63,6 +63,7 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'State Machines', type: 'stateMachine', createPrefix: 'Machine', items: m.stateMachines.map((s) => ({ id: s.entityName, detail: s.kind })) },
     { label: 'Test Sequences', type: 'testSequence', createPrefix: 'Seq', items: m.testSequences.map((s) => ({ id: s.id, detail: `${s.steps.length} steps` })) },
     { label: 'Test Point Sets', type: 'testPointSet', createPrefix: 'TPS', items: m.testPointSets.map((t) => ({ id: t.id, detail: `${t.points.length} points` })) },
+    { label: 'Subjects', type: 'subject', createPrefix: 'Subject', items: m.subjects.map((s) => ({ id: s.id, detail: s.extends ? `extends ${s.extends}` : undefined })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -107,6 +108,9 @@ function createIn(group: TreeGroup) {
       break;
     case 'testPointSet':
       modelStore.execute(createConstruct((a: Standard) => a.testPointSets, newTestPointSet(id), `create test point set ${id}`));
+      break;
+    case 'subject':
+      modelStore.execute(createConstruct((a: Standard) => a.subjects, newSubject(id), `create subject ${id}`));
       break;
     default:
       return;
