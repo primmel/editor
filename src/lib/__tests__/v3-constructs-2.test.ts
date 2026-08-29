@@ -18,6 +18,10 @@ import {
 } from '../commands';
 import {
   newAttributeDefinition,
+  newDual,
+  newInstrument,
+  newQuantityRegister,
+  newReferenceMaterial,
   newSymbol,
 } from '../factory';
 
@@ -229,5 +233,350 @@ attribute_definition accuracy_class {
     expect(ast.attributeDefinitions.map(a => a.id)).toEqual(['accuracy_class']);
     del.revert(ast);
     expect(ast.attributeDefinitions.map(a => a.id)).toEqual(['e_max', 'accuracy_class']);
+  });
+});
+
+describe('W3.2 quantity registers — the unit/kind registry surface', () => {
+  const QR = `quantity_register si {
+  kind mass {
+    dimensions { M 1 }
+    si_unit "kg"
+    description "Mass"
+  }
+  unit kg {
+    symbol "kg"
+    label "kilogram"
+    kind mass
+    definition "SI base unit of mass"
+  }
+  unit g {
+    symbol "g"
+    kind mass
+    factor 0.001
+  }
+}
+`;
+
+  it('creates a register with the parse defaults; the dump round-trips', () => {
+    const ast = run(QR, createConstruct(a => a.quantityRegisters, newQuantityRegister('q_new')));
+    expect(ast.quantityRegisters.map(q => q.id)).toContain('q_new');
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.quantityRegisters.map(q => q.id)).toContain('q_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits kinds (with the dimension vector) and units; the compact factor/offset dump', () => {
+    const patch = updateConstruct(a => a.quantityRegisters, 'si', {
+      kinds: [
+        { id: 'mass', dimensions: { M: 1 }, siUnit: 'kg', description: 'Mass' },
+        { id: 'temperature', dimensions: { 'Θ': 1 }, siUnit: 'K', description: 'Thermodynamic temperature' },
+      ],
+      units: [
+        { id: 'kg', symbol: 'kg', label: 'kilogram', kind: 'mass', factorToSI: 1, offsetToSI: 0, definition: 'SI base unit of mass' },
+        { id: 'g', symbol: 'g', label: 'gram', kind: 'mass', factorToSI: 0.001, offsetToSI: 0, definition: '' },
+        { id: 'degC', symbol: '°C', label: 'degree Celsius', kind: 'temperature', factorToSI: 1, offsetToSI: 273.15, definition: '' },
+      ],
+    });
+    const ast = run(QR, patch);
+    const text = dump(ast);
+    expect(text).toContain('kind temperature { dimensions { Θ 1 } si_unit "K" description "Thermodynamic temperature" }');
+    expect(text).toContain('unit g { symbol "g" label "gram" kind mass factor 0.001 }');
+    expect(text).toContain('unit degC { symbol "°C" label "degree Celsius" kind temperature offset 273.15 }');
+    // factor 1 / offset 0 never serialize (the compact form).
+    expect(text).toContain('unit kg { symbol "kg" label "kilogram" kind mass definition "SI base unit of mass" }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.quantityRegisters[0]?.kinds).toHaveLength(2);
+    expect(reloaded.quantityRegisters[0]?.units.find(u => u.id === 'degC')?.offsetToSI).toBe(273.15);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(QR, { strict: true })));
+  });
+
+  it('removes a unit; undo restores it at the exact slot', () => {
+    const patch = updateConstruct(a => a.quantityRegisters, 'si', {
+      units: load(QR, { strict: true }).quantityRegisters[0]!.units.filter(u => u.id !== 'g'),
+    });
+    const ast = run(QR, patch);
+    expect(ast.quantityRegisters[0]?.units.map(u => u.id)).toEqual(['kg']);
+    patch.revert(ast);
+    expect(ast.quantityRegisters[0]?.units.map(u => u.id)).toEqual(['kg', 'g']);
+    expect(dump(ast)).toBe(dump(load(QR, { strict: true })));
+  });
+
+  it('deletes a register; the removal reverts to the exact slot', () => {
+    const two = QR + '\nquantity_register imperial {\n}\n';
+    const del = deleteConstruct(a => a.quantityRegisters, 'si');
+    const ast = run(two, del);
+    expect(ast.quantityRegisters.map(q => q.id)).toEqual(['imperial']);
+    del.revert(ast);
+    expect(ast.quantityRegisters.map(q => q.id)).toEqual(['si', 'imperial']);
+  });
+});
+
+describe('W3.2 duals — the IS↔HAS duality surface', () => {
+  const DUALS = `dual d_e_max {
+  attribute e_max
+  designed { value 500 unit "kg" tolerance "0" }
+  exhibited { value 499.9 unit "kg" uncertainty "0.1" }
+}
+
+dual d_v_min {
+  attribute v_min
+  designed { value 0.02 unit "kg" }
+}
+`;
+
+  it('creates a dual with the parse defaults; the dump round-trips', () => {
+    const ast = run(DUALS, createConstruct(a => a.duals, newDual('d_new')));
+    expect(ast.duals.map(d => d.id)).toContain('d_new');
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.duals.map(d => d.id)).toContain('d_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the roles (value coercion, unit, the spread facet); undo restores', () => {
+    const patch = updateConstruct(a => a.duals, 'd_v_min', {
+      designed: { value: 0.05, unit: 'kg', tolerance: '0.001' },
+      exhibited: { value: 0.049, unit: 'kg', uncertainty: '0.002' },
+    });
+    const ast = run(DUALS, patch);
+    const text = dump(ast);
+    expect(text).toContain('designed { value 0.05 unit "kg" tolerance "0.001" }');
+    expect(text).toContain('exhibited { value 0.049 unit "kg" uncertainty "0.002" }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.duals.find(d => d.id === 'd_v_min')?.exhibited?.value).toBe(0.049);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(DUALS, { strict: true })));
+  });
+
+  it('drops a role when the other stays (C34); the quantity-kind override round-trips', () => {
+    const ast = run(DUALS, updateConstruct(a => a.duals, 'd_e_max', {
+      exhibited: { value: 499.9, unit: 'kg', quantityKind: 'mass', uncertainty: '0.1' },
+      designed: undefined,
+    }));
+    const text = dump(ast);
+    const eMaxBlock = text.split('dual d_v_min')[0]!;
+    expect(eMaxBlock).not.toContain('designed');
+    expect(eMaxBlock).toContain('exhibited { value 499.9 unit "kg" kind mass uncertainty "0.1" }');
+    expect(load(text, { strict: true }).duals.find(d => d.id === 'd_e_max')?.designed).toBeUndefined();
+  });
+
+  it('deletes a dual; the removal reverts to the exact slot', () => {
+    const del = deleteConstruct(a => a.duals, 'd_e_max');
+    const ast = run(DUALS, del);
+    expect(ast.duals.map(d => d.id)).toEqual(['d_v_min']);
+    del.revert(ast);
+    expect(ast.duals.map(d => d.id)).toEqual(['d_e_max', 'd_v_min']);
+  });
+});
+
+describe('W3.2 reference materials — the certified-material surface', () => {
+  const RMS = `reference_material cgm-200 {
+  kind certified_gas_mixture
+  name "CGM 200"
+  definition "Certified gas mixture for analyzer verification"
+  source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2" }
+  identity_fields {
+    field composition { description "Component(s) and nominal concentrations" }
+    field certified_value { description "The certified concentration" unit "mol/mol" type mole_fraction required true }
+  }
+  constraints {
+    constraint purity_band {
+      description "The purity band"
+      rule "ocl{purity >= 0.999}"
+      evidence { purity: purity_certificate }
+      override { rule "ocl{purity >= 0.99}" by issuing_authority evidence override_approved }
+      on_violation invalidate
+      source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2.1" }
+    }
+  }
+}
+
+reference_material rsm-1 {
+  kind reference_speed_meter
+  name "RSM 1"
+}
+`;
+
+  it('creates a material with the parse defaults; the dump round-trips', () => {
+    const ast = run(RMS, createConstruct(a => a.referenceMaterials, newReferenceMaterial('rm_new')));
+    const rm = ast.referenceMaterials.find(r => r.id === 'rm_new');
+    expect(rm?.identityFields).toEqual([]);
+    expect(rm?.constraints).toEqual([]);
+    const text = dump(ast);
+    expect(text).toContain('reference_material rm_new {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.referenceMaterials.map(r => r.id)).toContain('rm_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the identity fields (the required flag, unit, type); undo restores', () => {
+    const patch = updateConstruct(a => a.referenceMaterials, 'rsm-1', {
+      identityFields: [{ name: 'reference_speed', description: 'The reference speed', unit: 'km/h', type: 'speed', required: true }],
+    });
+    const ast = run(RMS, patch);
+    const text = dump(ast);
+    expect(text).toContain('field reference_speed { description "The reference speed" unit "km/h" type speed required true }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.referenceMaterials.find(r => r.id === 'rsm-1')?.identityFields[0]?.required).toBe(true);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(RMS, { strict: true })));
+  });
+
+  it('edits a constraint with its override and evidence bindings', () => {
+    const ast = load(RMS, { strict: true });
+    const c = ast.referenceMaterials[0]!.constraints[0]!;
+    expect(c.override?.by).toBe('issuing_authority');
+    const patch = updateConstruct(a => a.referenceMaterials, 'cgm-200', {
+      constraints: [{
+        ...c,
+        rule: 'ocl{purity >= 0.9995}',
+        evidence: { purity: 'purity_certificate', lab: 'lab_report' },
+        override: { rule: 'ocl{purity >= 0.995}', by: 'issuing_authority', evidence: 'override_approved' },
+      }],
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('rule "ocl{purity >= 0.9995}"');
+    expect(text).toContain('evidence { purity: purity_certificate lab: lab_report }');
+    expect(text).toContain('override { rule "ocl{purity >= 0.995}" by issuing_authority evidence override_approved }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.referenceMaterials[0]?.constraints[0]?.override?.rule).toBe('ocl{purity >= 0.995}');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(RMS, { strict: true })));
+  });
+
+  it('the source patch keeps the sourceRefs alias (the dump folds to ref derives-from)', () => {
+    const ast = load(RMS, { strict: true });
+    const source = { doc: 'urn:oiml:pub:r:144-1:2013', clause: '5.3' };
+    updateConstruct(a => a.referenceMaterials, 'cgm-200', { source, sourceRefs: [source] }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.3"');
+    expect(load(text, { strict: true }).referenceMaterials[0]?.source?.clause).toBe('5.3');
+  });
+
+  it('deletes a material; the removal reverts to the exact slot', () => {
+    const del = deleteConstruct(a => a.referenceMaterials, 'cgm-200');
+    const ast = run(RMS, del);
+    expect(ast.referenceMaterials.map(r => r.id)).toEqual(['rsm-1']);
+    del.revert(ast);
+    expect(ast.referenceMaterials.map(r => r.id)).toEqual(['cgm-200', 'rsm-1']);
+  });
+});
+
+describe('W3.2 instruments — the subject-TYPE surface', () => {
+  const INSTRUMENT = `instrument LoadCell {
+  extends MeasuringInstrument
+  measurand_kind force
+  definition "A load cell family"
+  variant DigitalLoadCell {
+    name "Digital load cell"
+    definition "d"
+  }
+  dimension accuracy_class {
+    label "Accuracy class"
+    scope family
+    cardinality single
+    values {
+      C { label "Class C" description "d" }
+      D { label "Class D" implies { C } }
+    }
+  }
+  family {
+    metamodel_class MeasuringInstrumentModelFamily
+    definition "The family definition"
+  }
+  family_criteria {
+    "criterion one"
+  }
+  family_defaults {
+    dimensions { accuracy_class }
+    parameters { e_max }
+  }
+  model_group {
+    definition "the inner family"
+    group_by accuracy_class
+    identical_characteristics { creep }
+    identical_attributes { e_max }
+  }
+  source { doc "urn:oiml:pub:r:60-1:2021" clause "2.1" }
+}
+
+instrument Other {
+  definition "d"
+}
+`;
+
+  it('creates an instrument with the parse defaults; the dump round-trips', () => {
+    const ast = run(INSTRUMENT, createConstruct(a => a.instruments, newInstrument('NewInstrument')));
+    const i = ast.instruments.find(x => x.id === 'NewInstrument');
+    expect(i?.variants).toEqual([]);
+    expect(i?.modelGroup).toBe(null);
+    const text = dump(ast);
+    expect(text).toContain('instrument NewInstrument {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.instruments.map(x => x.id)).toContain('NewInstrument');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits variants, dimensions + values, the family block and the model group; undo restores', () => {
+    const patch = updateConstruct(a => a.instruments, 'Other', {
+      variants: [{ id: 'AnalogVariant', name: 'Analog', definition: 'd' }],
+      dimensions: [{
+        id: 'installation', label: 'Installation', scope: 'model', cardinality: 'set',
+        labelSeparator: '', description: '', source: null,
+        values: [{ id: 'fixed', label: 'Fixed', description: '', payload: {}, implies: [] }],
+      }],
+      familyMetamodelClass: 'MeasuringInstrumentModelFamily',
+      familyDefinition: 'f',
+      familyCriteria: ['c1', 'c2'],
+      familyDefaultDimensions: ['installation'],
+      familyDefaultParameters: ['e_max'],
+      modelGroup: { definition: 'mg', identicalCharacteristics: ['creep'], identicalAttributes: ['e_max'], groupBy: 'installation' },
+    });
+    const ast = run(INSTRUMENT, patch);
+    const text = dump(ast);
+    expect(text).toContain('variant AnalogVariant { name "Analog" definition "d" }');
+    expect(text).toContain('dimension installation {');
+    expect(text).toContain('cardinality set');
+    expect(text).toContain('fixed { label "Fixed" }');
+    expect(text).toContain('family {');
+    expect(text).toContain('family_criteria {');
+    expect(text).toContain('group_by installation');
+    const reloaded = load(text, { strict: true });
+    const other = reloaded.instruments.find(x => x.id === 'Other');
+    expect(other?.dimensions[0]?.values.map(v => v.id)).toEqual(['fixed']);
+    expect(other?.modelGroup?.groupBy).toBe('installation');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(INSTRUMENT, { strict: true })));
+  });
+
+  it('the implies closure and a rename of the initial state survive the round trip', () => {
+    const ast = load(INSTRUMENT, { strict: true });
+    expect(ast.instruments[0]?.dimensions[0]?.values[1]?.implies).toEqual(['C']);
+    const text = dump(ast);
+    expect(text).toContain('D { label "Class D" implies { C } }');
+    expect(load(text, { strict: true }).instruments[0]?.dimensions[0]?.values[1]?.implies).toEqual(['C']);
+  });
+
+  it('the source patch keeps the sourceRefs alias (the dump folds to ref derives-from)', () => {
+    const ast = load(INSTRUMENT, { strict: true });
+    const source = { doc: 'urn:oiml:pub:r:60-1:2021', clause: '2.2' };
+    updateConstruct(a => a.instruments, 'LoadCell', { source, sourceRefs: [source] }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-1:2021#clause-2.2"');
+    expect(load(text, { strict: true }).instruments[0]?.source?.clause).toBe('2.2');
+  });
+
+  it('deletes an instrument; the removal reverts to the exact slot', () => {
+    const del = deleteConstruct(a => a.instruments, 'LoadCell');
+    const ast = run(INSTRUMENT, del);
+    expect(ast.instruments.map(i => i.id)).toEqual(['Other']);
+    del.revert(ast);
+    expect(ast.instruments.map(i => i.id)).toEqual(['LoadCell', 'Other']);
   });
 });

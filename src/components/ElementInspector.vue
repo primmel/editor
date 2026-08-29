@@ -23,6 +23,10 @@ import ConditionSetInspector from './inspectors/ConditionSetInspector.vue';
 import VerdictInspector from './inspectors/VerdictInspector.vue';
 import SymbolInspector from './inspectors/SymbolInspector.vue';
 import AttributeDefinitionInspector from './inspectors/AttributeDefinitionInspector.vue';
+import QuantityRegisterInspector from './inspectors/QuantityRegisterInspector.vue';
+import DualInspector from './inspectors/DualInspector.vue';
+import ReferenceMaterialInspector from './inspectors/ReferenceMaterialInspector.vue';
+import InstrumentInspector from './inspectors/InstrumentInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -150,6 +154,26 @@ const pluginInspector = computed(() => {
       />
       <AttributeDefinitionInspector
         v-else-if="target.type === 'attributeDefinition'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <QuantityRegisterInspector
+        v-else-if="target.type === 'quantityRegister'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <DualInspector
+        v-else-if="target.type === 'dual'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ReferenceMaterialInspector
+        v-else-if="target.type === 'referenceMaterial'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <InstrumentInspector
+        v-else-if="target.type === 'instrument'"
         :model="props.model"
         :element-id="target.id"
       />

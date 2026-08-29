@@ -9,7 +9,8 @@ export type SelectionType =
   | 'term' | 'constraint' | 'calculation' | 'table'
   | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject'
   | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial'
-  | 'symbol' | 'attributeDefinition';
+  | 'symbol' | 'attributeDefinition'
+  | 'quantityRegister' | 'dual' | 'instrument';
 
 export interface Selection {
   id: string;
