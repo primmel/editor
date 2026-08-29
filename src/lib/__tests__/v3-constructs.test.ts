@@ -19,6 +19,7 @@ import {
   newCalculation,
   newConstraint,
   newStateMachine,
+  newSubject,
   newTable,
   newTerm,
   newTestPointSet,
@@ -522,5 +523,144 @@ describe('W3 test point sets — the shared test-point surface', () => {
     patch.revert(ast);
     expect(ast.testPointSets[0]?.points).toHaveLength(2);
     expect(dump(ast)).toBe(dump(load(TPS, { strict: true })));
+  });
+});
+
+describe('W3 subjects — the IS/HAS/DOES anatomy surface', () => {
+  const SUBJECT = `subject LC500 {
+  extends LoadCell
+  is {
+    metadata {
+      name "LC-500 load cell model"
+    }
+    provenance {
+      manufacturer "ACME Weighing GmbH"
+    }
+    design_parameters {
+      e_max : "500 kg"
+    }
+    designed_conditions {
+      reference ref_conditions
+    }
+    promises {
+      mpe_within {
+        target error_hold
+        level symbolic C6
+        conditions "over the rated range"
+        statement "Holds accuracy class C6 across the rated range."
+        verified_by { oiml-r60#/req/class-c/mpe }
+      }
+    }
+  }
+  has {
+    attributes {
+      serial_number : string declared
+    }
+    dimensions {
+      accuracy_class in { C }
+    }
+    characteristics {
+      error_hold e = ocl{self.indication - self.ref_load}
+    }
+    state lc_operational
+  }
+  does {
+    behavior creep
+  }
+}
+`;
+
+  it('creates a subject with the parse-default anatomy; the dump round-trips', () => {
+    const ast = run(SUBJECT, createConstruct(a => a.subjects, newSubject('S2')));
+    expect(ast.subjects.map(s => s.id)).toContain('S2');
+    const text = dump(ast);
+    expect(text).toContain('subject S2 {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.subjects.map(s => s.id)).toContain('S2');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the anatomy facets as whole-block replacements (is/has/does)', () => {
+    const ast = load(SUBJECT, { strict: true });
+    const s = ast.subjects[0]!;
+    const patch = updateConstruct(a => a.subjects, 'LC500', {
+      is: {
+        ...s.is,
+        designParameters: { e_max: '600 kg', v_min: '0.02 kg' },
+        promises: [...s.is.promises, { id: 'creep_c6', target: 'creep', level: null, conditions: '', statement: 'Creep stays within the envelope.', verifiedBy: ['req-x'], source: null }],
+      },
+      has: {
+        ...s.has,
+        attributes: { serial_number: 'string declared', firmware_version: 'string declared' },
+        dimensions: { accuracy_class: ['C', 'D'] },
+      },
+      does: { behaviors: ['creep', 'self_test'] },
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('v_min : "0.02 kg"');
+    expect(text).toContain('accuracy_class in { C, D }');
+    expect(text).toContain('behavior self_test');
+    expect(text).toContain('creep_c6 {');
+    expect(text).toContain('statement "Creep stays within the envelope."');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.subjects[0]?.has.dimensions['accuracy_class']).toEqual(['C', 'D']);
+    expect(reloaded.subjects[0]?.is.promises).toHaveLength(2);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(SUBJECT, { strict: true })));
+  });
+
+  it('the promise level edits across all three kinds', () => {
+    const ast = load(SUBJECT, { strict: true });
+    const s = ast.subjects[0]!;
+    updateConstruct(a => a.subjects, 'LC500', {
+      is: {
+        ...s.is,
+        promises: [
+          { id: 'p_qty', target: 't', level: { kind: 'quantity', quantity: { value: 500, unit: 'kg' } }, conditions: '', statement: 'q', verifiedBy: [], source: null },
+          { id: 'p_rng', target: 't', level: { kind: 'range', min: -10, max: 40, unit: 'degC' }, conditions: '', statement: 'r', verifiedBy: [], source: null },
+          { id: 'p_sym', target: 't', level: { kind: 'symbolic', symbolic: 'C6' }, conditions: '', statement: 's', verifiedBy: [], source: null },
+        ],
+      },
+    }).apply(ast);
+    const text = dump(ast);
+    // The level spellings (MN 113): quantity is the bare block, range and
+    // symbolic carry the keyword.
+    expect(text).toContain('level { value 500 unit "kg" }');
+    expect(text).toContain('level range { min -10 max 40 unit "degC" }');
+    expect(text).toContain('level symbolic C6');
+    const reloaded = load(text, { strict: true });
+    const levels = reloaded.subjects[0]!.is.promises.map(p => p.level?.kind);
+    expect(levels).toEqual(['quantity', 'range', 'symbolic']);
+  });
+
+  it('the shorthand characteristic round-trips and edits', () => {
+    const ast = load(SUBJECT, { strict: true });
+    const s = ast.subjects[0]!;
+    expect(s.has.characteristics['error_hold']?.symbol).toBe('e');
+    updateConstruct(a => a.subjects, 'LC500', {
+      has: {
+        ...s.has,
+        characteristics: {
+          ...s.has.characteristics,
+          creep: { symbol: 'c_c', derivation: 'ocl{i2 - i1}', behavior: 'creep', quantityKind: 'mass', unit: 'g' },
+        },
+      },
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('error_hold e = ocl{self.indication - self.ref_load}');
+    expect(text).toContain('creep {');
+    expect(text).toContain('symbol "c_c"');
+    expect(load(text, { strict: true }).subjects[0]?.has.characteristics['creep']?.unit).toBe('g');
+  });
+
+  it('deletes a subject; the removal reverts to the exact slot', () => {
+    const two = SUBJECT + '\nsubject Other {\n}\n';
+    const del = deleteConstruct(a => a.subjects, 'LC500');
+    const ast = run(two, del);
+    expect(ast.subjects.map(s => s.id)).toEqual(['Other']);
+    del.revert(ast);
+    expect(ast.subjects.map(s => s.id)).toEqual(['LC500', 'Other']);
   });
 });
