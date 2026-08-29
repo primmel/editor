@@ -47,7 +47,8 @@ for leg in \
   v3-vocabulary-smoke \
   v3-quantities-smoke \
   v3-reference-materials-smoke \
-  v3-instruments-smoke
+  v3-instruments-smoke \
+  v3-conformance-classes-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

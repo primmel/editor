@@ -88,6 +88,7 @@ export type AttributeDefinition = Standard['attributeDefinitions'][number];
 export type QuantityRegister = Standard['quantityRegisters'][number];
 export type Dual = Standard['duals'][number];
 export type Instrument = Standard['instruments'][number];
+export type ConformanceClass = Standard['conformanceClasses'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -316,5 +317,20 @@ export function newInstrument(id: string): Instrument {
     components: [],
     structure: [],
     source: null,
+  };
+}
+
+export function newConformanceClass(id: string): ConformanceClass {
+  return {
+    id,
+    name: '',
+    title: '',
+    description: '',
+    target: '',
+    subject: '',
+    applicability: [],
+    guidance: '',
+    dependencies: [],
+    referenceIds: [],
   };
 }

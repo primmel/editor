@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConstraint, newDual, newInstrument, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
+import { newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConstraint, newDual, newInstrument, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -79,6 +79,7 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
     { label: 'Requirements', type: 'requirement', items: m.requirements.map((r) => ({ id: r.id, detail: r.name })) },
     { label: 'Conformance Tests', type: 'conformanceTest', items: m.conformanceTests.map((t) => ({ id: t.id, detail: t.name })) },
+    { label: 'Conformance Classes', type: 'conformanceClass', createPrefix: 'CC', items: m.conformanceClasses.map((c) => ({ id: c.id, detail: c.name })) },
   ];
   return result.filter((g) => g.items.length > 0 || g.createPrefix);
 });
@@ -151,6 +152,9 @@ function createIn(group: TreeGroup) {
       break;
     case 'instrument':
       modelStore.execute(createConstruct((a: Standard) => a.instruments, newInstrument(id), `create instrument ${id}`));
+      break;
+    case 'conformanceClass':
+      modelStore.execute(createConstruct((a: Standard) => a.conformanceClasses, newConformanceClass(id), `create conformance class ${id}`));
       break;
     default:
       return;

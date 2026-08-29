@@ -10,7 +10,7 @@ export type SelectionType =
   | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject'
   | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial'
   | 'symbol' | 'attributeDefinition'
-  | 'quantityRegister' | 'dual' | 'instrument';
+  | 'quantityRegister' | 'dual' | 'instrument' | 'conformanceClass';
 
 export interface Selection {
   id: string;

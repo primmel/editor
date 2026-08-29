@@ -18,6 +18,7 @@ import {
 } from '../commands';
 import {
   newAttributeDefinition,
+  newConformanceClass,
   newDual,
   newInstrument,
   newQuantityRegister,
@@ -578,5 +579,77 @@ instrument Other {
     expect(ast.instruments.map(i => i.id)).toEqual(['Other']);
     del.revert(ast);
     expect(ast.instruments.map(i => i.id)).toEqual(['LoadCell', 'Other']);
+  });
+});
+
+describe('W3.2 conformance classes — the test-scope surface', () => {
+  const CCS = `conformance_class /conf/metrological {
+  title "Metrological tests"
+  name "Metrological"
+  target /req/metrological
+  subject "LoadCell"
+  description "d"
+  applicability {
+    accuracy_class: [C, D] match any
+  }
+  guidance "g"
+  test_subject {
+    kind: "load cell"
+  }
+  dependencies { /conf/other }
+}
+`;
+
+  it('creates a conformance class with the parse defaults; the dump round-trips', () => {
+    const ast = run(CCS, createConstruct(a => a.conformanceClasses, newConformanceClass('/conf/new')));
+    const c = ast.conformanceClasses.find(x => x.id === '/conf/new');
+    expect(c?.applicability).toEqual([]);
+    const text = dump(ast);
+    expect(text).toContain('conformance_class /conf/new {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.conformanceClasses.map(x => x.id)).toContain('/conf/new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the applicability entries (values + match mode); undo restores', () => {
+    const patch = updateConstruct(a => a.conformanceClasses, '/conf/metrological', {
+      applicability: [
+        { dimension: 'accuracy_class', values: ['C'], mapping: null, match: 'all' as const },
+        { dimension: 'installation', values: ['fixed', 'portable'], mapping: null, match: null },
+      ],
+    });
+    const ast = run(CCS, patch);
+    const text = dump(ast);
+    expect(text).toContain('accuracy_class: [C] match all');
+    expect(text).toContain('installation: [fixed, portable]');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.conformanceClasses[0]?.applicability).toHaveLength(2);
+    expect(reloaded.conformanceClasses[0]?.applicability[0]?.match).toBe('all');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(CCS, { strict: true })));
+  });
+
+  it('edits the scalar facets and the test-subject pairs', () => {
+    const ast = run(CCS, updateConstruct(a => a.conformanceClasses, '/conf/metrological', {
+      guidance: 'edited guidance',
+      dependencies: ['/conf/other', '/conf/second'],
+      testSubject: { kind: 'load cell', mounting: 'rigid' },
+    }));
+    const text = dump(ast);
+    expect(text).toContain('guidance "edited guidance"');
+    expect(text).toContain('dependencies { /conf/other /conf/second }');
+    expect(text).toContain('kind: "load cell"');
+    expect(text).toContain('mounting: "rigid"');
+    expect(validate(load(text, { strict: true }))).toEqual([]);
+  });
+
+  it('deletes a conformance class; the removal reverts to the exact slot', () => {
+    const two = CCS + '\nconformance_class /conf/second {\n  name "Second"\n  target /req/other\n}\n';
+    const del = deleteConstruct(a => a.conformanceClasses, '/conf/metrological');
+    const ast = run(two, del);
+    expect(ast.conformanceClasses.map(c => c.id)).toEqual(['/conf/second']);
+    del.revert(ast);
+    expect(ast.conformanceClasses.map(c => c.id)).toEqual(['/conf/metrological', '/conf/second']);
   });
 });
