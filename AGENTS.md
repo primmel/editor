@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 238 tests
+cd ~/src/primmel/editor && npx vitest run           # 279 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 26 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 35 legs, needs npm run dev on :5173
 ```
 
 ## The laws
