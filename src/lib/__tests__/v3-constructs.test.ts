@@ -16,6 +16,7 @@ import {
   type Command,
 } from '../commands';
 import {
+  newCalculation,
   newConstraint,
   newTerm,
 } from '../factory';
@@ -188,5 +189,89 @@ describe('W3 constraints — the domain-constraint surface', () => {
     expect(ast.constraints.map(c => c.id)).toEqual(['second']);
     del.revert(ast);
     expect(ast.constraints.map(c => c.id)).toEqual(['dead_load_max_geometry', 'second']);
+  });
+});
+
+describe('W3 calculations — the calculation surface', () => {
+  const CALCS = `calculation vMin {
+  name "vMin"
+  identifier /calc/v-min
+  category metrological
+  description "Computes verification interval v_min per R 60-1, 3.5.11"
+  inputs {
+    d_max : number { unit "g" description "Maximum test load D_max" }
+    n_lc : integer { description "Number of verification intervals" }
+  }
+  output : number { unit "g" name "v_min" description "Minimum verification interval" }
+  expression "ocl{(d_max - d_min) / n_lc}"
+  ref derives-from "urn:oiml:pub:r:60-1:2021#clause-3.5.11"
+}
+`;
+
+  it('creates a calculation with the parse defaults; the dump round-trips', () => {
+    const ast = run(CALCS, createConstruct(a => a.calculations, newCalculation('c_new')));
+    const c = ast.calculations.find(x => x.id === 'c_new');
+    expect(c?.output.type).toBe('number');
+    const text = dump(ast);
+    expect(text).toContain('calculation c_new {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.calculations.map(x => x.id)).toContain('c_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('patches inputs/output/expression as whole-facet replacements; undo restores', () => {
+    const inputs = [
+      { name: 'd_max', type: 'number', unit: 'kg', description: 'Maximum test load', defaultValue: '', hasDefault: false },
+      { name: 'accuracy_class', type: 'enum', unit: '1', description: 'Accuracy class', defaultValue: '', hasDefault: false, enumValues: ['A', 'B', 'C', 'D'] },
+    ];
+    const patch = updateConstruct(a => a.calculations, 'vMin', {
+      inputs,
+      output: { type: 'number', unit: 'v', name: 'v_min', description: 'in verification units' },
+      expression: 'ocl{lookupMPE(d_max, accuracy_class)}',
+      ruleType: 'table_lookup',
+    });
+    const ast = run(CALCS, patch);
+    const text = dump(ast);
+    expect(text).toContain('d_max : number { unit "kg" description "Maximum test load" }');
+    expect(text).toContain('accuracy_class : enum { unit "1" description "Accuracy class" enum_values { A B C D } }');
+    expect(text).toContain('type table_lookup');
+    expect(text).toContain('ocl{lookupMPE(d_max, accuracy_class)}');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.calculations[0]?.inputs.map(i => i.name)).toEqual(['d_max', 'accuracy_class']);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(ast.calculations[0]?.inputs.map(i => i.name)).toEqual(['d_max', 'n_lc']);
+    expect(dump(ast)).toBe(dump(load(CALCS, { strict: true })));
+  });
+
+  it('the lookup declaration and the source fold survive the edit path', () => {
+    const ast = run(
+      CALCS,
+      updateConstruct(a => a.calculations, 'vMin', { lookup: { key: 'accuracy_class', variable: 'mpe_tiers', multiplier: 'p_lc' } }),
+      updateConstruct(a => a.calculations, 'vMin', (() => {
+        const sourceRef = { doc: 'urn:oiml:pub:r:60-1:2021', clause: '3.5.12' };
+        return { sourceRef, sourceRefs: [sourceRef] };
+      })()),
+    );
+    const text = dump(ast);
+    expect(text).toContain('lookup { key accuracy_class variable mpe_tiers multiplier p_lc }');
+    // The calculation dump folds provenance to the derives-from ref form
+    // (dumpSourceRefAsRef) — the clause rides inside the URN.
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-1:2021#clause-3.5.12"');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.calculations[0]?.lookup?.variable).toBe('mpe_tiers');
+    expect(reloaded.calculations[0]?.sourceRef?.clause).toBe('3.5.12');
+  });
+
+  it('pins the kernel gap: a bare NUMERIC input default mangles on parse', () => {
+    // Kernel 1.8.0 parse: `default 500` lands as "0" (the tokenizer
+    // strips the digits); quoted/string defaults survive. The fix is
+    // upstream (primmel-ts) — when it lands this test flips and the
+    // inspector hint comes off.
+    const ast = load('calculation c {\n  name "c"\n  description "d"\n  inputs {\n    x : number { unit "v" default 500 }\n  }\n  output : number { unit "v" }\n  expression "ocl{x}"\n}\n', { strict: true });
+    expect(ast.calculations[0]?.inputs[0]?.hasDefault).toBe(true);
+    expect(ast.calculations[0]?.inputs[0]?.defaultValue).toBe('0');
+    const quoted = load('calculation c {\n  name "c"\n  description "d"\n  inputs {\n    x : number { unit "v" default "500" }\n  }\n  output : number { unit "v" }\n  expression "ocl{x}"\n}\n', { strict: true });
+    expect(quoted.calculations[0]?.inputs[0]?.defaultValue).toBe('500');
   });
 });
