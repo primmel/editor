@@ -24,6 +24,7 @@ import {
   newCompetenceKind,
   newConformanceClass,
   newConnectorProfile,
+  newDataspace,
   newDiscrepancyRecord,
   newDual,
   newFormulasUsed,
@@ -32,6 +33,7 @@ import {
   newInvariant,
   newMonitor,
   newPassport,
+  newPolicy,
   newPredicate,
   newQuantityRegister,
   newReferenceMaterial,
@@ -1130,5 +1132,111 @@ discrepancy_record dr-1 {
     expect(dump(ast)).toBe(dump(load('', { strict: true })));
     for (const d of [...dels].reverse()) d.revert(ast);
     expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
+  });
+});
+
+describe('W3.2 dataspaces + policies — the governance plane', () => {
+  const GOV = `dataspace oiml-cs-dataspace {
+  name "OIML-CS"
+  description "The scheme dataspace"
+  participant_class issuer {
+    label "Issuing Authority"
+    description "d"
+  }
+  artifact_class test_report {
+    label "Test report"
+    description "d"
+    element tr-form
+    policy default-sharing
+  }
+  policies { default-sharing }
+  default_policy default-sharing
+  trust_anchor biml {
+    trust_ref oiml key biml-2026
+    role registry
+    description "the BIML register"
+  }
+  compatible_with { other-ds }
+  source { doc "urn:oiml:pub:b:18:2025" clause "5.1" }
+}
+
+policy default-sharing {
+  name "Default sharing"
+  description "d"
+  governs { test_report }
+  default_posture true
+  rule read-ok {
+    kind permission
+    action read
+    artifact test_report
+    constraint "ocl{requester.accredited}"
+  }
+  rule keep-nothing {
+    kind prohibition
+    action retain
+  }
+}
+`;
+
+  it('creates both kinds with the parse defaults; the dump round-trips', () => {
+    const ast = run(
+      GOV,
+      createConstruct(a => a.dataspaces, newDataspace('ds_new')),
+      createConstruct(a => a.policies, newPolicy('pol_new')),
+    );
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.dataspaces.map(d => d.id)).toContain('ds_new');
+    expect(reloaded.policies.map(p => p.id)).toContain('pol_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the dataspace classes + the trust anchor (org + key id); undo restores', () => {
+    const patch = updateConstruct(a => a.dataspaces, 'oiml-cs-dataspace', {
+      artifactClasses: [{ id: 'test_report', label: 'Test report', description: 'd', element: 'tr-form-v2', policy: '' }],
+      trustAnchors: [{ id: 'biml', trustRef: { org: 'oiml', kid: 'biml-2027' }, role: 'notary', description: 'the BIML register' }],
+    });
+    const ast = run(GOV, patch);
+    const text = dump(ast);
+    expect(text).toContain('element tr-form-v2');
+    expect(text).toContain('trust_ref oiml key biml-2027');
+    expect(text).toContain('role notary');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.dataspaces[0]?.trustAnchors[0]?.trustRef?.kid).toBe('biml-2027');
+    expect(reloaded.dataspaces[0]?.artifactClasses[0]?.policy).toBe('');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(GOV, { strict: true })));
+  });
+
+  it('edits the policy rules (kind/action/artifact/constraints) and the tri-state posture', () => {
+    const patch = updateConstruct(a => a.policies, 'default-sharing', {
+      defaultPosture: null,
+      rules: [
+        { id: 'read-ok', kind: 'permission', action: 'read', artifact: 'test_report', constraints: ['ocl{requester.accredited}', 'ocl{requester.inScope}'] },
+        { id: 'share-bound', kind: 'obligation', action: 'log', artifact: '', constraints: [] },
+      ],
+    });
+    const ast = run(GOV, patch);
+    const text = dump(ast);
+    expect(text).not.toContain('default_posture');
+    expect(text).toContain('constraint "ocl{requester.accredited}"');
+    expect(text).toContain('constraint "ocl{requester.inScope}"');
+    expect(text).toContain('rule share-bound {');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.policies[0]?.rules[1]?.kind).toBe('obligation');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(GOV, { strict: true })));
+  });
+
+  it('deletes both kinds; the removals revert to the exact slots', () => {
+    const delD = deleteConstruct(a => a.dataspaces, 'oiml-cs-dataspace');
+    const delP = deleteConstruct(a => a.policies, 'default-sharing');
+    const ast = run(GOV, delD, delP);
+    expect(ast.dataspaces).toHaveLength(0);
+    expect(ast.policies).toHaveLength(0);
+    delP.revert(ast);
+    delD.revert(ast);
+    expect(dump(ast)).toBe(dump(load(GOV, { strict: true })));
   });
 });
