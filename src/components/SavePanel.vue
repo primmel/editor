@@ -35,11 +35,13 @@ onMounted(async () => {
 const preview = computed(() => serializeForSave(props.model, modelStore.loadedText));
 const STATUS_ORDER: DiffStatus[] = ['added', 'removed', 'changed', 'moved'];
 
-/** The package save plan (TODO.editor wave 1) — when the unit of work
- *  is a package, the write splits per source file (the kernel's
- *  groupBySourceFile over the load's provenance); only touched files
- *  are written. The plan is best-effort like the diff: a baseline that
- *  no longer parses degrades to a warning, never a block. */
+/** The package save plan (TODO.editor waves 1+2) — when the unit of
+ *  work is a package, the write splits per source file (the kernel's
+ *  groupBySourceFile over the load's provenance) and splices only the
+ *  touched constructs' spans: untouched files AND untouched spans keep
+ *  their authored bytes (comments, banners, whitespace style). The plan
+ *  is best-effort like the diff: a baseline that no longer parses
+ *  degrades to a warning, never a block. */
 const planResult = computed<{ plan: PackageSavePlan | null; error: string }>(() => {
   const session = modelStore.pkg;
   if (!session || !modelStore.standard) return { plan: null, error: '' };
@@ -61,7 +63,7 @@ async function doPackageWrite() {
   writeError.value = '';
   try {
     await writePackageFiles(session.dir, p.writes.map((w) => ({ path: w.path, text: w.text })));
-    modelStore.markSaved();
+    modelStore.markPackageSaved(p);
     saved.value = 'write';
   } catch (e) {
     writeError.value = (e as Error).message;
@@ -149,7 +151,7 @@ const ssotNote = computed(() => {
            splits the merged model back into its source files. -->
       <div v-if="modelStore.pkg" class="save-actions">
         <div class="pkg-plan" data-testid="pkg-save-plan">
-          <div class="pkg-plan-label">package {{ modelStore.pkg.id }} — the save writes per source file (untouched files keep their authored bytes)</div>
+          <div class="pkg-plan-label">package {{ modelStore.pkg.id }} — the save splices per source file (untouched files and untouched spans keep their authored bytes)</div>
           <div v-if="planError" class="save-error" data-testid="pkg-save-plan-error">the plan is unavailable: {{ planError }}</div>
           <template v-else-if="plan">
             <div v-if="plan.writes.length === 0" class="save-identical" data-testid="pkg-save-empty">no file changes since load</div>

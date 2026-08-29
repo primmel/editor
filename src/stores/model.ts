@@ -3,6 +3,7 @@ import { computed, ref, shallowRef } from 'vue';
 import { dump, load, type Standard } from '@primmel/primmel';
 import type { Command } from '../lib/commands';
 import type { PackageOpenResult } from '../lib/package';
+import { applyPlanToSession, type PackageSavePlan } from '../lib/package-save';
 import { autoLayoutUnpositioned } from '../lib/layout';
 
 // ─────────────────────────────────────────────────────────────────────
@@ -131,6 +132,16 @@ export const useModelStore = defineStore('model', () => {
     }
   }
 
+  /** After a successful package write (TODO.editor wave 2): the
+   *  session's file bytes and provenance spans become the written ones
+   *  (applyPlanToSession — the spanMap each write carries), so the next
+   *  save's splices compute against the new state, never stale offsets;
+   *  then the ordinary save bookkeeping. */
+  function markPackageSaved(plan: PackageSavePlan) {
+    if (pkg.value) pkg.value = applyPlanToSession(pkg.value, plan);
+    markSaved();
+  }
+
   /** The code editor's write path: text → AST (parse errors surface,
    *  the AST stays until the text parses). Refused in the viewer. */
   function setText(text: string) {
@@ -177,7 +188,7 @@ export const useModelStore = defineStore('model', () => {
     history, cursor, dirty, canUndo, canRedo,
     readOnly, setReadOnly,
     pkg, openPackage,
-    loadText, setText, loadFile, format, execute, undo, redo, serialize, markSaved,
+    loadText, setText, loadFile, format, execute, undo, redo, serialize, markSaved, markPackageSaved,
   };
 });
 

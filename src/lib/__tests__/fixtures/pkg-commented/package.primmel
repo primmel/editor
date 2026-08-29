@@ -1,0 +1,8 @@
+package {
+  id pkg-commented
+  kind rec
+  title "Commented Probe"
+  version "1.0.0"
+  editions { "1.0.0" }
+  baseUrn "urn:example:pkg-commented:1.0.0"
+}

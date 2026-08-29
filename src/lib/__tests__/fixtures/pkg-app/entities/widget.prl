@@ -1,4 +1,7 @@
-// The app's entity file.
+// ── The app's entity file ─────────────────────────────────────────────
+// A banner the comment-true save must preserve even when this very
+// file is the one being written (wave 2: only the edited construct's
+// own span may change).
 class Widget#data {
   description { "A widget under test." }
 
@@ -8,7 +11,11 @@ class Widget#data {
   }
 }
 
+// Widget kinds — the comment BETWEEN constructs. An edit to the class
+// above must leave this line byte-identical.
 enum WidgetKind {
   standard { description "Standard widget" }
   deluxe { description "Deluxe widget" }
 }
+
+// Trailing note: the file ends with a comment, not a construct.
