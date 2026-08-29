@@ -28,6 +28,9 @@ import DualInspector from './inspectors/DualInspector.vue';
 import ReferenceMaterialInspector from './inspectors/ReferenceMaterialInspector.vue';
 import InstrumentInspector from './inspectors/InstrumentInspector.vue';
 import ConformanceClassInspector from './inspectors/ConformanceClassInspector.vue';
+import InstanceInspector from './inspectors/InstanceInspector.vue';
+import ArtifactDefinitionInspector from './inspectors/ArtifactDefinitionInspector.vue';
+import ArtifactInstanceInspector from './inspectors/ArtifactInstanceInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -180,6 +183,21 @@ const pluginInspector = computed(() => {
       />
       <ConformanceClassInspector
         v-else-if="target.type === 'conformanceClass'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <InstanceInspector
+        v-else-if="target.type === 'instance'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ArtifactDefinitionInspector
+        v-else-if="target.type === 'artifactDefinition'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ArtifactInstanceInspector
+        v-else-if="target.type === 'artifactInstance'"
         :model="props.model"
         :element-id="target.id"
       />

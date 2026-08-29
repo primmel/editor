@@ -89,6 +89,9 @@ export type QuantityRegister = Standard['quantityRegisters'][number];
 export type Dual = Standard['duals'][number];
 export type Instrument = Standard['instruments'][number];
 export type ConformanceClass = Standard['conformanceClasses'][number];
+export type Instance = Standard['instances'][number];
+export type ArtifactDefinition = Standard['artifactDefinitions'][number];
+export type ArtifactInstance = Standard['artifactInstances'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -333,4 +336,35 @@ export function newConformanceClass(id: string): ConformanceClass {
     dependencies: [],
     referenceIds: [],
   };
+}
+
+export function newInstance(id: string): Instance {
+  return {
+    id,
+    of: '',
+    level: '',
+    model: '',
+    group: '',
+    family: '',
+    definitionVersions: {},
+    has: { attributes: {}, dimensions: {}, testContext: {} },
+    referenceIds: [],
+  };
+}
+
+export function newArtifactDefinition(id: string): ArtifactDefinition {
+  return {
+    id,
+    name: '',
+    description: '',
+    contentContract: { fields: [], structure: '', media: [] },
+    producedWhen: { kind: '' },
+    retention: '',
+    source: null,
+    referenceIds: [],
+  };
+}
+
+export function newArtifactInstance(id: string): ArtifactInstance {
+  return { id, of: '', producedAt: '', by: '', content: {}, links: [], referenceIds: [] };
 }

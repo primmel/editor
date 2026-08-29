@@ -17,9 +17,12 @@ import {
   type Command,
 } from '../commands';
 import {
+  newArtifactDefinition,
+  newArtifactInstance,
   newAttributeDefinition,
   newConformanceClass,
   newDual,
+  newInstance,
   newInstrument,
   newQuantityRegister,
   newReferenceMaterial,
@@ -651,5 +654,156 @@ describe('W3.2 conformance classes — the test-scope surface', () => {
     expect(ast.conformanceClasses.map(c => c.id)).toEqual(['/conf/second']);
     del.revert(ast);
     expect(ast.conformanceClasses.map(c => c.id)).toEqual(['/conf/metrological', '/conf/second']);
+  });
+});
+
+describe('W3.2 instances + artifacts — the instance plane', () => {
+  const PLANE = `subject LC500 {
+}
+
+instance smp-001 {
+  of LC500
+  level sample
+  model mod-2t
+  definition_versions { LC500 : "2021" }
+  has {
+    attributes { serial_number : "ABC-123" net_weight : 2.2 kg }
+    test_context { d_min : 0 kg }
+  }
+}
+
+artifact_definition evidence_file {
+  name "Evidence file"
+  description "One record per enforcement measurement"
+  content_contract {
+    fields {
+      speed : speed "The measured speed"
+      photo : media optional "Vehicle image"
+    }
+    structure "one record per measurement"
+    media {
+      photo { kinds { jpeg png } role "vehicle identification" }
+    }
+  }
+  produced_when per_measurement
+  retention "three months (secure)"
+  source { doc "urn:oiml:pub:r:91-1:2024" clause "6.6" }
+}
+
+artifact_instance ai-1 {
+  of evidence_file
+  produced_at "2026-08-29T10:00:00Z"
+  by smp-001
+  content {
+    speed : 87.5 km/h
+  }
+  links { run-1 }
+}
+`;
+
+  it('creates the three kinds with the parse defaults; the dump round-trips', () => {
+    const ast = run(
+      PLANE,
+      createConstruct(a => a.instances, newInstance('i_new')),
+      createConstruct(a => a.artifactDefinitions, newArtifactDefinition('ad_new')),
+      createConstruct(a => a.artifactInstances, newArtifactInstance('ai_new')),
+    );
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.instances.map(i => i.id)).toContain('i_new');
+    expect(reloaded.artifactDefinitions.map(a => a.id)).toContain('ad_new');
+    expect(reloaded.artifactInstances.map(a => a.id)).toContain('ai_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the instance chain + the QuantityValue maps (the coercion, extra facets preserved)', () => {
+    const ast = load(PLANE, { strict: true });
+    const inst = ast.instances[0]!;
+    const patch = updateConstruct(a => a.instances, 'smp-001', {
+      level: 'sample',
+      model: 'mod-4t',
+      definitionVersions: { LC500: '2021', attributes: '1.0.0' },
+      has: {
+        ...inst.has,
+        attributes: { serial_number: { value: 'ABC-123' }, net_weight: { value: 2.4, unit: 'kg' } },
+        testContext: { d_min: { value: 0, unit: 'kg' }, d_max: { value: 2.2, unit: 't' } },
+      },
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('model mod-4t');
+    // The dump emits the version values bare (unquoted tokens reparse as strings).
+    expect(text).toContain('definition_versions { LC500 : 2021 attributes : 1.0.0 }');
+    expect(text).toContain('net_weight : 2.4 kg');
+    expect(text).toContain('d_max : 2.2 t');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.instances[0]?.has.testContext['d_max']?.value).toBe(2.2);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(PLANE, { strict: true })));
+  });
+
+  it('edits the artifact definition: contract fields, media, produced_when (all three kinds)', () => {
+    const ast = load(PLANE, { strict: true });
+    const def = ast.artifactDefinitions[0]!;
+    const patch = updateConstruct(a => a.artifactDefinitions, 'evidence_file', {
+      contentContract: {
+        ...def.contentContract,
+        fields: [...def.contentContract.fields, { name: 'site', type: 'structure', optional: false, description: '' }],
+        media: [{ field: 'photo', kinds: ['jpeg'], role: 'vehicle identification (front)' }],
+      },
+      producedWhen: { kind: 'on_event', event: 'fault_detected' },
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('site : structure');
+    expect(text).toContain('photo { kinds { jpeg } role "vehicle identification (front)" }');
+    expect(text).toContain('produced_when on_event fault_detected');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.artifactDefinitions[0]?.producedWhen.event).toBe('fault_detected');
+    expect(reloaded.artifactDefinitions[0]?.contentContract.fields).toHaveLength(3);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(PLANE, { strict: true })));
+  });
+
+  it('the per_interval produced_when carries the duration', () => {
+    const ast = run(PLANE, updateConstruct(a => a.artifactDefinitions, 'evidence_file', {
+      producedWhen: { kind: 'per_interval', interval: 'P1D' },
+    }));
+    const text = dump(ast);
+    expect(text).toContain('produced_when per_interval P1D');
+    expect(load(text, { strict: true }).artifactDefinitions[0]?.producedWhen.interval).toBe('P1D');
+  });
+
+  it('edits the artifact instance (of/by/content/links); undo restores', () => {
+    const patch = updateConstruct(a => a.artifactInstances, 'ai-1', {
+      producedAt: '2026-08-29T11:00:00Z',
+      content: { speed: { value: 88.1, unit: 'km/h' }, direction: { value: 'northbound' } },
+      links: ['run-1', 'run-2'],
+    });
+    const ast = run(PLANE, patch);
+    const text = dump(ast);
+    expect(text).toContain('produced_at 2026-08-29T11:00:00Z');
+    expect(text).toContain('content { speed : 88.1 km/h direction : northbound }');
+    expect(text).toContain('links { run-1 run-2 }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.artifactInstances[0]?.content['direction']?.value).toBe('northbound');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(PLANE, { strict: true })));
+  });
+
+  it('deletes each kind; the removals revert to the exact slots', () => {
+    const delI = deleteConstruct(a => a.instances, 'smp-001');
+    const delD = deleteConstruct(a => a.artifactDefinitions, 'evidence_file');
+    const delAi = deleteConstruct(a => a.artifactInstances, 'ai-1');
+    const ast = run(PLANE, delI, delD, delAi);
+    expect(ast.instances).toHaveLength(0);
+    expect(ast.artifactDefinitions).toHaveLength(0);
+    expect(ast.artifactInstances).toHaveLength(0);
+    delAi.revert(ast);
+    delD.revert(ast);
+    delI.revert(ast);
+    expect(dump(ast)).toBe(dump(load(PLANE, { strict: true })));
   });
 });

@@ -81,7 +81,7 @@ function patchTestSubject(entries: [string, string][]) {
       <input class="text-input mono" :value="cc.subject" data-testid="cc-subject" @change="patchScalar('subject', $event)" />
     </InspectorField>
 
-    <InspectorField :label="`applicability (${applicability.length})`" hint="dimension → allowed values; the match mode: any (default) | all | exact">
+    <InspectorField :label="`applicability (${applicability.length})`" hint="dimension → allowed values; the match mode (any | all | exact; undeclared = any)">
       <ul v-if="applicability.length" class="entry-rows">
         <li v-for="(a, i) in applicability" :key="i" class="entry-row" :data-testid="`cc-app-${a.dimension}`">
           <div class="entry-line">
