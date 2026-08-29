@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer'
+import { readFileSync } from 'node:fs'
 
 // ─────────────────────────────────────────────────────────────────────
 // The v3 compliance leg (TODO.editor wave 03, audit G6) — the
@@ -7,6 +8,12 @@ import puppeteer from 'puppeteer'
 // requirements (0 provisions), the obligation filter works, and a row
 // selects into the requirement inspector.
 // ─────────────────────────────────────────────────────────────────────
+
+// The corpus text travels from node (the v3 legs' convention — an
+// in-page fetch through the dev server yields the CDP evaluate to the
+// event loop, and under host load Chrome GCs the pending promise:
+// "Promise was collected", the 2026-08-29 flake).
+const SCHEME = readFileSync(new URL('../demo/oiml-cs/model.prl', import.meta.url), 'utf8')
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
@@ -18,11 +25,7 @@ await new Promise(r => setTimeout(r, 2500))
 const fail = async (why: string) => { console.log('V3-COMPLIANCE FAILED:', why); await browser.close(); process.exit(1) }
 
 // 1. The OIML-CS scheme model loads (34 requirements, 0 provisions).
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/oiml-cs/model.prl?raw')
-  const text = await res.text()
-  window.__stores.model.loadText(text)
-})()`)
+await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(SCHEME)}) })()`)
 await new Promise(r => setTimeout(r, 800))
 let state = await page.evaluate(`(() => ({
   provisions: window.__stores.model.standard.provisions.length,

@@ -1,9 +1,17 @@
 import puppeteer from 'puppeteer'
+import { readFileSync } from 'node:fs'
 
 // The R 7 tutorial model, live in the Studio (TODO.editor/26):
 // the OIML plugin activates, the certificate preview renders the
 // subject, the doc map resolves against the real R 7 document, and
 // the workflow simulates to the verdict.
+
+// The corpus texts travel from node (the v3 legs' convention — an
+// in-page fetch through the dev server yields the CDP evaluate to the
+// event loop, and under host load Chrome GCs the pending promise:
+// "Promise was collected", the 2026-08-29 flake).
+const MODEL = readFileSync(new URL('../demo/r7-clinical-thermometer/model.prl', import.meta.url), 'utf8')
+const DOCUMENT = readFileSync(new URL('../demo/r7-clinical-thermometer/document.presentation.xml', import.meta.url), 'utf8')
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
@@ -12,12 +20,8 @@ page.on('pageerror', e => console.log('PAGEERROR:', String(e)))
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
 
-// Load the R 7 model (the vendored demo file via the dev server).
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/r7-clinical-thermometer/model.prl?raw')
-  const text = await res.text()
-  window.__stores.model.loadText(text)
-})()`)
+// Load the R 7 model (the vendored demo file, carried from node).
+await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(MODEL)}) })()`)
 await new Promise(r => setTimeout(r, 800))
 
 // 1. The OIML plugin activates + the certificate preview renders.
@@ -45,12 +49,10 @@ await new Promise(r => setTimeout(r, 300))
 
 // 2. The doc map: load the real R 7 document in doc mode — the pairs'
 //    targets show mapped on the statements.
-await page.evaluate(`(async () => {
-  const res = await fetch('/demo/r7-clinical-thermometer/document.presentation.xml?raw')
-  const text = await res.text()
+await page.evaluate(`(() => {
   const s = window.__stores
   s.ui.view = 'mapping'
-  s.mapping.loadDocumentText(text)
+  s.mapping.loadDocumentText(${JSON.stringify(DOCUMENT)})
 })()`)
 await new Promise(r => setTimeout(r, 900))
 state = await page.evaluate(`(() => ({
