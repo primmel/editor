@@ -11,14 +11,26 @@
   "homepage": "https://github.com/primmel/editor#readme",
   "license": "MIT",
   "author": "Ribose Inc. <open.source@ribose.com>",
-  "keywords": ["primmel", "oiml", "smart", "metrology", "editor", "modelling", "recommendation"],
+  "keywords": [
+    "primmel",
+    "oiml",
+    "smart",
+    "metrology",
+    "editor",
+    "modelling",
+    "recommendation"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./components/*": "./src/components/*",
     "./styles/*": "./src/styles/*"
   },
-  "files": ["src"],
-  "publishConfig": { "access": "public" },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "node scripts/audit-typing.mjs && vue-tsc && vite build",
@@ -30,14 +42,14 @@
     "vue": ">=3.5",
     "pinia": ">=3",
     "monaco-editor": ">=0.50",
-    "@primmel/primmel": "^1.4.0",
+    "@primmel/primmel": "^1.8.0",
     "@oimlsmart/oiml-pubid": "*",
     "js-yaml": ">=4"
   },
   "dependencies": {},
   "devDependencies": {
     "@oimlsmart/oiml-pubid": "github:oimlsmart/oiml-pubid#main",
-    "@primmel/primmel": "^1.6.1",
+    "@primmel/primmel": "^1.8.0",
     "@tailwindcss/vite": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.1.2",
