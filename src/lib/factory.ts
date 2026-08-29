@@ -95,6 +95,13 @@ export type ArtifactInstance = Standard['artifactInstances'][number];
 export type ConnectorProfile = Standard['connectorProfiles'][number];
 export type Monitor = Standard['monitors'][number];
 export type Passport = Standard['passports'][number];
+export type Invariant = Standard['invariants'][number];
+export type FormulasUsed = Standard['formulasUsed'][number];
+export type TextContent = Standard['texts'][number];
+export type ActivityArchetype = Standard['activityArchetypes'][number];
+export type CompetenceKind = Standard['competenceKinds'][number];
+export type RefPredicate = Standard['predicates'][number];
+export type DiscrepancyRecord = Standard['discrepancyRecords'][number];
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
 }
@@ -393,4 +400,32 @@ export function newMonitor(id: string): Monitor {
 
 export function newPassport(id: string): Passport {
   return { id, upi: { pattern: '', level: '' }, carriers: [], entries: [], referenceIds: [] };
+}
+
+export function newInvariant(id: string): Invariant {
+  return { id, name: '', statement: '', severity: '', appliesTo: [], source: '', enforcement: { aspirational: false, claims: [] } };
+}
+
+export function newFormulasUsed(id: string): FormulasUsed {
+  return { id, name: '', description: '', formulas: [], sourceRefs: [] };
+}
+
+export function newTextContent(id: string): TextContent {
+  return { id, entries: [] };
+}
+
+export function newActivityArchetype(id: string): ActivityArchetype {
+  return { id, label: '', clause: '', definition: '', parent: '' };
+}
+
+export function newCompetenceKind(id: string): CompetenceKind {
+  return { id, label: '', definition: '', source: null, methodStandards: [] };
+}
+
+export function newPredicate(id: string): RefPredicate {
+  return { id, kind: '', description: '', subjectKinds: [], targetKinds: [], resolution: '', inverse: '', transitive: false, symmetric: false };
+}
+
+export function newDiscrepancyRecord(id: string): DiscrepancyRecord {
+  return { id, status: '', summary: '', sources: [], resolution: '', governing: '', rationale: '' };
 }

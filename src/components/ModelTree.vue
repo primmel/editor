@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDual, newInstance, newInstrument, newMonitor, newPassport, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
+import { newActivityArchetype, newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newCompetenceKind, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDiscrepancyRecord, newDual, newFormulasUsed, newInstance, newInstrument, newInvariant, newMonitor, newPassport, newPredicate, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newTextContent, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -80,6 +80,13 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Connector Profiles', type: 'connectorProfile', createPrefix: 'CP', items: m.connectorProfiles.map((c) => ({ id: c.id, detail: c.protocol })) },
     { label: 'Monitors', type: 'monitor', createPrefix: 'Mon', items: m.monitors.map((x) => ({ id: x.id, detail: `${x.triggers.length} triggers` })) },
     { label: 'Passports', type: 'passport', createPrefix: 'PP', items: m.passports.map((p) => ({ id: p.id, detail: p.upi.pattern || undefined })) },
+    { label: 'Invariants', type: 'invariant', createPrefix: 'Inv', items: m.invariants.map((i) => ({ id: i.id, detail: i.name })) },
+    { label: 'Formulas Used', type: 'formulasUsed', createPrefix: 'FU', items: m.formulasUsed.map((f) => ({ id: f.id, detail: f.name })) },
+    { label: 'Texts', type: 'text', createPrefix: 'Text', items: m.texts.map((t) => ({ id: t.id, detail: `${t.entries.length} spellings` })) },
+    { label: 'Activity Archetypes', type: 'activityArchetype', createPrefix: 'AA', items: m.activityArchetypes.map((a) => ({ id: a.id, detail: a.label })) },
+    { label: 'Competence Kinds', type: 'competenceKind', createPrefix: 'CK', items: m.competenceKinds.map((c) => ({ id: c.id, detail: c.label })) },
+    { label: 'Predicates', type: 'predicate', createPrefix: 'Pred', items: m.predicates.map((p) => ({ id: p.id, detail: p.kind })) },
+    { label: 'Discrepancy Records', type: 'discrepancyRecord', createPrefix: 'DR', items: m.discrepancyRecords.map((d) => ({ id: d.id, detail: d.status })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -179,6 +186,27 @@ function createIn(group: TreeGroup) {
       break;
     case 'passport':
       modelStore.execute(createConstruct((a: Standard) => a.passports, newPassport(id), `create passport ${id}`));
+      break;
+    case 'invariant':
+      modelStore.execute(createConstruct((a: Standard) => a.invariants, newInvariant(id), `create invariant ${id}`));
+      break;
+    case 'formulasUsed':
+      modelStore.execute(createConstruct((a: Standard) => a.formulasUsed, newFormulasUsed(id), `create formulas used ${id}`));
+      break;
+    case 'text':
+      modelStore.execute(createConstruct((a: Standard) => a.texts, newTextContent(id), `create text ${id}`));
+      break;
+    case 'activityArchetype':
+      modelStore.execute(createConstruct((a: Standard) => a.activityArchetypes, newActivityArchetype(id), `create activity archetype ${id}`));
+      break;
+    case 'competenceKind':
+      modelStore.execute(createConstruct((a: Standard) => a.competenceKinds, newCompetenceKind(id), `create competence kind ${id}`));
+      break;
+    case 'predicate':
+      modelStore.execute(createConstruct((a: Standard) => a.predicates, newPredicate(id), `create predicate ${id}`));
+      break;
+    case 'discrepancyRecord':
+      modelStore.execute(createConstruct((a: Standard) => a.discrepancyRecords, newDiscrepancyRecord(id), `create discrepancy record ${id}`));
       break;
     default:
       return;
