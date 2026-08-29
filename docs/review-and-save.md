@@ -43,6 +43,29 @@ panel shows:
 After the write, the dirty flag clears and your working point becomes
 the next diff's baseline.
 
+## The package save (the unit of work is a directory)
+
+When you opened a v3 **package** (the Open pkg dialog), the save splits
+the merged model back into its source files — the kernel's provenance
+load attests which file every construct came from, down to its byte
+span. The panel lists one row per file to be written; untouched files
+are never touched.
+
+The write is **comment-true**: a touched file is not re-dumped into
+canonical form. Its authored bytes carry over verbatim — the comment
+banners, the clause provenance, the whitespace style, the construct
+order — and only the edited constructs' own spans are replaced (a
+changed construct rewrites to its canonical form, a removed one drops
+out with its line ending, a new one appends to its kind's home file).
+The guarantee the SSOT doctrine needs: `git diff` after a save shows
+exactly the constructs you edited, nothing else. Constructs owned by
+imported packages are surfaced in the plan but never written; the
+manifest (`package.primmel`) rewrites canonically when it changes.
+
+A successful write re-bases the session's provenance onto the new
+bytes, so the next save in the same session splices the new state —
+undo history and all.
+
 ## The dirty discipline
 
 Dirty = the history cursor ≠ the saved cursor. Since every edit is a

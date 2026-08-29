@@ -1,0 +1,43 @@
+// ════════════════════════════════════════════════════════════════════
+// pkg-commented — the comment-true save fixture (TODO.editor wave 2).
+//
+// Every construct cites its clause in a banner above it, the way the
+// authored packages do. The save's contract: an edit rewrites ONLY the
+// edited construct's own span — every comment line here is load-bearing
+// and must survive any save byte-identical.
+// ════════════════════════════════════════════════════════════════════
+
+metadata {
+  title "Commented Probe"
+  schema "Primmel 0.1"
+  namespace "Commented"
+}
+
+// §3.2 — the gadget kinds.
+// A second banner line, because provenance banners run long.
+enum GadgetKind {
+  standard { description "Standard gadget" }
+  deluxe { description "Deluxe gadget" }
+}
+
+
+// The double blank line above is deliberate: authored whitespace style
+// is part of the file and survives any save that does not touch it.
+
+// §4.1 — the gadget itself. Enums precede classes here on purpose
+// (the canonical dump would order them the other way).
+class Gadget#data {
+  description { "A gadget under test." }
+
+  mass: decimal {
+    modality SHALL
+    definition "The gadget's mass"
+  }
+}
+
+// §5.1 — the assembly step.
+process assemble {
+  name "Assemble gadgets"
+}
+
+// Trailing remark: this file ends with a comment, not a construct.

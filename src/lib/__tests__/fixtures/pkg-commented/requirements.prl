@@ -1,0 +1,6 @@
+// The commented probe's requirements — a second content file, so the
+// tests can prove an edit elsewhere leaves this file's bytes untouched.
+requirement /req/com/mass {
+  name "Gadget mass"
+  statement "The gadget SHALL be weighed."
+}

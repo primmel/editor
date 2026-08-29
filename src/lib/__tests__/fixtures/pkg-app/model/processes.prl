@@ -1,5 +1,5 @@
-// The app's process file — a comment the save must never strip
-// when OTHER files change.
+// The app's process file — a comment the save must never strip,
+// whether the edit lands in ANOTHER file or in this one.
 process assemble {
   name "Assemble widgets"
 }

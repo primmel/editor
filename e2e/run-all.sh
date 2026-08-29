@@ -33,6 +33,7 @@ for leg in \
   scale-smoke \
   save-smoke \
   package-smoke \
+  comment-save-smoke \
   viewer-smoke
 do
   echo "── $leg"
