@@ -36,7 +36,8 @@ for leg in \
   comment-save-smoke \
   viewer-smoke \
   v3-terms-smoke \
-  v3-constraints-smoke
+  v3-constraints-smoke \
+  v3-calculations-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1
