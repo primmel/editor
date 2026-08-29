@@ -78,6 +78,11 @@ export type StateMachine = Standard['stateMachines'][number];
 export type TestSequence = Standard['testSequences'][number];
 export type TestPointSet = Standard['testPointSets'][number];
 export type Subject = Standard['subjects'][number];
+export type Behavior = Standard['behaviors'][number];
+export type Capability = Standard['capabilities'][number];
+export type ConditionSet = Standard['conditionSets'][number];
+export type Verdict = Standard['verdicts'][number];
+export type ReferenceMaterial = Standard['referenceMaterials'][number];
 
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
@@ -182,5 +187,53 @@ export function newSubject(id: string): Subject {
     does: { behaviors: [] },
     referenceIds: [],
     misplacedAspects: [],
+  };
+}
+
+export function newBehavior(id: string): Behavior {
+  return {
+    id,
+    kind: '',
+    stimulus: '',
+    response: '',
+    source: null,
+    verifiedBy: [],
+    referenceIds: [],
+  };
+}
+
+export function newCapability(id: string): Capability {
+  return {
+    id,
+    label: '',
+    description: '',
+    abstract: false,
+    extends: [],
+    requires: [],
+    hasParameters: [],
+    satisfiesRequirements: [],
+    verifiedByTests: [],
+    referenceIds: [],
+  };
+}
+
+export function newConditionSet(id: string): ConditionSet {
+  return {
+    id,
+    role: '',
+    entries: [],
+    referenceIds: [],
+  };
+}
+
+export function newVerdict(id: string): Verdict {
+  return {
+    id,
+    quantityKind: '',
+    unit: '',
+    derive: '',
+    inputs: [],
+    seriesReduction: null,
+    source: null,
   };
 }

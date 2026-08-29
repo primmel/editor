@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newCalculation, newConstraint, newStateMachine, newSubject, newTable, newTerm, newTestPointSet, newTestSequence } from '../lib/factory';
+import { newBehavior, newCalculation, newCapability, newConditionSet, newConstraint, newStateMachine, newSubject, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -64,6 +64,10 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Test Sequences', type: 'testSequence', createPrefix: 'Seq', items: m.testSequences.map((s) => ({ id: s.id, detail: `${s.steps.length} steps` })) },
     { label: 'Test Point Sets', type: 'testPointSet', createPrefix: 'TPS', items: m.testPointSets.map((t) => ({ id: t.id, detail: `${t.points.length} points` })) },
     { label: 'Subjects', type: 'subject', createPrefix: 'Subject', items: m.subjects.map((s) => ({ id: s.id, detail: s.extends ? `extends ${s.extends}` : undefined })) },
+    { label: 'Behaviors', type: 'behavior', createPrefix: 'Behavior', items: m.behaviors.map((b) => ({ id: b.id, detail: b.kind })) },
+    { label: 'Capabilities', type: 'capability', createPrefix: 'Capability', items: m.capabilities.map((c) => ({ id: c.id, detail: c.label })) },
+    { label: 'Condition Sets', type: 'conditionSet', createPrefix: 'CondSet', items: m.conditionSets.map((c) => ({ id: c.id, detail: c.role })) },
+    { label: 'Verdicts', type: 'verdict', createPrefix: 'Verdict', items: m.verdicts.map((v) => ({ id: v.id, detail: v.symbol ?? v.quantityKind })) },
     // The program constructs (TODO.editor/40): palette-created, listed
     // here — selecting one opens the plugin's inspector.
     { label: 'Requirement Classes', type: 'requirementClass', items: m.requirementClasses.map((c) => ({ id: c.id, detail: c.name })) },
@@ -111,6 +115,18 @@ function createIn(group: TreeGroup) {
       break;
     case 'subject':
       modelStore.execute(createConstruct((a: Standard) => a.subjects, newSubject(id), `create subject ${id}`));
+      break;
+    case 'behavior':
+      modelStore.execute(createConstruct((a: Standard) => a.behaviors, newBehavior(id), `create behavior ${id}`));
+      break;
+    case 'capability':
+      modelStore.execute(createConstruct((a: Standard) => a.capabilities, newCapability(id), `create capability ${id}`));
+      break;
+    case 'conditionSet':
+      modelStore.execute(createConstruct((a: Standard) => a.conditionSets, newConditionSet(id), `create condition set ${id}`));
+      break;
+    case 'verdict':
+      modelStore.execute(createConstruct((a: Standard) => a.verdicts, newVerdict(id), `create verdict ${id}`));
       break;
     default:
       return;

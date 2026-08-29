@@ -17,6 +17,10 @@ import StateMachineInspector from './inspectors/StateMachineInspector.vue';
 import TestSequenceInspector from './inspectors/TestSequenceInspector.vue';
 import TestPointSetInspector from './inspectors/TestPointSetInspector.vue';
 import SubjectInspector from './inspectors/SubjectInspector.vue';
+import BehaviorInspector from './inspectors/BehaviorInspector.vue';
+import CapabilityInspector from './inspectors/CapabilityInspector.vue';
+import ConditionSetInspector from './inspectors/ConditionSetInspector.vue';
+import VerdictInspector from './inspectors/VerdictInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -114,6 +118,26 @@ const pluginInspector = computed(() => {
       />
       <SubjectInspector
         v-else-if="target.type === 'subject'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <BehaviorInspector
+        v-else-if="target.type === 'behavior'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <CapabilityInspector
+        v-else-if="target.type === 'capability'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ConditionSetInspector
+        v-else-if="target.type === 'conditionSet'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <VerdictInspector
+        v-else-if="target.type === 'verdict'"
         :model="props.model"
         :element-id="target.id"
       />
