@@ -16,7 +16,10 @@ import {
   type Command,
 } from '../commands';
 import {
+  newBehavior,
   newCalculation,
+  newCapability,
+  newConditionSet,
   newConstraint,
   newStateMachine,
   newSubject,
@@ -24,6 +27,7 @@ import {
   newTerm,
   newTestPointSet,
   newTestSequence,
+  newVerdict,
 } from '../factory';
 import { complianceSurface } from '../compliance';
 
@@ -690,5 +694,110 @@ describe('W3 the compliance surface — the provision-era bridge (audit G6)', ()
     const s = complianceSurface(load('', { strict: true }));
     expect(s.kind).toBe('provisions');
     expect(s.rows).toEqual([]);
+  });
+});
+
+describe('W3 behaviors, capabilities, condition sets, verdicts — the subject-chain companions', () => {
+  const CHAIN = `behavior creep {
+  kind temporal
+  stimulus force
+  response "Change in load cell output with time under constant load (R 60-1, 3.4.4)."
+}
+
+capability gas-analytical-system {
+  label "Gas Analytical System"
+  description "Base capability — all gas analytical systems have this."
+  has_parameters { measurand_components mpe }
+  satisfies_requirements { /req/metrological/mpe-intrinsic }
+  verified_by_tests { /conf/performance-tests/error-determination }
+}
+
+condition_set ref-conditions {
+  role reference
+  subject GasAnalyticalSystem
+  entries {
+    temperature { value "20" unit "degC" tolerance "5" note "Reference temperature" }
+  }
+  ref derives-from "urn:oiml:pub:r:144-1:2013#clause-8"
+}
+
+verdict creep {
+  symbol "C_C"
+  behavior creep
+  quantity { kind verification_interval unit "v" }
+  derive "ocl{abs(c_c)}"
+  inputs { c_c }
+  ref derives-from "urn:oiml:pub:r:60-3:2021#clause-2.1.5"
+}
+`;
+
+  it('creates each kind with the parse defaults; the dump round-trips', () => {
+    const ast = run(
+      CHAIN,
+      createConstruct(a => a.behaviors, newBehavior('b_new')),
+      createConstruct(a => a.capabilities, newCapability('c_new')),
+      createConstruct(a => a.conditionSets, newConditionSet('cs_new')),
+      createConstruct(a => a.verdicts, newVerdict('v_new')),
+    );
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.behaviors.map(b => b.id)).toContain('b_new');
+    expect(reloaded.capabilities.map(c => c.id)).toContain('c_new');
+    expect(reloaded.conditionSets.map(c => c.id)).toContain('cs_new');
+    expect(reloaded.verdicts.map(v => v.id)).toContain('v_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('the behavior facets edit and undo exactly', () => {
+    const patch = updateConstruct(a => a.behaviors, 'creep', {
+      response: 'Output change under constant load (edited).',
+      verifiedBy: ['/conf/metrological-tests/creep'],
+    });
+    const ast = run(CHAIN, patch);
+    const text = dump(ast);
+    expect(text).toContain('response "Output change under constant load (edited)."');
+    expect(text).toContain('verified_by { /conf/metrological-tests/creep }');
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(CHAIN, { strict: true })));
+  });
+
+  it('the capability chains edit as lists', () => {
+    const ast = run(CHAIN, updateConstruct(a => a.capabilities, 'gas-analytical-system', {
+      requires: ['base-cap'],
+      hasParameters: ['measurand_components', 'mpe', 'response_time'],
+    }));
+    const text = dump(ast);
+    expect(text).toContain('requires { base-cap }');
+    expect(text).toContain('has_parameters { measurand_components mpe response_time }');
+    expect(validate(load(text, { strict: true }))).toEqual([]);
+  });
+
+  it('the condition set entries edit keyed on quantity kind (source ↔ sources alias)', () => {
+    const ast = load(CHAIN, { strict: true });
+    const cs = ast.conditionSets[0]!;
+    expect(cs.source?.clause).toBe('8');
+    expect(cs.sources?.[0]).toEqual(cs.source);
+    updateConstruct(a => a.conditionSets, 'ref-conditions', {
+      entries: [...cs.entries, { quantityKind: 'power_voltage', value: 'nominal', unit: 'V', tolerance: '2 %' }],
+    }).apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('power_voltage { value nominal unit "V" tolerance "2 %" }');
+    expect(load(text, { strict: true }).conditionSets[0]?.entries).toHaveLength(2);
+  });
+
+  it('the verdict derivation, inputs, and quantity kind edit and round-trip', () => {
+    const patch = updateConstruct(a => a.verdicts, 'creep', {
+      derive: 'ocl{abs(c_c) / e_max}',
+      inputs: ['c_c', 'e_max'],
+      seriesReduction: 'max',
+    });
+    const ast = run(CHAIN, patch);
+    const text = dump(ast);
+    expect(text).toContain('derive "ocl{abs(c_c) / e_max}"');
+    expect(text).toContain('inputs { c_c e_max }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.verdicts[0]?.seriesReduction).toBe('max');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(CHAIN, { strict: true })));
   });
 });

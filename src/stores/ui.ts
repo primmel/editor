@@ -7,7 +7,8 @@ export type SelectionType =
   | 'approval' | 'subprocess' | 'enum'
   | 'requirement' | 'conformanceTest' | 'requirementClass'
   | 'term' | 'constraint' | 'calculation' | 'table'
-  | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject';
+  | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject'
+  | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial';
 
 export interface Selection {
   id: string;
