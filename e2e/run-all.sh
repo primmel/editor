@@ -32,6 +32,7 @@ for leg in \
   oiml-cs-smoke \
   scale-smoke \
   save-smoke \
+  package-smoke \
   viewer-smoke
 do
   echo "── $leg"

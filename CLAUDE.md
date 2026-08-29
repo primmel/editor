@@ -11,11 +11,9 @@ The full feature map lives in `README.md`; the work program in
 ## Stack
 
 - Vue 3 + Pinia + Vite, TypeScript throughout.
-- `@primmel/primmel` — the LOCAL kernel (`file:../primmel-ts/packages/primmel`),
-  not the npm build: the Studio tracks the v3 kernel (MapProfile,
-  coverage, model-diff, type-expr, comments). Rebuild the kernel's
-  `dist/` AND `dist-browser/` after upstream changes
-  (`cd ../primmel-ts/packages/primmel && yarn build && yarn build:browser`).
+- `@primmel/primmel` — the published kernel (`^1.8.0`; the Studio tracks
+  the v3 kernel: MapProfile, coverage, model-diff, type-expr, comments,
+  the package-load API).
 - Puppeteer + tsx for the e2e probes (`e2e/`).
 
 ## The laws (hold them or the app rots)
