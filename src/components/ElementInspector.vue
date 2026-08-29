@@ -9,6 +9,8 @@ import OtherInspectors from './inspectors/OtherInspectors.vue';
 import DataClassInspector from './inspectors/DataClassInspector.vue';
 import RegistryInspector from './inspectors/RegistryInspector.vue';
 import EnumInspector from './inspectors/EnumInspector.vue';
+import TermInspector from './inspectors/TermInspector.vue';
+import ConstraintInspector from './inspectors/ConstraintInspector.vue';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
@@ -68,6 +70,16 @@ const pluginInspector = computed(() => {
         v-else-if="target.type === 'enum'"
         :model="props.model"
         :enum-id="target.id"
+      />
+      <TermInspector
+        v-else-if="target.type === 'term'"
+        :model="props.model"
+        :element-id="target.id"
+      />
+      <ConstraintInspector
+        v-else-if="target.type === 'constraint'"
+        :model="props.model"
+        :element-id="target.id"
       />
       <component
         :is="pluginInspector"

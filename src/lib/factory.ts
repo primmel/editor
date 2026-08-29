@@ -61,3 +61,122 @@ export function createFromPalette(
 export function previewId(ast: Standard, entry: PaletteKind): string {
   return mintId(ast, entry.idPrefix);
 }
+
+// ── The v3 construct defaults (TODO.editor wave 03) ─────────────────
+// The non-canvas kernel constructs' creation defaults, one factory per
+// kind, used by the tree's in-place create. The types derive from the
+// kernel's public `Standard` (the collections ARE the public API — the
+// kernel index does not name every construct type); the required facets
+// mirror the parse defaults (the round-trip tests pin this) and every
+// optional facet starts absent, never as an empty marker.
+
+export type Term = Standard['terms'][number];
+export type Constraint = Standard['constraints'][number];
+export type Calculation = Standard['calculations'][number];
+export type Table = Standard['tables'][number];
+export type StateMachine = Standard['stateMachines'][number];
+export type TestSequence = Standard['testSequences'][number];
+export type TestPointSet = Standard['testPointSets'][number];
+export type Subject = Standard['subjects'][number];
+
+export function newTerm(id: string): Term {
+  return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
+}
+
+export function newConstraint(id: string): Constraint {
+  return {
+    id,
+    stereotype: 'inv',
+    name: '',
+    check: '',
+    violationMeaning: '',
+    onViolation: 'invalid',
+    source: null,
+  };
+}
+
+export function newCalculation(id: string): Calculation {
+  return {
+    id,
+    name: '',
+    description: '',
+    inputs: [],
+    output: { type: 'number', unit: '' },
+    expression: '',
+    ref: [],
+  };
+}
+
+export function newTable(id: string): Table {
+  return {
+    id,
+    title: '',
+    description: '',
+    columns: '',
+    display: '',
+    data: [],
+    domain: null,
+  };
+}
+
+export function newStateMachine(entityName: string): StateMachine {
+  return {
+    entityName,
+    kind: 'lifecycle',
+    initialState: '',
+    states: [],
+    transitions: [],
+    referenceIds: [],
+  };
+}
+
+export function newTestSequence(id: string): TestSequence {
+  return {
+    id,
+    name: '',
+    description: '',
+    steps: [],
+    sampleApplicability: '',
+    sourceRefs: [],
+  };
+}
+
+export function newTestPointSet(id: string): TestPointSet {
+  return {
+    id,
+    description: '',
+    source: null,
+    cardinality: {},
+    repetitionsPerPoint: null,
+    points: [],
+  };
+}
+
+export function newSubject(id: string): Subject {
+  return {
+    id,
+    extends: '',
+    is: {
+      metadata: {},
+      provenance: {},
+      structure: [],
+      designParameters: {},
+      designedConditions: {},
+      promises: [],
+      artifacts: [],
+      endpoints: [],
+    },
+    has: {
+      attributes: {},
+      dimensions: {},
+      state: '',
+      characteristics: {},
+      environmentalContext: [],
+      artifactInstances: [],
+      serves: [],
+    },
+    does: { behaviors: [] },
+    referenceIds: [],
+    misplacedAspects: [],
+  };
+}
