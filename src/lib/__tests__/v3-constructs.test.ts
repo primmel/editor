@@ -25,6 +25,7 @@ import {
   newTestPointSet,
   newTestSequence,
 } from '../factory';
+import { complianceSurface } from '../compliance';
 
 /** A model with the construct collections this suite exercises. */
 const BASE = `term load-cell {
@@ -662,5 +663,32 @@ describe('W3 subjects — the IS/HAS/DOES anatomy surface', () => {
     expect(ast.subjects.map(s => s.id)).toEqual(['Other']);
     del.revert(ast);
     expect(ast.subjects.map(s => s.id)).toEqual(['LC500', 'Other']);
+  });
+});
+
+describe('W3 the compliance surface — the provision-era bridge (audit G6)', () => {
+  it('reads provisions on legacy models (the unchanged path)', () => {
+    const ast = load('provision p1 {\n  modality SHALL\n}\nprovision p2 {\n  modality MAY\n}\n', { strict: true });
+    const s = complianceSurface(ast);
+    expect(s.kind).toBe('provisions');
+    expect(s.label).toBe('provisions');
+    expect(s.rows.map(r => [r.id, r.modality])).toEqual([['p1', 'SHALL'], ['p2', 'MAY']]);
+    expect(s.modalities).toEqual(['all', 'SHALL', 'SHOULD', 'MAY']);
+  });
+
+  it('reads the REAL requirements on v3 packages (0 provisions, 180 requirements)', () => {
+    const ast = load('requirement r1 {\n  name "First"\n  statement "s"\n  obligation shall\n}\nrequirement r2 {\n  name "Second"\n  statement "s"\n  obligation may\n}\n', { strict: true });
+    const s = complianceSurface(ast);
+    expect(s.kind).toBe('requirements');
+    expect(s.label).toBe('requirements');
+    expect(s.rows).toHaveLength(2);
+    expect(s.rows[0]).toEqual({ id: 'r1', modality: 'shall', detail: 'First' });
+    expect(s.modalities).toEqual(['all', 'shall', 'may']);
+  });
+
+  it('an empty model reads as provisions with zero rows (the honest zero)', () => {
+    const s = complianceSurface(load('', { strict: true }));
+    expect(s.kind).toBe('provisions');
+    expect(s.rows).toEqual([]);
   });
 });

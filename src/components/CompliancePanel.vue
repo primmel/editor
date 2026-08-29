@@ -1,54 +1,75 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+// ─────────────────────────────────────────────────────────────────────
+// The compliance panel (TODO.editor wave 03, audit PROGRESS/39 G6) —
+// reads the compliance surface (lib/compliance.ts): provisions for
+// legacy models, the REAL requirements for v3 packages (a v3 package
+// has 0 provisions; the pre-bridge panel showed an empty list on 180
+// requirements). Selecting a requirement row opens its inspector.
+// ─────────────────────────────────────────────────────────────────────
+import { computed, ref, watch } from 'vue';
 import type { Standard } from '@primmel/primmel';
+import { complianceSurface } from '../lib/compliance';
+import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 
 const props = defineProps<{ model: Standard }>();
 const ui = useUiStore();
+const modelStore = useModelStore();
 
-const filter = ref<'all' | 'SHALL' | 'SHOULD' | 'MAY'>('all');
+const surface = computed(() => { void modelStore.version; return complianceSurface(props.model); });
+
+const filter = ref<string>('all');
+// A model swap (legacy ⇄ v3) resets the filter to a chip that exists.
+watch(() => surface.value.kind, () => { filter.value = 'all'; });
 
 const filtered = computed(() => {
-  if (filter.value === 'all') return props.model.provisions;
-  return props.model.provisions.filter((p) => p.modality === filter.value);
+  if (filter.value === 'all') return surface.value.rows;
+  return surface.value.rows.filter((r) => r.modality === filter.value);
 });
 
 const modalityColor: Record<string, string> = {
-  SHALL: '#dc3545',
-  SHOULD: '#ffc107',
-  MAY: '#28a745',
+  shall: '#dc3545',
+  should: '#ffc107',
+  may: '#28a745',
 };
 
-function selectProvision(id: string) {
-  ui.select(id, 'provision');
+function chipColor(modality: string): string {
+  return modalityColor[modality.toLowerCase()] ?? '#888';
+}
+
+function selectRow(id: string) {
+  ui.select(id, surface.value.kind === 'requirements' ? 'requirement' : 'provision');
 }
 </script>
 
 <template>
-  <div class="compliance">
+  <div class="compliance" :data-surface="surface.kind">
     <div class="filter-bar">
       <button
-        v-for="f in ['all', 'SHALL', 'SHOULD', 'MAY']"
+        v-for="f in surface.modalities"
         :key="f"
         :class="{ active: filter === f }"
-        @click="filter = f as typeof filter"
+        :data-testid="`compliance-filter-${f}`"
+        @click="filter = f"
       >{{ f }}</button>
     </div>
-    <div class="provision-list">
+    <div class="provision-list" data-testid="compliance-list">
       <div
-        v-for="prov in filtered"
-        :key="prov.id"
+        v-for="row in filtered"
+        :key="row.id"
         class="provision-item"
-        :class="{ selected: ui.isSelected(prov.id) }"
-        @click="selectProvision(prov.id)"
+        :class="{ selected: ui.isSelected(row.id) }"
+        :data-testid="`compliance-row-${row.id}`"
+        @click="selectRow(row.id)"
       >
-        <span class="modality" :style="{ color: modalityColor[prov.modality] ?? '#888' }">
-          {{ prov.modality }}
+        <span class="modality" :style="{ color: chipColor(row.modality) }">
+          {{ row.modality }}
         </span>
-        <code class="prov-id">{{ prov.id }}</code>
+        <code class="prov-id">{{ row.id }}</code>
+        <span v-if="row.detail" class="row-detail">{{ row.detail }}</span>
       </div>
     </div>
-    <div v-if="filtered.length === 0" class="empty">No provisions</div>
+    <div v-if="filtered.length === 0" class="empty">No {{ surface.label }}</div>
   </div>
 </template>
 
@@ -111,6 +132,14 @@ function selectProvision(id: string) {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-soft);
+}
+.row-detail {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .provision-item.selected .prov-id { color: var(--accent-hover); }
 .empty {

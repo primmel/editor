@@ -22,6 +22,7 @@ import SavePanel from './components/SavePanel.vue';
 import NewModelDialog from './components/NewModelDialog.vue';
 import OpenPackageDialog from './components/OpenPackageDialog.vue';
 import { packageApiAvailable } from './lib/package';
+import { complianceSurface } from './lib/compliance';
 import { useSimStore } from './stores/simulation';
 import { unresolvedByElement } from './lib/comments';
 import { validationSummary } from './lib/validation';
@@ -100,6 +101,17 @@ function onPaletteDragStart(entry: PaletteKind, ev: DragEvent) {
 
 const model = computed(() => modelStore.model);
 
+// ── The compliance pill (TODO.editor wave 03, audit G6) — provisions on
+//    legacy models, the REAL requirements on v3 packages (never "0
+//    provisions" over 180 requirements). One read: lib/compliance.ts. ──
+const compliancePill = computed(() => {
+  void modelStore.version;
+  const m = modelStore.standard;
+  if (!m) return { num: 0, label: 'provisions' };
+  const s = complianceSurface(m);
+  return { num: s.rows.length, label: s.label };
+});
+
 // ── The validation badge (TODO.editor/29) — the kernel's verdict,
 //    always visible: clean (green), warnings (amber), errors (red). ──
 const validationPill = computed(() => {
@@ -172,9 +184,9 @@ const view = computed<ViewMode>({
           <span class="stat-num">{{ model.processes.length }}</span>
           <span class="stat-label">processes</span>
         </div>
-        <div class="stat-pill">
-          <span class="stat-num">{{ model.provisions.length }}</span>
-          <span class="stat-label">provisions</span>
+        <div class="stat-pill" data-testid="compliance-pill">
+          <span class="stat-num">{{ compliancePill.num }}</span>
+          <span class="stat-label">{{ compliancePill.label }}</span>
         </div>
         <div class="stat-pill">
           <span class="stat-num">{{ model.pages.length }}</span>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import type * as Monaco from 'monaco-editor';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import { validate } from '@primmel/primmel';
 import { useModelStore } from '../stores/model';
+import { complianceSurface } from '../lib/compliance';
 import { primmelLanguageDefinition } from '../lib/monaco-language';
 import {
   completionContext, completionItemsFor,
@@ -11,6 +12,17 @@ import {
 } from '../lib/monaco-prl';
 
 const model = useModelStore();
+
+/** The status line (TODO.editor wave 03, audit G6) — keyed on version
+ *  (commands mutate the AST in place); the compliance count reads the
+ *  bridged surface (requirements on v3 packages, never "0 provisions"). */
+const statusLine = computed(() => {
+  void model.version;
+  const m = model.standard;
+  if (!m) return '';
+  const s = complianceSurface(m);
+  return `${m.processes.length} processes · ${s.rows.length} ${s.label} · ${m.pages.length} canvases`;
+});
 const containerRef = ref<HTMLElement | null>(null);
 let editor: Monaco.editor.IStandaloneCodeEditor | null = null;
 let monacoInstance: typeof Monaco | null = null;
@@ -276,7 +288,7 @@ function onDrop(e: DragEvent) {
     </div>
     <div v-else-if="model.model" class="success-bar">
       <span class="success-dot"></span>
-      {{ model.model.processes?.length ?? 0 }} processes · {{ model.model.provisions?.length ?? 0 }} provisions · {{ model.model.pages?.length ?? 0 }} canvases
+      {{ statusLine }}
     </div>
   </div>
 </template>
