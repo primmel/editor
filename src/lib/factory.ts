@@ -83,6 +83,8 @@ export type Capability = Standard['capabilities'][number];
 export type ConditionSet = Standard['conditionSets'][number];
 export type Verdict = Standard['verdicts'][number];
 export type ReferenceMaterial = Standard['referenceMaterials'][number];
+export type Symbol = Standard['symbols'][number];
+export type AttributeDefinition = Standard['attributeDefinitions'][number];
 
 export function newTerm(id: string): Term {
   return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
@@ -235,5 +237,50 @@ export function newVerdict(id: string): Verdict {
     inputs: [],
     seriesReduction: null,
     source: null,
+  };
+}
+
+export function newSymbol(id: string): Symbol {
+  return {
+    id,
+    name: '',
+    definition: '',
+    type: 'number',
+    unit: '1',
+    latex: '',
+    values: [],
+    series: null,
+    kind: '',
+    quantityKind: '',
+    origin: '',
+    legacyId: '',
+    attribute: '',
+    calculation: '',
+    profile: '',
+    sourceRef: null,
+    formula: null,
+    notes: [],
+    ref: [],
+  };
+}
+
+export function newAttributeDefinition(id: string): AttributeDefinition {
+  return {
+    id,
+    symbol: '',
+    name: '',
+    definition: '',
+    source: null,
+    quantityKind: '',
+    unit: '',
+    valueType: '',
+    origin: '',
+    scope: '',
+    category: '',
+    isDimension: null,
+    enumRef: '',
+    irdi: '',
+    derived: '',
+    referenceIds: [],
   };
 }

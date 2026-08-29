@@ -8,7 +8,8 @@ export type SelectionType =
   | 'requirement' | 'conformanceTest' | 'requirementClass'
   | 'term' | 'constraint' | 'calculation' | 'table'
   | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject'
-  | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial';
+  | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial'
+  | 'symbol' | 'attributeDefinition';
 
 export interface Selection {
   id: string;

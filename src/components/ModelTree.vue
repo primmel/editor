@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newBehavior, newCalculation, newCapability, newConditionSet, newConstraint, newStateMachine, newSubject, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
+import { newAttributeDefinition, newBehavior, newCalculation, newCapability, newConditionSet, newConstraint, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -57,6 +57,7 @@ const groups = computed<TreeGroup[]>(() => {
     // The v3 construct surfaces (TODO.editor wave 03): the kernel's
     // non-canvas collections — tree section, in-tree create, inspector.
     { label: 'Terms', type: 'term', createPrefix: 'Term', items: m.terms.map((t) => ({ id: t.id, detail: t.label })) },
+    { label: 'Symbols', type: 'symbol', createPrefix: 'Sym', items: m.symbols.map((s) => ({ id: s.id, detail: s.name || s.type })) },
     { label: 'Constraints', type: 'constraint', createPrefix: 'Constraint', items: m.constraints.map((c) => ({ id: c.id, detail: c.name })) },
     { label: 'Calculations', type: 'calculation', createPrefix: 'Calc', items: m.calculations.map((c) => ({ id: c.id, detail: c.name || c.identifier })) },
     { label: 'Tables', type: 'table', createPrefix: 'Table', items: m.tables.map((t) => ({ id: t.id, detail: t.title || `${t.data.length} rows` })) },
@@ -64,6 +65,7 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Test Sequences', type: 'testSequence', createPrefix: 'Seq', items: m.testSequences.map((s) => ({ id: s.id, detail: `${s.steps.length} steps` })) },
     { label: 'Test Point Sets', type: 'testPointSet', createPrefix: 'TPS', items: m.testPointSets.map((t) => ({ id: t.id, detail: `${t.points.length} points` })) },
     { label: 'Subjects', type: 'subject', createPrefix: 'Subject', items: m.subjects.map((s) => ({ id: s.id, detail: s.extends ? `extends ${s.extends}` : undefined })) },
+    { label: 'Attribute Definitions', type: 'attributeDefinition', createPrefix: 'Attr', items: m.attributeDefinitions.map((a) => ({ id: a.id, detail: a.name })) },
     { label: 'Behaviors', type: 'behavior', createPrefix: 'Behavior', items: m.behaviors.map((b) => ({ id: b.id, detail: b.kind })) },
     { label: 'Capabilities', type: 'capability', createPrefix: 'Capability', items: m.capabilities.map((c) => ({ id: c.id, detail: c.label })) },
     { label: 'Condition Sets', type: 'conditionSet', createPrefix: 'CondSet', items: m.conditionSets.map((c) => ({ id: c.id, detail: c.role })) },
@@ -127,6 +129,12 @@ function createIn(group: TreeGroup) {
       break;
     case 'verdict':
       modelStore.execute(createConstruct((a: Standard) => a.verdicts, newVerdict(id), `create verdict ${id}`));
+      break;
+    case 'symbol':
+      modelStore.execute(createConstruct((a: Standard) => a.symbols, newSymbol(id), `create symbol ${id}`));
+      break;
+    case 'attributeDefinition':
+      modelStore.execute(createConstruct((a: Standard) => a.attributeDefinitions, newAttributeDefinition(id), `create attribute definition ${id}`));
       break;
     default:
       return;
