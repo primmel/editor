@@ -21,6 +21,8 @@ import {
   newStateMachine,
   newTable,
   newTerm,
+  newTestPointSet,
+  newTestSequence,
 } from '../factory';
 
 /** A model with the construct collections this suite exercises. */
@@ -415,5 +417,110 @@ describe('W3 state machines — the machine surface', () => {
     expect(ast.stateMachines).toHaveLength(0);
     del.revert(ast);
     expect(ast.stateMachines.map(s => s.entityName)).toEqual(['LoadCellOperational']);
+  });
+});
+
+describe('W3 test sequences — the required-ordering surface', () => {
+  const SEQ = `test_sequence mdlo-creep-dr {
+  name "MDLO → Creep → DR sequence"
+  description "The three performance tests must run in this order on the same sample"
+  step 1 {
+    test "/conf/metrological-tests/mdlo"
+    role baseline
+  }
+  step 2 {
+    test "/conf/metrological-tests/creep"
+    role follow_up
+    depends_on 1
+  }
+  sample_applicability all
+  source { doc "urn:oiml:pub:r:60-2:2021" clause "2.10" }
+}
+`;
+
+  it('creates a sequence with the parse defaults; the dump round-trips', () => {
+    const ast = run(SEQ, createConstruct(a => a.testSequences, newTestSequence('seq_new')));
+    expect(ast.testSequences.map(s => s.id)).toContain('seq_new');
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.testSequences.map(s => s.id)).toContain('seq_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the steps (test XOR phase, role, depends_on); undo restores', () => {
+    const patch = updateConstruct(a => a.testSequences, 'mdlo-creep-dr', {
+      steps: [
+        { order: 1, test: '/conf/metrological-tests/mdlo', phase: '', role: 'baseline', dependsOn: null },
+        { order: 2, test: '/conf/metrological-tests/creep', phase: '', role: 'follow_up', dependsOn: 1 },
+        { order: 3, test: '', phase: 'temperature-cycling', role: '', dependsOn: null },
+      ],
+    });
+    const ast = run(SEQ, patch);
+    const text = dump(ast);
+    expect(text).toContain('step 3 { phase "temperature-cycling" }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.testSequences[0]?.steps).toHaveLength(3);
+    expect(reloaded.testSequences[0]?.steps[2]?.phase).toBe('temperature-cycling');
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(ast.testSequences[0]?.steps).toHaveLength(2);
+    expect(dump(ast)).toBe(dump(load(SEQ, { strict: true })));
+  });
+
+  it('the source list edits as repeated source blocks (sourceRefs is the carrier)', () => {
+    const ast = run(SEQ, updateConstruct(a => a.testSequences, 'mdlo-creep-dr', {
+      sourceRefs: [
+        { doc: 'urn:oiml:pub:r:60-2:2021', clause: '2.10' },
+        { doc: 'urn:oiml:pub:r:60-2:2021', clause: '2.11.1' },
+      ],
+    }));
+    const text = dump(ast);
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-2:2021#clause-2.10"');
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-2:2021#clause-2.11.1"');
+    expect(load(text, { strict: true }).testSequences[0]?.sourceRefs).toHaveLength(2);
+  });
+});
+
+describe('W3 test point sets — the shared test-point surface', () => {
+  const TPS = `test_point_set span-points {
+  description "Points within the measuring range for error determination"
+  ref derives-from "urn:oiml:pub:r:144-2:2013#clause-1.2"
+  cardinality {
+    linear { min_points 3 rule "min +10 %, mid ±10 %, max −10 % of the measuring range" }
+    nonlinear { min_points 5 rule "uniformly distributed" }
+  }
+  repetitions_per_point 3
+  points {
+    point min-10pct { fraction 0.1 anchor range_min offset "+10 % of range" }
+    point max-10pct { fraction 0.9 anchor range_max offset "−10 % of range" }
+  }
+}
+`;
+
+  it('creates a point set with the parse defaults; the dump round-trips', () => {
+    const ast = run(TPS, createConstruct(a => a.testPointSets, newTestPointSet('tps_new')));
+    expect(ast.testPointSets.map(t => t.id)).toContain('tps_new');
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.testPointSets.map(t => t.id)).toContain('tps_new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits cardinality, repetitions, and points; undo restores', () => {
+    const patch = updateConstruct(a => a.testPointSets, 'span-points', {
+      repetitionsPerPoint: 5,
+      cardinality: { linear: { minPoints: 4, rule: 'evenly spaced' } },
+      points: [{ id: 'mid', fraction: 0.5, anchor: 'range_mid', offset: '±10 %' }],
+    });
+    const ast = run(TPS, patch);
+    const text = dump(ast);
+    expect(text).toContain('repetitions_per_point 5');
+    expect(text).toContain('linear { min_points 4 rule "evenly spaced" }');
+    expect(text).toContain('point mid { fraction 0.5 anchor range_mid offset "±10 %" }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.testPointSets[0]?.points).toHaveLength(1);
+    expect(reloaded.testPointSets[0]?.cardinality['nonlinear']).toBeUndefined();
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(ast.testPointSets[0]?.points).toHaveLength(2);
+    expect(dump(ast)).toBe(dump(load(TPS, { strict: true })));
   });
 });
