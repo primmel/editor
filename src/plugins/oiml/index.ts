@@ -12,6 +12,7 @@ import type { StudioPlugin } from '../types';
 import CertificatePreview from './CertificatePreview.vue';
 import RequirementInspector from './RequirementInspector.vue';
 import ConformanceTestInspector from './ConformanceTestInspector.vue';
+import FormInspector from './FormInspector.vue';
 import PackageManifestPanel from './PackageManifestPanel.vue';
 
 function mintAndCreate<T extends { id: string }>(
@@ -188,5 +189,6 @@ export const oimlPlugin: StudioPlugin = {
   inspectors: [
     { type: 'requirement', component: RequirementInspector },
     { type: 'conformanceTest', component: ConformanceTestInspector },
+    { type: 'form', component: FormInspector },
   ],
 };
