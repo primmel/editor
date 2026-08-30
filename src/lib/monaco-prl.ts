@@ -19,7 +19,8 @@ export type CompletionContext =
   | { kind: 'keyword' }          // top-level / block heads
   | { kind: 'none' };
 
-/** The top-level construct keywords (the block heads). */
+/** The top-level construct keywords (the block heads) — the legacy set
+ *  plus the full v3 vocabulary the tree now authors (wave 03). */
 export const CONSTRUCT_KEYWORDS = [
   'role', 'provision', 'process', 'approval', 'class', 'enum',
   'data_registry', 'variable', 'measurement',
@@ -27,8 +28,15 @@ export const CONSTRUCT_KEYWORDS = [
   'exclusive_gateway', 'parallel_gateway', 'canvas', 'subprocess',
   'reference', 'note', 'table', 'figure', 'link', 'comment',
   'map_profile', 'view_profile', 'term', 'requirement',
-  'conformance_test', 'form', 'subject', 'instrument', 'state_machine',
-  'calculation', 'symbol', 'verdict',
+  'conformance_test', 'conformance_class', 'form', 'subform',
+  'subject', 'instrument', 'state_machine', 'calculation', 'symbol',
+  'verdict', 'behavior', 'capability', 'condition_set',
+  'test_sequence', 'test_point_set', 'constraint', 'reference_material',
+  'quantity_register', 'dual', 'instance', 'artifact_definition',
+  'artifact_instance', 'attribute_definition', 'monitor', 'passport',
+  'connector_profile', 'invariant', 'formulas_used', 'text',
+  'dataspace', 'policy', 'activity_archetype', 'competence_kind',
+  'predicate', 'discrepancy_record',
 ];
 
 /** Detect the completion context from the text before the cursor
@@ -82,7 +90,12 @@ export function completionItemsFor(context: CompletionContext, ast: Standard): C
     case 'role':
       return ast.roles.map(r => ({ label: r.id, kind: 'id', detail: r.name }));
     case 'provision':
-      return ast.provisions.map(p => ({ label: p.id, kind: 'id', detail: p.modality }));
+      // validate_provision binds provisions on legacy models and
+      // requirement ids on v3 packages (audit G6) — complete both.
+      return [
+        ...ast.provisions.map(p => ({ label: p.id, kind: 'id' as const, detail: `provision ${p.modality}` })),
+        ...ast.requirements.map(r => ({ label: r.id, kind: 'id' as const, detail: `requirement ${r.name || ''}`.trim() })),
+      ];
     case 'registry':
       return ast.regs.map(r => ({ label: r.id, kind: 'id', detail: r.title }));
     case 'page':
