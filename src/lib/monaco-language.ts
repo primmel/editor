@@ -20,6 +20,15 @@ export const primmelLanguageDefinition: languages.IMonarchLanguage = {
     'map_profile', 'view_profile',
     'form', 'subform', 'symbol', 'calculation', 'state_machine',
     'term', 'note', 'table', 'figure', 'link',
+    // The v3 construct vocabulary (wave 03 — mirrors the completion
+    // service's CONSTRUCT_KEYWORDS; a test pins the two equal).
+    'conformance_class', 'behavior', 'capability', 'condition_set',
+    'test_sequence', 'test_point_set', 'constraint', 'reference_material',
+    'quantity_register', 'dual', 'instance', 'artifact_definition',
+    'artifact_instance', 'attribute_definition', 'monitor', 'passport',
+    'connector_profile', 'invariant', 'formulas_used', 'text',
+    'dataspace', 'policy', 'activity_archetype', 'competence_kind',
+    'predicate', 'discrepancy_record',
     'elements', 'process_flow', 'data',
     'from', 'to', 'name', 'condition', 'description',
     'SHALL', 'SHOULD', 'MAY', 'SHALL_NOT',

@@ -23,7 +23,20 @@ const process = computed<Process | undefined>(() => {
 });
 
 const roleOptions = computed(() => { void modelStore.version; return props.model.roles.map(r => ({ id: r.id, label: r.name || r.id })); });
-const provisionOptions = computed(() => { void modelStore.version; return props.model.provisions.map(p => p.id); });
+// validate_provision binds provisions on legacy models and REQUIREMENT
+// ids on v3 packages (the kernel's own note: OIML SMART points the facet
+// at /req/* ids, which the provision resolver cannot see — provisionRefs
+// is the lossless carrier). The picker offers the union (audit G6).
+const provisionOptions = computed(() => {
+  void modelStore.version;
+  const ids = new Set<string>([...props.model.provisions.map(p => p.id), ...props.model.requirements.map(r => r.id)]);
+  return [...ids];
+});
+const provisionLabel = (id: string) => {
+  void modelStore.version;
+  const req = props.model.requirements.find(r => r.id === id);
+  return req ? `${id} — ${req.name || 'requirement'}` : id;
+};
 const registryOptions = computed(() => { void modelStore.version; return props.model.regs.map(r => r.id); });
 const pageOptions = computed(() => {
   void modelStore.version;
@@ -158,10 +171,11 @@ function onMeasure(items: string[]) {
       </div>
     </InspectorField>
 
-    <InspectorField label="validate_provision">
+    <InspectorField label="validate_provision" hint="provisions on legacy models; requirement ids on v3 packages (the kernel resolves provisions only — provisionRefs is the lossless carrier)">
       <PickerListEdit
         :items="process.provisionRefs"
         :options="provisionOptions"
+        :label-of="provisionLabel"
         placeholder="add provision…"
         @update="onProvisions"
       />

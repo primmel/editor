@@ -142,3 +142,42 @@ describe('20 — the markers', () => {
     expect(markerFromParseError('no line here').startLineNumber).toBe(1);
   });
 });
+
+describe('wave 03 G6 — the provision completion reads the real requirements', () => {
+  it('a v3 package (zero provisions) completes requirement ids in validate_provision', () => {
+    const model = load(`requirement /req/cs/sample-count {
+  name "Sample count"
+  statement "s"
+  obligation shall
+}
+requirement /req/cs/marking {
+  name "Marking"
+  statement "s"
+  obligation shall
+}
+`, { strict: true });
+    const items = completionItemsFor({ kind: 'provision' }, model);
+    expect(items.map(i => i.label)).toEqual(['/req/cs/sample-count', '/req/cs/marking']);
+    expect(items[0]?.detail).toBe('requirement Sample count');
+  });
+
+  it('a mixed model offers the union (provisions + requirements)', () => {
+    const model = load(`provision P1 {
+  modality SHALL
+}
+requirement r1 {
+  name "R"
+  statement "s"
+  obligation may
+}
+`, { strict: true });
+    expect(completionItemsFor({ kind: 'provision' }, model).map(i => i.label)).toEqual(['P1', 'r1']);
+  });
+
+  it('the keyword completion carries the full v3 construct vocabulary', () => {
+    const labels = completionItemsFor({ kind: 'keyword' }, load('', { strict: true })).map(i => i.label);
+    for (const kw of ['monitor', 'passport', 'dataspace', 'policy', 'invariant', 'dual', 'quantity_register', 'artifact_definition', 'conformance_class', 'test_sequence']) {
+      expect(labels).toContain(kw);
+    }
+  });
+});
