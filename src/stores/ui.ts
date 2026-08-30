@@ -15,7 +15,7 @@ export type SelectionType =
   | 'connectorProfile' | 'monitor' | 'passport'
   | 'invariant' | 'formulasUsed' | 'text' | 'activityArchetype'
   | 'competenceKind' | 'predicate' | 'discrepancyRecord'
-  | 'dataspace' | 'policy';
+  | 'dataspace' | 'policy' | 'form';
 
 export interface Selection {
   id: string;

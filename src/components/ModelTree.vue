@@ -95,6 +95,7 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Requirements', type: 'requirement', items: m.requirements.map((r) => ({ id: r.id, detail: r.name })) },
     { label: 'Conformance Tests', type: 'conformanceTest', items: m.conformanceTests.map((t) => ({ id: t.id, detail: t.name })) },
     { label: 'Conformance Classes', type: 'conformanceClass', createPrefix: 'CC', items: m.conformanceClasses.map((c) => ({ id: c.id, detail: c.name })) },
+    { label: 'Forms', type: 'form', items: m.forms.map((f) => ({ id: f.id, detail: f.name })) },
   ];
   return result.filter((g) => g.items.length > 0 || g.createPrefix);
 });

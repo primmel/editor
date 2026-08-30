@@ -1240,3 +1240,137 @@ policy default-sharing {
     expect(dump(ast)).toBe(dump(load(GOV, { strict: true })));
   });
 });
+
+describe('W3.2 forms — the data-capture schema surface (the plugin inspector)', () => {
+  const FORMS = `form test-report {
+  name "Test report"
+  description "The per-test report"
+  section "results"
+  scope evaluation
+  requirements { /req/metrological/mpe }
+  note "free note"
+  instances {
+    instance on-the-cell { name "on the load cell" }
+  }
+  constraints {
+    constraint c1 {
+      rule "ocl{self.e_max > 0}"
+      on_violation invalid
+      notes "the capacity must be positive"
+    }
+  }
+  field indication : number {
+    label "Indication"
+    definition "The instrument indication"
+    unit "kg"
+    required true
+    bind run.indication
+    default 0
+  }
+  field class : string {
+    label "Class"
+    enum AccuracyClass
+    targets { /req/metrological/mpe }
+  }
+  pass_fail {
+    criteria "the error stays within MPE"
+    pass_if "ocl{abs(e) <= mpe}"
+    derive e_norm {
+      calculation normalize
+      for_each run
+      unit "v"
+    }
+  }
+}
+`;
+
+  it('creates a form with the palette defaults; the dump round-trips', () => {
+    // The OIML palette's inline creation shape (plugins/oiml/index.ts).
+    const ast = run(FORMS, createConstruct(a => a.forms, {
+      id: 'form-new', name: '', description: '', dataClassId: '', headerFormId: '', conformanceProcessId: '',
+      section: '', requirements: [], formNotes: [], scope: '', formReferences: [], calculationContext: null,
+      formInstances: [], formConstraints: [], applicability: [], fields: [], passFail: null,
+      referenceIds: [], ref: [],
+    }));
+    const reloaded = load(dump(ast), { strict: true });
+    expect(reloaded.forms.map(f => f.id)).toContain('form-new');
+    expect(validate(reloaded)).toEqual([]);
+  });
+
+  it('edits the header facets, the instances, the constraints, and the pass_fail block', () => {
+    const ast = load(FORMS, { strict: true });
+    const f = ast.forms[0]!;
+    const patch = updateConstruct(a => a.forms, 'test-report', {
+      section: 'verification',
+      requirements: ['/req/metrological/mpe', '/req/metrological/repeatability'],
+      formInstances: [...f.formInstances, { id: 'on-the-bench', name: 'on the bench' }],
+      passFail: { criteria: 'edited criteria', passIf: 'ocl{abs(e) <= mpe}', derivations: [] },
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('section "verification"');
+    expect(text).toContain('requirements { /req/metrological/mpe /req/metrological/repeatability }');
+    expect(text).toContain('instance on-the-bench { name "on the bench" }');
+    expect(text).toContain('criteria "edited criteria"');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.forms[0]?.formInstances).toHaveLength(2);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(FORMS, { strict: true })));
+  });
+
+  it('edits the fields (type/label/unit/required/targets) as whole-array replacements', () => {
+    const ast = load(FORMS, { strict: true });
+    const f = ast.forms[0]!;
+    const patch = updateConstruct(a => a.forms, 'test-report', {
+      fields: [
+        { ...f.fields[0]!, label: 'Indication (edited)', required: false },
+        { ...f.fields[1]!, targets: ['/req/metrological/mpe', '/req/other'] },
+        // A fresh field in the parse-default shape (the add-row).
+        {
+          name: 'ambient', type: 'number', typeDeclared: true, label: 'Ambient temperature', definition: '',
+          unit: 'degC', symbol: '', verdict: '', targets: [], dimension: '', enumRef: '', pattern: '',
+          required: false, requiredWhen: '', refs: [], measurementMethod: '', calculationId: null,
+          calculationBindings: [], derivation: '', evaluation: null, values: [], trueLabel: '',
+          falseLabel: '', enumValues: [], defaultValue: '', hasDefault: false, referenceIds: [],
+          fieldReferences: [], specificationReference: '', applicability: [], sourceDiscrepancy: null,
+          fields: [], itemsType: '', subformRef: null,
+        },
+      ],
+    });
+    patch.apply(ast);
+    const text = dump(ast);
+    expect(text).toContain('label "Indication (edited)"');
+    expect(text).toContain('field ambient : number { label "Ambient temperature" unit "degC" }');
+    expect(text).toContain('targets { /req/metrological/mpe /req/other }');
+    const reloaded = load(text, { strict: true });
+    expect(reloaded.forms[0]?.fields).toHaveLength(3);
+    expect(validate(reloaded)).toEqual([]);
+    patch.revert(ast);
+    expect(dump(ast)).toBe(dump(load(FORMS, { strict: true })));
+  });
+
+  it('pins the kernel gap: a field bind parses but never dumps', () => {
+    // Kernel 1.8.0: parseFormField reads `bind run.indication` (the v2 G5
+    // subject-chain binding path); dumpFormField never emits it — an edit
+    // through the save path would silently strip the binding (the wave-00
+    // overlay regression's shape). The inspector renders bind read-only.
+    // The fix is upstream (primmel-ts); when it lands this test flips and
+    // the read-only marker comes off.
+    const ast = load(FORMS, { strict: true });
+    const field = ast.forms[0]!.fields[0]!;
+    expect(field.bind).toBe('run.indication');
+    const text = dump(ast);
+    expect(text).not.toContain('bind run.indication');
+    expect(load(text, { strict: true }).forms[0]?.fields[0]?.bind).toBeUndefined();
+  });
+
+  it('deletes a form; the removal reverts to the exact slot', () => {
+    const two = FORMS + '\nform other {\n  name "Other"\n}\n';
+    const del = deleteConstruct(a => a.forms, 'test-report');
+    const ast = run(two, del);
+    expect(ast.forms.map(f => f.id)).toEqual(['other']);
+    del.revert(ast);
+    expect(ast.forms.map(f => f.id)).toEqual(['test-report', 'other']);
+  });
+});
