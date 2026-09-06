@@ -57,7 +57,7 @@ rules that hold there.
 
 ## The right panel
 
-Six tabs, one panel:
+Seven tabs, one panel:
 
 - **Inspect** — the facet editor for the selected element. Per type:
   process (name, actor, modality, provisions, output/input registries,
@@ -71,6 +71,12 @@ Six tabs, one panel:
   imports, the editions), the registered reference models (a row's
   click activates the lens and jumps to the mapping view), and the
   attached document (clause/statement counts).
+- **Layers** — the layer-overlay authoring view (a package session
+  only): the composition stack (your package on top as the overlay
+  being authored, the layers beneath with their construct census — the
+  overlay winner takes the attribution) and the overlay terms, each
+  against the upstream definition it supersedes. Click a row to select
+  the term; the inspector edits the `overlay` marker.
 - **Compliance** — the provision list with the modality filter.
 - **Simulate** — the run controls: start/step/continue/reset/stop, the
   register table (edits unblock gates), the trajectory log. The wall

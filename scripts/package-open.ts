@@ -10,7 +10,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { dump, loadPackageWithProvenance, packageFiles } from '@primmel/primmel';
+import { dump, loadPackage, loadPackageWithProvenance, packageFiles } from '@primmel/primmel';
+import type { Standard } from '@primmel/primmel';
 import type { PackageOpenResult } from '../src/lib/package';
 import { guardPackageDir } from './package-api-guard';
 
@@ -68,6 +69,65 @@ export function openPackagePayload(dirArg: string, rootsEnv: string | undefined 
       };
     });
 
+  // The composition stack (TODO.editor wave 5, the layer-overlay view):
+  // every package's construct census by kind, straight from the
+  // provenance — ConstructSource.package attests the authoring package
+  // (the overlay winner, when one replaced an upstream term).
+  const kindsByPackage = new Map<string, Map<string, number>>();
+  for (const [field, ids] of Object.entries(result.provenance.constructs)) {
+    for (const src of Object.values(ids)) {
+      if (!src.package) continue; // absent only in manifest-less loads — the guard forecloses that here
+      const byField = kindsByPackage.get(src.package) ?? new Map<string, number>();
+      byField.set(field, (byField.get(field) ?? 0) + 1);
+      kindsByPackage.set(src.package, byField);
+    }
+  }
+  const layers = order.map((id) => ({
+    package: id,
+    root: id === manifest.id,
+    kinds: [...(kindsByPackage.get(id) ?? new Map<string, number>()).entries()].map(([field, n]) => ({ field, constructs: n })),
+  }));
+
+  // The overlay pairs: every term marked `overlay true` in the merged
+  // model, joined to the nearest UPSTREAM definition it supersedes. The
+  // composition replaces the original (last-write-wins), so the upstream
+  // facets come from the upstream package's own load (cached per dir).
+  const upstreamCache = new Map<string, Standard>();
+  const overlays = result.standard.terms
+    .filter((t) => t.overlay === true)
+    .map((t) => {
+      const src = result.provenance.constructs.terms?.[t.id];
+      const winnerPkg = src?.package ?? manifest.id;
+      const winnerDir = winnerPkg === manifest.id ? dir : resolvePackage(winnerPkg);
+      let overlaidPackage: string | null = null;
+      let overlaid: { label?: string; definition?: string; source?: string } | null = null;
+      for (let j = order.indexOf(winnerPkg) - 1; j >= 0; j--) {
+        const upDir = order[j] === manifest.id ? dir : resolvePackage(order[j]);
+        if (!upDir) continue;
+        let upstream = upstreamCache.get(upDir);
+        if (!upstream) {
+          upstream = loadPackage(upDir, { resolvePackage });
+          upstreamCache.set(upDir, upstream);
+        }
+        const hit = upstream.terms.find((u) => u.id === t.id);
+        if (hit) {
+          overlaidPackage = order[j];
+          overlaid = { label: hit.label, definition: hit.definition, source: hit.source };
+          break;
+        }
+      }
+      return {
+        id: t.id,
+        package: winnerPkg,
+        file: src && winnerDir ? path.relative(winnerDir, src.file) : '',
+        label: t.label,
+        definition: t.definition,
+        source: t.source,
+        overlaidPackage,
+        overlaid,
+      };
+    });
+
   return {
     dir,
     id: manifest.id,
@@ -77,6 +137,8 @@ export function openPackagePayload(dirArg: string, rootsEnv: string | undefined 
     issues: result.issues.map((i) => i.message),
     files,
     imports,
+    layers,
+    overlays,
     dump: dump(result.standard),
     provenance: result.provenance,
   };

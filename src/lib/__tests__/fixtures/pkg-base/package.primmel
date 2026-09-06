@@ -1,0 +1,8 @@
+package {
+  id pkg-base
+  kind module
+  title "Probe Base Layer"
+  version "1.0.0"
+  editions { "1.0.0" }
+  baseUrn "urn:example:pkg-base:1.0.0"
+}

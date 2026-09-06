@@ -1,0 +1,9 @@
+package {
+  id pkg-over
+  kind rec
+  title "Probe Overlay Rec"
+  version "1.0.0"
+  editions { "1.0.0" }
+  baseUrn "urn:example:pkg-over:1.0.0"
+  uses { pkg-base }
+}

@@ -1,0 +1,16 @@
+// The rec's own vocabulary: one intentional overlay of the base layer's
+// term (uses-no-redefine lifts for the marked term), one term of its own.
+term impartiality {
+  overlay true
+  label "impartiality"
+  definition "presence of objectivity (the rec's tighter reading)"
+  source "OVER, 3.2"
+  language "en"
+}
+
+term own-scope {
+  label "own scope"
+  definition "a term this package declares outright"
+  source "OVER, 3.3"
+  language "en"
+}

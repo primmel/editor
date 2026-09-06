@@ -10,6 +10,7 @@ import ProcessCanvas from './components/ProcessCanvas.vue';
 import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
 import WorkspacePanel from './components/WorkspacePanel.vue';
+import LayersPanel from './components/LayersPanel.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
@@ -276,6 +277,11 @@ const view = computed<ViewMode>({
               @click="ui.rightPanel = 'workspace'"
             >Workspace</button>
             <button
+              :class="{ active: ui.rightPanel === 'layers' }"
+              data-testid="tab-layers"
+              @click="ui.rightPanel = 'layers'"
+            >Layers</button>
+            <button
               :class="{ active: ui.rightPanel === 'compliance' }"
               @click="ui.rightPanel = 'compliance'"
             >Compliance</button>
@@ -322,6 +328,7 @@ const view = computed<ViewMode>({
               <ElementInspector :model="model" />
             </fieldset>
             <WorkspacePanel v-else-if="ui.rightPanel === 'workspace'" :model="model" key="workspace" />
+            <LayersPanel v-else-if="ui.rightPanel === 'layers'" key="layers" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
             <CheckPanel v-else-if="ui.rightPanel === 'check'" key="check" />

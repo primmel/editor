@@ -81,6 +81,8 @@ function pkgSession(): PackageOpenResult {
     imports: [
       { package: 'oiml-cs', files: [{ path: 'cs.prl', constructs: 42 }, { path: 'terms.prl', constructs: 8 }] },
     ],
+    layers: [],
+    overlays: [],
     dump: '',
     provenance: { constructs: {} },
   };
