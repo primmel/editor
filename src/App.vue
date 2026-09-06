@@ -9,6 +9,7 @@ import PageTree from './components/PageTree.vue';
 import ProcessCanvas from './components/ProcessCanvas.vue';
 import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
+import WorkspacePanel from './components/WorkspacePanel.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
@@ -269,6 +270,11 @@ const view = computed<ViewMode>({
               @click="ui.rightPanel = 'inspector'"
             >Inspect</button>
             <button
+              :class="{ active: ui.rightPanel === 'workspace' }"
+              data-testid="tab-workspace"
+              @click="ui.rightPanel = 'workspace'"
+            >Workspace</button>
+            <button
               :class="{ active: ui.rightPanel === 'compliance' }"
               @click="ui.rightPanel = 'compliance'"
             >Compliance</button>
@@ -309,6 +315,7 @@ const view = computed<ViewMode>({
             <fieldset v-if="ui.rightPanel === 'inspector'" class="inspector-frame" :disabled="readOnly" key="inspector">
               <ElementInspector :model="model" />
             </fieldset>
+            <WorkspacePanel v-else-if="ui.rightPanel === 'workspace'" :model="model" key="workspace" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
             <ValidationPanel v-else :model="model" key="validation" />

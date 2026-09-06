@@ -38,9 +38,9 @@ npm run dev        # http://localhost:5173
 
 ```bash
 npx vue-tsc --noEmit     # type check
-npx vitest run           # unit tests (213 tests)
+npx vitest run           # unit tests (351 tests)
 npm run build            # the production build
-./e2e/run-all.sh         # 24 e2e legs against the dev server (E2E_BASE overrides the port)
+./e2e/run-all.sh         # 36 e2e legs against the dev server (E2E_BASE overrides the port)
 ```
 
 ## Embedding
@@ -81,6 +81,7 @@ way. The kernel never names a program.
 | Area | Where | What it does |
 |---|---|---|
 | model core | `src/stores/model.ts`, `src/lib/commands.ts` | the AST + the command layer (undo/redo, dirty discipline) |
+| workspace | `src/lib/workspace.ts`, `src/components/WorkspacePanel.vue` | the session's typed items (Imp/Ref/Doc): the open model card, the reference lenses, the doc mirror |
 | canvas | `src/components/ProcessCanvas.vue`, `src/lib/render.ts`, `src/lib/edges.ts` | drag/connect/pages, the connection discipline, select mode, tints, badges |
 | palette | `src/components/PalettePanel.vue`, `src/lib/factory.ts` | create elements (+ the program section from plugins) |
 | inspectors | `src/components/inspectors/`, `src/components/fields/` | per-type property editors (process, approval, event, gateway, subprocess, dataclass, registry, enum) |
