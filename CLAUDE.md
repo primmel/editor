@@ -60,10 +60,11 @@ src/
 ├── lib/           pure logic: commands, render, edges, pages, factory,
 │                  mapper, multi-map, coverage, automap, diff-view,
 │                  simulator, comments, measurement, document-model,
-│                  mmel-import, save, workspace (+ __tests__ for all)
+│                  mmel-import, save, workspace, check (+ __tests__ for all)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel,
 │                  inspectors/, fields/, WorkspacePanel, mapper/, diff/,
-│                  simulation/, comments/, measurement/, ImportPanel, SavePanel
+│                  simulation/, comments/, measurement/, ImportPanel, SavePanel,
+│                  CheckPanel
 ├── plugins/       the registry (types, index) + oiml/ (the first program)
 └── App.vue        the workspace shell + the dev/e2e window.__stores hook
 ```

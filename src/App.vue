@@ -16,6 +16,7 @@ import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
 import ValidationPanel from './components/validation/ValidationPanel.vue';
+import CheckPanel from './components/CheckPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
 import MeasurementPanel from './components/measurement/MeasurementPanel.vue';
 import ImportPanel from './components/ImportPanel.vue';
@@ -287,6 +288,11 @@ const view = computed<ViewMode>({
               data-testid="tab-validation"
               @click="ui.rightPanel = 'validation'"
             >Validate</button>
+            <button
+              :class="{ active: ui.rightPanel === 'check' }"
+              data-testid="tab-check"
+              @click="ui.rightPanel = 'check'"
+            >Check</button>
           </div>
         </template>
       </nav>
@@ -318,6 +324,7 @@ const view = computed<ViewMode>({
             <WorkspacePanel v-else-if="ui.rightPanel === 'workspace'" :model="model" key="workspace" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
+            <CheckPanel v-else-if="ui.rightPanel === 'check'" key="check" />
             <ValidationPanel v-else :model="model" key="validation" />
           </Transition>
           <CommentPanel v-if="ui.rightPanel === 'inspector'" :model="model" />
