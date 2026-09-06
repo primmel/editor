@@ -57,7 +57,7 @@ rules that hold there.
 
 ## The right panel
 
-Four tabs, one panel:
+Five tabs, one panel:
 
 - **Inspect** — the facet editor for the selected element. Per type:
   process (name, actor, modality, provisions, output/input registries,
@@ -66,6 +66,11 @@ Four tabs, one panel:
   (page stats), dataclass (store, extends, description, the attribute
   list with datatype/cardinality/modality/enum values/references),
   registry (title + data_class), enum (the value list).
+- **Workspace** — the session's typed items (Imp/Ref/Doc): the open
+  model card (the manifest tier, the file inventory, the composed
+  imports, the editions), the registered reference models (a row's
+  click activates the lens and jumps to the mapping view), and the
+  attached document (clause/statement counts).
 - **Compliance** — the provision list with the modality filter.
 - **Simulate** — the run controls: start/step/continue/reset/stop, the
   register table (edits unblock gates), the trajectory log. The wall

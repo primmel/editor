@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 279 tests
+cd ~/src/primmel/editor && npx vitest run           # 351 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 35 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 36 legs, needs npm run dev on :5173
 ```
 
 ## The laws
@@ -61,11 +61,12 @@ src/
 │                  comments, measurement, document-model, mmel-import, save,
 │                  package (the package-API bridge), package-save (the comment-true
 │                  per-file write plan: span splices, never a canonical dump),
+│                  workspace (the typed Imp/Ref/Doc session index),
 │                  monaco-language, monaco-prl, templates,
 │                  validation (+ __tests__)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel, CodeEditor,
-│                  ElementInspector + inspectors/ + fields/, mapper/, diff/,
-│                  simulation/, comments/, measurement/, validation/,
+│                  ElementInspector + inspectors/ + fields/, WorkspacePanel,
+│                  mapper/, diff/, simulation/, comments/, measurement/, validation/,
 │                  ImportPanel, SavePanel, NewModelDialog, OpenPackageDialog
 ├── plugins/       the registry (types, index) + oiml/ (the first program)
 └── App.vue        the workspace shell + the dev/e2e window.__stores hook
