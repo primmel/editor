@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 351 tests
+cd ~/src/primmel/editor && npx vitest run           # 357 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 36 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 49 legs, needs npm run dev on :5173
 ```
 
 ## The laws
@@ -62,19 +62,22 @@ src/
 │                  package (the package-API bridge), package-save (the comment-true
 │                  per-file write plan: span splices, never a canonical dump),
 │                  workspace (the typed Imp/Ref/Doc session index),
+│                  check (the primmel-check view: the rule-catalog join),
 │                  monaco-language, monaco-prl, templates,
 │                  validation (+ __tests__)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel, CodeEditor,
 │                  ElementInspector + inspectors/ + fields/, WorkspacePanel,
 │                  mapper/, diff/, simulation/, comments/, measurement/, validation/,
-│                  ImportPanel, SavePanel, NewModelDialog, OpenPackageDialog
+│                  ImportPanel, SavePanel, NewModelDialog, OpenPackageDialog,
+│                  CheckPanel
 ├── plugins/       the registry (types, index) + oiml/ (the first program)
 └── App.vue        the workspace shell + the dev/e2e window.__stores hook
 demo/              the R 7 tutorial model (the dual demo with smart-r60)
 docs/              the user guide + diagrams
 e2e/               the puppeteer legs + run-all.sh
 scripts/           audit-typing.mjs (the typing gate), save-api-guard.ts,
-                   package-api-guard.ts + package-open.ts (the package API)
+                   package-api-guard.ts, package-open.ts + package-check.ts
+                   (the package API)
 ```
 
 ## The dev/e2e hook

@@ -55,7 +55,8 @@ for leg in \
   v3-governance-smoke \
   v3-compliance-seams-smoke \
   v3-forms-smoke \
-  workspace-smoke
+  workspace-smoke \
+  check-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

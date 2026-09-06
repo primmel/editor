@@ -66,6 +66,18 @@ A successful write re-bases the session's provenance onto the new
 bytes, so the next save in the same session splices the new state —
 undo history and all.
 
+## The package check (`primmel check`)
+
+The Check tab runs the kernel's linter — the full rule catalog
+(anatomy, mapping, composition, coverage, editions, …) — against the
+package **as saved on disk**, through the dev server's package API
+(the checks are fs-bound by design; the Studio never reimplements
+them). Issues group by rule family with the catalog entry's docs one
+click away; allowlisted findings carry the KNOWN badge — they print,
+they never count. The honest wall: no package open, no check — the
+loose buffer has no manifest to judge. Working changes count only
+after a save, so the loop is: edit → save → re-run.
+
 ## The dirty discipline
 
 Dirty = the history cursor ≠ the saved cursor. Since every edit is a

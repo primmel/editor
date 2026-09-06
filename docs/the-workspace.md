@@ -57,7 +57,7 @@ rules that hold there.
 
 ## The right panel
 
-Five tabs, one panel:
+Six tabs, one panel:
 
 - **Inspect** — the facet editor for the selected element. Per type:
   process (name, actor, modality, provisions, output/input registries,
@@ -81,6 +81,11 @@ Five tabs, one panel:
 - **Validate** — the kernel's issues on the live model: severity
   chips, the issue list (code, construct, element, message), click an
   issue to select the offending element. Fixing clears it live.
+- **Check** — `primmel check` on the saved package (a package session
+  only): the full rule catalog's verdict, grouped by rule family, with
+  the KNOWN (allowlisted) findings badged — they print, they never
+  count. It judges the files on disk: save first to include working
+  changes.
 
 Below the inspector: **comments** (the selected element's thread —
 add, reply, resolve, delete; the audit note: comments are authoring

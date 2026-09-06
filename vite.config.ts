@@ -6,6 +6,7 @@ import path from 'node:path';
 import { guardSavePath } from './scripts/save-api-guard';
 import { guardPackageDir, guardPackageFile } from './scripts/package-api-guard';
 import { openPackagePayload } from './scripts/package-open';
+import { checkPackagePayload } from './scripts/package-check';
 
 // ─────────────────────────────────────────────────────────────────────
 // The save API (TODO.editor/18) — the dev server's write path: POST
@@ -60,6 +61,9 @@ function saveApi(): Plugin {
 //   POST /api/package/save    { dir, writes: [{ path, text }] } → the
 //                             per-file write (.bak kept), guarded to
 //                             stay inside the opened package
+//   POST /api/package/check   { dir } → the `primmel check` issue list
+//                             (fs-bound by design — it judges the saved
+//                             package, never the working buffer)
 //
 // `uses` composition resolves a dependency by package id against the
 // opened directory's SIBLINGS first, then the roots listed in
@@ -116,6 +120,10 @@ function packageApi(): Plugin {
               files.push({ path: w.path, backup });
             }
             res.end(JSON.stringify({ ok: true, files }));
+            return;
+          }
+          if (sub === '/check') {
+            res.end(JSON.stringify(checkPackagePayload(String(body.dir ?? ''))));
             return;
           }
           res.statusCode = 404;

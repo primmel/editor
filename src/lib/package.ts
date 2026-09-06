@@ -8,7 +8,7 @@
 // dump.
 // ─────────────────────────────────────────────────────────────────────
 
-import type { PackageManifest, PackageProvenance } from '@primmel/primmel';
+import type { CheckIssue, PackageManifest, PackageProvenance } from '@primmel/primmel';
 
 /** One file of the opened (root) package — the unit of work. */
 export interface PackageFileInfo {
@@ -85,4 +85,22 @@ export async function writePackageFiles(dir: string, writes: PackageFileWrite[])
   });
   if (!res.ok) throw new Error(((await res.json()) as { error?: string }).error ?? (await res.text()));
   return res.json() as Promise<{ ok: boolean; files: { path: string; backup: boolean }[] }>;
+}
+
+/** The dev server's answer to POST /api/package/check — the kernel's
+ *  `primmel check` issue list. Known (allowlisted) issues arrive with
+ *  `known: true`: they print, they never count. */
+export interface PackageCheckResult {
+  issues: CheckIssue[];
+}
+
+/** Run `primmel check` against the package as saved on disk. */
+export async function checkPackageViaApi(dir: string): Promise<PackageCheckResult> {
+  const res = await fetch('/api/package/check', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ dir }),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as { error?: string }).error ?? (await res.text()));
+  return res.json() as Promise<PackageCheckResult>;
 }
