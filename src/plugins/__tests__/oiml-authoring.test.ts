@@ -79,15 +79,18 @@ describe('40 — the command path', () => {
 
 describe('40 — the package manifest', () => {
   // Skipped in CI — the oiml-smart checkout isn't present there. Run locally
-  // with the sibling oimlsmart/smart repo at the expected path.
+  // with the sibling oimlsmart/smart repo at the expected path. The pin
+  // tracks the smart estate's 2026-09-05 kernel-1.9.0 re-alignment: Core
+  // composes the oiml-cs reference package (uses/requires) and provides
+  // the shared skeleton.
   const itIfLocal = PACKAGE ? it : it.skip;
   itIfLocal('the oiml-smart-core package.primmel parses with id/kind/uses/requires/provides', () => {
     const ast = load(PACKAGE!, { strict: true });
     const manifest = ast.packageManifest!;
     expect(manifest.id).toBe('oiml-smart-core');
     expect(manifest.kind).toBe('core');
-    expect(manifest.uses).toEqual(['iso-iec-17000', 'iso-iec-17065', 'iso-iec-17025', 'iso-iec-17067']);
+    expect(manifest.uses).toEqual(['oiml-cs']);
     expect(manifest.requires).toEqual(manifest.uses);
-    expect(manifest.provides).toContain('oiml-cs');
+    expect(manifest.provides).toEqual(['core', 'subject-chain-entities', 'party-entities', 'workflow-entities', 'evaluation-skeleton']);
   });
 });

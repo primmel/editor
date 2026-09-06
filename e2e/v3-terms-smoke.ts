@@ -68,17 +68,29 @@ console.log('inspector:', JSON.stringify(state))
 if (!state.inspector || state.label !== 'load cell' || !state.definition?.startsWith('measuring transducer')
   || state.section !== '3.1' || state.formType !== 'fullForm') await fail('the term inspector did not open with the facets')
 
-// 3. The overlay marker shows read-only on the marked term.
+// 3. The overlay marker renders on the marked term (editable since the
+//    1.9.0 kernel dumps it); clearing it lands through the command path.
 await page.evaluate(`(() => {
   const item = Array.from(document.querySelectorAll('.item-id')).find((el) => el.textContent === 'durability')
   item.closest('li').click()
 })()`)
 await new Promise(r => setTimeout(r, 400))
 state = await page.evaluate(`(() => ({
-  overlay: document.querySelector('[data-testid="term-overlay"]')?.textContent ?? null,
+  overlay: document.querySelector('[data-testid="term-overlay"]')?.value ?? null,
 }))()`)
 console.log('overlay:', JSON.stringify(state))
-if (state.overlay !== 'overlay true') await fail('the overlay marker did not render read-only')
+if (state.overlay !== 'true') await fail('the overlay marker did not render')
+await page.evaluate(`(() => {
+  const el = document.querySelector('[data-testid="term-overlay"]')
+  el.value = ''
+  el.dispatchEvent(new Event('change', { bubbles: true }))
+})()`)
+await new Promise(r => setTimeout(r, 300))
+state = await page.evaluate(`(() => ({
+  overlay: window.__stores.model.standard.terms.find((t) => t.id === 'durability')?.overlay ?? null,
+  serialized: window.__stores.model.serialize().includes('overlay true'),
+}))()`)
+if (state.overlay !== null || state.serialized) await fail('the overlay clear did not land')
 
 // 4. An edit lands through the command path and into the serialization.
 await page.evaluate(`(() => {

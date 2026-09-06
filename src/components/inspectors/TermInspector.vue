@@ -5,12 +5,6 @@
 // lexical facets (language, form, part of speech, alt/abbreviation/
 // deprecated/see-also designations), the vocabulary-register link, the
 // symbol link, and the `overlay` marker.
-//
-// The overlay marker is READ-ONLY here: the kernel's dumpTerm does not
-// emit `overlay true` (the documented 1.6.1→1.8.0 dump gap, pinned by
-// term-overlay.test.ts), so an edit would silently strip the marker on
-// save — the wave-00 regression all over. It is authored in the code
-// view until the kernel dumps it (the fix is upstream, primmel-ts).
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
@@ -47,6 +41,12 @@ function patchVocabRef(field: 'register' | 'clause', e: Event) {
   };
   modelStore.execute(updateConstruct(listOf, props.elementId, { vocabRef }, `edit term ${props.elementId} vocab_ref`));
 }
+
+function patchOverlay(e: Event) {
+  const v = (e.target as HTMLSelectElement).value;
+  const overlay = v === '' ? undefined : v === 'true';
+  modelStore.execute(updateConstruct(listOf, props.elementId, { overlay }, `edit term ${props.elementId} overlay`));
+}
 </script>
 
 <template>
@@ -55,8 +55,12 @@ function patchVocabRef(field: 'register' | 'clause', e: Event) {
       <code class="readonly-id">{{ term.id }}</code>
     </InspectorField>
 
-    <InspectorField v-if="term.overlay === true" label="overlay" hint="intentionally overrides an upstream package's term of the same id — read-only here: the kernel dump does not emit `overlay true` yet (the fix is upstream; author it in the code view)">
-      <code class="readonly-id" data-testid="term-overlay">overlay true</code>
+    <InspectorField label="overlay" hint="intentionally overrides an upstream package's term of the same id — composition's uses-no-redefine lifts for overlay-marked terms">
+      <select class="text-input" :value="term.overlay === undefined ? '' : String(term.overlay)" data-testid="term-overlay" @change="patchOverlay">
+        <option value="">— undeclared —</option>
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
     </InspectorField>
 
     <InspectorField label="label" required :missing="!term.label">

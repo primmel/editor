@@ -7,12 +7,6 @@
 // declaration, and the clause provenance (sourceRef / sourceRefs — the
 // alias discipline: the serializer walks sourceRefs, so a source patch
 // replaces both, keeping the alias intact).
-//
-// Known kernel gap (pinned in v3-constructs.test.ts): a BARE NUMERIC
-// input default mangles on parse (500 → "0") — the parser's
-// tokenizer strips it before the editor ever sees the text. The fix is
-// upstream (primmel-ts); the field edits the AST facet honestly and a
-// reloaded bare-numeric default shows what the kernel kept.
 // ─────────────────────────────────────────────────────────────────────
 import { computed, ref } from 'vue';
 import type { Standard } from '@primmel/primmel';
@@ -159,7 +153,7 @@ function patchSource(field: 'doc' | 'clause', e: Event) {
               class="text-input mono"
               :value="inp.defaultValue"
               placeholder="default value"
-              title="bare numeric defaults hit a kernel parse gap (500 → 0) — the fix is upstream"
+              title="default value"
               :data-testid="`calc-input-default-${inp.name}`"
               @change="patchInput(i, 'defaultValue', $event)"
             />

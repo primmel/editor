@@ -5,10 +5,14 @@
 // exact undo/redo) plus the kernel round trip — the dumped text reparses
 // strict and validates clean (the wave gate: author every construct
 // kind, no hand-edits). Kernel dump/parse gaps are pinned, never worked
-// around (the fixes are upstream, primmel-ts).
+// around (the fixes are upstream, primmel-ts; the 1.8.0-era pins lifted
+// on the 1.9.0 bump — the read-only postures came off the inspectors).
 // ─────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect } from 'vitest';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { dump, load, validate } from '@primmel/primmel';
 import {
   createConstruct,
@@ -123,21 +127,17 @@ symbol m {
     const patch = updateConstruct(a => a.symbols, 'm', { values: ['C'] });
     const ast = run(SYMBOLS, patch);
     const text = dump(ast);
-    expect(text).toContain('values C');
+    expect(text).toContain('values { C }');
     expect(load(text, { strict: true }).symbols.find(s => s.id === 'm')?.values).toEqual(['C']);
     patch.revert(ast);
     expect(dump(ast)).toBe(dump(load(SYMBOLS, { strict: true })));
   });
 
-  it('pins the kernel gap: dumpSymbol emits the values list BARE — 2+ values do not reparse', () => {
-    // Kernel 1.8.0: the parser reads `values { A B }` (a block) but the
-    // dump emits `values A B` (bare), and the reparse reads ONE value
-    // then loses the token walk. The fix is upstream (primmel-ts) —
-    // when it lands this test flips and the inspector hint comes off.
+  it('the values list round-trips with 2+ entries (kernel 1.9.0 dumps the block form)', () => {
     const ast = run(SYMBOLS, updateConstruct(a => a.symbols, 'm', { values: ['A', 'B'] }));
     const text = dump(ast);
-    expect(text).toContain('values A B');
-    expect(() => load(text, { strict: true })).toThrow();
+    expect(text).toContain('values { A B }');
+    expect(load(text, { strict: true }).symbols.find(s => s.id === 'm')?.values).toEqual(['A', 'B']);
   });
 
   it('deletes a symbol; the removal reverts to the exact slot', () => {
@@ -216,13 +216,7 @@ attribute_definition accuracy_class {
     expect(load(text, { strict: true }).attributeDefinitions[0]?.source?.clause).toBe('3.5.4');
   });
 
-  it('pins the kernel gaps: note, enum_values and ref cites parse but never dump', () => {
-    // Kernel 1.8.0: parseAttributeDefinition reads note / enum_values /
-    // `ref cites` (→ referenceIds); dumpAttributeDefinition emits none of
-    // them. An edit through the save path would silently strip them (the
-    // wave-00 overlay regression's shape) — the inspector shows all three
-    // read-only. The fix is upstream (primmel-ts); when it lands this
-    // test flips and the read-only markers come off.
+  it('note, enum_values and ref cites round-trip (kernel 1.9.0 dumps all three — the read-only pins lift)', () => {
     const ast = load(`attribute_definition a {
   name "A"
   definition "d"
@@ -235,12 +229,14 @@ attribute_definition accuracy_class {
     expect(a.enumValues).toEqual(['X', 'Y']);
     expect(a.referenceIds).toEqual(['urn:oiml:pub:r:60-1:2021#clause-3.1']);
     const text = dump(ast);
-    expect(text).not.toContain('note "a note"');
-    expect(text).not.toContain('enum_values');
-    expect(text).not.toContain('cites');
+    expect(text).toContain('note "a note"');
+    expect(text).toContain('enum_values { X Y }');
+    expect(text).toContain('ref cites "urn:oiml:pub:r:60-1:2021#clause-3.1"');
     const reloaded = load(text, { strict: true });
-    expect(reloaded.attributeDefinitions[0]?.note).toBeUndefined();
-    expect(reloaded.attributeDefinitions[0]?.referenceIds).toEqual([]);
+    expect(reloaded.attributeDefinitions[0]?.note).toBe('a note');
+    expect(reloaded.attributeDefinitions[0]?.enumValues).toEqual(['X', 'Y']);
+    expect(reloaded.attributeDefinitions[0]?.referenceIds).toEqual(['urn:oiml:pub:r:60-1:2021#clause-3.1']);
+    expect(validate(reloaded)).toEqual([]);
   });
 
   it('deletes an attribute definition; the removal reverts to the exact slot', () => {
@@ -961,16 +957,22 @@ passport lc500_passport {
   });
 });
 
-describe('W3.2 the passport vocabularies — the browser-bundle gap pin', () => {
-  it('the inspector-local PASSPORT_* option lists equal the kernel node-side constants', async () => {
-    // The node build exports the vocabularies; the browser bundle
-    // (dist-browser/index.mjs) does not (the kernel packaging gap the
-    // PassportInspector's local lists stand in for). Vitest resolves the
-    // node build — this pins the local lists against the kernel's truth.
+describe('W3.2 the passport vocabularies — the kernel exports', () => {
+  it('both kernel builds export the PASSPORT_* vocabularies the inspector imports', async () => {
+    // Kernel 1.9.0 closes the 1.8.0 packaging gap: the browser bundle
+    // (dist-browser/index.mjs) re-exports the vocabularies, so the
+    // PassportInspector imports them at runtime like any other kernel
+    // constant. Pin both builds — the node build (this import) and the
+    // browser artifact on disk.
     const kernel = await import('@primmel/primmel');
     expect(kernel.PASSPORT_ACCESS_CLASSES).toEqual(['public', 'restricted', 'authority']);
     expect(kernel.PASSPORT_CONTENT_CLASSES).toEqual(['identity', 'composition', 'promises_as_verified', 'live_compliance_status', 'artifacts', 'sustainability']);
     expect(kernel.PASSPORT_UPI_LEVELS).toEqual(['model', 'batch', 'item']);
+    const pkg = createRequire(import.meta.url).resolve('@primmel/primmel/package.json');
+    const browser = await import(pathToFileURL(join(dirname(pkg), 'dist-browser', 'index.mjs')).href);
+    expect(browser.PASSPORT_ACCESS_CLASSES).toEqual(['public', 'restricted', 'authority']);
+    expect(browser.PASSPORT_CONTENT_CLASSES).toEqual(['identity', 'composition', 'promises_as_verified', 'live_compliance_status', 'artifacts', 'sustainability']);
+    expect(browser.PASSPORT_UPI_LEVELS).toEqual(['model', 'batch', 'item']);
   });
 });
 
@@ -1350,19 +1352,13 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
     expect(dump(ast)).toBe(dump(load(FORMS, { strict: true })));
   });
 
-  it('pins the kernel gap: a field bind parses but never dumps', () => {
-    // Kernel 1.8.0: parseFormField reads `bind run.indication` (the v2 G5
-    // subject-chain binding path); dumpFormField never emits it — an edit
-    // through the save path would silently strip the binding (the wave-00
-    // overlay regression's shape). The inspector renders bind read-only.
-    // The fix is upstream (primmel-ts); when it lands this test flips and
-    // the read-only marker comes off.
+  it('a field bind round-trips (kernel 1.9.0 dumps it — the inspector edits it)', () => {
     const ast = load(FORMS, { strict: true });
     const field = ast.forms[0]!.fields[0]!;
     expect(field.bind).toBe('run.indication');
     const text = dump(ast);
-    expect(text).not.toContain('bind run.indication');
-    expect(load(text, { strict: true }).forms[0]?.fields[0]?.bind).toBeUndefined();
+    expect(text).toContain('bind run.indication');
+    expect(load(text, { strict: true }).forms[0]?.fields[0]?.bind).toBe('run.indication');
   });
 
   it('deletes a form; the removal reverts to the exact slot', () => {

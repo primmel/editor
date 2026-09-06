@@ -9,23 +9,12 @@
 // ─────────────────────────────────────────────────────────────────────
 import { computed, ref } from 'vue';
 import type { Standard } from '@primmel/primmel';
+import { PASSPORT_ACCESS_CLASSES, PASSPORT_CONTENT_CLASSES, PASSPORT_UPI_LEVELS } from '@primmel/primmel';
 import { updateConstruct } from '../../lib/commands';
 import type { Passport } from '../../lib/factory';
 import { useModelStore } from '../../stores/model';
 import InspectorField from '../fields/InspectorField.vue';
 import StringListEdit from '../fields/StringListEdit.vue';
-
-// The passport vocabularies (TODO.editor wave 03, window 2). KERNEL GAP:
-// the node build exports PASSPORT_ACCESS_CLASSES / _CONTENT_CLASSES /
-// _UPI_LEVELS (1.8.0) but the BROWSER bundle (dist-browser/index.mjs)
-// does not re-export them — an upstream packaging gap (the fix is in
-// primmel-ts, never worked around semantically). The option lists are
-// therefore local constants, pinned EQUAL to the kernel's node-side
-// constants by v3-constructs-2.test.ts (the test flips when the kernel
-// moves). This file imports them type-side only, never at runtime.
-const PASSPORT_ACCESS_CLASSES = ['public', 'restricted', 'authority'] as const;
-const PASSPORT_CONTENT_CLASSES = ['identity', 'composition', 'promises_as_verified', 'live_compliance_status', 'artifacts', 'sustainability'] as const;
-const PASSPORT_UPI_LEVELS = ['model', 'batch', 'item'] as const;
 
 type PassportCarrier = Passport['carriers'][number];
 type PassportContentEntry = Passport['entries'][number];
