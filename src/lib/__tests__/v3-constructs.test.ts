@@ -108,7 +108,7 @@ describe('W3 terms — the terminology surface', () => {
     );
     const text = dump(ast);
     expect(text).toContain('vocab_ref { register viml-2022 clause "5.15" }');
-    expect(text).toContain('alt { gadget }');
+    expect(text).toContain('aliases { gadget }');
     expect(load(text, { strict: true }).terms.find(t => t.id === 'widget')?.vocabRef?.clause).toBe('5.15');
   });
 
@@ -135,12 +135,12 @@ describe('W3 terms — the terminology surface', () => {
     expect(ast.terms.map(t => t.id)).toEqual(['load-cell', 'widget']);
   });
 
-  it('the overlay marker is parse-visible (the inspector shows it read-only)', () => {
+  it('the overlay marker round-trips through the dump (kernel 1.9.0 — the inspector edits it)', () => {
     const ast = load('term t1 {\n  overlay true\n  label "t"\n  definition "d"\n}\n', { strict: true });
     expect(ast.terms[0]?.overlay).toBe(true);
-    // The documented kernel dump gap: dumpTerm does not emit the marker
-    // (term-overlay.test.ts) — the inspector therefore never edits it.
-    expect(dump(ast)).not.toContain('overlay true');
+    const text = dump(ast);
+    expect(text).toContain('overlay true');
+    expect(load(text, { strict: true }).terms[0]?.overlay).toBe(true);
   });
 });
 
@@ -273,14 +273,10 @@ describe('W3 calculations — the calculation surface', () => {
     expect(reloaded.calculations[0]?.sourceRef?.clause).toBe('3.5.12');
   });
 
-  it('pins the kernel gap: a bare NUMERIC input default mangles on parse', () => {
-    // Kernel 1.8.0 parse: `default 500` lands as "0" (the tokenizer
-    // strips the digits); quoted/string defaults survive. The fix is
-    // upstream (primmel-ts) — when it lands this test flips and the
-    // inspector hint comes off.
+  it('a bare NUMERIC input default parses (kernel 1.9.0 — quoted and bare land the same)', () => {
     const ast = load('calculation c {\n  name "c"\n  description "d"\n  inputs {\n    x : number { unit "v" default 500 }\n  }\n  output : number { unit "v" }\n  expression "ocl{x}"\n}\n', { strict: true });
     expect(ast.calculations[0]?.inputs[0]?.hasDefault).toBe(true);
-    expect(ast.calculations[0]?.inputs[0]?.defaultValue).toBe('0');
+    expect(ast.calculations[0]?.inputs[0]?.defaultValue).toBe('500');
     const quoted = load('calculation c {\n  name "c"\n  description "d"\n  inputs {\n    x : number { unit "v" default "500" }\n  }\n  output : number { unit "v" }\n  expression "ocl{x}"\n}\n', { strict: true });
     expect(quoted.calculations[0]?.inputs[0]?.defaultValue).toBe('500');
   });

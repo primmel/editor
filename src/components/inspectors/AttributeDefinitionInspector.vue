@@ -4,15 +4,10 @@
 // the INV-2 schema layer: an attribute defined ONCE. Symbol link, name,
 // definition, the quantity facets (kind / unit / value type), the
 // provenance facets (origin / scope / category), the dimension flag,
-// the enum link, the IRDI, the derivation, and the clause provenance
+// the enum link + the inline enum axis, the editorial note, the IRDI,
+// the derivation, the citation references, and the clause provenance
 // (source/sourceRefs alias discipline — the dump folds it to
 // `ref derives-from`).
-//
-// KERNEL GAPS (pinned in v3-constructs-2.test.ts — 1.8.0, the fixes are
-// upstream in primmel-ts): the parser reads `note`, `enum_values` and
-// `ref cites` (→ referenceIds) but the dump emits none of them, so an
-// edit would silently strip them on save — the wave-00 regression all
-// over. All three render READ-ONLY here; author them in the code view.
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
@@ -20,6 +15,7 @@ import { updateConstruct } from '../../lib/commands';
 import type { AttributeDefinition } from '../../lib/factory';
 import { useModelStore } from '../../stores/model';
 import InspectorField from '../fields/InspectorField.vue';
+import StringListEdit from '../fields/StringListEdit.vue';
 
 const props = defineProps<{ model: Standard; elementId: string }>();
 const modelStore = useModelStore();
@@ -38,6 +34,11 @@ function patchDimension(e: Event) {
   const v = (e.target as HTMLSelectElement).value;
   const isDimension = v === '' ? null : v === 'true';
   modelStore.execute(updateConstruct(listOf, props.elementId, { isDimension }, `edit attribute definition ${props.elementId} is_dimension`));
+}
+
+function patchList(field: 'enumValues' | 'referenceIds', items: string[]) {
+  if (!attribute.value) return;
+  modelStore.execute(updateConstruct(listOf, props.elementId, { [field]: items }, `edit attribute definition ${props.elementId} ${field}`));
 }
 
 function patchSource(field: 'doc' | 'clause', e: Event) {
@@ -109,8 +110,8 @@ function patchSource(field: 'doc' | 'clause', e: Event) {
       <input class="text-input mono" :value="attribute.enumRef" data-testid="ad-enum" @change="patch('enumRef', $event)" />
     </InspectorField>
 
-    <InspectorField v-if="attribute.enumValues?.length" :label="`inline enum values (${attribute.enumValues.length})`" hint="READ-ONLY: the kernel dump does not emit enum_values — an edit would strip it on save (the fix is upstream; author it in the code view)">
-      <code class="readonly-id" data-testid="ad-enum-values">{{ attribute.enumValues.join(' ') }}</code>
+    <InspectorField :label="`inline enum values (${attribute.enumValues?.length ?? 0})`" hint="the attribute's own axis (enum_values) when it does not ride a declared enum">
+      <StringListEdit :items="attribute.enumValues ?? []" placeholder="add a value…" data-testid="ad-enum-values" @update="patchList('enumValues', $event)" />
     </InspectorField>
 
     <InspectorField label="irdi" hint="the IEC CDD IRDI (the pre-correspondence registry link)">
@@ -121,12 +122,12 @@ function patchSource(field: 'doc' | 'clause', e: Event) {
       <input class="text-input mono" :value="attribute.derived" data-testid="ad-derived" @change="patch('derived', $event)" />
     </InspectorField>
 
-    <InspectorField v-if="attribute.note" label="note" hint="READ-ONLY: the kernel dump does not emit note — an edit would strip it on save (the fix is upstream; author it in the code view)">
-      <code class="readonly-id" data-testid="ad-note">{{ attribute.note }}</code>
+    <InspectorField label="note" hint="the free-text editorial note (rationale, provenance)">
+      <textarea class="text-input" rows="2" :value="attribute.note ?? ''" data-testid="ad-note" @change="patch('note', $event)" />
     </InspectorField>
 
-    <InspectorField v-if="attribute.referenceIds.length" :label="`references (${attribute.referenceIds.length})`" hint="READ-ONLY: ref cites folds here but the dump does not re-emit it (the fix is upstream)">
-      <code class="readonly-id" data-testid="ad-references">{{ attribute.referenceIds.join(', ') }}</code>
+    <InspectorField :label="`references (${attribute.referenceIds.length})`" hint="the citation targets (ref cites)">
+      <StringListEdit :items="attribute.referenceIds" placeholder="add a reference URN…" data-testid="ad-references" @update="patchList('referenceIds', $event)" />
     </InspectorField>
 
     <InspectorField label="source document">

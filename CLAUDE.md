@@ -11,7 +11,7 @@ The full feature map lives in `README.md`; the work program in
 ## Stack
 
 - Vue 3 + Pinia + Vite, TypeScript throughout.
-- `@primmel/primmel` — the published kernel (`^1.8.0`; the Studio tracks
+- `@primmel/primmel` — the published kernel (`^1.9.0`; the Studio tracks
   the v3 kernel: MapProfile, coverage, model-diff, type-expr, comments,
   the package-load API).
 - Puppeteer + tsx for the e2e probes (`e2e/`).

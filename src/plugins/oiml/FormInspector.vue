@@ -6,14 +6,8 @@
 // the notes, the named instances, the machine-checked constraints, the
 // pass_fail block, and the FIELDS — each field's core facets editable
 // (type/label/unit/symbol/verdict/enum/required/required_when/default/
-// targets), the deep facets (evaluation, calculation bindings, values,
-// series, nested fields, subform refs) summarized read-only.
-//
-// KERNEL GAP (pinned in v3-constructs-2.test.ts — 1.8.0, the fix is
-// upstream primmel-ts): the field parser reads `bind` (the subject-chain
-// binding path) but dumpFormField never emits it — an edit through the
-// save path would silently strip it. The facet renders READ-ONLY here;
-// author it in the code view.
+// bind/targets), the deep facets (evaluation, calculation bindings,
+// values, series, nested fields, subform refs) summarized read-only.
 // ─────────────────────────────────────────────────────────────────────
 import { computed, ref } from 'vue';
 import type { Standard } from '@primmel/primmel';
@@ -261,7 +255,7 @@ function removeDerivation(index: number) {
       <button v-else type="button" class="row-add" data-testid="form-pf-add" @click="addPassFail">+ pass/fail</button>
     </InspectorField>
 
-    <InspectorField :label="`fields (${fields.length})`" hint="the capture fields — the deep facets (evaluation, bindings, values, series, nested, subform) summarize; bind is READ-ONLY (the kernel dump gap)">
+    <InspectorField :label="`fields (${fields.length})`" hint="the capture fields — the deep facets (evaluation, bindings, values, series, nested, subform) summarize">
       <ul v-if="fields.length" class="entry-rows">
         <li v-for="(f, i) in fields" :key="i" class="entry-row field-row" :data-testid="`form-field-${f.name}`">
           <div class="entry-line">
@@ -282,7 +276,7 @@ function removeDerivation(index: number) {
             <input class="text-input mono" :value="f.verdict" placeholder="verdict id" :data-testid="`form-field-verdict-${f.name}`" @change="patchField(i, 'verdict', ($event.target as HTMLInputElement).value)" />
             <input class="text-input mono" :value="f.enumRef" placeholder="enum id" :data-testid="`form-field-enum-${f.name}`" @change="patchField(i, 'enumRef', ($event.target as HTMLInputElement).value)" />
           </div>
-          <input v-if="f.bind" class="text-input mono" :value="f.bind" readonly title="the subject-chain binding path — READ-ONLY: the kernel dump does not emit bind (the fix is upstream); author it in the code view" :data-testid="`form-field-bind-${f.name}`" />
+          <input class="text-input mono" :value="f.bind ?? ''" placeholder="bind (subject-chain path)" title="the subject-chain binding path (v2 G5), e.g. run.indication" :data-testid="`form-field-bind-${f.name}`" @change="patchField(i, 'bind', ($event.target as HTMLInputElement).value)" />
           <div v-if="fieldDepth(f)" class="depth-note" :data-testid="`form-field-depth-${f.name}`">{{ fieldDepth(f) }} — edited in the code view</div>
         </li>
       </ul>

@@ -4,8 +4,9 @@ import puppeteer from 'puppeteer'
 // The v3 forms leg (TODO.editor wave 03, window 2) — the data-capture
 // schema surface on the live app: the tree section (palette-created,
 // no in-tree +), the plugin's FormInspector (the header facets, the
-// fields with the read-only bind marker, the pass_fail block), an edit
-// through the command path, and the palette create.
+// fields with the bind facet — editable since the 1.9.0 kernel dumps
+// it — the pass_fail block), an edit through the command path, and the
+// palette create.
 // ─────────────────────────────────────────────────────────────────────
 
 const TEXT = `form test-report {
@@ -56,27 +57,35 @@ state = await page.evaluate(`(() => ({
   section: document.querySelector('[data-testid="form-section"]')?.value ?? null,
   fieldLabel: document.querySelector('[data-testid="form-field-label-indication"]')?.value ?? null,
   fieldRequired: document.querySelector('[data-testid="form-field-required-indication"]')?.checked ?? null,
-  bindReadonly: document.querySelector('[data-testid="form-field-bind-indication"]')?.readOnly ?? null,
+  bind: document.querySelector('[data-testid="form-field-bind-indication"]')?.value ?? null,
+  bindEditable: !document.querySelector('[data-testid="form-field-bind-indication"]')?.readOnly,
   passFail: !!document.querySelector('[data-testid="form-pass-fail"]'),
 }))()`)
 console.log('inspector:', JSON.stringify(state))
 if (!state.inspector || state.name !== 'Test report' || state.section !== 'results'
   || state.fieldLabel !== 'Indication' || state.fieldRequired !== true
-  || state.bindReadonly !== true || !state.passFail)
+  || state.bind !== 'run.indication' || state.bindEditable !== true || !state.passFail)
   await fail('the form inspector did not open with the facets')
 
-// 3. A field edit lands through the command path and into the serialization.
+// 3. A field edit lands through the command path and into the serialization
+//    (the label, plus the bind facet — editable since the 1.9.0 bump).
 await page.evaluate(`(() => {
   const el = document.querySelector('[data-testid="form-field-label-indication"]')
   el.value = 'Indication (edited live)'
   el.dispatchEvent(new Event('change', { bubbles: true }))
+  const bind = document.querySelector('[data-testid="form-field-bind-indication"]')
+  bind.value = 'run.indication_norm'
+  bind.dispatchEvent(new Event('change', { bubbles: true }))
 })()`)
 await new Promise(r => setTimeout(r, 300))
 state = await page.evaluate(`(() => ({
   label: window.__stores.model.standard.forms[0]?.fields[0]?.label,
+  bind: window.__stores.model.standard.forms[0]?.fields[0]?.bind,
   serialized: window.__stores.model.serialize().includes('Indication (edited live)'),
+  bindSerialized: window.__stores.model.serialize().includes('bind run.indication_norm'),
 }))()`)
-if (state.label !== 'Indication (edited live)' || !state.serialized) await fail('the field edit did not land')
+if (state.label !== 'Indication (edited live)' || state.bind !== 'run.indication_norm'
+  || !state.serialized || !state.bindSerialized) await fail('the field edit did not land')
 
 // 4. Adding a field lands (the parse-default shape).
 await page.evaluate(`(() => {

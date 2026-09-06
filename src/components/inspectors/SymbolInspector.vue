@@ -5,12 +5,6 @@
 // kind, origin), the links (attribute / calculation / profile), the
 // enum values, the editorial notes, the inline formula, the series
 // shape (read-only summary), and the structured provenance.
-//
-// KERNEL GAP (pinned in v3-constructs-2.test.ts): dumpSymbol emits the
-// values list BARE (`values A B`) while the parser reads one value per
-// `values` keyword — a symbol carrying 2+ values dumps text that does
-// not reparse. The list stays editable (the in-session AST is correct;
-// the corruption is upstream, primmel-ts), flagged by the hint.
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
@@ -130,7 +124,7 @@ function removeFormula() {
       <input class="text-input mono" :value="symbol.profile" data-testid="symbol-profile" @change="patch('profile', $event)" />
     </InspectorField>
 
-    <InspectorField :label="`values (${symbol.values.length})`" hint="the enum axis — KERNEL GAP: 2+ values dump bare and do not reparse (the fix is upstream; ≤1 value is safe)">
+    <InspectorField :label="`values (${symbol.values.length})`" hint="the enum axis">
       <StringListEdit :items="[...symbol.values]" placeholder="add a value…" @update="patchList('values', $event)" />
     </InspectorField>
 
