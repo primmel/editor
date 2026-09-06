@@ -1,0 +1,14 @@
+// The base layer's vocabulary — the package downstream packages compose.
+term impartiality {
+  label "impartiality"
+  definition "presence of objectivity (the base layer's reading)"
+  source "BASE, 4.1"
+  language "en"
+}
+
+term traceability {
+  label "traceability"
+  definition "property of a result whereby it can be related to references"
+  source "BASE, 4.2"
+  language "en"
+}

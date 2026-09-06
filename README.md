@@ -38,9 +38,9 @@ npm run dev        # http://localhost:5173
 
 ```bash
 npx vue-tsc --noEmit     # type check
-npx vitest run           # unit tests (357 tests)
+npx vitest run           # unit tests (365 tests)
 npm run build            # the production build
-./e2e/run-all.sh         # 49 e2e legs against the dev server (E2E_BASE overrides the port)
+./e2e/run-all.sh         # 50 e2e legs against the dev server (E2E_BASE overrides the port)
 ```
 
 ## Embedding
@@ -99,6 +99,7 @@ way. The kernel never names a program.
 | OIML layer | `src/plugins/oiml/` | the program palettes (requirement/test/form/instrument) + the certificate preview |
 | save | `src/lib/save.ts`, `src/components/SavePanel.vue` | review-before-commit diff, download or write-to-file (.bak), dirty discipline |
 | package check | `src/lib/check.ts`, `src/components/CheckPanel.vue` | `primmel check` against the saved package: counts honouring KNOWN, family groups + rule docs from the catalog |
+| layers | `src/lib/layers.ts`, `src/components/LayersPanel.vue` | the layer-overlay authoring view: the composition stack (who contributes what) + the overlay terms against the upstream definitions they supersede |
 
 ## The dev/e2e hook
 

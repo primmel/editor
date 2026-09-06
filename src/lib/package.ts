@@ -27,6 +27,32 @@ export interface PackageImportInfo {
   files: { path: string; constructs: number }[];
 }
 
+/** One package in the composition stack (merge order; later layers win). */
+export interface PackageLayerInfo {
+  package: string;
+  root: boolean;
+  /** The construct census by AST field (terms, processes, …). */
+  kinds: { field: string; constructs: number }[];
+}
+
+/** One overlay pair: a term marked `overlay true` in the merged model,
+ *  joined to the nearest UPSTREAM definition it supersedes. The
+ *  composition replaces the original (last-write-wins), so the upstream
+ *  facets come from the upstream package's own load. `overlaidPackage`/
+ *  `overlaid` are null when no upstream package declares the id — the
+ *  marker then records intent and the composition needed no lift. */
+export interface PackageOverlayInfo {
+  id: string;
+  /** The overlaying (winning) package + the package-relative file. */
+  package: string;
+  file: string;
+  label?: string;
+  definition?: string;
+  source?: string;
+  overlaidPackage: string | null;
+  overlaid: { label?: string; definition?: string; source?: string } | null;
+}
+
 /** The dev server's answer to POST /api/package/open. */
 export interface PackageOpenResult {
   dir: string;
@@ -43,6 +69,13 @@ export interface PackageOpenResult {
   issues: string[];
   files: PackageFileInfo[];
   imports: PackageImportInfo[];
+  /** The composition stack (merge order — later layers win): every
+   *  package's construct census by kind. The layer-overlay view's
+   *  stack section. */
+  layers: PackageLayerInfo[];
+  /** The overlay pairs (terms marked `overlay true` + the upstream
+   *  definitions they supersede). The layer-overlay view's table. */
+  overlays: PackageOverlayInfo[];
   /** The canonical dump of the composed model — the AST source text. */
   dump: string;
   provenance: PackageProvenance;
