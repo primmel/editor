@@ -96,3 +96,8 @@ npm run build
 - **The kernel's browser bundle** (`dist-browser/index.mjs`) has its
   OWN entry (`src/ser-des/index.ts`) — a runtime export missing there
   silently drops from the browser build. Rebuild both bundles.
+- **`updateConstruct`/`updateElement` revert by assigning `undefined`**
+  for keys absent before the patch — the key stays PRESENT, and the
+  kernel's diff then reads a phantom change against the baseline.
+  Commands whose undo must be shape-exact delete the key on revert
+  instead (`copyUpTerm` in `lib/layers.ts`).

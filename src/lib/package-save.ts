@@ -17,6 +17,9 @@
 //              blank line at the junction collapses to one
 //   added    → constructs authored in-session append to their kind's
 //              home file in canonical form, after the authored bytes
+//   adopted  → an upstream term whose overlay marker was flipped on
+//              in-session (Q1's copy-up verb) appends like an added
+//              construct; the upstream bytes are never touched
 //
 // Each write also carries the spanMap — every construct's span in the
 // NEW text — so a successful write can re-base the session's provenance
@@ -221,6 +224,7 @@ function planFileWrite(
   removedRefs: readonly RemovedRef[],
   changedKeys: ReadonlySet<string>,
   addedKeys: ReadonlySet<string>,
+  adoptedKeys: ReadonlySet<string>,
   metadata: { src?: ConstructSource; changed: boolean },
   skeletonHead: string,
   warnings: string[],
@@ -231,8 +235,11 @@ function planFileWrite(
   const edits: SpliceEdit[] = [];
 
   // Changed constructs: the span rewrites to the canonical dump.
+  // (Adopted constructs are in changedKeys but have no span in this
+  // file — they append below like added ones.)
   for (const r of fileRefs) {
-    if (!changedKeys.has(key(r.field, r.id))) continue;
+    const k = key(r.field, r.id);
+    if (!changedKeys.has(k) || adoptedKeys.has(k)) continue;
     const src = srcOf(r.field, r.id);
     if (!src) {
       warnings.push(`${relPath}: ${r.field} ${r.id} changed but its source span is unknown — the file is not written (the edit stays in-session)`);
@@ -291,7 +298,7 @@ function planFileWrite(
   // bytes inside their spans carry over verbatim.
   for (const r of fileRefs) {
     const k = key(r.field, r.id);
-    if (changedKeys.has(k) || addedKeys.has(k)) continue;
+    if (changedKeys.has(k) || addedKeys.has(k) || adoptedKeys.has(k)) continue;
     const src = srcOf(r.field, r.id);
     if (!src) {
       warnings.push(`${relPath}: ${r.field} ${r.id} has no source span — the file is not written`);
@@ -314,8 +321,9 @@ function planFileWrite(
   }
 
   // Added constructs append in canonical form after the authored bytes,
-  // one blank line between the old content and the new block.
-  const addedRefs = fileRefs.filter((r) => addedKeys.has(key(r.field, r.id)));
+  // one blank line between the old content and the new block. Adopted
+  // (copied-up) constructs append the same way.
+  const addedRefs = fileRefs.filter((r) => addedKeys.has(key(r.field, r.id)) || adoptedKeys.has(key(r.field, r.id)));
   if (addedRefs.length > 0) {
     let sep = '';
     if (text.length > 0 && !text.endsWith('\n')) sep = '\n';
@@ -352,6 +360,26 @@ export function planPackageSave(
   const dir = session.dir.replace(/\/+$/, '');
   const isRootFile = (absFile: string) => absFile.startsWith(dir + '/');
   const relOf = (absFile: string) => absFile.slice(dir.length + 1);
+
+  // Adoption (TODO.editor Q1 — the copy-up verb): a term whose
+  // provenance names an UPSTREAM package but whose overlay marker was
+  // FLIPPED on in this session has been claimed by the root — the flip
+  // is the claim (composition's uses-no-redefine lifts for
+  // overlay-marked terms). An adopted term saves like an added
+  // construct (canonical append to its kind's home file), the upstream
+  // bytes are never touched, and the touch stops reading as foreign.
+  // An upstream marker that merely RODE ALONG (a nearer layer's own
+  // overlay, edited but not flipped) stays foreign — the baseline
+  // comparison is what makes the claim the user's.
+  const adoptedKeys = new Set<string>();
+  for (const e of [...diff.changed, ...diff.moved]) {
+    if (e.kind !== 'terms') continue;
+    const src = provenance.constructs[e.kind]?.[e.id];
+    if (!src || isRootFile(src.file)) continue;
+    const w = working.terms.find((t) => t.id === e.id);
+    const b = baseline.terms.find((t) => t.id === e.id);
+    if (w?.overlay === true && b?.overlay !== true) adoptedKeys.add(key(e.kind, e.id));
+  }
 
   // The current construct census, partitioned by source file — the
   // kernel's inverse projection. Imports land in byFile too (keyed by
@@ -406,10 +434,35 @@ export function planPackageSave(
     warnings.push(`${unrouted.length} new construct(s) have no home file (the package has no content file for their kind) — not written`);
   }
 
+  // Adopted constructs re-home like unassigned ones: out of the
+  // upstream file's list (never a write candidate — imports are not
+  // written) into the kind's home in the root.
+  for (const k of adoptedKeys) {
+    const sep = k.indexOf(':');
+    const ref: FileRef = { field: k.slice(0, sep) as ConstructField, id: k.slice(sep + 1) };
+    for (const list of byFile.values()) {
+      const i = list.findIndex((r) => r.field === ref.field && r.id === ref.id);
+      if (i >= 0) {
+        list.splice(i, 1);
+        break;
+      }
+    }
+    const home = fieldHome.get(ref.field) ?? fallbackFile;
+    if (!home) {
+      warnings.push(`${ref.field} ${ref.id} was copied up but the package has no content file for its kind — not written`);
+      continue;
+    }
+    const list = byFile.get(home) ?? [];
+    list.push(ref);
+    byFile.set(home, list);
+  }
+
   // Foreign edits: diff entries whose constructs live OUTSIDE the root.
+  // (Adopted constructs are claimed by the root — no longer foreign.)
   for (const e of [...diff.changed, ...diff.moved]) {
     const src = provenance.constructs[e.kind]?.[e.id];
     if (src && !isRootFile(src.file)) {
+      if (adoptedKeys.has(key(e.kind, e.id))) continue;
       foreignTouched.push({ package: src.package ?? 'unknown', kind: e.kind, id: e.id, status: 'changed' });
     }
   }
@@ -472,8 +525,8 @@ export function planPackageSave(
 
     const currentIds = new Set(fileRefs.map((r) => key(r.field, r.id)));
     const removed = removedRefs.map((r) => r.id);
-    const changed = [...currentIds].filter((k) => changedKeys.has(k)).map((k) => k.slice(k.indexOf(':') + 1));
-    const added = [...currentIds].filter((k) => addedKeys.has(k)).map((k) => k.slice(k.indexOf(':') + 1));
+    const changed = [...currentIds].filter((k) => changedKeys.has(k) && !adoptedKeys.has(k)).map((k) => k.slice(k.indexOf(':') + 1));
+    const added = [...currentIds].filter((k) => addedKeys.has(k) || adoptedKeys.has(k)).map((k) => k.slice(k.indexOf(':') + 1));
     const metadataHere = metadataHome?.file === absFile;
     if (removed.length === 0 && changed.length === 0 && added.length === 0 && !(metadataHere && metaChanged)) continue;
 
@@ -484,7 +537,7 @@ export function planPackageSave(
     }
 
     const built = planFileWrite(
-      authored, working, fileRefs, removedRefs, changedKeys, addedKeys,
+      authored, working, fileRefs, removedRefs, changedKeys, addedKeys, adoptedKeys,
       { src: metadataHere ? metadataHome : undefined, changed: metadataHere && metaChanged },
       skeletonHead, warnings, relPath,
       (field, id) => {
@@ -594,12 +647,16 @@ export function applyPlanToSession(
       if (span) (constructs[field] ??= {})[id] = { ...src, span: place(w, span) };
     }
   }
-  // Added constructs: spanMap entries with no prior entry.
+  // Added constructs: spanMap entries with no prior entry. An ADOPTED
+  // (copied-up) construct keeps a prior entry in the upstream file —
+  // the spanMap's new home overrides it (the re-based provenance names
+  // the root, so the next save treats the term as the root's own).
   for (const w of plan.writes) {
     const abs = `${dir}/${w.path}`;
     for (const [field, ids] of Object.entries(w.spanMap)) {
       for (const [id, span] of Object.entries(ids)) {
-        if (!constructs[field]?.[id]) {
+        const prior = constructs[field]?.[id];
+        if (!prior || prior.file !== abs) {
           (constructs[field] ??= {})[id] = { file: abs, package: session.id, span: place(w, span) };
         }
       }

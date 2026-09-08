@@ -76,7 +76,13 @@ Seven tabs, one panel:
   being authored, the layers beneath with their construct census — the
   overlay winner takes the attribution) and the overlay terms, each
   against the upstream definition it supersedes. Click a row to select
-  the term; the inspector edits the `overlay` marker.
+  the term; the inspector edits the `overlay` marker. The upstream-terms
+  section lists the terms a layer beneath authors that you have not
+  claimed: its **copy up as overlay** button pulls one into your package
+  (the marker flips, the term is selected in the inspector, the save
+  appends it to your terminology file — the upstream bytes are never
+  touched). The term inspector offers the same verb from a banner when
+  the selected term is authored upstream.
 - **Compliance** — the provision list with the modality filter.
 - **Simulate** — the run controls: start/step/continue/reset/stop, the
   register table (edits unblock gates), the trajectory log. The wall

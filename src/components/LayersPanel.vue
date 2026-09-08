@@ -9,9 +9,17 @@
 // pattern: click a row to select the term, the inspector edits the
 // marker. Pure projection of the open payload (lib/layers.ts) — the
 // layering is as composed at open, no live re-derivation.
+//
+// Q1 adds the copy-up verb: the upstream-terms section lists the terms
+// a layer beneath authors that the root has not claimed; the row's
+// button pulls one INTO the root (the marker flips, the save adopts it
+// into the root's files) and selects it in the inspector — the panel
+// never edits inline. This one list reads LIVE (the candidate drops
+// out the moment the verb lands); the stack and the overlay table stay
+// as-composed-at-open.
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
-import { kindCensus, layersView } from '../lib/layers';
+import { copyUpTerm, kindCensus, layersView, upstreamTerms } from '../lib/layers';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 
@@ -20,8 +28,23 @@ const ui = useUiStore();
 
 const view = computed(() => (modelStore.pkg ? layersView(modelStore.pkg) : null));
 
+/** The copy-up candidates (Q1) — live off the model version: the verb's
+ *  marker flip drops the row immediately. */
+const upstream = computed(() => {
+  void modelStore.version;
+  return modelStore.pkg && modelStore.standard ? upstreamTerms(modelStore.pkg, modelStore.standard) : [];
+});
+
 function openTerm(id: string) {
   ui.select(id, 'term');
+}
+
+/** The copy-up verb: flip the marker (the command is exact-undoable),
+ *  then select-to-inspect — the house pattern. */
+function copyUp(id: string) {
+  modelStore.execute(copyUpTerm(id));
+  ui.select(id, 'term');
+  ui.rightPanel = 'inspector';
 }
 </script>
 
@@ -81,6 +104,31 @@ function openTerm(id: string) {
       <div v-if="!view.overlays.length" class="layers-note" data-testid="overlays-empty">
         no overlay terms — the composition is pure inclusion (uses-no-redefine holds)
       </div>
+
+      <template v-if="view.hasLayers">
+        <div class="layers-label">upstream terms — copy one up to overlay it here</div>
+        <div
+          v-for="u in upstream"
+          :key="u.id"
+          class="upstream-row"
+          :data-testid="`upstream-row-${u.id}`"
+        >
+          <div class="overlay-head">
+            <code class="overlay-id">{{ u.id }}</code>
+            <span class="overlay-target">from {{ u.package }}<template v-if="u.source"> · {{ u.source }}</template></span>
+            <button
+              type="button"
+              class="copyup-btn"
+              :data-testid="`copy-up-${u.id}`"
+              @click="copyUp(u.id)"
+            >copy up as overlay</button>
+          </div>
+          <div class="overlay-def upstream-def" :data-testid="`upstream-def-${u.id}`">{{ u.definition }}</div>
+        </div>
+        <div v-if="!upstream.length" class="layers-note" data-testid="upstream-empty">
+          nothing to copy up — every upstream term is either adopted already or the layer composes no terms
+        </div>
+      </template>
 
       <div class="layers-foot">the layering as composed at open — reopen the package to refresh</div>
     </template>
@@ -191,4 +239,23 @@ function openTerm(id: string) {
 }
 .overlay-def { font-size: 0.7rem; color: var(--text); }
 .overlay-side.upstream .overlay-def { color: var(--text-muted); }
+.upstream-row {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.55rem;
+  margin-bottom: 0.3rem;
+}
+.upstream-def { color: var(--text-muted); margin-top: 0.2rem; }
+.copyup-btn {
+  margin-left: auto;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.64rem;
+  font-family: var(--font-mono);
+}
+.copyup-btn:hover { background: var(--accent-soft); }
 </style>
