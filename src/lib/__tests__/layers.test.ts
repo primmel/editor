@@ -4,11 +4,16 @@
 // provenance) and the overlay pairs (the term marked `overlay true`
 // joined to the upstream definition it supersedes), plus the panel's
 // pure derivation (stack ordering, totals, the honest empty states).
+//
+// Q1 — the copy-up verb: the upstream-candidate derivation (terms a
+// layer beneath authors, not yet claimed here) and the marker-flip
+// command with its exact undo.
 // ─────────────────────────────────────────────────────────────────────
 
 import { describe, it, expect } from 'vitest';
 import path from 'node:path';
-import { kindCensus, layersView } from '../layers';
+import { load } from '@primmel/primmel';
+import { copyUpTerm, kindCensus, layersView, upstreamAuthorOf, upstreamTerms } from '../layers';
 import type { PackageOpenResult } from '../package';
 import { openPackagePayload } from '../../../scripts/package-open';
 
@@ -97,5 +102,58 @@ describe('05 slice 3 — layersView (the panel derivation)', () => {
     ]));
     expect(view.overlays).toHaveLength(1);
     expect(view.overlays[0].overlaidPackage).toBeNull();
+  });
+});
+
+describe('Q1 — the copy-up verb: the candidates, the flip, the exact undo', () => {
+  const session = openPackagePayload(OVER);
+
+  it('the candidate list names the upstream-authored terms, the authoring layer attested', () => {
+    const ups = upstreamTerms(session, load(session.dump, { strict: true }));
+    expect(ups.map((u) => u.id)).toEqual(['traceability']);
+    expect(ups[0].package).toBe('pkg-base');
+  });
+
+  it('the seed IS the nearest-upstream definition — the merged term carries it verbatim', () => {
+    const ups = upstreamTerms(session, load(session.dump, { strict: true }));
+    expect(ups[0].label).toBe('traceability');
+    expect(ups[0].definition).toContain('related to references');
+    expect(ups[0].source).toBe('BASE, 4.2');
+  });
+
+  it('the local overlay and the root-authored term are never candidates', () => {
+    const ids = upstreamTerms(session, load(session.dump, { strict: true })).map((u) => u.id);
+    expect(ids).not.toContain('impartiality'); // already claimed (the overlay pair)
+    expect(ids).not.toContain('own-scope');    // the root's own
+  });
+
+  it('upstreamAuthorOf attests the authoring layer (null for the root’s own and the unknown)', () => {
+    expect(upstreamAuthorOf(session, 'traceability')).toBe('pkg-base');
+    expect(upstreamAuthorOf(session, 'impartiality')).toBeNull(); // the winner is the root
+    expect(upstreamAuthorOf(session, 'own-scope')).toBeNull();
+    expect(upstreamAuthorOf(session, 'nope')).toBeNull();
+  });
+
+  it('the verb flips the marker and keeps the upstream content as the seed; undo reverts exactly', () => {
+    const work = load(session.dump, { strict: true });
+    const cmd = copyUpTerm('traceability');
+    expect(cmd.label).toContain('copy up term traceability');
+    cmd.apply(work);
+    const t = work.terms.find((x) => x.id === 'traceability');
+    expect(t?.overlay).toBe(true);
+    expect(t?.definition).toContain('related to references'); // the seed
+    cmd.revert(work);
+    expect(work.terms.find((x) => x.id === 'traceability')?.overlay).not.toBe(true);
+  });
+
+  it('a claimed term drops out of the candidate list (the panel’s live read)', () => {
+    const work = load(session.dump, { strict: true });
+    copyUpTerm('traceability').apply(work);
+    expect(upstreamTerms(session, work)).toEqual([]);
+  });
+
+  it('the verb refuses an unknown term', () => {
+    const work = load(session.dump, { strict: true });
+    expect(() => copyUpTerm('nope').apply(work)).toThrow('unknown construct');
   });
 });

@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 365 tests
+cd ~/src/primmel/editor && npx vitest run           # 378 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 50 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 51 legs, needs npm run dev on :5173
 ```
 
 ## The laws
@@ -63,7 +63,8 @@ src/
 │                  per-file write plan: span splices, never a canonical dump),
 │                  workspace (the typed Imp/Ref/Doc session index),
 │                  check (the primmel-check view: the rule-catalog join),
-│                  layers (the composition-stack + overlay-pair view),
+│                  layers (the composition-stack + overlay-pair view +
+│                  the copy-up verb),
 │                  monaco-language, monaco-prl, templates,
 │                  validation (+ __tests__)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel, CodeEditor,

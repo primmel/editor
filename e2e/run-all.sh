@@ -57,7 +57,8 @@ for leg in \
   v3-forms-smoke \
   workspace-smoke \
   check-smoke \
-  layers-smoke
+  layers-smoke \
+  copy-up-smoke
 do
   echo "── $leg"
   npx tsx "e2e/$leg.ts" | tail -1

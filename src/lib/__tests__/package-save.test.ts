@@ -38,7 +38,8 @@ import { dump, load, loadPackageWithProvenance, type Standard } from '@primmel/p
 import { openPackagePayload } from '../../../scripts/package-open';
 import { applyPlanToSession, CONSTRUCT_FIELDS, constructId, planPackageSave } from '../package-save';
 import type { PackageOpenResult } from '../package';
-import { createElement, deleteInList, updateElement, addAttribute } from '../commands';
+import { createElement, deleteInList, updateConstruct, updateElement, addAttribute } from '../commands';
+import { copyUpTerm } from '../layers';
 
 const FIXTURES = path.resolve(import.meta.dirname, 'fixtures');
 
@@ -488,5 +489,130 @@ describe('wave 2 — the provenance re-base (applyPlanToSession)', () => {
     const removedBytes = plan.writes[0]!.text.length - authoredText(session, 'model/main.prl').length;
     expect(after.start.offset - before.start.offset).toBe(removedBytes);
     expect(after.end.offset - before.end.offset).toBe(removedBytes);
+  });
+});
+
+describe('Q1 — the copy-up verb: the save adopts the claimed term into the root', () => {
+  /** The overlay fixtures: pkg-over layers pkg-base (one overlay pair
+   *  already, one copy-up candidate — pkg-base's `traceability`). */
+  function openOver(): { session: PackageOpenResult; baseline: Standard } {
+    const session = openPackagePayload(path.join(FIXTURES, 'pkg-over'));
+    return { session, baseline: freshWorking(session) };
+  }
+
+  function cloneOver(): { root: string; dir: string } {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'prl-copyup-'));
+    for (const pkg of ['pkg-base', 'pkg-over']) {
+      fs.cpSync(path.join(FIXTURES, pkg), path.join(root, pkg), { recursive: true });
+    }
+    return { root, dir: path.join(root, 'pkg-over') };
+  }
+
+  it('the claimed term appends to its kind’s home file in the root — nothing foreign, the upstream file never written', () => {
+    const { session, baseline } = openOver();
+    const working = freshWorking(session);
+    copyUpTerm('traceability').apply(working);
+
+    const plan = planPackageSave(baseline, working, session);
+    expect(plan.foreignTouched).toEqual([]);
+    expect(plan.warnings).toEqual([]);
+    expect(plan.writes).toHaveLength(1);
+    const w = plan.writes[0]!;
+    expect(w.path).toBe('terminology.prl');
+    expect(w.added).toEqual(['traceability']);
+    expect(w.changed).toEqual([]);
+
+    // The authored bytes survive verbatim above the canonical append;
+    // the append carries the marker and the seeded (upstream) content.
+    const authored = authoredText(session, 'terminology.prl');
+    expect(w.text.startsWith(authored)).toBe(true);
+    const append = w.text.slice(authored.length);
+    expect(append).toContain('term traceability {');
+    expect(append).toContain('overlay true');
+    expect(append).toContain('related to references');
+    expect(append).toContain('BASE, 4.2');
+    expect(load(w.text, { strict: true }).terms.find((t) => t.id === 'traceability')?.overlay).toBe(true);
+  });
+
+  it('an in-session edit rides along: the seed is the working content, not a stale upstream copy', () => {
+    const { session, baseline } = openOver();
+    const working = freshWorking(session);
+    copyUpTerm('traceability').apply(working);
+    updateConstruct((a: Standard) => a.terms, 'traceability', { definition: 'the rec’s tighter reading of traceability' }).apply(working);
+
+    const plan = planPackageSave(baseline, working, session);
+    expect(plan.writes).toHaveLength(1);
+    expect(plan.writes[0]!.added).toEqual(['traceability']);
+    expect(plan.writes[0]!.text).toContain('the rec’s tighter reading of traceability');
+  });
+
+  it('the recombination is byte-clean: the written root reloads to the working model, the upstream bytes identical', () => {
+    const { root, dir } = cloneOver();
+    try {
+      const session = openPackagePayload(dir);
+      const baseline = freshWorking(session);
+      const working = freshWorking(session);
+      copyUpTerm('traceability').apply(working);
+
+      const plan = planPackageSave(baseline, working, session);
+      for (const w of plan.writes) fs.writeFileSync(path.join(dir, w.path), w.text);
+
+      const reloaded = loadPackageWithProvenance(dir, {
+        resolvePackage: (id) => {
+          const p = path.join(root, id);
+          return fs.existsSync(path.join(p, 'package.primmel')) ? p : undefined;
+        },
+      });
+      expect(dump(reloaded.standard)).toBe(dump(working));
+      // The reload's provenance names the ROOT for the adopted term.
+      expect(reloaded.provenance.constructs['terms']?.['traceability']?.package).toBe('pkg-over');
+      // The upstream package is byte-identical — never the unit of work.
+      expect(fs.readFileSync(path.join(root, 'pkg-base/terminology.prl'), 'utf8'))
+        .toBe(fs.readFileSync(path.join(FIXTURES, 'pkg-base/terminology.prl'), 'utf8'));
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('applyPlanToSession re-bases the adoption: the provenance names the root and a second save plans nothing', () => {
+    const { session, baseline } = openOver();
+    const working = freshWorking(session);
+    copyUpTerm('traceability').apply(working);
+
+    const plan = planPackageSave(baseline, working, session);
+    const session2 = applyPlanToSession(session, plan);
+    const src = session2.provenance.constructs['terms']?.['traceability'];
+    expect(src?.package).toBe('pkg-over');
+    expect(src?.file).toBe(path.join(session.dir, 'terminology.prl'));
+    // The span points at the appended construct in the new text.
+    expect(plan.writes[0]!.text.slice(src!.span.start.offset, src!.span.end.offset)).toContain('term traceability {');
+
+    // The second save diffs the saved state against itself: no writes,
+    // no foreign, no warnings (the adoption is fully re-based).
+    const plan2 = planPackageSave(working, working, session2);
+    expect(plan2.empty).toBe(true);
+  });
+
+  it('an upstream term edited WITHOUT the marker flip stays foreign — the claim is the flip', () => {
+    const { session, baseline } = openOver();
+    const working = freshWorking(session);
+    updateConstruct((a: Standard) => a.terms, 'traceability', { definition: 'edited upstream' }).apply(working);
+
+    const plan = planPackageSave(baseline, working, session);
+    expect(plan.writes).toEqual([]);
+    expect(plan.foreignTouched).toEqual([
+      { package: 'pkg-base', kind: 'terms', id: 'traceability', status: 'changed' },
+    ]);
+  });
+
+  it('undoing the flip before the save plans nothing (the verb is an exact command)', () => {
+    const { session, baseline } = openOver();
+    const working = freshWorking(session);
+    const cmd = copyUpTerm('traceability');
+    cmd.apply(working);
+    cmd.revert(working);
+
+    const plan = planPackageSave(baseline, working, session);
+    expect(plan.empty).toBe(true);
   });
 });

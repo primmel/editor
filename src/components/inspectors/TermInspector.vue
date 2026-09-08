@@ -5,10 +5,17 @@
 // lexical facets (language, form, part of speech, alt/abbreviation/
 // deprecated/see-also designations), the vocabulary-register link, the
 // symbol link, and the `overlay` marker.
+//
+// Q1 (the copy-up verb): when the session is a package and the selected
+// term is authored by a layer BENEATH the root, a banner says so —
+// edits to it stay foreign (surfaced, never written) — and offers the
+// copy-up: the marker flips, the term is claimed locally, the save
+// adopts it into the root's files.
 // ─────────────────────────────────────────────────────────────────────
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { updateConstruct } from '../../lib/commands';
+import { copyUpTerm, upstreamAuthorOf } from '../../lib/layers';
 import type { Term } from '../../lib/factory';
 import { useModelStore } from '../../stores/model';
 import InspectorField from '../fields/InspectorField.vue';
@@ -19,6 +26,19 @@ const modelStore = useModelStore();
 
 const listOf = (a: Standard) => a.terms;
 const term = computed(() => { void modelStore.version; return props.model.terms.find(t => t.id === props.elementId); });
+
+/** The upstream layer authoring this term — set only while the term is
+ *  still theirs (unmarked here); the banner lifts once the verb lands. */
+const upstreamAuthor = computed(() => {
+  void modelStore.version;
+  const pkg = modelStore.pkg;
+  if (!pkg || !term.value || term.value.overlay === true) return null;
+  return upstreamAuthorOf(pkg, props.elementId);
+});
+
+function copyUp() {
+  modelStore.execute(copyUpTerm(props.elementId));
+}
 
 function patch(field: keyof Term, e: Event) {
   if (!term.value) return;
@@ -51,6 +71,14 @@ function patchOverlay(e: Event) {
 
 <template>
   <div v-if="term" class="term-inspector" data-testid="term-inspector">
+    <div v-if="upstreamAuthor" class="upstream-banner" data-testid="term-upstream-banner">
+      <span>
+        authored upstream by <code>{{ upstreamAuthor }}</code> — edits stay foreign (surfaced, never
+        written) until the term is copied up into this package
+      </span>
+      <button type="button" class="copyup-btn" data-testid="term-copy-up" @click="copyUp">copy up as overlay</button>
+    </div>
+
     <InspectorField label="id">
       <code class="readonly-id">{{ term.id }}</code>
     </InspectorField>
@@ -142,6 +170,30 @@ function patchOverlay(e: Event) {
 </template>
 
 <style scoped>
+.upstream-banner {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.55rem;
+  margin-bottom: 0.55rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.upstream-banner code { color: var(--accent); font-size: 0.68rem; }
+.copyup-btn {
+  justify-self: start;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.66rem;
+  font-family: var(--font-mono);
+}
+.copyup-btn:hover { background: var(--accent-soft); }
 .readonly-id {
   font-family: var(--font-mono);
   font-size: 0.75rem;
