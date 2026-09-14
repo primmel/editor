@@ -4,6 +4,7 @@ import { useModelStore } from './stores/model';
 import { useUiStore } from './stores/ui';
 import { useMappingStore } from './stores/mapping';
 import { useDiffStore } from './stores/diff';
+import { useEditionStore } from './stores/edition';
 import ModelTree from './components/ModelTree.vue';
 import PageTree from './components/PageTree.vue';
 import ProcessCanvas from './components/ProcessCanvas.vue';
@@ -11,6 +12,7 @@ import CodeEditor from './components/CodeEditor.vue';
 import ElementInspector from './components/ElementInspector.vue';
 import WorkspacePanel from './components/WorkspacePanel.vue';
 import LayersPanel from './components/LayersPanel.vue';
+import EditionPanel from './components/EditionPanel.vue';
 import CompliancePanel from './components/CompliancePanel.vue';
 import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
@@ -38,6 +40,7 @@ const modelStore = useModelStore();
 const ui = useUiStore();
 const mappingStore = useMappingStore();
 const diffStore = useDiffStore();
+const editionStore = useEditionStore();
 const importOpen = ref(false);
 
 /** The viewer mode (Wave 4): one flag, consulted at the store (every
@@ -154,7 +157,7 @@ const commentBadges = computed(() => {
 // Dev/e2e hook: the stores on window (probes read the AST directly
 // instead of spelunking the DOM). Never in production builds.
 if (import.meta.env.DEV) {
-  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui, mapping: mappingStore, diff: diffStore };
+  (window as unknown as { __stores: unknown }).__stores = { model: modelStore, ui, mapping: mappingStore, diff: diffStore, edition: editionStore };
 }
 
 type ViewMode = 'model' | 'registry' | 'mapping' | 'diff';
@@ -282,6 +285,11 @@ const view = computed<ViewMode>({
               @click="ui.rightPanel = 'layers'"
             >Layers</button>
             <button
+              :class="{ active: ui.rightPanel === 'editions' }"
+              data-testid="tab-editions"
+              @click="ui.rightPanel = 'editions'"
+            >Editions</button>
+            <button
               :class="{ active: ui.rightPanel === 'compliance' }"
               @click="ui.rightPanel = 'compliance'"
             >Compliance</button>
@@ -329,6 +337,7 @@ const view = computed<ViewMode>({
             </fieldset>
             <WorkspacePanel v-else-if="ui.rightPanel === 'workspace'" :model="model" key="workspace" />
             <LayersPanel v-else-if="ui.rightPanel === 'layers'" key="layers" />
+            <EditionPanel v-else-if="ui.rightPanel === 'editions'" key="editions" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
             <CheckPanel v-else-if="ui.rightPanel === 'check'" key="check" />

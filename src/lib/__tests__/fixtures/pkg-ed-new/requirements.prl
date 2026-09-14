@@ -1,0 +1,13 @@
+// The editioned package's requirements — the NEW edition (the unit of work).
+requirement /req/ed/stability {
+  name "Stability"
+  statement "The instrument SHALL remain stable."
+  binds_to { model.parameters.span }
+  source { doc "urn:example:ed:2026" clause "5.1" }
+}
+
+requirement /req/ed/resolution {
+  name "Resolution"
+  statement "The instrument SHALL resolve the smallest scale interval."
+  source { doc "urn:example:ed:2026" clause "5.2" }
+}
