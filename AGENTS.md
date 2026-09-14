@@ -19,9 +19,9 @@ program's history is `TODO.editor/00–36` (all landed).
 
 ```
 cd ~/src/primmel/editor && npx vue-tsc --noEmit
-cd ~/src/primmel/editor && npx vitest run           # 378 tests
+cd ~/src/primmel/editor && npx vitest run           # 398 tests
 cd ~/src/primmel/editor && npm run build            # typing gate + vue-tsc + vite build
-cd ~/src/primmel/editor && ./e2e/run-all.sh         # 51 legs, needs npm run dev on :5173
+cd ~/src/primmel/editor && ./e2e/run-all.sh         # 52 legs, needs npm run dev on :5173
 ```
 
 ## The laws
@@ -55,7 +55,8 @@ cd ~/src/primmel/editor && ./e2e/run-all.sh         # 51 legs, needs npm run dev
 
 ```
 src/
-├── stores/        model (AST+history, the package session), ui, mapping, diff, simulation, measurement
+├── stores/        model (AST+history, the package session), ui, mapping, diff, simulation, measurement,
+│                  edition (the diff-base pick)
 ├── lib/           pure logic: commands, render, layout, edges, pages, factory,
 │                  mapper, multi-map, coverage, automap, diff-view, simulator,
 │                  comments, measurement, document-model, mmel-import, save,
@@ -65,13 +66,15 @@ src/
 │                  check (the primmel-check view: the rule-catalog join),
 │                  layers (the composition-stack + overlay-pair view +
 │                  the copy-up verb),
+│                  edition (the edition diff + the declare-edition command +
+│                  the release-note draft),
 │                  monaco-language, monaco-prl, templates,
 │                  validation (+ __tests__)
 ├── components/    ProcessCanvas, ModelTree, PageTree, PalettePanel, CodeEditor,
 │                  ElementInspector + inspectors/ + fields/, WorkspacePanel,
 │                  mapper/, diff/, simulation/, comments/, measurement/, validation/,
 │                  ImportPanel, SavePanel, NewModelDialog, OpenPackageDialog,
-│                  CheckPanel, LayersPanel
+│                  CheckPanel, LayersPanel, EditionPanel
 ├── plugins/       the registry (types, index) + oiml/ (the first program)
 └── App.vue        the workspace shell + the dev/e2e window.__stores hook
 demo/              the R 7 tutorial model (the dual demo with smart-r60)

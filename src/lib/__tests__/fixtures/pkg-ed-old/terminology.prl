@@ -1,0 +1,14 @@
+// The editioned package's vocabulary — the OLD edition (the diff base).
+term alpha {
+  label "alpha"
+  definition "the old reading of alpha"
+  source "ED, 2.1"
+  language "en"
+}
+
+term beta {
+  label "beta"
+  definition "a term the new edition retires"
+  source "ED, 2.2"
+  language "en"
+}

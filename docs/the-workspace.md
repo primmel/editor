@@ -57,7 +57,7 @@ rules that hold there.
 
 ## The right panel
 
-Seven tabs, one panel:
+Eight tabs, one panel:
 
 - **Inspect** — the facet editor for the selected element. Per type:
   process (name, actor, modality, provisions, output/input registries,
@@ -83,6 +83,17 @@ Seven tabs, one panel:
   appends it to your terminology file — the upstream bytes are never
   touched). The term inspector offers the same verb from a banner when
   the selected term is authored upstream.
+- **Editions** — the edition diff/publish flow (a package session
+  only): pick a base package directory (the previous edition, opened
+  through the same package intake as Open pkg) and the kernel's
+  structural diff renders against your working package — per-tier
+  tallies on top, the added/removed/changed/moved rows beneath (click
+  a row to select the element; the inspector edits). **Finalize
+  edition** saves the working copy (comment-true), prepends the new
+  edition label to the manifest's `editions` set through the same save
+  path, and downloads a release-note draft generated from the diff —
+  never written into the package, never an npm/git publish: the
+  release act stays in git + CI.
 - **Compliance** — the provision list with the modality filter.
 - **Simulate** — the run controls: start/step/continue/reset/stop, the
   register table (edits unblock gates), the trajectory log. The wall

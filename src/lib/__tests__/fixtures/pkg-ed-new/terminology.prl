@@ -1,0 +1,14 @@
+// The editioned package's vocabulary — the NEW edition (the unit of work).
+term alpha {
+  label "alpha"
+  definition "the new, tighter reading of alpha"
+  source "ED, 2.1"
+  language "en"
+}
+
+term gamma {
+  label "gamma"
+  definition "a term the new edition adds"
+  source "ED, 2.3"
+  language "en"
+}

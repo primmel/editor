@@ -78,6 +78,27 @@ they never count. The honest wall: no package open, no check — the
 loose buffer has no manifest to judge. Working changes count only
 after a save, so the loop is: edit → save → re-run.
 
+## The edition finalize (the publish draft)
+
+The Editions tab compares your working package against a **base** — a
+previous-edition package directory you pick through the same package
+intake as Open pkg. The kernel's structural diff renders with the
+per-tier tallies as the summary header and the added / removed /
+changed / moved rows grouped beneath; clicking a row selects the
+element (the inspector edits — the panel never edits inline).
+
+**Finalize edition** is the publish-prep act, in three steps: the
+working copy saves first (the comment-true package write); the edition
+label you confirm (prefilled with the current year — a free string)
+prepends to the manifest's `editions` set through the same save path,
+so `package.primmel` on disk leads with the new edition; and a
+release-note **draft** in markdown generates from the diff (per-tier
+counts, then the element lines) and downloads to your browser. The
+draft is never written into the package directory, and the Studio
+never runs npm/git publish — the release act stays in git + CI. With
+no base picked, finalize is unavailable: the edition claim and the
+release note both need the diff.
+
 ## The dirty discipline
 
 Dirty = the history cursor ≠ the saved cursor. Since every edit is a

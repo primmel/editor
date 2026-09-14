@@ -1,0 +1,8 @@
+package {
+  id pkg-ed
+  kind rec
+  title "Probe Editioned Rec"
+  version "1.0.0"
+  editions { 2025 }
+  baseUrn "urn:example:pkg-ed:2025"
+}
