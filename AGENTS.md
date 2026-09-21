@@ -32,8 +32,9 @@ cd ~/src/primmel/editor && ./e2e/run-all.sh         # 52 legs, needs npm run dev
 2. **The kernel owns the semantics.** Parsing, serialization, the
    coverage calculus, model-diff, the type vocabulary — import from
    `@primmel/primmel`, never reimplement. Bridges live in `src/lib/`.
-   The kernel is the PUBLISHED package (`^1.9.0`, the package-load API:
-   `loadPackageWithProvenance` + `groupBySourceFile`).
+   The kernel is the PUBLISHED package (`^1.18.0`, the package-load API:
+   `loadPackageWithProvenance` + `groupBySourceFile`; the floor is honest:
+   content carrying note `source` facets cannot load on anything older).
 3. **Programs plug in, they don't branch the kernel.** The registry
    (`src/plugins/`) carries program conveniences; `activePlugins(model)`
    decides.

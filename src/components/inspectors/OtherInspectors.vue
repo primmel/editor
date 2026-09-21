@@ -26,6 +26,16 @@ const registryOptions = computed(() => { void modelStore.version; return props.m
 function patchApproval(p: Partial<Approval>) {
   modelStore.execute(updateElement((a: Standard) => a.approvals, props.elementId, p));
 }
+// The dump reads the raw ids (actorRef/approverRef) with no fallback to
+// the resolved roles — every relation edit writes both carriers.
+function onApprovalActor(e: Event) {
+  const id = (e.target as HTMLSelectElement).value;
+  patchApproval({ actorRef: id, actor: props.model.roles.find(r => r.id === id) ?? null });
+}
+function onApprovalApprover(e: Event) {
+  const id = (e.target as HTMLSelectElement).value;
+  patchApproval({ approverRef: id, approver: props.model.roles.find(r => r.id === id) ?? null });
+}
 function patchEvent(p: Partial<EventNode>) {
   modelStore.execute(updateElement((a: Standard) => a.events, props.elementId, p));
 }
@@ -63,14 +73,14 @@ function onEventExtra(key: string, e: Event) {
     </InspectorField>
     <InspectorField label="actor (applies)" required :missing="!approval.actor">
       <select class="select-input" :value="approval.actor?.id ?? ''" data-testid="inspector-actor"
-        @change="patchApproval({ actor: model.roles.find(r => r.id === ($event.target as HTMLSelectElement).value) ?? null })">
+        @change="onApprovalActor">
         <option value="">— select role —</option>
         <option v-for="r in roleOptions" :key="r.id" :value="r.id">{{ r.label }}</option>
       </select>
     </InspectorField>
     <InspectorField label="approver (approves)" required :missing="!approval.approver">
       <select class="select-input" :value="approval.approver?.id ?? ''" data-testid="inspector-approver"
-        @change="patchApproval({ approver: model.roles.find(r => r.id === ($event.target as HTMLSelectElement).value) ?? null })">
+        @change="onApprovalApprover">
         <option value="">— select role —</option>
         <option v-for="r in roleOptions" :key="r.id" :value="r.id">{{ r.label }}</option>
       </select>
