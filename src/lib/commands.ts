@@ -114,13 +114,19 @@ function pageOf(ast: Standard, pageId: string): Subprocess {
 
 const ELEMENT_DEFAULTS: Record<ElementKind, (id: string) => Process | Approval | DataClass | EventNode | Gateway | Subprocess> = {
   process: id => ({
-    id, name: '', modality: 'SHALL', actor: null, output: [], input: [],
+    id, name: '', modality: 'SHALL', phase: '', guards: [], machineSteps: [],
+    actor: null, actorRef: '', output: [], outputRefs: [], input: [], inputRefs: [],
     provision: [], provisionRefs: [], page: null, measure: [], parent: '', children: [],
     signature: null, invariants: [], activityKinds: [], segregation: [],
     preconditions: [], executor: '', registers: [], state: '', instances: null,
-    childComposition: 'all', does: null, source: null,
+    childComposition: 'all', does: null, summary: '', roles: [], organs: [],
+    participantKinds: [], evidence: [], decision: null, declaration: null,
+    dischargesGate: '', realizedBy: [], approvedBy: [], windows: [], source: null,
   }),
-  approval: id => ({ id, name: '', modality: 'SHALL', actor: null, approver: null, records: [], ref: [] }),
+  approval: id => ({
+    id, name: '', modality: 'SHALL', actorRef: '', approverRef: '', recordRefs: [],
+    actor: null, approver: null, records: [], ref: [], source: null,
+  }),
   dataclass: id => ({ id, attributes: [] }),
   event: id => ({ id, eventType: 'start' }),
   gateway: id => ({ id, gatewayType: 'exclusive_gateway', label: '' }),

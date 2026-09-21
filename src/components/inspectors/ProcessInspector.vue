@@ -76,7 +76,10 @@ function onName(e: Event) {
 function onActor(e: Event) {
   const id = (e.target as HTMLSelectElement).value;
   const role = props.model.roles.find(r => r.id === id) ?? null;
-  patch({ actor: role });
+  // The dump reads the raw token (actorRef falls back to actor?.id only
+  // when empty) — write both so a later edit is never shadowed by a
+  // stale raw id from the loaded text.
+  patch({ actor: role, actorRef: id });
 }
 
 function onModality(e: Event) {
@@ -95,13 +98,18 @@ function onProvisions(ids: string[]) {
 }
 
 function onOutput(ids: string[]) {
+  // The dump prefers outputRefs when non-empty — write both so the edit
+  // is never shadowed by raw ids from the loaded text (the provisionRefs
+  // discipline).
   patch({
+    outputRefs: ids,
     output: ids.map(id => props.model.regs.find(r => r.id === id)).filter((r): r is NonNullable<typeof r> => !!r),
   });
 }
 
 function onInput(ids: string[]) {
   patch({
+    inputRefs: ids,
     input: ids.map(id => props.model.regs.find(r => r.id === id)).filter((r): r is NonNullable<typeof r> => !!r),
   });
 }
