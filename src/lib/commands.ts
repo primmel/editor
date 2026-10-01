@@ -17,7 +17,7 @@ import type {
 } from '@primmel/primmel';
 import type { Edge, Subprocess, SubprocessComponent } from '@primmel/primmel';
 import { edgeEnds } from './edges';
-import { CONSTRUCT_FIELDS, constructId } from './package-save';
+import { constructCollections, constructId } from './package-save';
 
 // The flow shapes (Subprocess/Edge/SubprocessComponent) are the
 // KERNEL's public types (TODO.editor/32 — the structural mirror and
@@ -86,7 +86,7 @@ function listFor(ast: Standard, kind: ElementKind): Array<{ id: string }> {
  *  construct the canvas-era lists do not know. */
 export function mintId(ast: Standard, prefix: string): string {
   const taken = new Set<string>();
-  for (const f of CONSTRUCT_FIELDS) {
+  for (const f of constructCollections(ast)) {
     for (const x of ast[f] as object[]) {
       const id = constructId(x);
       if (id !== undefined) taken.add(id);
