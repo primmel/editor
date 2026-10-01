@@ -57,6 +57,20 @@ export const CONSTRUCT_FIELDS = [
 
 export type ConstructField = (typeof CONSTRUCT_FIELDS)[number];
 
+/** Every top-level construct collection of the AST, derived from the
+ *  AST itself. The kernel's registry grows (attestations, scheme
+ *  activity kinds, application declarations, ...), and a field absent
+ *  from the static CONSTRUCT_FIELDS list would survive every
+ *  partial-model clone — its constructs riding every splice and
+ *  append, corrupting the written file. The save layer therefore
+ *  enumerates the AST's array fields directly; CONSTRUCT_FIELDS stays
+ *  the authored-census list (the sweep's pin). */
+export function constructCollections(ast: Standard): (keyof Standard)[] {
+  return (Object.keys(ast) as (keyof Standard)[]).filter((k) =>
+    Array.isArray(ast[k]),
+  );
+}
+
 /** A construct reference with the field narrowed to a known collection
  *  (structurally a kernel ConstructRef — groupBySourceFile takes it). */
 export interface FileRef {
@@ -127,15 +141,22 @@ function dumpFileConstructs(
   skeletonHead: string,
 ): string {
   const partial = { ...working, packageManifest: null };
-  for (const f of CONSTRUCT_FIELDS) {
-    const keep = members.get(f);
+  // Clear EVERY construct collection, not a hand-list: the kernel's
+  // registry grows (attestations, scheme activity kinds, application
+  // declarations, ...), and a field absent from a static list survives
+  // into the partial — its constructs then ride EVERY splice and
+  // append, corrupting the written file. Members are keyed by the
+  // routed fields; every other collection empties.
+  for (const key of Object.keys(working) as (keyof Standard)[]) {
+    if (!Array.isArray(working[key])) continue;
+    const keep = members.get(key as ConstructField);
     const items = keep
-      ? working[f].filter((el) => {
+      ? (working[key] as object[]).filter((el) => {
           const id = constructId(el);
           return id !== undefined && keep.has(id);
         })
       : [];
-    Object.assign(partial, { [f]: items });
+    Object.assign(partial, { [key]: items });
   }
   const full = dump(partial);
   return includeMetadata || !full.startsWith(skeletonHead) ? full : full.slice(skeletonHead.length);
@@ -385,10 +406,10 @@ export function planPackageSave(
   // kernel's inverse projection. Imports land in byFile too (keyed by
   // their own absolute paths) and are filtered to the root below.
   const refs: FileRef[] = [];
-  for (const f of CONSTRUCT_FIELDS) {
-    for (const el of working[f]) {
+  for (const f of constructCollections(working)) {
+    for (const el of working[f] as object[]) {
       const id = constructId(el);
-      if (id !== undefined) refs.push({ field: f, id });
+      if (id !== undefined) refs.push({ field: f as ConstructField, id });
     }
   }
   const grouped = groupBySourceFile(provenance, refs satisfies readonly ConstructRef[]);
@@ -501,7 +522,9 @@ export function planPackageSave(
   // The skeleton head: the dump of a construct-less clone of the working
   // model — exactly the metadata block the dump prepends to every file.
   const skeleton = { ...working, packageManifest: null };
-  for (const f of CONSTRUCT_FIELDS) Object.assign(skeleton, { [f]: [] });
+  for (const f of constructCollections(working)) {
+    Object.assign(skeleton, { [f]: [] });
+  }
   const skeletonHead = dump(skeleton);
 
   const writes: PackageSaveFilePlan[] = [];
