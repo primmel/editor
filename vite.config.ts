@@ -140,4 +140,17 @@ function packageApi(): Plugin {
 export default defineConfig({
   plugins: [vue(), tailwindcss(), saveApi(), packageApi()],
   base: './',
+  // The kernel-development loop: when @primmel/primmel is LINKED to a
+  // local checkout (npm link), it resolves outside node_modules and
+  // vite would otherwise serve its CommonJS build as-is — the browser
+  // cannot import named exports from it. Forcing it into optimizeDeps
+  // pre-bundles the CJS into ESM, and fs.allow admits the real path.
+  optimizeDeps: {
+    include: ['@primmel/primmel', '@primmel/primmel/check-rules'],
+  },
+  server: {
+    fs: {
+      allow: ['.', '../..', '../../..'],
+    },
+  },
 });
