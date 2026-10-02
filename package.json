@@ -39,14 +39,16 @@
     "audit:types": "node scripts/audit-typing.mjs"
   },
   "peerDependencies": {
-    "vue": ">=3.5",
-    "pinia": ">=3",
-    "monaco-editor": ">=0.50",
-    "@primmel/primmel": "^1.21.0",
     "@oimlsmart/oiml-pubid": "*",
-    "js-yaml": ">=4"
+    "@primmel/primmel": "^1.21.0",
+    "js-yaml": ">=4",
+    "monaco-editor": ">=0.50",
+    "pinia": ">=3",
+    "vue": ">=3.5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "elkjs": "^0.12.0"
+  },
   "devDependencies": {
     "@oimlsmart/oiml-pubid": "github:oimlsmart/oiml-pubid#main",
     "@primmel/primmel": "^1.21.0",
