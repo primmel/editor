@@ -33,15 +33,28 @@ function patchScalar(e: Event) {
   modelStore.execute(updateConstruct(listOf, props.elementId, { attribute: (e.target as HTMLInputElement).value }, `edit dual ${props.elementId}`));
 }
 
-function patchRole(role: Role, field: keyof QuantityValue, raw: string) {
+/** The scalar facets the form edits (the object facet — the per-value
+ *  provenance — has its own structured editor, never this path). */
+type ScalarFacet = 'value' | 'unit' | 'quantityKind' | 'uncertainty' | 'tolerance';
+
+function patchRole(role: Role, field: ScalarFacet, raw: string) {
   const d = dual.value;
   if (!d) return;
   const current: QuantityValue = d[role] ?? { value: '' };
-  let next: QuantityValue = { ...current };
-  if (field === 'value') next.value = coerce(raw);
-  else if (raw === '') delete next[field];
-  else if (field === 'uncertainty' || field === 'tolerance') next[field] = coerce(raw);
-  else next[field] = raw;
+  const next: QuantityValue = { ...current };
+  const numeric = field === 'uncertainty' || field === 'tolerance';
+  const set: Record<ScalarFacet, () => void> = {
+    value: () => { next.value = coerce(raw); },
+    unit: () => { next.unit = raw; },
+    quantityKind: () => { next.quantityKind = raw; },
+    uncertainty: () => { next.uncertainty = numeric ? coerce(raw) : raw; },
+    tolerance: () => { next.tolerance = numeric ? coerce(raw) : raw; },
+  };
+  if (raw === '') {
+    delete next[field];
+  } else {
+    set[field]();
+  }
   modelStore.execute(updateConstruct(listOf, props.elementId, { [role]: next }, `edit dual ${props.elementId} ${role}`));
 }
 

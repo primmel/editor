@@ -6,7 +6,8 @@ import {
   nodeShape, nodeColor, NODE_SIZE,
   type RenderNode,
 } from '../lib/render';
-import { canConnect, mintEdgeId, pageForNode, type ConnectionError } from '../lib/edges';
+import { canConnect, edgeEnds, mintEdgeId, pageForNode, type ConnectionError } from '../lib/edges';
+import { layoutPage } from '../lib/elk-layout';
 import { pagePath } from '../lib/pages';
 import {
   createEdge, removeEdge, updateComponentPosition,
@@ -221,6 +222,44 @@ function refuse(reason: ConnectionError) {
   refusalTimer = setTimeout(() => { refusal.value = null; }, 2600);
 }
 
+/** Auto-layout the current page (elkjs, lazy-loaded). One command:
+ *  every node's position moves in one undo step, and the save writes
+ *  the coordinates back into the package (a layout is an edit). */
+async function autoLayout() {
+  if (!canvas.value || modelStore.readOnly || props.mode !== 'edit') return;
+  const page = canvas.value;
+  const renderNodes = rendered.value.nodes;
+  const edges = (page.edges ?? [])
+    .map(e => ({ id: e.id, fromId: edgeEnds(e).from, toId: edgeEnds(e).to }))
+    .filter((e): e is { id: string; fromId: string; toId: string } =>
+      e.fromId !== undefined && e.toId !== undefined);
+  let positions: Map<string, { x: number; y: number }>;
+  try {
+    positions = await layoutPage(renderNodes, edges);
+  } catch (err) {
+    refusal.value = `layout failed: ${String(err).slice(0, 80)}`;
+    clearTimeout(refusalTimer);
+    refusalTimer = setTimeout(() => { refusal.value = null; }, 2600);
+    return;
+  }
+  if (positions.size === 0) return;
+  const before = new Map(renderNodes.map(n => [n.id, { x: n.x, y: n.y }]));
+  const pageId = page.id;
+  const setPos = (ast: Standard, id: string, pos: { x: number; y: number }) => {
+    const target = ast.pages.find(pg => pg.id === pageId);
+    const comp = target?.childs.find(c => c.name === id) ?? target?.data.find(c => c.name === id);
+    if (comp) {
+      comp.x = pos.x;
+      comp.y = pos.y;
+    }
+  };
+  modelStore.execute({
+    label: `layout ${pageId} (${positions.size} nodes)`,
+    apply(ast) { for (const [id, pos] of positions) setPos(ast, id, pos); },
+    revert(ast) { for (const [id, pos] of before) setPos(ast, id, pos); },
+  });
+}
+
 function finishConnect(target: RenderNode) {
   const from = connectFrom.value;
   connectFrom.value = null;
@@ -328,6 +367,14 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         {{ page.id }}
       </button>
     </div>
+
+    <button
+      v-if="mode === 'edit' && !modelStore.readOnly && rendered.nodes.length > 0"
+      class="canvas-layout"
+      data-testid="canvas-layout"
+      title="Auto-layout this page (elkjs — one undo step, saves with the package)"
+      @click="autoLayout"
+    >⇅ Layout</button>
 
     <div v-if="breadcrumb.length" class="canvas-breadcrumb" data-testid="canvas-breadcrumb">
       <template v-for="(crumb, i) in breadcrumb" :key="crumb">
@@ -513,6 +560,21 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   z-index: 10;
   overflow-x: auto;
 }
+.canvas-layout {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 5;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--line, #ccc);
+  border-radius: 6px;
+  background: var(--bg-raised, #fff);
+  color: var(--text, inherit);
+  cursor: pointer;
+}
+.canvas-layout:hover { border-color: var(--accent, #4b7bec); }
+
 .canvas-tab {
   padding: 0.5rem 0.9rem;
   border: none;
