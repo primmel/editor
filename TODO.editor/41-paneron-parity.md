@@ -137,3 +137,124 @@ From the Mapping Guide + `MappingCalculator.js`:
 G1+G2+G3 (the mapping reasoning trio — they compound), then G5+G6
 (the adoption pair), then G7–G10 as surface work, G11 opportunistically,
 G12 declined.
+
+---
+
+# The deep extension (2026-10-06, second pass): data management, live APIs, the corpus
+
+The first pass covered the editor surfaces. This pass opens the two
+planes it under-described — the DATA layer and the RUNTIME/API
+integrations — and inventories the model corpus the legacy shipped
+with.
+
+## The data-management layer (the registry plane)
+
+**The schema** is MMEL's `data_registry X { data_class X#data }` (the
+Studio knows this plane: RegistryInspector, DataRegistry.vue,
+attributes with types/cardinality/modality).
+
+**The data** is a separate persisted artifact — the `MMEL_WORKSPACE`
+(`.sws` files; the legacy keeps one per model at `workspace/<ns>.json`):
+
+```
+SMARTWorkspace   docs[modelNamespace]           → SMARTModelStore
+SMARTModelStore  store[registryId]              → SMARTDocumentStore
+SMARTDocumentStore docs[rowNumber]              → SMARTDocument
+SMARTDocument    { id, name, attributes: Record<string,string> }
+```
+
+- One workspace per implementation model; registries are the model's
+  data_registry ids; rows are number-keyed documents.
+- **The entry UI is schema-driven**: `DocumentEditor` renders the data
+  class as a form — basic types (text/boolean/number via
+  BasicTypeAttribute), enums (EnumAttribute), **nested data classes
+  recurse with prefixed attribute keys** (`attrid#nestedid#...`), and
+  **registry-reference attributes render as pickers over the OTHER
+  registries' stores** — a relational foreign-key UI, all client-side
+  (RegistryDocManagement is CRUD over the rows; RegistryList the
+  index).
+- **The consumers**: the measurement engine seeds variable values from
+  the workspace defaults and view profiles; the checklist reads
+  approval records and data-class attributes; the "Implementation"
+  module IS this plane (the workspace + the model together).
+- The corpus carries a real example: `ribose.sws` — one model
+  (RiboseCrimson), one registry (TestingRegistry), one row
+  ("Happy first document", attributes string/empty/boolean).
+- The VIEWER links into it: registries with stores grow a
+  View-data-workspace button on their canvas node.
+
+**Studio state**: the SCHEMA side exists (RegistryInspector,
+DataRegistry.vue). The INSTANCE side does not: no workspace store, no
+schema-driven entry forms, no nested/cross-registry pickers, no
+persisted rows.
+
+## Running and API integration (the live plane)
+
+Four integrations existed, all client-side, all with contracts but
+only mock or local backends:
+
+1. **The sensor aggregator** (PAS 2060): `obtainData(url)` →
+   `{x, y, z, v_i, v_e}[]` readings on a 5s poll. The contract is
+   real; the implementation throws for every URL except the
+   hardcoded localhost mock (21 synthetic sensors across 4
+   buildings). Readings flow: **3-D bounding-box assignment** (per
+   emission source, boxes from imported IFC JSON / GML / ifcOWL-TTL
+   polygons in `ConfigurePage`; overlaps flagged) → per-source
+   Include/Exclude lists → **the measurement engine as LISTDATA
+   variables** (`Included_Emission`/`Excluded_Emission`) → per-source
+   pass/fail gauges, a 10-entry log with raw-JSON export, and the
+   building minimap. NOTE: readings NEVER write the workspace store —
+   the live feed and the human-entered registry data are separate
+   planes that meet only in the evaluator.
+2. **ISO 27001 monitor**: the same shape (2s poll, login/failure/
+   connection counts, range-configured gauge + rolling LineChart).
+3. **Metanorma**: the report generator shells the Metanorma CLI
+   (`-t ribose <file> -o <dir>`) — the output dir is HARDCODED to a
+   developer path; PID + stdout/stderr surfaced in the dialog.
+4. **CoreNLP**: the knowledge graph POSTs provision sentences to
+   `localhost:9000` and parses enhanced++ dependencies into
+   subject/action/object triples (actor injected as subject, modality
+   as an edge); NL questions are parsed the same way and answered by
+   structural similarity over the triple graph.
+
+**Studio state**: none of the four. The measurement panel is
+manual-value; the smart platform's monitor plane covers the
+dashboard class at product level.
+
+## The corpus (what the repo's artifacts prove)
+
+| Artifact | What it is / proves |
+|---|---|
+| `BS20400.mmel` + `BS20400impl.mmel` + `BS20400impl(mapped).mmel` | THE reference/implementation pair (6080 vs ~1000 lines) + a mapped variant — the workflow's flagship example |
+| `13485 (for diff)/` | **Two map profiles of ISO 13485 across editions (2016 vs 2021 JSON + 2021.map + both .mmel editions)** — and the mapSet keys tell the real story: the 2016 profile maps to EU DIRECTIVES (`EU90/385/EECAnnex2-doc`, `MDSAP`), the 2021 profile to EU REGULATIONS (`Regulation(EU)2017/745Article10-doc`…) — **clause-level DOCUMENT mappings, migrated across the directive→regulation transition**. The map-diff fixture (`compare1/2.json`) rides beside them |
+| `documents/*.sdc` | 13 EU directive/regulation annex clause documents (the `namespace#…`/`title#…`/`n#statement` format) — the doc-mapping TARGETS |
+| `*.map` (13485, 14971, acme, QMS, ribose.map + ribosemap.json) | map profiles in the wild: multi-reference mapSets (`defaultns`, `BS13485`, `ISO14971`), document mapSets, mostly-empty mappings (the profiles are ORGANIZATIONAL scaffolds as much as data) |
+| `showcase 5/` | BS 6004 reference + updated implementation + the BSI source XML + **CSV table-import fixtures** + a generated Statement-of-Applicability Asciidoc report (the Liquid pipeline's output) |
+| `artificial models/` | feature fixtures: 9 link models (Links), knowledge-graph models, the map-diff pair, 3 model-diff models |
+| `geo/*.json` | IFC building models (the PAS 2060 source-location imports) |
+| `demo models [old]/`, `HLS/MDSAP/ISO27001/dptm/…mmel`, `RiboseImplementation.mmel` | the model corpus (38 models audited in the owner's spec program) |
+| `TODO.update-specs/` | the owner's OWN completed program: the MMEL spec rewritten as 88 files/~13k lines FROM these guides and models (00-master-plan: parts 1–9 + authoring + methodology, DONE) |
+| `scripts/build.rb`, root `dist/` | the spec site build |
+| `testing.adoc` | a generated SoA report (the same Liquid output class) |
+
+## The extended gap register
+
+| # | Missing piece | Size | Notes |
+|---|---|---|---|
+| **G13** | **The registry data plane** — MMEL_WORKSPACE instance store + schema-driven entry forms (nested-class prefixes, enum/basic/reference-attr fields, cross-registry pickers), persisted per package, wired to the measurement/checklist consumers | **L** | the Studio has the schema side only; this is the legacy's "Implementation" module proper |
+| **G14** | **The live-feed contract** — configurable aggregator URL → typed readings → LISTDATA measurement variables, polling dashboards, logs + export | **M** | decide the seam: editor-side (as legacy) vs the smart platform's monitor plane (which already covers the class) |
+| **G15** | **Edition-crossed map profiles** — an implementation's mapSet per reference EDITION, document mapSets included, with the directive→regulation migration as the canonical case | **S–M** | rides G3 (mapping diff) + G6 (edition compare); the corpus fixture exists to test against |
+| — | `.sdc` clause-document import into the DocumentView plane | **S** | fold into G11 (document import) |
+| — | CSV round-trip for tables (import/export) | **S** | showcase 5's CSVs are the fixtures |
+
+## The verdict, extended
+
+The legacy's "running" story is a set of well-shaped CLIENT contracts
+with mock backends (the aggregator throws for any non-localhost URL;
+Metanorma's output dir is a developer's home path). The durable ideas
+worth parity: (1) the registry data plane as a first-class persisted
+artifact wired into measurement/checklists (G13 — the biggest true
+gap), (2) the live-feed → measurement-variable contract (G14, seam
+decision needed), (3) edition-crossed map profiles as the adoption
+artifact (G15, riding the wave-1 items). The corpus in this repo —
+especially `13485 (for diff)` — is the test-fixture set for all three.
