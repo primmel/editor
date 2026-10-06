@@ -66,7 +66,9 @@ canvas Root {
     E3 { from X1 to Heavy
       condition "load > 50"
     }
-    E4 { from X1 to Light }
+    E4 { from X1 to Light
+      condition default
+    }
     E5 { from Heavy to Done }
     E6 { from Light to Done }
   }
@@ -290,5 +292,80 @@ describe('the condition language: the corpus spellings', () => {
   });
   it('composes with not and parentheses', () => {
     expect(evaluateCondition("not ([sampling_approach] in ['battery'])", registers)).toBe(true);
+  });
+});
+
+
+// The gateway `default` keyword — the corpus's spelling (r60-lml's
+// test-result gateway, r144's skip edges): the edge whose condition is
+// the literal `default` is the catch-all tried LAST; the underspecified
+// rule (an edge with NO condition makes the gate inclusive) follows the
+// legacy Checker.
+describe('the gateway default-keyword semantics (the corpus spelling)', () => {
+  const src = (conditions: string[]) => `
+root home
+metadata {
+  title "T"
+  schema "MMEL 0.1"
+  edition "1"
+  author "A"
+  namespace "T"
+  shortname ""
+}
+start_event s { }
+end_event e { }
+exclusive_gateway g { label "The gate" }
+process p1 { name "P1" }
+process p2 { name "P2" }
+canvas home {
+  elements {
+    s { x 0 y 0 }
+    p1 { x 0 y 100 }
+    g { x 0 y 200 }
+    p2 { x 0 y 300 }
+    e { x 0 y 400 }
+  }
+  process_flow {
+    E1 { from s to p1 }
+    E2 { from p1 to g }
+${conditions
+  .map((c, i) => `    G${i} { from g to ${i === 0 ? 'p2' : 'e'}${c === '' ? '' : `\n      condition ${JSON.stringify(c)}`}\n    }`)
+  .join('\n')}
+    E9 { from p2 to e }
+  }
+}
+`;
+  it('the default edge fires when no conditioned branch is true', () => {
+    const model = load(
+      src(['every([within_mpe]) = true', 'default']),
+    ) as unknown as Standard;
+    // registers: within_mpe has a false — the conditioned branch fails,
+    // the default fires.
+    let st = createRun(model, { registers: { within_mpe: 'true,false' } });
+    // step past start, p1, and the gateway decision
+    st = step(model, st); // start
+    st = step(model, st); // p1
+    st = step(model, st); // gateway chooses
+    expect(st.blocked).toBeNull();
+    expect(st.trajectory.some(t => t.note === 'default branch')).toBe(true);
+  });
+  it('the conditioned branch wins over the default when true', () => {
+    const model = load(
+      src(['every([within_mpe]) = true', 'default']),
+    ) as unknown as Standard;
+    let st = createRun(model, { registers: { within_mpe: 'true,true' } });
+    st = step(model, st);
+    st = step(model, st);
+    st = step(model, st);
+    expect(st.blocked).toBeNull();
+    expect(st.trajectory.some(t => t.note?.includes('is true'))).toBe(true);
+  });
+  it('blocked when none true and no default edge exists', () => {
+    const model = load(src(['every([within_mpe]) = true', 'false'])) as unknown as Standard;
+    let st = createRun(model, { registers: { within_mpe: 'false' } });
+    st = step(model, st);
+    st = step(model, st);
+    st = step(model, st);
+    expect(st.blocked).toBeTruthy();
   });
 });
