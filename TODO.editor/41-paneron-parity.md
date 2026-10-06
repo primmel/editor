@@ -279,12 +279,22 @@ path-addressed objects** — audit history for free, external Git
 tooling, clone/sync — and the `.sws` registry rows from the second
 pass are just more Git objects.
 
-The Studio's substrate differs by design: the PRL package is ONE
-atomic artifact (the kernel's parse gives the determinism; the smart
-platform's evidence registry gives the audit trail). The parity item
-is NOT git-in-the-editor — it is G13's instance store gaining the
-same *discipline*: atomic saves, a change record, an index. The
-package format already provides the shape.
+**The substrate decision (the owner's direction, 2026-10-06)**:
+Paneron's host runs datasets on **isomorphic-git** — the extension
+only ever sees the kit's DatasetContext, and the host translates
+`updateObjects` into git commits. That makes git the *proven
+substrate* for exactly this class of data plane, and using it in the
+Studio is not wrong — it is the sanctioned shape. The save API (the
+dev server, Node) gains isomorphic-git: the package directory is the
+work tree; each save is `add` + `commit` with the save's message
+(generated when absent); the G13 instance store rides as ordinary
+package files, so its commit-atomicity and change record come free;
+history/diff come from git; branches/tags per edition give G6/G15 a
+substrate; push/pull to a remote is the sync story (never automatic).
+The `.git` dir is invisible to the kernel loader and the bake (dot
+entries are skipped), and an already-git package is REUSED, never
+re-initialized; nothing pushes without instruction. The browser-side
+option (LightningFS) stays open for a fully-client mode later.
 
 ## Running = the digital-twin loop (measurement streams are STREAMS)
 
