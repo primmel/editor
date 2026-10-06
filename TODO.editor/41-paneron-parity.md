@@ -360,3 +360,63 @@ per-tick, source-addressable) is the durable idea.
 - The corpus fixtures for both: `ribose.sws` (data mode) and the
   two dashboards' feeds (stream mode) — plus `44001.xml` for the
   document import (G11).
+
+---
+
+# The rename contract (MMEL v2 → Primmel) — the audit's basis, restated
+
+The owner's correction (2026-10-06): the extensions were renamed
+INTENTIONALLY — MMEL v2 became Primmel (.mmel → .prl, construct
+spellings where needed) to DISTINGUISH FORMAT AND USAGE — under the
+contract: **retain all semantics, improve on them**. The first pass's
+"more element types" framing was the wrong lens: the type-count
+difference is the ADDITIVE extension vocabulary (MN 113-6…113-10),
+not changed semantics. The kernel encodes the contract literally
+(ser-des/config/index.ts): *"MMEL 0.1 spec-parity parsers/dumpers"*
+for the retained core, *"Primmel extension parsers/dumpers (MN
+113-6 to 113-10)"* for the additions, and legacy spellings aliased
+(*"`view` is the legacy (MMEL v2) spelling of the view-profile
+block"*). The map format accepts BOTH markers
+(`KNOWN_TYPES = { MMEL_MAP, Primmel_MAP }`) — legacy profiles load
+as-is.
+
+## The correspondence (verified in the corpus + kernel)
+
+| MMEL v2 | Primmel | Retention |
+|---|---|---|
+| `.mmel` | `.prl` | the format/usage rename |
+| brace-block text DSL | the same DSL | retained — the kernel parses it as the spec-parity set |
+| `root` / `metadata` | the package manifest (+ the root page) | owned by the manifest |
+| `process` | `process` (+ `page` = subprocess) | retained; the `subprocess` command became the page facet |
+| `approval` | `approval` | retained |
+| `exclusive_gateway`, `start_event`, `end_event`, `timer_event`, `signal_catch_event` | the same spellings | retained verbatim |
+| `class` (+ the `#data` convention) | `class` (`X#data`) | retained verbatim |
+| `data_registry` | `data_registry` (processes cite `reference_data_registry`) | retained |
+| `measurement` (DATA/LISTDATA/TEXT/DERIVED/TABLE) | `measurement` (r60-lml: 20 declarations) | retained |
+| `provision` | provisions + the requirements plane | retained and extended |
+| `role` | `role` | retained |
+| `note`, `term`, `table`, `figure`, `link`, `enum` | the same spellings (r60-lml: term ×85, note ×6, table ×3) | retained verbatim |
+| `reference` | `ref derives-from` (URN targets) | retained, retargeted to URNs |
+| `view` | `view_profile` — the legacy spelling ALIASED | retained via the kernel alias |
+| `subprocess` | `process.page` | retained, representation |
+| `MMEL_MAP` (JSON) | MapProfile — both markers load | format-compatible |
+| `MMEL_WORKSPACE` (`.sws`) | G13's instance store (to build, on the git substrate) | the open gap |
+| `validate_provision` / `measure` | the same facets (conduct_tests shows both) | retained |
+| — no counterpart | the Primmel extensions (requirements, conformance, subjects, verdicts, symbols, forms, calculations, state machines, quantity registers, …) | additive vocabulary |
+
+**The improvements already verified in this audit**: the checker's
+C-rules (the legacy validated IDs on parse), the coverage calculus
+with authored-assertion conflicts, packages + composition (vs the
+4-object dataset), editions and pins, the runtime, and the
+provider-scoped KNOWN register.
+
+**The audit restated under this lens**: "building models — beyond
+parity" meant the EXTENSION vocabulary edits on top of a RETAINED
+MMEL core — never renamed-away semantics. The retention guarantee is
+the kernel's spec-parity parser set + the round-trip gate; the
+semantic-retention risks worth pinning as specs: the measurement
+expression operator set (the legacy's `[var]`/`.sum/.max/.min/.count/
+.average`/comparators — the TODO.update-specs/03 conversion covers the
+guide side; the operator table deserves the same pinning), the egate
+default/empty edge semantics, and the registry↔dataclass pairing
+invariants.
