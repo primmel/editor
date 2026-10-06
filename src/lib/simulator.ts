@@ -25,7 +25,9 @@ type Token =
   | { kind: 'ident'; value: string }
   | { kind: 'op'; value: string }
   | { kind: 'lparen' }
-  | { kind: 'rparen' };
+  | { kind: 'rparen' }
+  | { kind: 'lbracket' }
+  | { kind: 'rbracket' };
 
 function tokenize(src: string): Token[] {
   const out: Token[] = [];
@@ -51,6 +53,12 @@ function tokenize(src: string): Token[] {
       if (end < 0) throw new Error('unterminated string');
       out.push({ kind: 'str', value: src.slice(i + 1, end) });
       i = end + 1;
+    } else if (c === '[') {
+      out.push({ kind: 'lbracket' });
+      i++;
+    } else if (c === ']') {
+      out.push({ kind: 'rbracket' });
+      i++;
     } else if (/[A-Za-z_#]/.test(c)) {
       const m = /^[A-Za-z_#][A-Za-z0-9_.#-]*/.exec(src.slice(i))!;
       const word = m[0];
@@ -62,6 +70,9 @@ function tokenize(src: string): Token[] {
         out.push({ kind: 'op', value: '||' });
       } else if (word === 'not') {
         out.push({ kind: 'op', value: '!' });
+      } else if (word === 'in') {
+        // The legacy membership spelling (r144: "[x] in ['a', 'b']").
+        out.push({ kind: 'op', value: 'in' });
       } else {
         out.push({ kind: 'ident', value: word });
       }
@@ -71,6 +82,9 @@ function tokenize(src: string): Token[] {
       if (['>=', '<=', '==', '!=', '<>', '&&', '||'].includes(two)) {
         out.push({ kind: 'op', value: two === '<>' ? '!=' : two });
         i += 2;
+      } else if ([','].includes(c)) {
+        out.push({ kind: 'op', value: ',' });
+        i++;
       } else if (['>', '<', '=', '!', '+', '-', '*', '/'].includes(c)) {
         out.push({ kind: 'op', value: c === '=' ? '==' : c });
         i++;
@@ -83,6 +97,16 @@ function tokenize(src: string): Token[] {
 }
 
 type Value = number | string | boolean;
+type TokenKind =
+  | 'num'
+  | 'str'
+  | 'bool'
+  | 'ident'
+  | 'op'
+  | 'lparen'
+  | 'rparen'
+  | 'lbracket'
+  | 'rbracket';
 
 /** Evaluate a condition expression over the registers. Unknown
  *  identifiers read as empty string (they compare false against
@@ -130,7 +154,37 @@ export function evaluateCondition(src: string, registers: Record<string, string>
       const right = parsePrimary();
       return compare(op, left, right);
     }
+    // The legacy membership spelling (r144): `x in ['a', 'b']` — the
+    // right side is the bracketed string-list literal.
+    if (t?.kind === 'op' && (t as { value: string }).value === 'in') {
+      eat();
+      const items = parseListLiteral();
+      return items.includes(String(left));
+    }
     return left;
+  }
+
+  /** A bracketed literal list: `['a', 'b']` (strings/numbers). */
+  function parseListLiteral(): string[] {
+    if (peek()?.kind !== 'lbracket') throw new Error("expected '[' list");
+    eat();
+    const items: string[] = [];
+    while (peek()?.kind !== 'rbracket') {
+      const v = parsePrimary();
+      items.push(String(v));
+      if (peek()?.kind === 'op' && (peek() as { value: string }).value === ',') eat();
+    }
+    eat(); // rbracket
+    return items;
+  }
+
+  /** The register's comma-list values ('a,b,c' → ['a','b','c']). */
+  function registerList(name: string): string[] {
+    const raw = registers[name] ?? '';
+    return raw
+      .split(',')
+      .map(x => x.trim())
+      .filter(x => x !== '');
   }
 
   function parsePrimary(): Value {
@@ -141,9 +195,25 @@ export function evaluateCondition(src: string, registers: Record<string, string>
       case 'str': return t.value;
       case 'bool': return t.value;
       case 'ident': {
-        const raw = registers[t.value] ?? '';
-        const num = Number(raw);
-        return raw !== '' && !Number.isNaN(num) ? num : raw;
+        // every([register]) — the MMEL v2 aggregate predicate: every
+        // value in the register's comma-list is truthy ('true' or a
+        // nonzero number); an empty list is vacuously true.
+        if (t.value === 'every') {
+          const open = eat();
+          if (open?.kind !== 'lparen') throw new Error("expected '(' after every");
+          eat(); // lbracket
+          const t2 = eat();
+          if (t2?.kind !== 'ident') throw new Error('expected a register name in brackets');
+          if (peek()?.kind !== 'rbracket') throw new Error("missing ']'");
+          eat();
+          const close = eat();
+          if (close?.kind !== 'rparen') throw new Error("expected ')' after every(...)");
+          const values = registerList(t2.value);
+          return values.every(
+            x => x === 'true' || (x !== '' && !Number.isNaN(Number(x)) && Number(x) !== 0),
+          );
+        }
+        return readRegister(t.value);
       }
       case 'lparen': {
         const v = parseOr();
@@ -151,9 +221,27 @@ export function evaluateCondition(src: string, registers: Record<string, string>
         eat();
         return v;
       }
+      case 'lbracket': {
+        // The bracket register form (the MMEL v2 spelling — the corpus's
+        // dominant condition spelling): [ident] reads the register. (The
+        // switch's `t` IS the lbracket — one token consumed, not two.)
+        const t2 = eat();
+        if (t2?.kind !== 'ident') throw new Error('expected a register name in brackets');
+        if (peek()?.kind !== 'rbracket') throw new Error("missing ']'");
+        eat();
+        return readRegister(t2.value);
+      }
       default:
         throw new Error(`unexpected token in expression`);
     }
+  }
+
+  /** The register read (bare identifier and [bracket] spellings share
+   *  it): numeric when the register holds a number, string otherwise. */
+  function readRegister(name: string): Value {
+    const raw = registers[name] ?? '';
+    const num = Number(raw);
+    return raw !== '' && !Number.isNaN(num) ? num : raw;
   }
 
   function compare(op: string, left: Value, right: Value): boolean {

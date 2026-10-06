@@ -257,3 +257,38 @@ canvas Page1 {
     expect(run.trajectory[run.trajectory.length - 2]).toBe('Done');
   });
 });
+
+
+// The corpus condition spellings (the rename contract's condition
+// language): the MMEL v2 bracket-register form, the legacy '='
+// equality, and the membership/aggregate spellings the library's
+// gateway conditions use (r144's applicability gateways, r60-lml's
+// test-result gateway) all evaluate.
+describe('the condition language: the corpus spellings', () => {
+  const registers = {
+    sampling_approach: 'extractive',
+    lab_kind: 'manufacturer_test_lab',
+    scheme: 'A',
+    power_supply: 'battery',
+    within_mpe: 'true,true,true',
+    within_mpe_bad: 'true,false,true',
+    OpV: '320',
+  };
+  it('evaluates the bracket register form with the legacy = equality', () => {
+    expect(evaluateCondition('[lab_kind] = \'manufacturer_test_lab\' and [scheme] = \'A\'', registers)).toBe(true);
+    expect(evaluateCondition('[OpV] <= 320', registers)).toBe(true);
+    expect(evaluateCondition('[OpV] < 320', registers)).toBe(false);
+  });
+  it('evaluates the membership spelling over list literals', () => {
+    expect(evaluateCondition("[sampling_approach] in ['extractive']", registers)).toBe(true);
+    expect(evaluateCondition("[power_supply] in ['battery', 'ac-and-battery']", registers)).toBe(true);
+    expect(evaluateCondition("[sampling_approach] in ['battery', 'ac-and-battery']", registers)).toBe(false);
+  });
+  it('evaluates the every aggregate over register lists', () => {
+    expect(evaluateCondition('every([within_mpe]) = true', registers)).toBe(true);
+    expect(evaluateCondition('every([within_mpe_bad]) = true', registers)).toBe(false);
+  });
+  it('composes with not and parentheses', () => {
+    expect(evaluateCondition("not ([sampling_approach] in ['battery'])", registers)).toBe(true);
+  });
+});
