@@ -258,3 +258,95 @@ gap), (2) the live-feed → measurement-variable contract (G14, seam
 decision needed), (3) edition-crossed map profiles as the adoption
 artifact (G15, riding the wave-1 items). The corpus in this repo —
 especially `13485 (for diff)` — is the test-fixture set for all three.
+
+---
+
+# The third pass (2026-10-06): the Git substrate, the twin loop, the two processing modes
+
+## The data-management substrate is GIT (the layer under everything)
+
+Every write in the legacy is a **commit**: `updateObjects({
+commitMessage: 'Update by Paneron', objectChangeset: { path:
+{ newValue } } })` — multi-object ATOMIC changesets (a model save
+commits the model + map profile + workspace + rdf + the repo index in
+ONE commit). The dataset is a Git repository managed by the Paneron
+host; objects are path-addressed (`/model/<ns>.json`,
+`/map/<ns>.json`, `/workspace/<ns>.json`, `/rdf/<ns>.json`,
+`/index.json`); the index is itself a versioned object; datasets
+carry migrations; `usePersistentDatasetStateReducer` keeps per-dataset
+UI state. So "data management" = **versioned, commit-atomic,
+path-addressed objects** — audit history for free, external Git
+tooling, clone/sync — and the `.sws` registry rows from the second
+pass are just more Git objects.
+
+The Studio's substrate differs by design: the PRL package is ONE
+atomic artifact (the kernel's parse gives the determinism; the smart
+platform's evidence registry gives the audit trail). The parity item
+is NOT git-in-the-editor — it is G13's instance store gaining the
+same *discipline*: atomic saves, a change record, an index. The
+package format already provides the shape.
+
+## Running = the digital-twin loop (measurement streams are STREAMS)
+
+The two dashboards are not "charts" — they are the PROCESS MODEL
+RUNNING as a twin, in stream mode:
+
+```
+setInterval(tick: 2s ISO27001 / 5s PAS2060)          ← the stream clock
+  → obtainData(url, time)                            ← the SOURCE (time-parameterized)
+      ISO27001: recurring bias WINDOWS over the tick clock
+      ((time + cycle − offset) % cycle < duration ⇒ regime shift)
+  → assignment (PAS2060: readings → emission sources
+      by 3-D bounding box; unassigned counted)
+  → testMeasurement(model, values)                   ← THE MODEL EXECUTES
+      (the twin's invariants = the processes' measure
+       expressions + gateway conditions; per-source
+       LISTDATA variables; overall pass/fail)
+  → surfaces: gauge (range-configured), rolling series
+      (vs a reference line), the tick log (history),
+      hasFail alert state, raw-JSON export
+```
+
+The two processing modes, made precise:
+
+- **Data mode (at rest)**: Git-committed objects — the model, the map
+  profile, the workspace registry rows, the rdf graph, the index.
+  Batch consumers: coverage, checklists, summaries, reports.
+- **Stream mode (in flight)**: the tick pipeline above — a
+  time-parameterized source, per-tick assignment, per-tick model
+  evaluation, rolling surfaces. **Measurement streams are streams**:
+  the legacy's feed takes the tick time as an argument and carries
+  recurring window cycles; the series is rolling; the alert is
+  edge-triggered (hasFail latches until cleared).
+
+The `measure` on processes + gateway conditions are the twin's
+invariants; the log is its history; the model IS the twin. The API
+contract (the configurable aggregator URL) is the twin's data source
+— in the legacy always a mock, but the CONTRACT (typed readings,
+per-tick, source-addressable) is the durable idea.
+
+## Corpus additions from this pass
+
+- `44001.xml` — a Metanorma **BSI semantic XML** (`bsi-standard`
+  type=semantic): the real input shape for the XML document import.
+- `dptm.sdc`, `test.sdc` — more clause documents (DPTM certification
+  requirements; a testing guideline).
+- `ribose.json` — another MMEL_MAP profile (the format everywhere).
+- `.github/workflows/deploy.yml` — the spec site's deploy; root
+  `dist/` is the built spec site.
+
+## The gaps, reframed
+
+- **G13 (the registry data plane)** — design note added: the instance
+  store must be commit-atomic and change-recorded (the package
+  format provides the shape; the parity debt is the store + the
+  schema-driven forms + the pickers).
+- **G14 (the live feed)** — reframed from "an aggregator URL" to the
+  **tick pipeline contract**: `{ clock → source(time) → assignment →
+  model evaluation → surfaces }`, with measurement streams treated as
+  streams (windows, cycles, rolling series, edge-triggered alerts).
+  The seam decision stands (editor-side vs the smart monitor plane),
+  but the contract is now precise enough to specify against.
+- The corpus fixtures for both: `ribose.sws` (data mode) and the
+  two dashboards' feeds (stream mode) — plus `44001.xml` for the
+  document import (G11).
