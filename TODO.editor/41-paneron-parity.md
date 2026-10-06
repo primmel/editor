@@ -420,3 +420,32 @@ expression operator set (the legacy's `[var]`/`.sum/.max/.min/.count/
 guide side; the operator table deserves the same pinning), the egate
 default/empty edge semantics, and the registry↔dataclass pairing
 invariants.
+
+## The retention proof (the mechanical test, 2026-10-06)
+
+The definitive check for "retain all semantics": feed the ENTIRE
+legacy corpus through the kernel. Result (TODO.editor/15's importer,
+the honest report):
+
+- **38/38 `.mmel` files parse natively** — the models (BS 20400
+  reference/implementation/(mapped), ISO 27001, 14971, MDSAP, HLS,
+  dptm, acme, QMS, the artificial/model-diff/knowledge-graph/link
+  fixtures, the PAS 2060 geo models, the showcase) — **0 validation
+  issues, 0 unknown keywords** (every legacy top-level keyword has a
+  v3 home).
+- **The measured rename table** (corpus totals, not guesses):
+  `measurement → variable` ×113 · `subprocess → canvas` ×802 ·
+  `view → view_profile` ×9. Everything else parses under its MMEL
+  spelling verbatim.
+- **One real gap found and fixed**: the corpus's mapped fixture
+  serialized inline mappings in the v2 two-line form
+  (`from <id>` / `to <id>`); the parser accepted only the arrow.
+  Now aliased exactly like `view` (kernel PR #105; round-trips to
+  the canonical arrow; a source literally named `from` still parses
+  in arrow form) — with a spec pinning it.
+
+The retention guarantees, restated as machinery: the kernel's
+"MMEL 0.1 spec-parity" parser set, the aliased legacy spellings
+(`view`, now the from/to mapping form), the dual map markers
+(`MMEL_MAP`/`Primmel_MAP`), and this corpus test as the standing
+regression (it belongs in CI as the rename-contract gate).
