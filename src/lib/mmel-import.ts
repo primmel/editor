@@ -17,6 +17,12 @@ export interface ImportReport {
   unknownKeywords: { keyword: string; count: number }[];
   /** The kernel validator's issues on the converted model. */
   validationIssues: string[];
+  /** The measurement-expression rename table (per pattern, with the
+   *  corpus counts) — the MMEL v2 expression language → the canonical
+   *  aggregators. */
+  expressionRenames: { from: string; to: string; count: number }[];
+  /** How many expression strings were rewritten. */
+  translatedExpressions: number;
 }
 
 export interface ImportResult {
@@ -89,8 +95,63 @@ export function keywordInventory(text: string): Map<string, number> {
 /** Import a legacy .mmel text: strict-parse with the kernel, emit the
  *  canonical form, and report everything (converted, renamed,
  *  unknown, validation). Throws the parse error on a malformed file. */
+/**
+ * The measurement-expression rename table (the MMEL v2 language →
+ * the canonical form): bracket variables become identifiers, and the
+ * postfix list operators become call-form aggregators over the run
+ * scope's list payloads — `sum(X)`, `max(X)`, `min(X)`, `count(X)`,
+ * `average(X)`. The kernel runtime evaluates the translated form
+ * (the aggregators are runtime-native).
+ */
+export function translateMeasurementExpression(expr: string): {
+  text: string;
+  renames: { from: string; to: string; count: number }[];
+} {
+  const renames: { from: string; to: string; count: number }[] = [];
+  let text = expr;
+  const postfix =
+    /\[([A-Za-z_][A-Za-z0-9_]*)\]\.(sum|max|min|count|average)\b/g;
+  text = text.replace(postfix, (_m, id: string, op: string) => {
+    renames.push({ from: `[${id}].${op}`, to: `${op}(${id})`, count: 1 });
+    return `${op}(${id})`;
+  });
+  const brackets = /\[([A-Za-z_][A-Za-z0-9_]*)\]/g;
+  text = text.replace(brackets, (_m, id: string) => {
+    renames.push({ from: `[${id}]`, to: id, count: 1 });
+    return id;
+  });
+  return { text, renames };
+}
+
 export function importLegacy(text: string): ImportResult {
   const standard = load(text, { strict: true });
+
+  // The measurement expressions translate (the rename contract's
+  // expression table): bracket variables + postfix list operators →
+  // identifiers + call-form aggregators. Applied to process measures
+  // and DERIVED variable definitions; the translation is reported.
+  const expressionRenames: Record<string, number> = {};
+  let translatedCount = 0;
+  const translate = (expr: string): string => {
+    const r = translateMeasurementExpression(expr);
+    for (const rn of r.renames) {
+      expressionRenames[`${rn.from}→${rn.to}`] =
+        (expressionRenames[`${rn.from}→${rn.to}`] ?? 0) + 1;
+    }
+    if (r.text !== expr) translatedCount++;
+    return r.text;
+  };
+  for (const p of standard.processes) {
+    if (Array.isArray(p.measure)) {
+      p.measure = p.measure.map(translate);
+    }
+  }
+  for (const v of standard.variables) {
+    if ((v.type ?? '') === 'DERIVED' && typeof v.definition === 'string') {
+      v.definition = translate(v.definition);
+    }
+  }
+
   const canonical = dump(standard);
 
   const constructs: { kind: string; count: number }[] = [];
@@ -129,5 +190,23 @@ export function importLegacy(text: string): ImportResult {
 
   const validationIssues = validate(standard).map(i => i.message);
 
-  return { standard, canonical, report: { constructs, renames, unknownKeywords, validationIssues } };
+  const expressionRenamesList = Object.entries(expressionRenames).map(
+    ([k, count]) => {
+      const [from, to] = k.split('→');
+      return { from, to, count };
+    },
+  );
+
+  return {
+    standard,
+    canonical,
+    report: {
+      constructs,
+      renames,
+      unknownKeywords,
+      validationIssues,
+      expressionRenames: expressionRenamesList,
+      translatedExpressions: translatedCount,
+    },
+  };
 }
