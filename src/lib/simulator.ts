@@ -419,11 +419,25 @@ export function step(model: Standard, state: SimState): SimState {
     for (const o of rest.reverse()) {
       next.stack.push({ pageId, nodeId: o.to });
     }
-  } else {
-    // Branch selection is kind-agnostic (TODO.editor/25): the first
-    // TRUE conditioned edge wins; the first unconditioned edge is the
-    // default. With conditioned edges but none true and no default,
-    // the flow stalls (blocked — edit a register and step again).
+  } else if (
+    kind === 'gateway-x' &&
+    outs.some(o => o.condition.trim() === '')
+  ) {
+    // The legacy (MMEL v2) underspecified-gateway rule (Checker.js) —
+    // AT GATEWAYS: an edge with NO condition makes the exclusive gate
+    // INCLUSIVE — every branch is traversed and the gate passes when
+    // any does. The step-by-step walk renders it as the parallel
+    // linearized walk. (Non-gateway nodes with a lone unconditioned
+    // edge just walk it — the cascade below.)
+    const [first, ...rest] = outs;
+    chosen = first!;
+    note = `underspecified gateway: ${rest.length + 1} branches, walked in order`;
+    for (const o of rest.reverse()) {
+      next.stack.push({ pageId, nodeId: o.to });
+    }
+  } else if (kind !== 'gateway-x') {
+    // Non-gateway nodes: the first TRUE conditioned edge wins; an
+    // unconditioned edge is the plain continuation (never a catch-all).
     const conditioned = outs.filter(o => o.condition.trim() !== '');
     for (const o of conditioned) {
       let ok = false;
@@ -439,7 +453,36 @@ export function step(model: Standard, state: SimState): SimState {
       }
     }
     if (!chosen) {
-      const fallback = outs.find(o => o.condition.trim() === '');
+      chosen = outs.find(o => o.condition.trim() === '') ?? null;
+      if (!chosen && conditioned.length > 0) {
+        next.blocked = `no outgoing edge of ${nodeId} is true — edit a register and step again`;
+        return next;
+      }
+    }
+  } else {
+    // Branch selection is kind-agnostic (TODO.editor/25): the first
+    // TRUE conditioned edge wins; the edge whose condition is the
+    // literal `default` is the catch-all tried last (the corpus's
+    // spelling — r144's skip edges, r60-lml's test-result gateway; the
+    // legacy Checker's `c.condition === 'default'`). With none true and
+    // no default, the flow stalls (blocked — edit a register and step
+    // again).
+    const conditioned = outs.filter(o => o.condition.trim() !== 'default');
+    for (const o of conditioned) {
+      let ok = false;
+      try {
+        ok = evaluateCondition(o.condition, state.registers);
+      } catch {
+        ok = false;
+      }
+      if (ok) {
+        chosen = o;
+        note = `[${o.condition}] is true`;
+        break;
+      }
+    }
+    if (!chosen) {
+      const fallback = outs.find(o => o.condition.trim() === 'default');
       if (fallback) {
         chosen = fallback;
         note = conditioned.length > 0 ? 'default branch' : '';
