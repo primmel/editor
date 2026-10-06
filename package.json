@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@oimlsmart/oiml-pubid": "github:oimlsmart/oiml-pubid#main",
-    "@primmel/primmel": "^1.21.0",
+    "@primmel/primmel": "^1.21.1",
     "@tailwindcss/vite": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.1.2",
@@ -67,6 +67,7 @@
     "vite": "^8.0.0",
     "vitest": "^4.1.10",
     "vue": "^3.5.0",
-    "vue-tsc": "^2.2.0"
+    "vue-tsc": "^2.2.0",
+    "web-worker": "^1.5.0"
   }
 }
