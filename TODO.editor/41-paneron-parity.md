@@ -449,3 +449,51 @@ The retention guarantees, restated as machinery: the kernel's
 (`view`, now the from/to mapping form), the dual map markers
 (`MMEL_MAP`/`Primmel_MAP`), and this corpus test as the standing
 regression (it belongs in CI as the rename-contract gate).
+
+---
+
+# The unwrapBlock sweep (2026-10-07): the defect class measured and closed
+
+The `stripWrapping`-vs-`unwrapBlock` mangling class (two instances
+found by accident: `view`, `condition default`) was never swept
+systematically. The instrument: `unwrapBlock` itself, patched to
+record every call whose token is not actually quote/brace-wrapped,
+run over **every `.mmel` and `.prl` file in both repositories —
+594 files**.
+
+- **3,446 distinct hits** — and **3,445 are whitespace-benign**
+  (double-strips of block content whose first/last chars are
+  newlines/spaces; the inner parsers re-tokenize whitespace away).
+- **Exactly ONE hit destroys non-whitespace characters**: a
+  bracketed list item (`[qms-manager]` → `qms-manager`) — a
+  bracket-strip that IS the intended read.
+- Conclusion: `condition default` was the only damaging instance in
+  real content (fixed in 1.21.6). **The class is closed with
+  evidence, not assumption.**
+
+## The format dispositions (the last two never-tested)
+
+- **`.sdc` clause documents** — the format is trivial
+  (`namespace#…` / `title#…` / `version#…` / `###` / `n#statement`);
+  the Studio's DocumentModel has the statement machinery but NO
+  importer. **Folds into G11** with the format spec'd above.
+- **The legacy JSON in `13485 (for diff)/`** — the `2016/2021.json`
+  files are **MAP profiles** (`MMEL_MAP`: mapSet/docs), not models —
+  they already load via the dual-marker compatibility. The MODEL-JSON
+  shape (`MMELToSerializable`) was Paneron's internal storage,
+  superseded by the PRL package — **documented disposition: not a
+  retention obligation** (the `.mmel` text is the source of record,
+  and it parses 38/38).
+
+## The ledger, final form
+
+| Plane | Evidence |
+|---|---|
+| Syntax | 38/38 corpus, 594/594 overall |
+| Renames | measured (×113 / ×802 / ×9 / verbatim) |
+| Fidelity | 36/38 + one documented normalization |
+| Expressions | 27/27 executable |
+| Conditions | corpus-complete |
+| Gateways | default + inclusive exact (parser + simulator) |
+| Registry pairing | C157 enforced, library 41/41 |
+| **The unwrap class** | **measured: 1 damaging case in 594 files — fixed; the rest benign** |
