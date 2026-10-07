@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@oimlsmart/oiml-pubid": "github:oimlsmart/oiml-pubid#main",
-    "@primmel/primmel": "^1.21.6",
+    "@primmel/primmel": "^1.21.7",
     "@tailwindcss/vite": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.1.2",
