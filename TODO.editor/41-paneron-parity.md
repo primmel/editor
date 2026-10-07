@@ -244,6 +244,7 @@ dashboard class at product level.
 | **G13** | **The registry data plane** — MMEL_WORKSPACE instance store + schema-driven entry forms (nested-class prefixes, enum/basic/reference-attr fields, cross-registry pickers), persisted per package, wired to the measurement/checklist consumers | **L** | the Studio has the schema side only; this is the legacy's "Implementation" module proper |
 | **G14** | **The live-feed contract** — configurable aggregator URL → typed readings → LISTDATA measurement variables, polling dashboards, logs + export | **M** | decide the seam: editor-side (as legacy) vs the smart platform's monitor plane (which already covers the class) |
 | **G15** | **Edition-crossed map profiles** — an implementation's mapSet per reference EDITION, document mapSets included, with the directive→regulation migration as the canonical case | **S–M** | rides G3 (mapping diff) + G6 (edition compare); the corpus fixture exists to test against |
+| **G16** | **The TABLE-variable derivation UI** — the simulator seeds every register empty; TABLE_OPTIONS/TABLE_REFERENCE variables need a derive affordance (evaluate over the model's tables via the kernel's `evaluateTableVariable`) instead of hand-typed values | **S** | the kernel wire landed (1.21.9: `isTableVariable` + `evaluateTableVariable` + `lookupTable`, corpus-verified); this is the editor-side consume only |
 | — | `.sdc` clause-document import into the DocumentView plane | **S** | fold into G11 (document import) |
 | — | CSV round-trip for tables (import/export) | **S** | showcase 5's CSVs are the fixtures |
 
@@ -496,4 +497,5 @@ run over **every `.mmel` and `.prl` file in both repositories —
 | Conditions | corpus-complete |
 | Gateways | default + inclusive exact (parser + simulator) |
 | Registry pairing | C157 enforced, library 41/41 |
+| **Table lookup** | **`lookupTable` + the TABLE-variable evaluation wire, the BS6004 corpus variables verbatim (kernel 1.21.9); editor-side derive = G16** |
 | **The unwrap class** | **measured: 1 damaging case in 594 files — fixed; the rest benign** |
