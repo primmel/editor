@@ -147,7 +147,7 @@ export function importLegacy(text: string): ImportResult {
     }
   }
   for (const v of standard.variables) {
-    if ((v.type ?? '') === 'DERIVED' && typeof v.definition === 'string') {
+    if (v.type === 'DERIVED') {
       v.definition = translate(v.definition);
     }
   }
