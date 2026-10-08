@@ -13,7 +13,7 @@ function clickNode(text: string) {
     const target = nodes.find(n => n.textContent?.includes(t)) as HTMLElement | undefined
     if (!target) throw new Error(`node ${t} not found`)
     target.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
-    target.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+    target.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }))
     target.dispatchEvent(new MouseEvent('click', { bubbles: true }))
   }, text)
 }
@@ -70,8 +70,8 @@ await page.evaluate(() => {
   const nodes = Array.from(document.querySelectorAll('.node-group'))
   const start = nodes.find(n => n.textContent?.includes('Start')) as HTMLElement
   const mfg = nodes.find(n => n.textContent?.includes('Manufacture')) as HTMLElement
-  start.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, shiftKey: true }))
-  mfg.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  start.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, shiftKey: true, pointerId: 1 }))
+  mfg.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }))
 })
 await new Promise(r => setTimeout(r, 400))
 state = await page.evaluate(() => ({
