@@ -6,11 +6,14 @@ import { readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
+const mobile = process.env.E2E_VIEWPORT === 'mobile'
+const WIDTH = mobile ? 390 : 1400
+const HEIGHT = mobile ? 844 : 950
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
 const errors: string[] = []
 page.on('pageerror', (e) => errors.push(String(e)))
-await page.setViewport({ width: 1400, height: 950 })
+await page.setViewport({ width: WIDTH, height: HEIGHT })
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise((r) => setTimeout(r, 2500))
 

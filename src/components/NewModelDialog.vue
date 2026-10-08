@@ -75,6 +75,7 @@ const KINDS: ModelKind[] = ['blank', 'reference', 'implementation'];
 }
 .dialog {
   width: 30rem;
+  max-width: calc(100vw - 1rem);
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);

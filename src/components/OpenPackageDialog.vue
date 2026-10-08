@@ -121,6 +121,7 @@ async function doOpen() {
 }
 .dialog {
   width: 34rem;
+  max-width: calc(100vw - 1rem);
   max-height: 80vh;
   overflow-y: auto;
   background: var(--bg-surface);

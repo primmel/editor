@@ -31,6 +31,10 @@ export const useUiStore = defineStore('ui', () => {
   const leftPanel = ref<'tree' | 'code'>('tree');
   const rightPanel = ref<'inspector' | 'workspace' | 'layers' | 'editions' | 'compliance' | 'simulation' | 'twin' | 'validation' | 'check'>('inspector');
   const view = ref<'model' | 'registry' | 'mapping' | 'diff'>('model');
+  /** The responsive drawers (≤1024px): the panels slide over the
+   *  canvas; desktop ignores these entirely. */
+  const leftDrawer = ref(false);
+  const rightDrawer = ref(false);
 
   function select(id: string, type: SelectionType) {
     selection.value = { id, type };
@@ -63,7 +67,7 @@ export const useUiStore = defineStore('ui', () => {
 
   return {
     selection, activeCanvasId, zoom, panX, panY,
-    leftPanel, rightPanel, view,
+    leftPanel, rightPanel, view, leftDrawer, rightDrawer,
     select, clearSelection, setCanvas, setZoom, pan, resetView,
     isSelected,
   };
