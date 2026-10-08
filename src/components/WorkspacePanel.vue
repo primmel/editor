@@ -11,6 +11,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { workspaceIndex } from '../lib/workspace';
+import WorkspaceDataPanel from './WorkspaceDataPanel.vue';
 import { useModelStore } from '../stores/model';
 import { useMappingStore } from '../stores/mapping';
 import { useUiStore } from '../stores/ui';
@@ -106,6 +107,9 @@ function openDoc() {
     <div v-else class="ws-empty" data-testid="workspace-doc-empty">
       no document attached — the mapping view's document import adds one
     </div>
+
+    <!-- DATA — the registry instance store (G13 step 2). -->
+    <WorkspaceDataPanel :model="model" />
   </div>
 </template>
 

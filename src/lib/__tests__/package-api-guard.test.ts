@@ -43,3 +43,11 @@ describe('wave 1 — the package-API guard', () => {
     expect(() => guardPackageFile(PKG, '')).toThrow('empty');
   });
 });
+
+it('admits the workspace data file by exact path (G13), refuses other .json', () => {
+  const dir = PKG;
+  const ws = guardPackageFile(dir, 'workspace/instances.json');
+  expect(ws.endsWith(path.join('workspace', 'instances.json'))).toBe(true);
+  expect(() => guardPackageFile(dir, 'workspace/other.json')).toThrow(/only .prl/);
+  expect(() => guardPackageFile(dir, '../evil/workspace/instances.json')).toThrow();
+});
