@@ -7,7 +7,8 @@
 // dialog's ordinary command.
 // ─────────────────────────────────────────────────────────────────────
 import { computed, ref } from 'vue';
-import { load, type Standard } from '@primmel/primmel';
+import { load, loadPrm, type PrmFile, type Standard } from '@primmel/primmel';
+import { editionProfileDiff, type EditionNamespaceDelta } from '../../lib/edition-map-diff';
 import { mappingDiff, type MappingDiff } from '../../lib/mapping-diff';
 import { useModelStore } from '../../stores/model';
 
@@ -37,6 +38,37 @@ function runDiff() {
   } catch (e) {
     error.value = (e as Error).message;
   }
+}
+
+/** G15 — the edition-crossed profiles: the 13485 fixture's story. */
+const editionOld = ref<PrmFile | null>(null);
+const editionNew = ref<PrmFile | null>(null);
+const editionDeltas = ref<EditionNamespaceDelta[] | null>(null);
+const editionError = ref('');
+
+async function pickPrm(which: 'old' | 'new') {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.map,.json,.prm';
+  input.onchange = async () => {
+    const f = input.files?.[0];
+    if (!f) return;
+    try {
+      const prm = loadPrm(await f.text());
+      if (which === 'old') editionOld.value = prm;
+      else editionNew.value = prm;
+      editionDeltas.value = null;
+      editionError.value = '';
+    } catch (e) {
+      editionError.value = (e as Error).message;
+    }
+  };
+  input.click();
+}
+
+function runEditionDiff() {
+  if (!editionOld.value || !editionNew.value) return;
+  editionDeltas.value = editionProfileDiff(editionOld.value, editionNew.value);
 }
 
 async function pick(which: 'old' | 'new') {
@@ -72,6 +104,40 @@ async function pick(which: 'old' | 'new') {
       </button>
     </div>
     <div v-if="error" class="mdiff-error" data-testid="mdiff-error">{{ error }}</div>
+
+    <div class="mdiff-editions">
+      <span class="mdiff-editions-label">edition-crossed profiles (G15 — the 13485 story)</span>
+      <button type="button" class="mdiff-btn" data-testid="editions-pick-old" @click="pickPrm('old')">
+        {{ editionOld ? '2016 loaded ✓' : 'load the old .prm/.map' }}
+      </button>
+      <button type="button" class="mdiff-btn" data-testid="editions-pick-new" @click="pickPrm('new')">
+        {{ editionNew ? '2021 loaded ✓' : 'load the new .prm/.map' }}
+      </button>
+      <button
+        type="button"
+        class="mdiff-btn"
+        :disabled="!editionOld || !editionNew"
+        data-testid="editions-run"
+        @click="runEditionDiff"
+      >diff the editions</button>
+      <div v-if="editionError" class="mdiff-error" data-testid="editions-error">{{ editionError }}</div>
+      <template v-if="editionDeltas">
+        <div
+          v-for="d in editionDeltas"
+          :key="d.namespace"
+          class="mdiff-edition-ns"
+          :data-testid="`editions-ns-${d.namespace}`"
+        >
+          <code>{{ d.namespace }}</code>
+          <span class="mdiff-stat ok">{{ d.carried.length }} carried</span>
+          <span class="mdiff-stat add">+{{ d.added.length }}</span>
+          <span class="mdiff-stat drop">−{{ d.dropped.length }}</span>
+          <div v-for="p in d.dropped.slice(0, 5)" :key="`d-${p.source}-${p.target}`" class="mdiff-pair dropped">
+            <code>{{ p.source }}</code> ⇒ <code>{{ p.target }}</code>
+          </div>
+        </div>
+      </template>
+    </div>
 
     <template v-if="diff">
       <div class="mdiff-coverage" data-testid="mdiff-coverage">
@@ -113,5 +179,12 @@ async function pick(which: 'old' | 'new') {
 .mdiff-pair.retained .mdiff-status { color: var(--sage, #7a9a7a); }
 .mdiff-status { margin-left: 0.4rem; font-size: 0.66rem; }
 .mdiff-suggest { margin-left: 0.4rem; font-size: 0.66rem; opacity: 0.8; }
+.mdiff-editions { border-top: 1px dotted var(--border-soft); margin-top: 0.5rem; padding-top: 0.4rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+.mdiff-editions-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; width: 100%; }
+.mdiff-edition-ns { width: 100%; font-size: 0.68rem; padding: 0.15rem 0; }
+.mdiff-stat { font-family: var(--font-mono); font-size: 0.64rem; margin-left: 0.5rem; }
+.mdiff-stat.ok { color: var(--sage, #7a9a7a); }
+.mdiff-stat.add { color: var(--accent); }
+.mdiff-stat.drop { color: #b91c1c; }
 .mdiff-empty { opacity: 0.6; font-size: 0.7rem; }
 </style>
