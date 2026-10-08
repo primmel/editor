@@ -23,6 +23,7 @@ import { COVERAGE_TINTS, coverageTooltip, coverageView, type CoverageView } from
 import {
   createMappingPair, deleteMappingPair, updateMappingMeta,
 } from '../../lib/commands';
+import { adoptWithPair } from '../../lib/adopt';
 import { useModelStore } from '../../stores/model';
 import { useMappingStore } from '../../stores/mapping';
 import { useUiStore } from '../../stores/ui';
@@ -51,6 +52,7 @@ const coverage = computed<CoverageView | null>(() => {
 const CONFLICT_TINT = '#b85555';
 
 const diffOpen = ref(false);
+const adoptError = ref('');
 
 function refTint(id: string): string | null {
   const row = coverage.value?.ref.get(id);
@@ -111,6 +113,22 @@ function loadDocumentFile() {
 }
 
 // ── The pick flow (click one side, then the other) ───────────────────
+/** G5 — the adopt cascade: the reference element lands in the
+ *  implementation AND its map pair arrives with it. Two undo units
+ *  (the command discipline); the adoption refuses a colliding id. */
+function onAdopt(refId: string) {
+  if (!refModel.value || !namespace.value || !modelStore.standard) return;
+  try {
+    const { adoption, pair } = adoptWithPair(
+      modelStore.standard, refModel.value, namespace.value, refId,
+    );
+    modelStore.execute(adoption);
+    modelStore.execute(pair);
+  } catch (e) {
+    adoptError.value = (e as Error).message;
+  }
+}
+
 function onPick(side: 'ref' | 'imp', id: string) {
   if (modelStore.readOnly) return; // the viewer's mapper is a read-only lens
   const prev = mapping.picked;
@@ -366,6 +384,7 @@ const hoveredEdge = ref<string | null>(null);
     </div>
 
     <div v-if="refModel || (mapping.docMode && mapping.document)" class="mapper-parties">
+      <div v-if="adoptError" class="mapper-adopt-error" data-testid="adopt-error">{{ adoptError }}</div>
       <div class="party-col" v-if="!mapping.docMode && refModel">
         <div class="party-col-label">reference</div>
         <MapPartyList
@@ -374,6 +393,7 @@ const hoveredEdge = ref<string | null>(null);
           :profile="profile"
           @pick="onPick('ref', $event)"
           @edit-pair="onEditPair"
+          @adopt="onAdopt"
         />
       </div>
       <div class="party-col" :class="{ 'party-col-wide': mapping.docMode }">
@@ -502,6 +522,7 @@ const hoveredEdge = ref<string | null>(null);
   cursor: pointer;
 }
 .map-edge.hovered { opacity: 1; stroke-width: 3; }
+.mapper-adopt-error { color: #b91c1c; font-size: 0.68rem; padding: 0.2rem 0; }
 .mapper-parties {
   height: 180px;
   display: grid;

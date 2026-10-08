@@ -24,6 +24,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'pick', id: string): void;
   (e: 'editPair', impId: string, refId: string): void;
+  (e: 'adopt', refId: string): void;
 }>();
 
 const modelStore = useModelStore();
@@ -96,16 +97,28 @@ function onRow(row: Row) {
     </div>
     <div class="party-section">
       <div class="party-header">unmapped ({{ unmappedRows.length }})</div>
-      <button
+      <div
         v-for="row in unmappedRows"
         :key="row.id"
-        type="button"
-        class="party-row unmapped"
+        class="party-row unmapped party-row-wrap"
         :data-testid="`party-${side}-unmapped-${row.id}`"
-        @click="onRow(row)"
       >
-        <span class="party-id">{{ row.id }}</span>
-      </button>
+        <button
+          type="button"
+          class="party-row unmapped party-row-main"
+          @click="onRow(row)"
+        >
+          <span class="party-id">{{ row.id }}</span>
+        </button>
+        <button
+          v-if="side === 'target'"
+          type="button"
+          class="party-adopt"
+          title="adopt into the implementation and map it (G5)"
+          :data-testid="`party-adopt-${row.id}`"
+          @click.stop="emit('adopt', row.id)"
+        >adopt</button>
+      </div>
     </div>
   </div>
 </template>
@@ -163,4 +176,16 @@ function onRow(row: Row) {
   border-radius: var(--radius-sm);
   padding: 0 0.25rem;
 }
+.party-row-wrap { display: flex; gap: 0.25rem; align-items: center; padding: 0; border: none; }
+.party-row-main { flex: 1; }
+.party-adopt {
+  font-size: 0.6rem;
+  padding: 0.1rem 0.35rem;
+  cursor: pointer;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm, 3px);
+  background: none;
+  color: var(--text-soft);
+}
+.party-adopt:hover { color: var(--sage); border-color: var(--sage); }
 </style>
