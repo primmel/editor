@@ -49,3 +49,15 @@ agent's deployed production lane.
   touched. Their responsive program exists: TODO.identity-features/
   02-responsive-ux-audit.md.
 - **The Studio**: re-certified below.
+
+## The third pass (2026-10-09, "do ALL the work now") — deeper
+
+The prior passes proved three legs at mobile width and the suite at
+desktop. This pass removes the asymmetry:
+
+1. **The FULL standing suite runs at BOTH widths** — every leg at
+   1440×950 AND 390×844 (`E2E_VIEWPORT=mobile ./e2e/run-all.sh`).
+   Whatever breaks at mobile is a real finding, fixed.
+2. **R4 closes: the canvas on touch.** The pan/zoom interactions get
+   a touch-driven probe (emulated touch drag), not a manual note.
+3. **The record updates** with the matrix: leg × width × result.

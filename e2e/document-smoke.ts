@@ -15,9 +15,10 @@ const XML = `<?xml version="1.0" encoding="UTF-8"?>
 </sections>
 </metanorma>`
 
+const VP = (process.env.E2E_VIEWPORT === 'mobile') ? { width: 390, height: 844, isMobile: true, hasTouch: true } : { width: 1440, height: 950 }
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
-await page.setViewport({ width: 1440, height: 950 })
+await page.setViewport(VP)
 page.on('pageerror', e => console.log('PAGEERROR:', String(e)))
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
