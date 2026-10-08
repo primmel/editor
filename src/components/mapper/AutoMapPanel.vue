@@ -8,7 +8,9 @@
 // ─────────────────────────────────────────────────────────────────────
 import { computed, ref } from 'vue';
 import type { Standard } from '@primmel/primmel';
+import type { DiscoveryProposal } from '@primmel/primmel';
 import { automapJustification, suggestMappings, type AutomapSuggestion } from '../../lib/automap';
+import { transitiveProposals } from '../../lib/automap-transitive';
 import { coverageView } from '../../lib/coverage';
 import { targetRef } from '../../lib/mapper';
 import { createMappingPair } from '../../lib/commands';
@@ -57,6 +59,22 @@ function reject(s: AutomapSuggestion) {
   mapping.rejectPair(s.impId, s.refId);
 }
 
+/** G1 — the transitive/inherited discovery (the KERNEL's, exposed)
+ *  across the whole mapping registry, for the ACTIVE namespace. */
+const transitive = computed<DiscoveryProposal[]>(() => {
+  void modelStore.version;
+  return transitiveProposals(props.implementationModel, mapping.refs, props.namespace);
+});
+
+function confirmTransitive(p: DiscoveryProposal) {
+  modelStore.execute(createMappingPair(
+    props.namespace,
+    p.source,
+    p.target,
+    { description: p.rationale, justification: `discovered ${p.kind} via ${p.via.join(', ')} (kernel discovery, confirmed by operator)` },
+  ));
+}
+
 function confirmProposal(source: string, target: string) {
   modelStore.execute(createMappingPair(
     props.namespace,
@@ -72,11 +90,11 @@ const open = ref(true);
 <template>
   <div class="automap" data-testid="automap-panel">
     <button type="button" class="automap-toggle" data-testid="automap-toggle" @click="open = !open">
-      {{ open ? '▾' : '▸' }} automap ({{ suggestions.length }} suggestions<span v-if="proposals.length">, {{ proposals.length }} proposals</span>)
+      {{ open ? '▾' : '▸' }} automap ({{ suggestions.length }} suggestions<span v-if="proposals.length">, {{ proposals.length }} proposals</span><span v-if="transitive.length">, {{ transitive.length }} discovered</span>)
     </button>
 
     <div v-if="open" class="automap-body">
-      <div v-if="!suggestions.length && !proposals.length" class="automap-empty">
+      <div v-if="!suggestions.length && !proposals.length && !transitive.length" class="automap-empty">
         no suggestions above the threshold
       </div>
 
@@ -125,6 +143,27 @@ const open = ref(true);
             class="suggestion-confirm"
             :data-testid="`confirm-proposal-${p.source}`"
             @click="confirmProposal(p.source, p.target)"
+          >confirm</button>
+        </div>
+      </template>
+
+      <template v-if="transitive.length">
+        <div class="proposal-header">discovered across the registry (transitive/inherited — kernel-flagged, never asserted)</div>
+        <div
+          v-for="p in transitive"
+          :key="`t-${p.sourceModel}-${p.source}-${p.target}`"
+          class="suggestion-row proposal"
+          :data-testid="`transitive-${p.source}-${p.target}`"
+        >
+          <span class="suggestion-pair">
+            <code>{{ p.source }}</code> ⇒ <code>{{ p.target }}</code>
+          </span>
+          <span class="suggestion-reasons" :title="p.rationale">{{ p.kind }} · via {{ p.via.join(', ') }}</span>
+          <button
+            type="button"
+            class="suggestion-confirm"
+            :data-testid="`confirm-transitive-${p.source}-${p.target}`"
+            @click="confirmTransitive(p)"
           >confirm</button>
         </div>
       </template>
