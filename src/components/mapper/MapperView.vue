@@ -13,6 +13,7 @@ import MapPairDialog from './MapPairDialog.vue';
 import MapPartyList from './MapPartyList.vue';
 import CoverageLegend from './CoverageLegend.vue';
 import ProfileSwitcher from './ProfileSwitcher.vue';
+import MapperRepoMap from './MapperRepoMap.vue';
 import DocumentView from './DocumentView.vue';
 import AutoMapPanel from './AutoMapPanel.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
@@ -228,6 +229,7 @@ const hoveredEdge = ref<string | null>(null);
 <template>
   <div class="mapper" ref="container">
     <ProfileSwitcher />
+    <MapperRepoMap :implementation-model="implementationModel" />
 
     <div class="mapper-toolbar" v-if="!modelStore.readOnly">
       <button class="mapper-btn" data-testid="load-ref" @click="loadReference">

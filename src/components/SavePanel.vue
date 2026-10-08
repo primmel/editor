@@ -27,6 +27,7 @@ const writePath = ref('');
 const apiAvailable = ref(false);
 const saved = ref<'download' | 'write' | null>(null);
 const writeError = ref('');
+const commitNote = ref('');
 
 onMounted(async () => {
   apiAvailable.value = await writeApiAvailable();
@@ -61,10 +62,16 @@ async function doPackageWrite() {
   const p = plan.value;
   if (!session || !p || p.writes.length === 0) return;
   writeError.value = '';
+  commitNote.value = '';
   try {
-    await writePackageFiles(session.dir, p.writes.map((w) => ({ path: w.path, text: w.text })));
+    const r = await writePackageFiles(session.dir, p.writes.map((w) => ({ path: w.path, text: w.text })));
     modelStore.markPackageSaved(p);
     saved.value = 'write';
+    // The substrate line (G13 step 1): the save's commit — or its
+    // honest absence — is part of the save's answer.
+    commitNote.value = r.commit.committed
+      ? `committed ${r.commit.oid?.slice(0, 7)} — the log is the workspace history`
+      : (r.commit.reason ?? '');
   } catch (e) {
     writeError.value = (e as Error).message;
   }
@@ -184,6 +191,7 @@ const ssotNote = computed(() => {
         <div v-if="saved" class="save-done" data-testid="save-done">
           saved ({{ saved === 'write' ? 'written to the package' : 'downloaded' }}) — the dirty flag is clear
         </div>
+        <div v-if="commitNote" class="save-commit" data-testid="save-commit">{{ commitNote }}</div>
         <div v-if="ssotNote" class="save-ssot" data-testid="save-ssot">{{ ssotNote }}</div>
       </div>
 
@@ -311,6 +319,7 @@ const ssotNote = computed(() => {
 .save-btn:disabled { opacity: 0.4; cursor: default; }
 .save-error { color: #b85555; font-size: 0.72rem; }
 .save-done { color: var(--sage); font-size: 0.72rem; }
+.save-commit { color: var(--sage); font-size: 0.68rem; font-family: monospace; }
 .save-ssot {
   font-size: 0.68rem;
   color: #d49442;

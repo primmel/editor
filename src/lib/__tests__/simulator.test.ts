@@ -11,7 +11,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { load, type Standard } from '@primmel/primmel';
-import { createRun, evaluateCondition, resetRun, step } from '../simulator';
+import { createRun, deriveComputed, evaluateCondition, resetRun, step } from '../simulator';
 
 const TEXT = `root Root
 
@@ -367,5 +367,75 @@ ${conditions
     st = step(model, st);
     st = step(model, st);
     expect(st.blocked).toBeTruthy();
+  });
+});
+
+describe('the computed registers derive (G16 — the BS6004 grid, real parse path)', () => {
+  const TABLE_TEXT = `root Root
+
+version "v1.0.0-dev1"
+
+metadata {
+  title "T"
+  schema "Primmel 0.1"
+  namespace "N"
+}
+
+table data {
+  title "Data"
+  columns "5"
+  data {
+    "" "Rated voltage of cable" "" "Conductor-earth" ""
+    "6181Y" "1 x 1.0" "1" "1" "0.6"
+    "6181Y" "1 x 1.5" "1.5" "1" "0.7"
+  }
+}
+
+variable type {
+  type TABLE_OPTIONS
+  definition "data,0,2,area,3,class"
+  description "Type of cable"
+}
+
+variable area {
+  type TABLE_OPTIONS
+  definition "data,2,0,type,3,class"
+  description "Nominal area"
+}
+
+variable thicknessReq {
+  type TABLE_REFERENCE
+  definition "data,4,0,type,2,area,3,class"
+  description "Thickness requirement"
+}
+
+variable doubled {
+  type DERIVED
+  definition "area * 2"
+  description "derived over a derived table variable"
+}
+`;
+
+  it('derives the TABLE family to a fixed point, DERIVED on top', () => {
+    const model = load(TABLE_TEXT) as unknown as Standard;
+    // The measured registers seed (the workspace's instance data); the
+    // round lookup family (type/area/class) resolves from them over
+    // the fixed-point passes.
+    const { values, errors } = deriveComputed(model, { area: '1', class: '1' });
+    expect(errors).toEqual({});
+    expect(values.type).toBe('6181Y');
+    expect(values.area).toBe(1);
+    expect(values.thicknessReq).toBe(0.6);
+    // doubled reads `area` — itself a lookup — so the fixed point ran.
+    expect(values.doubled).toBe(2);
+  });
+
+  it('a lookup that matches no row reports, never throws', () => {
+    const model = load(TABLE_TEXT) as unknown as Standard;
+    const { values, errors } = deriveComputed(model, { class: '9' });
+    expect(values.type).toBeUndefined();
+    expect(errors.type).toMatch(/matches no row/);
+    // the dependents are blocked, not broken
+    expect(errors.thicknessReq).toBeTruthy();
   });
 });

@@ -21,6 +21,10 @@ const registerIds = computed(() => (run.value ? Object.keys(run.value.registers)
 function onRegisterInput(id: string, e: Event) {
   sim.setRegister(id, (e.target as HTMLInputElement).value);
 }
+
+function derive() {
+  sim.derive(props.model);
+}
 </script>
 
 <template>
@@ -62,6 +66,12 @@ function onRegisterInput(id: string, e: Event) {
         <button
           type="button"
           class="sim-btn"
+          data-testid="sim-derive"
+          @click="derive"
+        >derive computed</button>
+        <button
+          type="button"
+          class="sim-btn"
           data-testid="sim-reset"
           @click="sim.reset(props.model)"
         >reset</button>
@@ -84,6 +94,12 @@ function onRegisterInput(id: string, e: Event) {
             :data-testid="`register-${id}`"
             @change="onRegisterInput(id, $event)"
           />
+          <span
+            v-if="run.deriveErrors?.[id]"
+            class="register-error"
+            :title="run.deriveErrors[id]"
+            :data-testid="`register-error-${id}`"
+          >!</span>
         </div>
       </div>
 
@@ -156,10 +172,16 @@ function onRegisterInput(id: string, e: Event) {
 .sim-empty { font-size: 0.68rem; color: var(--text-faint); font-style: italic; }
 .register-row {
   display: grid;
-  grid-template-columns: 6rem 1fr;
+  grid-template-columns: 6rem 1fr 1rem;
   gap: 0.4rem;
   align-items: center;
   margin-bottom: 0.25rem;
+}
+
+.register-error {
+  color: var(--danger, #b91c1c);
+  font-weight: 700;
+  cursor: help;
 }
 .register-id {
   font-family: var(--font-mono);
