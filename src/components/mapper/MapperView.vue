@@ -14,6 +14,7 @@ import MapPartyList from './MapPartyList.vue';
 import CoverageLegend from './CoverageLegend.vue';
 import ProfileSwitcher from './ProfileSwitcher.vue';
 import MapperRepoMap from './MapperRepoMap.vue';
+import MappingDiffPanel from './MappingDiffPanel.vue';
 import DocumentView from './DocumentView.vue';
 import AutoMapPanel from './AutoMapPanel.vue';
 import { allPairs, profileFor, splitTargetRef, targetRef } from '../../lib/mapper';
@@ -48,6 +49,8 @@ const coverage = computed<CoverageView | null>(() => {
 });
 
 const CONFLICT_TINT = '#b85555';
+
+const diffOpen = ref(false);
 
 function refTint(id: string): string | null {
   const row = coverage.value?.ref.get(id);
@@ -230,6 +233,10 @@ const hoveredEdge = ref<string | null>(null);
   <div class="mapper" ref="container">
     <ProfileSwitcher />
     <MapperRepoMap :implementation-model="implementationModel" />
+    <label class="mapper-diff-toggle"
+      ><input type="checkbox" v-model="diffOpen" data-testid="mdiff-toggle" /> reference-update diff</label
+    >
+    <MappingDiffPanel v-if="diffOpen" :implementation-model="implementationModel" />
 
     <div class="mapper-toolbar" v-if="!modelStore.readOnly">
       <button class="mapper-btn" data-testid="load-ref" @click="loadReference">
