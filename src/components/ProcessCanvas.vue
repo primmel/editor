@@ -97,7 +97,7 @@ const breadcrumb = computed(() => {
 });
 
 // ── Pan/zoom/drag ────────────────────────────────────────────────────
-function onCanvasMouseDown(e: MouseEvent) {
+function onCanvasMouseDown(e: PointerEvent | MouseEvent) {
   const target = e.target as Element;
   if (target.tagName === 'svg' || target.getAttribute('data-bg')) {
     if (selectedEdgeId.value) {
@@ -109,7 +109,7 @@ function onCanvasMouseDown(e: MouseEvent) {
   }
 }
 
-function worldPoint(e: MouseEvent): { x: number; y: number } {
+function worldPoint(e: PointerEvent | MouseEvent): { x: number; y: number } {
   const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
   const z = ui.zoom;
   return {
@@ -118,7 +118,7 @@ function worldPoint(e: MouseEvent): { x: number; y: number } {
   };
 }
 
-function onMouseMove(e: MouseEvent) {
+function onMouseMove(e: PointerEvent | MouseEvent) {
   if (connectFrom.value) {
     connectMouse.value = worldPoint(e);
     return;
@@ -176,7 +176,7 @@ function onNodeDoubleClick(node: RenderNode) {
   if (pageId) gotoPage(pageId);
 }
 
-function onNodeMouseDown(e: MouseEvent, node: RenderNode) {
+function onNodeMouseDown(e: PointerEvent | MouseEvent, node: RenderNode) {
   e.stopPropagation();
   if (props.mode === 'select') return; // pick happens on click
   // The viewer: no drag, no connect — the click selects (onNodeClick).
@@ -387,10 +387,11 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
     <svg
       class="canvas-svg"
       :viewBox="viewBox"
-      @mousedown="onCanvasMouseDown"
-      @mousemove="onMouseMove"
-      @mouseup="onMouseUp"
-      @mouseleave="onMouseUp"
+      @pointerdown="onCanvasMouseDown"
+      @pointermove="onMouseMove"
+      @pointerup="onMouseUp"
+      @pointerleave="onMouseUp"
+      @pointercancel="onMouseUp"
       @wheel.prevent="onWheel"
       @drop="onPaletteDrop"
       @dragover="onPaletteDragOver"
@@ -447,8 +448,8 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
         class="node-group"
         @click.stop="onNodeClick(node)"
         @dblclick.stop="onNodeDoubleClick(node)"
-        @mousedown="onNodeMouseDown($event, node)"
-        @mouseup.stop="onNodeMouseUp(node)"
+        @pointerdown="onNodeMouseDown($event, node)"
+        @pointerup.stop="onNodeMouseUp(node)"
       >
         <title v-if="tooltipOf?.(node.id)">{{ tooltipOf(node.id) }}</title>
         <rect
@@ -546,6 +547,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
   width: 100%;
   height: 100%;
   cursor: grab;
+  touch-action: none;
 }
 .canvas-svg:active { cursor: grabbing; }
 .canvas-tabs {

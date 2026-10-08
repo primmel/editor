@@ -7,6 +7,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# E2E_VIEWPORT=mobile runs every leg at 390x844 (TODO.editor/51's R5,
+# the third pass: the full suite at BOTH widths, not a sample).
+E2E_VIEWPORT="${E2E_VIEWPORT:-desktop}"
+echo "viewport: $E2E_VIEWPORT"
+
 for leg in \
   leg1-create-edit-serialize \
   palette-smoke \
@@ -38,6 +43,7 @@ for leg in \
   twin-smoke \
   workspace-data-smoke \
   responsive-smoke \
+  canvas-touch-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \

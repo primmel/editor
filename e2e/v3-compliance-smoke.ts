@@ -15,9 +15,10 @@ import { readFileSync } from 'node:fs'
 // "Promise was collected", the 2026-08-29 flake).
 const SCHEME = readFileSync(new URL('../demo/oiml-cs/model.prl', import.meta.url), 'utf8')
 
+const VP = (process.env.E2E_VIEWPORT === 'mobile') ? { width: 390, height: 844, isMobile: true, hasTouch: true } : { width: 1440, height: 950 }
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
-await page.setViewport({ width: 1440, height: 950 })
+await page.setViewport(VP)
 page.on('pageerror', e => console.log('PAGEERROR:', String(e)))
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))

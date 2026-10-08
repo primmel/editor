@@ -1,8 +1,9 @@
 import puppeteer from 'puppeteer'
 
+const VP = (process.env.E2E_VIEWPORT === 'mobile') ? { width: 390, height: 844, isMobile: true, hasTouch: true } : { width: 1280, height: 900 }
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
-await page.setViewport({ width: 1280, height: 900 })
+await page.setViewport(VP)
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5173/', { waitUntil: 'domcontentloaded' })
 await new Promise(r => setTimeout(r, 2500))
 
