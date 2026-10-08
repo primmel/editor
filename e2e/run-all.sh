@@ -35,6 +35,8 @@ for leg in \
   package-smoke \
   comment-save-smoke \
   viewer-smoke \
+  twin-smoke \
+  workspace-data-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
