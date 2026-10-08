@@ -139,6 +139,17 @@ function packageApi(): Plugin {
             res.end(JSON.stringify({ ok: true, history }));
             return;
           }
+          if (sub === '/read') {
+            const dir = guardPackageDir(String(body.dir ?? ''));
+            const full = guardPackageFile(dir, String(body.path ?? ''));
+            if (!fs.existsSync(full)) {
+              res.statusCode = 404;
+              res.end(JSON.stringify({ error: `no file ${body.path}` }));
+              return;
+            }
+            res.end(JSON.stringify({ ok: true, text: fs.readFileSync(full, 'utf8') }));
+            return;
+          }
           if (sub === '/check') {
             res.end(JSON.stringify(checkPackagePayload(String(body.dir ?? ''))));
             return;
