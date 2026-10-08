@@ -31,8 +31,8 @@ if (!state.inData || state.inChilds || !state.dashed) {
 await page.evaluate(`(() => {
   const from = document.querySelector('[data-node-id="Manufacturing"]')
   const to = document.querySelector('[data-node-id="DC1"]')
-  from.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, shiftKey: true }))
-  to.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  from.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, shiftKey: true, pointerId: 1 }))
+  to.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }))
 })()`)
 await new Promise(r => setTimeout(r, 500))
 state = await page.evaluate(`(() => {
