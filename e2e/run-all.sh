@@ -37,6 +37,7 @@ for leg in \
   viewer-smoke \
   twin-smoke \
   workspace-data-smoke \
+  responsive-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
