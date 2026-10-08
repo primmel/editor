@@ -61,3 +61,24 @@ desktop. This pass removes the asymmetry:
 2. **R4 closes: the canvas on touch.** The pan/zoom interactions get
    a touch-driven probe (emulated touch drag), not a manual note.
 3. **The record updates** with the matrix: leg × width × result.
+
+## The third pass's result (2026-10-09)
+
+**The full standing suite runs GREEN AT BOTH WIDTHS:**
+- desktop 1440×950: every leg OK (the serial re-certification)
+- **mobile 390×844: 56/56 legs OK, exit 0** (`E2E_VIEWPORT=mobile
+  ./e2e/run-all.sh` — all 55 legs take the viewport; the runner
+  declares it)
+
+What the mobile pass found and fixed:
+1. **The canvas was inert on touch** — mouse-only handlers; converted
+   to pointer events + `touch-action: none` (PR #58). The ordering
+   trap (pointerup before mouseup broke the connect flow at desktop)
+   caught by canvas-smoke, fixed symmetrically.
+2. **Two probes spoke synthetic MouseEvents** for the shift-drag —
+   synthetic mouse events don't synthesize pointers; both dispatch
+   PointerEvents now (PR #59).
+3. The runner's own quoting bug (exit 2 with all legs green) fixed.
+
+`canvas-touch-smoke` is a standing leg. The studio now demonstrably
+works on a phone: every surface, every leg, both widths.
