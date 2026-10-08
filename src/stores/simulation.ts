@@ -6,7 +6,7 @@
 import { defineStore } from 'pinia';
 import { computed, shallowRef } from 'vue';
 import type { Standard } from '@primmel/primmel';
-import { createRun, resetRun, step, type SimState } from '../lib/simulator';
+import { createRun, deriveComputed, resetRun, step, type SimState } from '../lib/simulator';
 
 export const useSimStore = defineStore('simulation', () => {
   const run = shallowRef<SimState | null>(null);
@@ -40,6 +40,17 @@ export const useSimStore = defineStore('simulation', () => {
     run.value = null;
   }
 
+  /** The computed registers derive (G16): DERIVED definitions and the
+   *  TABLE family evaluate over the current registers; values merge in
+   *  as strings, failures report per variable (never thrown). */
+  function derive(model: Standard) {
+    if (!run.value) return;
+    const { values, errors } = deriveComputed(model, run.value.registers);
+    const registers = { ...run.value.registers };
+    for (const [id, v] of Object.entries(values)) registers[id] = String(v);
+    run.value = { ...run.value, registers, deriveErrors: errors };
+  }
+
   /** A register edit clears the blocked state (the gate re-evaluates
    *  on the next step). */
   function setRegister(id: string, value: string) {
@@ -51,5 +62,5 @@ export const useSimStore = defineStore('simulation', () => {
     };
   }
 
-  return { run, active, start, stepOnce, continueRun, reset, stop, setRegister };
+  return { run, active, start, stepOnce, continueRun, reset, stop, setRegister, derive };
 });

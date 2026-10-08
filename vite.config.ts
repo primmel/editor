@@ -7,6 +7,7 @@ import { guardSavePath } from './scripts/save-api-guard';
 import { guardPackageDir, guardPackageFile } from './scripts/package-api-guard';
 import { openPackagePayload } from './scripts/package-open';
 import { checkPackagePayload } from './scripts/package-check';
+import { commitPackageWrites, packageHistory, SAVE_COMMIT_MESSAGE } from './scripts/package-git';
 
 // ─────────────────────────────────────────────────────────────────────
 // The save API (TODO.editor/18) — the dev server's write path: POST
@@ -119,7 +120,23 @@ function packageApi(): Plugin {
               fs.writeFileSync(full, w.text);
               files.push({ path: w.path, backup });
             }
-            res.end(JSON.stringify({ ok: true, files }));
+            // The substrate discipline (G13 step 1): the save commits.
+            // Best-effort — the write already happened; the commit
+            // reports, it never fails the save.
+            const commit = await commitPackageWrites(
+              dir,
+              writes.map((w) => w.path),
+              typeof body.message === 'string' && body.message.trim() !== ''
+                ? body.message
+                : SAVE_COMMIT_MESSAGE,
+            );
+            res.end(JSON.stringify({ ok: true, files, commit }));
+            return;
+          }
+          if (sub === '/history') {
+            const dir = guardPackageDir(String(body.dir ?? ''));
+            const history = await packageHistory(dir);
+            res.end(JSON.stringify({ ok: true, history }));
             return;
           }
           if (sub === '/check') {

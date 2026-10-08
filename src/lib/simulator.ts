@@ -9,7 +9,7 @@
 // back into the model — simulation is a teaching surface.
 // ─────────────────────────────────────────────────────────────────────
 
-import type { Standard } from '@primmel/primmel';
+import { evaluateExpression, evaluateTableVariable, isTableVariable, type Standard } from '@primmel/primmel';
 import type { Subprocess } from './commands';
 import { edgeEnds } from './edges';
 
@@ -302,6 +302,9 @@ export interface SimState {
    *  node it sits on is COMPLETE — the next step follows its outgoing
    *  edges, never descends again. */
   returned?: boolean;
+  /** The last derive's per-variable failures (G16) — a failed lookup
+   *  reports here, never throws into the panel. */
+  deriveErrors?: Record<string, string>;
 }
 
 function pageOf(model: Standard, pageId: string): Subprocess {
@@ -532,4 +535,48 @@ export function step(model: Standard, state: SimState): SimState {
  *  MODEL never changes). */
 export function resetRun(model: Standard, opts: { pageId?: string; keepRegisters?: Record<string, string> } = {}): SimState {
   return createRun(model, { pageId: opts.pageId, registers: opts.keepRegisters });
+}
+
+/** The computed registers derive (G16): the DERIVED variables evaluate
+ *  their (import-translated) definitions over the registers; the TABLE
+ *  family (TABLE_OPTIONS / TABLE_REFERENCE) evaluates the legacy lookup
+ *  over the model's declared tables. Iterates to a fixed point — a
+ *  computed variable may read other computed variables (BS6004's
+ *  thicknessReq reads three lookups). A variable that cannot derive
+ *  never throws; it reports. */
+export function deriveComputed(
+  model: Standard,
+  registers: Record<string, string>,
+): { values: Record<string, string | number>; errors: Record<string, string> } {
+  const computed = (model.variables ?? []).filter(
+    v => (v.type === 'DERIVED' && v.definition !== '') || isTableVariable(v),
+  );
+  const values: Record<string, string | number> = {};
+  const errors: Record<string, string> = {};
+  const pending = new Set(computed.map(v => v.id));
+  while (pending.size > 0) {
+    let progressed = false;
+    for (const v of computed) {
+      if (!pending.has(v.id)) continue;
+      const env: Record<string, string | number> = { ...registers, ...values };
+      try {
+        values[v.id] = isTableVariable(v)
+          ? evaluateTableVariable(v, model.tables ?? [], env)
+          : evaluateExpression(v.definition, env);
+        pending.delete(v.id);
+        delete errors[v.id];
+        progressed = true;
+      } catch (e) {
+        errors[v.id] = e instanceof Error ? e.message : String(e);
+      }
+    }
+    if (!progressed) {
+      for (const id of pending) {
+        errors[id] =
+          errors[id] ?? 'its inputs do not derive from the current registers';
+      }
+      break;
+    }
+  }
+  return { values, errors };
 }

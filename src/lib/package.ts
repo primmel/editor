@@ -109,15 +109,44 @@ export async function openPackageDir(dir: string): Promise<PackageOpenResult> {
   return res.json() as Promise<PackageOpenResult>;
 }
 
-/** Write a package save plan (per-file, .bak kept server-side). */
-export async function writePackageFiles(dir: string, writes: PackageFileWrite[]): Promise<{ ok: boolean; files: { path: string; backup: boolean }[] }> {
+/** The save's commit record (G13 step 1): the substrate discipline —
+ *  a save inside a repo IS a commit; outside one, the save says so. */
+export interface PackageCommitResult {
+  committed: boolean;
+  oid: string | null;
+  reason: string | null;
+}
+
+/** One entry of the workspace history — the repo's commit log. */
+export interface PackageHistoryEntry {
+  oid: string;
+  message: string;
+  timestamp: number;
+  author: string;
+}
+
+/** Write a package save plan (per-file, .bak kept server-side) and
+ *  commit it (best-effort — the write never waits on git). */
+export async function writePackageFiles(dir: string, writes: PackageFileWrite[], message?: string): Promise<{ ok: boolean; files: { path: string; backup: boolean }[]; commit: PackageCommitResult }> {
   const res = await fetch('/api/package/save', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ dir, writes }),
+    body: JSON.stringify({ dir, writes, message }),
   });
   if (!res.ok) throw new Error(((await res.json()) as { error?: string }).error ?? (await res.text()));
-  return res.json() as Promise<{ ok: boolean; files: { path: string; backup: boolean }[] }>;
+  return res.json() as Promise<{ ok: boolean; files: { path: string; backup: boolean }[]; commit: PackageCommitResult }>;
+}
+
+/** The workspace history — the package repo's commit log, newest
+ *  first (empty when the package lives outside a repository). */
+export async function fetchPackageHistory(dir: string): Promise<PackageHistoryEntry[]> {
+  const res = await fetch('/api/package/history', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ dir }),
+  });
+  if (!res.ok) throw new Error(((await res.json()) as { error?: string }).error ?? (await res.text()));
+  return ((await res.json()) as { history: PackageHistoryEntry[] }).history;
 }
 
 /** The dev server's answer to POST /api/package/check — the kernel's

@@ -47,11 +47,12 @@
     "vue": ">=3.5"
   },
   "dependencies": {
-    "elkjs": "^0.12.0"
+    "elkjs": "^0.12.0",
+    "isomorphic-git": "^1.43.1"
   },
   "devDependencies": {
     "@oimlsmart/oiml-pubid": "github:oimlsmart/oiml-pubid#main",
-    "@primmel/primmel": "^1.21.9",
+    "@primmel/primmel": "^1.21.10",
     "@tailwindcss/vite": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^26.1.2",
