@@ -5,20 +5,25 @@
 // records). Plus synthetic shapes for the edge classes.
 // ─────────────────────────────────────────────────────────────────────
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { loadPrm } from '@primmel/primmel';
 import { editionNamespaces, editionProfileDiff } from '../edition-map-diff';
 
 const DIR = join(homedir(), 'src/mn/mmel-models/13485 (for diff)');
+// The fixture lives in the corpus checkout — the spec proves against
+// it when present and skips (the runtime-spec pattern) on machines
+// without it; the synthetic classes below always run.
+const fixtureAvailable = existsSync(join(DIR, '2016.json'));
+const itf = fixtureAvailable ? it : it.skip;
 
 function edition(file: string) {
   return loadPrm(readFileSync(join(DIR, file), 'utf8'));
 }
 
 describe('the edition-crossed profiles (G15 — the 13485 fixture)', () => {
-  it('both editions load and share their doc namespaces', () => {
+  itf('both editions load and share their doc namespaces', () => {
     const a = edition('2016.json');
     const b = edition('2021.json');
     const ns = editionNamespaces(a, b);
@@ -26,7 +31,7 @@ describe('the edition-crossed profiles (G15 — the 13485 fixture)', () => {
     expect(ns.length).toBeGreaterThanOrEqual(5);
   });
 
-  it('measures the pair deltas across the editions', () => {
+  itf('measures the pair deltas across the editions', () => {
     const deltas = editionProfileDiff(edition('2016.json'), edition('2021.json'));
     expect(deltas.length).toBeGreaterThanOrEqual(5);
     // The fixture's own story: pairs carried AND movement exist
