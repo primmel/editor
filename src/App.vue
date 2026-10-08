@@ -18,6 +18,7 @@ import DataRegistry from './components/DataRegistry.vue';
 import MappingView from './components/mapper/MapperView.vue';
 import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
+import TwinPanel from './components/simulation/TwinPanel.vue';
 import ValidationPanel from './components/validation/ValidationPanel.vue';
 import CheckPanel from './components/CheckPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
@@ -298,6 +299,11 @@ const view = computed<ViewMode>({
               @click="ui.rightPanel = 'simulation'"
             >Simulate</button>
             <button
+              :class="{ active: ui.rightPanel === 'twin' }"
+              data-testid="tab-twin"
+              @click="ui.rightPanel = 'twin'"
+            >Twin</button>
+            <button
               :class="{ active: ui.rightPanel === 'validation' }"
               data-testid="tab-validation"
               @click="ui.rightPanel = 'validation'"
@@ -340,6 +346,7 @@ const view = computed<ViewMode>({
             <EditionPanel v-else-if="ui.rightPanel === 'editions'" key="editions" />
             <CompliancePanel v-else-if="ui.rightPanel === 'compliance'" :model="model" key="compliance" />
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
+            <TwinPanel v-else-if="ui.rightPanel === 'twin'" :model="model" key="twin" />
             <CheckPanel v-else-if="ui.rightPanel === 'check'" key="check" />
             <ValidationPanel v-else :model="model" key="validation" />
           </Transition>
