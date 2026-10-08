@@ -245,6 +245,7 @@ const ssotNote = computed(() => {
 }
 .dialog {
   width: 32rem;
+  max-width: calc(100vw - 1rem);
   max-height: 80vh;
   overflow-y: auto;
   background: var(--bg-surface);

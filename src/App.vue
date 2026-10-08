@@ -186,6 +186,23 @@ const view = computed<ViewMode>({
         </div>
       </div>
 
+      <div class="drawer-toggles">
+        <button
+          type="button"
+          class="drawer-toggle"
+          data-testid="drawer-left-toggle"
+          :class="{ open: ui.leftDrawer }"
+          @click="ui.leftDrawer = !ui.leftDrawer; ui.rightDrawer = false"
+        >☰</button>
+        <button
+          type="button"
+          class="drawer-toggle"
+          data-testid="drawer-right-toggle"
+          :class="{ open: ui.rightDrawer }"
+          @click="ui.rightDrawer = !ui.rightDrawer; ui.leftDrawer = false"
+        >☰</button>
+      </div>
+
       <div class="stats-bar" v-if="model">
         <div class="stat-pill">
           <span class="stat-num">{{ model.processes.length }}</span>
@@ -320,7 +337,13 @@ const view = computed<ViewMode>({
 
     <template v-if="view === 'model' && model">
       <main class="workspace">
-        <aside class="panel panel-left">
+        <div
+          v-if="ui.leftDrawer || ui.rightDrawer"
+          class="drawer-backdrop"
+          data-testid="drawer-backdrop"
+          @click="ui.leftDrawer = false; ui.rightDrawer = false"
+        />
+        <aside class="panel panel-left" :class="{ 'drawer-open': ui.leftDrawer }">
           <PalettePanel v-if="!readOnly" :model="model" @pick="onPalettePick" @dragstart="onPaletteDragStart" />
           <PageTree :model="model" />
           <Transition name="fade" mode="out-in">
@@ -333,7 +356,7 @@ const view = computed<ViewMode>({
           <ProcessCanvas ref="canvasRef" :model="model" :tint-of="simTint" :tooltip-of="simTooltip" :tick="simStore.run" :badge-of="commentBadges" />
         </section>
 
-        <aside class="panel panel-right">
+        <aside class="panel panel-right" :class="{ 'drawer-open': ui.rightDrawer }">
           <Transition name="fade" mode="out-in">
             <!-- The viewer keeps the inspector as a READ-ONLY summary:
                  the disabled fieldset switches every field and button
@@ -641,4 +664,61 @@ const view = computed<ViewMode>({
 }
 .fade-enter-from { opacity: 0; transform: translateY(6px); }
 .fade-leave-to { opacity: 0; transform: translateY(-6px); }
+/* The responsive layer (TODO.editor/51): desktop is untouched —
+   everything below only ADDS behavior under the breakpoint. */
+.drawer-toggle { display: none; }
+.drawer-backdrop { display: none; }
+.drawer-toggles { display: none; }
+
+@media (max-width: 1024px) {
+  .workspace {
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+  .panel-center {
+    grid-row: 1;
+    min-width: 0;
+  }
+  .panel-left,
+  .panel-right {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    width: min(320px, 88vw);
+    z-index: 40;
+    transition: transform 0.2s ease;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+  }
+  .panel-left { left: 0; transform: translateX(-102%); }
+  .panel-right { right: 0; transform: translateX(102%); }
+  .panel-left.drawer-open,
+  .panel-right.drawer-open { transform: translateX(0); }
+  .drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 56px 0 0 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 39;
+  }
+  .drawer-toggles { display: flex; gap: 0.4rem; }
+  .drawer-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm, 4px);
+    color: var(--text);
+    font-size: 0.9rem;
+    padding: 0.2rem 0.55rem;
+    cursor: pointer;
+  }
+  .drawer-toggle.open { border-color: var(--accent); color: var(--accent); }
+  .topbar {
+    gap: 0.6rem;
+    padding: 0 0.6rem;
+    overflow-x: auto;
+  }
+  .topbar nav { overflow-x: auto; }
+  .nav-group { flex-wrap: nowrap; }
+  .stats-bar { display: none; }
+}
+
 </style>

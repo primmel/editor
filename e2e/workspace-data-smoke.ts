@@ -40,11 +40,14 @@ execSync('git init -q .', { cwd: PKG })
 execSync('git -c user.name=smoke -c user.email=smoke@primmel.local add -A', { cwd: PKG })
 execSync('git -c user.name=smoke -c user.email=smoke@primmel.local commit -qm "the package, before any data"', { cwd: PKG })
 
+const mobile = process.env.E2E_VIEWPORT === 'mobile'
+const WIDTH = mobile ? 390 : 1400
+const HEIGHT = mobile ? 844 : 950
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 const page = await browser.newPage()
 const errors: string[] = []
 page.on('pageerror', (e) => errors.push(String(e)))
-await page.setViewport({ width: 1400, height: 950 })
+await page.setViewport({ width: WIDTH, height: HEIGHT })
 await page.goto(process.env.E2E_BASE ?? 'http://localhost:5199/', { waitUntil: 'domcontentloaded' })
 await new Promise((r) => setTimeout(r, 2500))
 
