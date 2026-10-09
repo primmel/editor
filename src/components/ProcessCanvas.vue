@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import {
   extractCanvas, renderCanvas, bezierPath,
@@ -56,6 +56,11 @@ const isPanning = ref(false);
 const panStart = ref({ x: 0, y: 0, panX: 0, panY: 0 });
 const draggingNode = ref<RenderNode | null>(null);
 const dragOffset = ref({ x: 0, y: 0 });
+/** The tap/drag discriminator (the owner's report: a jittering tap
+ *  DRAGGED the node — clicking a process made it jump). A press only
+ *  starts moving the node past the threshold; below it, a click. */
+const downPoint = ref({ x: 0, y: 0 });
+const movedFar = ref(false);
 
 // ── Edge connect state (port-to-port) ────────────────────────────────
 const connectFrom = ref<RenderNode | null>(null);
@@ -124,10 +129,18 @@ function onMouseMove(e: PointerEvent | MouseEvent) {
     return;
   }
   if (draggingNode.value) {
+    const dx = e.clientX - downPoint.value.x;
+    const dy = e.clientY - downPoint.value.y;
+    if (!movedFar.value) {
+      // Below the threshold nothing moves — the press is still a tap.
+      if (dx * dx + dy * dy < 16) return;
+      movedFar.value = true;
+    }
     const p = worldPoint(e);
     draggingNode.value.x = p.x - dragOffset.value.x;
     draggingNode.value.y = p.y - dragOffset.value.y;
   } else if (isPanning.value) {
+    userViewAdjusted.value = true;
     const dx = e.clientX - panStart.value.x;
     const dy = e.clientY - panStart.value.y;
     ui.panX = panStart.value.panX + dx;
@@ -147,6 +160,7 @@ function onMouseUp() {
 
 function onWheel(e: WheelEvent) {
   e.preventDefault();
+  userViewAdjusted.value = true;
   const delta = e.deltaY > 0 ? 0.9 : 1.1;
   ui.setZoom(ui.zoom * delta);
 }
@@ -188,6 +202,8 @@ function onNodeMouseDown(e: PointerEvent | MouseEvent, node: RenderNode) {
     return;
   }
   draggingNode.value = node;
+  downPoint.value = { x: e.clientX, y: e.clientY };
+  movedFar.value = false;
   const p = worldPoint(e);
   dragOffset.value = { x: p.x - node.x, y: p.y - node.y };
   ui.select(node.id, selectionTypeOf(node));
@@ -274,8 +290,46 @@ function finishConnect(target: RenderNode) {
   modelStore.execute(createEdge(pageId, mintEdgeId(canvas.value), from.id, target.id));
 }
 
+// ── The opening view (the owner's report: the diagram opened
+// off-center) — center the laid-out content on load. Pure view state:
+// the nodes' bbox center maps to the viewport center; zoom untouched.
+const svgEl = ref<SVGSVGElement | null>(null);
+function fitView() {
+  const nodes = rendered.value?.nodes ?? [];
+  if (nodes.length === 0) return;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const n of nodes) {
+    minX = Math.min(minX, n.x - 70); minY = Math.min(minY, n.y - 45);
+    maxX = Math.max(maxX, n.x + 70); maxY = Math.max(maxY, n.y + 45);
+  }
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  // The viewBox is the FIXED 800x600 world window (-panX/z .. ) — the
+  // window centers on the content, and wide content zooms out to fit.
+  const w = Math.max(maxX - minX, 200);
+  const h = Math.max(maxY - minY, 200);
+  const z = Math.max(0.3, Math.min(ui.zoom || 1, 700 / w, 520 / h));
+  ui.setZoom(z);
+  ui.panX = 400 - z * cx;
+  ui.panY = 300 - z * cy;
+}
+const userViewAdjusted = ref(false);
+/** The fit fires when the node set first appears (the elk layout is
+ *  async — a load-time fit samples an empty canvas and does nothing)
+ *  and never fights a user who has panned or zoomed. */
+watch(
+  () => (rendered.value?.nodes ?? []).map((n) => `${n.id}@${Math.round(n.x)},${Math.round(n.y)}`).join('|'),
+  (sig, before) => {
+    if (userViewAdjusted.value || !sig) return;
+    if (sig !== before) nextTick(() => fitView());
+  },
+);
+watch(() => modelStore.loadedText, () => { userViewAdjusted.value = false; nextTick(() => fitView()); });
+onMounted(() => { nextTick(() => fitView()); });
+
 function commitDrag() {
   if (!draggingNode.value || !canvas.value) return;
+  if (!movedFar.value) return; // a tap — the node never moved
   const node = draggingNode.value;
   modelStore.execute(updateComponentPosition(canvas.value.id, node.id, node.x, node.y));
 }
@@ -385,6 +439,7 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
     </div>
 
     <svg
+      ref="svgEl"
       class="canvas-svg"
       :viewBox="viewBox"
       @pointerdown="onCanvasMouseDown"
