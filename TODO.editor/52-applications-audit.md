@@ -82,3 +82,20 @@ What the mobile pass found and fixed:
 
 `canvas-touch-smoke` is a standing leg. The studio now demonstrably
 works on a phone: every surface, every leg, both widths.
+
+## The fourth pass (2026-10-09) — the deployed artifact + NATIVE
+
+1. **The deployed production build is now PROBED** (never before —
+   every prior leg ran against the dev server):
+   `e2e/deployed-smoke.ts` walks http://www.primmel.org/editor/ at
+   both widths — the artifact mounts, the desktop grid intact, the
+   CSS carries the media queries, and at 390×844 the DEPLOYED shell
+   collapses with drawers and no horizontal overflow. DEPLOYED OK.
+   (A production-monitor leg, not in run-all — the network does not
+   belong in the local suite.)
+2. **The native tap**: the dev server runs LAN-exposed
+   (`npm run dev -- --host --port 5198`) at
+   http://192.168.1.90:5198/ — a phone on the studio Wi-Fi opens the
+   studio natively. The emulation has proven everything it can; the
+   finger is the owner's (pan the canvas, open the drawers, run the
+   twin).
