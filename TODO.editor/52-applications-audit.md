@@ -99,3 +99,17 @@ works on a phone: every surface, every leg, both widths.
    studio natively. The emulation has proven everything it can; the
    finger is the owner's (pan the canvas, open the drawers, run the
    twin).
+
+## The fifth pass (2026-10-09) — the public family + honest limits
+
+1. **The public sites probed** (new production-monitor leg
+   `e2e/public-sites-smoke.ts`): primmel.org and oimlsmart.org at
+   390×844 — both mount, contentful, no horizontal overflow.
+   PUBLIC-SITES OK.
+2. **No native device is attached** to this machine (no adb /
+   devicectl devices) — the LAN tap (http://192.168.1.90:5198/)
+   remains THE native path; the finger is the owner's.
+3. **The smart app's deployed URL is not machine-discoverable**
+   (deployment payloads carry no URL; it lives in their workflow
+   config). Their own deploy smoke — green on every merge — owns that
+   verification. We do not guess URLs.
