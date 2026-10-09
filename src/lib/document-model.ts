@@ -13,6 +13,8 @@
 
 import { parseOimlPubid, urnForOimlPubid } from '@oimlsmart/oiml-pubid';
 
+import { parseSdc, type SdcDocument } from './sdc';
+
 export interface DocStatement {
   /** The doc-local id (`2.10.1.p1.s2`), stable for the document. */
   id: string;
@@ -317,8 +319,38 @@ export function parsePlainText(text: string, docid = 'pasted document'): Documen
 /** The load entry: Mirror JSON when the text is a mirror document
  *  (`{"type":"doc"`), XML when it parses as XML, else plain text.
  *  `dom` is the browser's native parser by default; tests inject one. */
+/** The .sdc projection (G11): the parsed clause lines become the
+ *  document plane's shape — a clause whose number PARENTS the next is
+ *  a heading (its text is the title); the rest are statement
+ *  paragraphs, sentence-split like every other document. */
+export function sdcToDocument(doc: SdcDocument): DocumentModel {
+  const urnBase = doc.namespace;
+  const clauses: DocClause[] = [];
+  const statements = new Map<string, DocStatement>();
+  doc.clauses.forEach((c, i) => {
+    const next = doc.clauses[i + 1];
+    const isHeading = !!next && next.id.startsWith(c.id + '.');
+    const clause: DocClause = { id: c.id, number: c.id, title: isHeading ? c.text : '', paragraphs: [] };
+    if (!isHeading && c.text !== '') {
+      const para: DocParagraph = { id: `${c.id}.p1`, statements: [] };
+      splitStatements(c.text).forEach((text, j) => {
+        const id = `${c.id}.p1.s${j + 1}`;
+        const st: DocStatement = { id, urn: `${urnBase}#${id}`, text, clauseNumber: c.id };
+        para.statements.push(st);
+        statements.set(id, st);
+      });
+      clause.paragraphs.push(para);
+    }
+    clauses.push(clause);
+  });
+  return { docid: doc.namespace, title: doc.title, urnBase, clauses, statements };
+}
+
 export function loadDocument(text: string, docid?: string, dom?: XmlParserLike): DocumentModel {
   const trimmed = text.trimStart();
+  if (trimmed.startsWith('namespace#')) {
+    return sdcToDocument(parseSdc(trimmed));
+  }
   if (trimmed.startsWith('{')) {
     const parsed = JSON.parse(trimmed) as { type?: string };
     if (parsed.type === 'doc') return parseMirrorJson(parsed, docid);
