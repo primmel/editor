@@ -113,3 +113,17 @@ works on a phone: every surface, every leg, both widths.
    (deployment payloads carry no URL; it lives in their workflow
    config). Their own deploy smoke — green on every merge — owns that
    verification. We do not guess URLs.
+
+## The sixth pass (2026-10-09) — the WebKit pass + the deferred wave
+
+Every probe so far runs CHROMIUM; the phone's browser is WebKit
+(iOS Safari). This pass:
+
+1. **The WebKit leg** — playwright's webkit drives the responsive
+   shell + the twin at 390×844 under the real mobile engine;
+   whatever Safari-css breaks (`100vw` in calc, `position: fixed`
+   drawers, backdrop) is fixed and pinned as a standing leg.
+2. **G11's smallest honest increment** (the independent deferred
+   wave): the `.sdc` clause-document parser (the format is spec'd:
+   `namespace#/title#/version#/###/n#statement`) as a pure lib with
+   specs, feeding the document plane.

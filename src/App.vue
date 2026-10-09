@@ -190,6 +190,7 @@ const view = computed<ViewMode>({
         <button
           type="button"
           class="drawer-toggle"
+          aria-label="toggle the tree panel"
           data-testid="drawer-left-toggle"
           :class="{ open: ui.leftDrawer }"
           @click="ui.leftDrawer = !ui.leftDrawer; ui.rightDrawer = false"
@@ -197,6 +198,7 @@ const view = computed<ViewMode>({
         <button
           type="button"
           class="drawer-toggle"
+          aria-label="toggle the inspector panel"
           data-testid="drawer-right-toggle"
           :class="{ open: ui.rightDrawer }"
           @click="ui.rightDrawer = !ui.rightDrawer; ui.leftDrawer = false"
@@ -702,6 +704,7 @@ const view = computed<ViewMode>({
   }
   .drawer-toggles { display: flex; gap: 0.4rem; }
   .drawer-toggle {
+    display: inline-block;
     background: none;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm, 4px);
@@ -709,6 +712,8 @@ const view = computed<ViewMode>({
     font-size: 0.9rem;
     padding: 0.2rem 0.55rem;
     cursor: pointer;
+    min-width: 2.1rem;
+    min-height: 2rem;
   }
   .drawer-toggle.open { border-color: var(--accent); color: var(--accent); }
   .topbar {
