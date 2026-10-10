@@ -66,6 +66,21 @@ const openPanelId = ref<string | null>(null);
 //    unsaved changes warns (dirty = history cursor ≠ saved cursor). ──
 function onKeydown(e: KeyboardEvent) {
   if (readOnly.value) return; // the viewer has no save/new hotkeys
+  const target = e.target as HTMLElement | null;
+  const inField = !!target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+  // The undo contract (the laws: the user can always undo) — outside
+  // text fields, where the browser's native text undo applies.
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !inField) {
+    e.preventDefault();
+    if (e.shiftKey) modelStore.redo();
+    else modelStore.undo();
+    return;
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'y' && !inField) {
+    e.preventDefault();
+    modelStore.redo();
+    return;
+  }
   if ((e.metaKey || e.ctrlKey) && e.key === 's') {
     e.preventDefault();
     saveOpen.value = true;
@@ -290,6 +305,22 @@ const view = computed<ViewMode>({
           </div>
           <span class="nav-sep"></span>
           <div class="nav-group">
+            <button
+              type="button"
+              class="undo-btn"
+              :disabled="!modelStore.canUndo"
+              data-testid="undo-btn"
+              title="Undo (Ctrl+Z)"
+              @click="modelStore.undo()"
+            >Undo</button>
+            <button
+              type="button"
+              class="undo-btn"
+              :disabled="!modelStore.canRedo"
+              data-testid="redo-btn"
+              title="Redo (Ctrl+Shift+Z)"
+              @click="modelStore.redo()"
+            >Redo</button>
             <button
               :class="{ active: ui.rightPanel === 'inspector' }"
               @click="ui.rightPanel = 'inspector'"
@@ -544,6 +575,7 @@ const view = computed<ViewMode>({
   box-shadow: var(--shadow-sm);
 }
 .nav-sep { width: 1px; height: 20px; background: var(--border); }
+.undo-btn:disabled { opacity: 0.4; cursor: default; }
 
 .workspace {
   display: grid;

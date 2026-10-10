@@ -46,6 +46,7 @@ for leg in \
   canvas-touch-smoke \
   page-switch-smoke \
   ui-surfaces-smoke \
+  undo-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
