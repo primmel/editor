@@ -118,11 +118,19 @@ function onCanvasMouseDown(e: PointerEvent | MouseEvent) {
 }
 
 function worldPoint(e: PointerEvent | MouseEvent): { x: number; y: number } {
+  // Canonical: the viewBox maps the world window (-panX/z, -panY/z,
+  // 800/z, 600/z) onto the element's box — px-per-world-unit is the
+  // box width over the window width (NOT zoom: the svg stretches the
+  // fixed 800-unit window to whatever the element measures). The old
+  // constants only canceled in delta-pairs; a fitted view (pan ≠ 0)
+  // flung dragged nodes far off and the cull ate them.
   const rect = (e.currentTarget as SVGElement).getBoundingClientRect();
   const z = ui.zoom;
+  const sx = rect.width / (800 / z);
+  const sy = rect.height / (600 / z);
   return {
-    x: (e.clientX - rect.left + ui.panX) / z - 400 / z,
-    y: (e.clientY - rect.top + ui.panY) / z - 300 / z,
+    x: (e.clientX - rect.left) / sx - ui.panX / z,
+    y: (e.clientY - rect.top) / sy - ui.panY / z,
   };
 }
 
