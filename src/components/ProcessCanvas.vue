@@ -297,25 +297,32 @@ function finishConnect(target: RenderNode) {
 // off-center) — center the laid-out content on load. Pure view state:
 // the nodes' bbox center maps to the viewport center; zoom untouched.
 const svgEl = ref<SVGSVGElement | null>(null);
-function fitView() {
-  const nodes = rendered.value?.nodes ?? [];
-  if (nodes.length === 0) return;
-  fittedThisLoad.value = true;
+/** The raw-page fit: the cull can hide a newly-switched page's whole
+ *  content (it sits outside the previous page's window), so the
+ *  page-switch fit reads the canvas's own children, never the culled
+ *  render. */
+function fitToPoints(points: { x: number; y: number }[]) {
+  if (points.length === 0) return;
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const n of nodes) {
+  for (const n of points) {
     minX = Math.min(minX, n.x - 70); minY = Math.min(minY, n.y - 45);
     maxX = Math.max(maxX, n.x + 70); maxY = Math.max(maxY, n.y + 45);
   }
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
-  // The viewBox is the FIXED 800x600 world window (-panX/z .. ) — the
-  // window centers on the content, and wide content zooms out to fit.
   const w = Math.max(maxX - minX, 200);
   const h = Math.max(maxY - minY, 200);
   const z = Math.max(0.3, Math.min(ui.zoom || 1, 700 / w, 520 / h));
   ui.setZoom(z);
   ui.panX = 400 - z * cx;
   ui.panY = 300 - z * cy;
+}
+
+function fitView() {
+  const nodes = rendered.value?.nodes ?? [];
+  if (nodes.length === 0) return;
+  fittedThisLoad.value = true;
+  fitToPoints(nodes);
 }
 const userViewAdjusted = ref(false);
 /** The fit fires ONCE per model load — when the node positions first
@@ -332,6 +339,17 @@ watch(
   },
 );
 watch(() => modelStore.loadedText, () => { userViewAdjusted.value = false; fittedThisLoad.value = false; nextTick(() => fitView()); });
+// A page switch is a new view to fit: the tab's content sits outside
+// the previous page's window and the cull hides it all otherwise.
+watch(() => activePageId.value, () => {
+  userViewAdjusted.value = false;
+  fittedThisLoad.value = false;
+  nextTick(() => {
+    const raw = (canvas.value?.childs ?? []).map((c) => ({ x: c.x ?? 0, y: c.y ?? 0 }));
+    if (raw.length > 0) fittedThisLoad.value = true;
+    fitToPoints(raw);
+  });
+});
 onMounted(() => { nextTick(() => fitView()); });
 
 function commitDrag() {

@@ -44,6 +44,7 @@ for leg in \
   workspace-data-smoke \
   responsive-smoke \
   canvas-touch-smoke \
+  page-switch-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
