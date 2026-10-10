@@ -495,8 +495,15 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
 
       <rect data-bg="true" :x="-5000" :y="-5000" :width="10000" :height="10000" fill="url(#grid)" />
 
-      <g v-for="edge in rendered.edges" :key="edge.id" class="edge-group"
-         :class="{ selected: selectedEdgeId === edge.id }"
+      <g
+        v-for="edge in rendered.edges"
+        :key="edge.id"
+        class="edge-group"
+        :class="{
+          selected: selectedEdgeId === edge.id,
+          'edge-data-in': edge.dataDirection === 'input',
+          'edge-data-out': edge.dataDirection === 'output',
+        }"
          @click.stop="onEdgeClick(edge.id)"
          @dblclick.stop="onEdgeDoubleClick(edge.id)">
         <path
@@ -713,6 +720,29 @@ const nodeColors: Record<string, { fill: string; stroke: string }> = {
 .node-group.is-data { opacity: 0.85; }
 .node-group.connect-source > * { filter: drop-shadow(0 0 12px var(--accent)); }
 .edge-group { cursor: pointer; }
+
+/* The data-flow animation (Paneron parity): data links are dashed and
+   their dashes FLOW along the drawn direction — data→process (input)
+   and process→data (output) each with their own hue; process-flow
+   edges stay static. Reduced motion stops the flow, keeps the dash. */
+.edge-data-in path {
+  stroke: var(--data-in, #4a7a9b);
+  animation: edge-flow 1.1s linear infinite;
+}
+.edge-data-out path {
+  stroke: var(--data-out, #7a9a7a);
+  animation: edge-flow 1.1s linear infinite;
+}
+.edge-data-in.selected path,
+.edge-data-out.selected path {
+  stroke: var(--accent);
+}
+@keyframes edge-flow {
+  to { stroke-dashoffset: -20; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edge-data-in path, .edge-data-out path { animation: none; }
+}
 .edge-group.selected path { pointer-events: stroke; }
 .edge-condition {
   font-family: var(--font-mono);

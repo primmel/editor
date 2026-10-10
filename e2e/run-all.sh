@@ -47,6 +47,7 @@ for leg in \
   page-switch-smoke \
   ui-surfaces-smoke \
   undo-smoke \
+  data-flow-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
