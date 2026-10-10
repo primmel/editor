@@ -127,3 +127,13 @@ Every probe so far runs CHROMIUM; the phone's browser is WebKit
    wave): the `.sdc` clause-document parser (the format is spec'd:
    `namespace#/title#/version#/###/n#statement`) as a pure lib with
    specs, feeding the document plane.
+
+## The eighth pass (2026-10-10) — the fixes proven in production
+
+**DEPLOYED-BUGS OK**: yesterday's two fixes verified against the
+PRODUCTION pages build, not just the dev server — the boot diagram
+centers to 0.000005px and a jittering tap holds the node at the
+identical pixel (`e2e/deployed-bugs-smoke.ts`, the production-monitor
+family). The demo rehearsal re-walked on the final tree at BOTH
+widths (zero page errors), screenshots refreshed; the full serial
+desktop suite re-run on the frozen result.
