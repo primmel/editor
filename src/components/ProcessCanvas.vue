@@ -78,9 +78,12 @@ const rendered = computed(() => {
   void modelStore.version;
   void props.tick; // external re-render signal (the simulation run)
   const z = ui.zoom;
+  // The cull window IS the viewBox — world-space, no extra offset
+  // (the old half-window offset only hid itself while pan ~0; the
+  // centered opening exposed it: nodes fell into the culled band).
   return renderCanvas(props.model, canvas.value, {
-    x: -ui.panX / z - 400 / z,
-    y: -ui.panY / z - 300 / z,
+    x: -ui.panX / z,
+    y: -ui.panY / z,
     w: 800 / z,
     h: 600 / z,
   });
@@ -297,6 +300,7 @@ const svgEl = ref<SVGSVGElement | null>(null);
 function fitView() {
   const nodes = rendered.value?.nodes ?? [];
   if (nodes.length === 0) return;
+  fittedThisLoad.value = true;
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const n of nodes) {
     minX = Math.min(minX, n.x - 70); minY = Math.min(minY, n.y - 45);
@@ -314,17 +318,20 @@ function fitView() {
   ui.panY = 300 - z * cy;
 }
 const userViewAdjusted = ref(false);
-/** The fit fires when the node set first appears (the elk layout is
- *  async — a load-time fit samples an empty canvas and does nothing)
- *  and never fights a user who has panned or zoomed. */
+/** The fit fires ONCE per model load — when the node positions first
+ *  settle (the elk layout is async; a load-time fit samples an empty
+ *  canvas) — and never again during authoring (an incremental edit's
+ *  refit would zoom to a partial state and cull the next addition),
+ *  and never against a user who has panned or zoomed. */
+const fittedThisLoad = ref(false);
 watch(
   () => (rendered.value?.nodes ?? []).map((n) => `${n.id}@${Math.round(n.x)},${Math.round(n.y)}`).join('|'),
   (sig, before) => {
-    if (userViewAdjusted.value || !sig) return;
+    if (fittedThisLoad.value || userViewAdjusted.value || !sig) return;
     if (sig !== before) nextTick(() => fitView());
   },
 );
-watch(() => modelStore.loadedText, () => { userViewAdjusted.value = false; nextTick(() => fitView()); });
+watch(() => modelStore.loadedText, () => { userViewAdjusted.value = false; fittedThisLoad.value = false; nextTick(() => fitView()); });
 onMounted(() => { nextTick(() => fitView()); });
 
 function commitDrag() {
