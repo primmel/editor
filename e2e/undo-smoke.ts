@@ -120,6 +120,98 @@ await new Promise((r) => setTimeout(r, 300))
 //  the assertion is the absence of a model mutation via the field
 //  focus path, covered by the threshold law above)
 
+// 4. THE STACK: two more distinct edits → Ctrl+Z × 3 walks back in
+//    order → Shift+Z × 3 walks forward → undo 1, edit anew, and the
+//    redo tail is DISCARDED (the stack's truncation law).
+const nodeBox2 = await page.evaluate(`(() => {
+  const n = [...document.querySelectorAll('.node-group')].find((x) => x.textContent?.includes('Start'))
+  const r = n.getBoundingClientRect()
+  return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 }
+})()`)
+await page.mouse.move(nodeBox2.cx, nodeBox2.cy)
+await page.mouse.down()
+await page.mouse.move(nodeBox2.cx - 50, nodeBox2.cy, { steps: 4 })
+await page.mouse.up()
+await new Promise((r) => setTimeout(r, 300))
+const nodeBox3 = await page.evaluate(`(() => {
+  const n = [...document.querySelectorAll('.node-group')].find((x) => x.textContent?.includes('Done'))
+  const r = n.getBoundingClientRect()
+  return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 }
+})()`)
+await page.mouse.move(nodeBox3.cx, nodeBox3.cy)
+await page.mouse.down()
+await page.mouse.move(nodeBox3.cx + 50, nodeBox3.cy, { steps: 4 })
+await page.mouse.up()
+await new Promise((r) => setTimeout(r, 300))
+const after3 = await page.evaluate(`(() => ({
+  history: window.__stores.model.history.length,
+  cursor: window.__stores.model.cursor,
+  canUndo: window.__stores.model.canUndo,
+}))()`)
+console.log('stack built:', JSON.stringify(after3))
+if (after3.history !== 3) await fail(`expected 3 undo units, got ${after3.history}`)
+
+for (let i = 0; i < 3; i++) {
+  await page.keyboard.down('Control')
+  await page.keyboard.press('z')
+  await page.keyboard.up('Control')
+  await new Promise((r) => setTimeout(r, 250))
+}
+const fullyUndone = await page.evaluate(`(() => {
+  const p = window.__stores.model.standard.pages[0]
+  const get = (id) => (p.childs ?? []).find((c) => c.name === id)
+  return {
+    cursor: window.__stores.model.cursor,
+    p1: { x: get('P1')?.x, y: get('P1')?.y },
+    start: { x: get('Start')?.x },
+    done: { x: get('Done')?.x },
+  }
+})()`)
+console.log('fully undone:', JSON.stringify(fullyUndone))
+if (fullyUndone.cursor !== 0) await fail('the stack did not walk back to the start')
+if (fullyUndone.p1?.x !== 0 || fullyUndone.start?.x !== 0 || fullyUndone.done?.x !== 0) {
+  await fail('the positions did not all restore to their origins')
+}
+
+for (let i = 0; i < 3; i++) {
+  await page.keyboard.down('Control')
+  await page.keyboard.down('Shift')
+  await page.keyboard.press('z')
+  await page.keyboard.up('Shift')
+  await page.keyboard.up('Control')
+  await new Promise((r) => setTimeout(r, 250))
+}
+const fullyRedone = await page.evaluate(`(() => ({
+  cursor: window.__stores.model.cursor,
+  history: window.__stores.model.history.length,
+}))()`)
+console.log('fully redone:', JSON.stringify(fullyRedone))
+if (fullyRedone.cursor !== 3) await fail('redo did not walk the stack forward')
+
+// Undo one, then edit: the discarded tail is GONE (no redo).
+await page.keyboard.down('Control')
+await page.keyboard.press('z')
+await page.keyboard.up('Control')
+await new Promise((r) => setTimeout(r, 250))
+const beforeTail = await page.evaluate(`(() => window.__stores.model.history.length)()`)
+const nodeBox4 = await page.evaluate(`(() => {
+  const n = [...document.querySelectorAll('.node-group')].find((x) => x.textContent?.includes('Start'))
+  const r = n.getBoundingClientRect()
+  return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 }
+})()`)
+await page.mouse.move(nodeBox4.cx, nodeBox4.cy)
+await page.mouse.down()
+await page.mouse.move(nodeBox4.cx + 30, nodeBox4.cy + 30, { steps: 3 })
+await page.mouse.up()
+await new Promise((r) => setTimeout(r, 300))
+const afterBranch = await page.evaluate(`(() => ({
+  history: window.__stores.model.history.length,
+  canRedo: window.__stores.model.canRedo,
+}))()`)
+console.log('branched:', JSON.stringify({ beforeTail, afterBranch }))
+if (afterBranch.history !== beforeTail) await fail('a new edit did not replace the discarded tail')
+if (afterBranch.canRedo) await fail('the redo tail survived a new edit — the stack truncated nothing')
+
 if (errors.length) { console.log('PAGE ERRORS:', errors.slice(0, 3)); await browser.close(); process.exit(1) }
 console.log('UNDO OK')
 await browser.close()
