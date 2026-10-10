@@ -19,6 +19,10 @@ export interface RenderEdge {
   label?: string;
   condition?: string;
   isDataLink?: boolean;
+  /** Data flow direction: data→process is INPUT, process→data is
+   *  OUTPUT (Paneron's animated distinction — the flow reads along
+   *  the drawn direction either way). */
+  dataDirection?: 'input' | 'output';
 }
 
 export type NodeKind =
@@ -87,7 +91,10 @@ export function renderCanvas(
       y: c.y ?? 0,
       kind: resolveNodeKind(model, c.element?.id ?? c.name),
       label: resolveLabel(model, c.element?.id ?? c.name),
-    }));
+    }))
+    // A dataclass node placed in ELEMENTS is a data node exactly like
+    // one in the data section — the flow direction keys on it.
+    .map((n) => ({ ...n, isData: n.kind === 'dataclass' }));
   const dataNodes: RenderNode[] = (canvas.data ?? [])
     .filter((c) => inView(c.x ?? 0, c.y ?? 0))
     .map((c) => ({
@@ -107,13 +114,18 @@ export function renderCanvas(
       const from = lookup.get(fromId);
       const to = lookup.get(toId);
       if (!from || !to) return null;
+      const isDataLink = Boolean(from.isData || to.isData);
+      const dataDirection = from.isData && !to.isData ? 'input'
+        : to.isData && !from.isData ? 'output'
+        : null;
       return {
         id: e.id,
         from: anchorPoint(from, to),
         to: anchorPoint(to, from),
         label: e.description || undefined,
         condition: e.condition || undefined,
-        isDataLink: Boolean(from.isData || to.isData),
+        isDataLink,
+        dataDirection,
       } as RenderEdge;
     })
     .filter((e): e is RenderEdge => e !== null);
