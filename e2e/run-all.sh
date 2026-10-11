@@ -50,6 +50,7 @@ for leg in \
   data-flow-smoke \
   readings-smoke \
   analysis-smoke \
+  document-sdc-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
