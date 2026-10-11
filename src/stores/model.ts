@@ -87,6 +87,10 @@ export const useModelStore = defineStore('model', () => {
     if (!parseError.value) {
       pkg.value = result;
       if (standard.value) standard.value.packageManifest = result.manifest;
+      // The corpus's composed dumps carry canvases WITHOUT positions —
+      // every node would render stacked at one point. The viewer's
+      // spread runs here too (in-memory; never persisted unless saved).
+      if (standard.value) autoLayoutUnpositioned(standard.value);
     }
   }
 
