@@ -383,6 +383,27 @@ const hoveredEdge = ref<string | null>(null);
       </svg>
     </div>
 
+    <!-- The implementation pane renders EVEN WITHOUT a reference — the
+     mapper's empty state shows the model to map, never a blank stage
+     (the owner's report: "mapping shows no content"). -->
+    <div v-else class="mapper-body">
+      <div class="mapper-pane" ref="impPane" data-testid="imp-pane">
+        <div class="pane-label">implementation — {{ implementationModel.meta.namespace }}</div>
+        <ProcessCanvas
+          :model="implementationModel"
+          mode="select"
+          :selected-id="mapping.picked && mapping.picked.side === 'imp' ? mapping.picked.id : null"
+          :tint-of="impTint"
+          :tooltip-of="impTooltip"
+          @node-select="onPick('imp', $event)"
+        />
+      </div>
+      <div class="mapper-pane mapper-pane-hint">
+        <div class="pane-label">reference</div>
+        <p class="mapper-hint">Load a reference model (or a document) to map against — the implementation waits on the left.</p>
+      </div>
+    </div>
+
     <div v-if="refModel || (mapping.docMode && mapping.document)" class="mapper-parties">
       <div v-if="adoptError" class="mapper-adopt-error" data-testid="adopt-error">{{ adoptError }}</div>
       <div class="party-col" v-if="!mapping.docMode && refModel">
@@ -483,6 +504,8 @@ const hoveredEdge = ref<string | null>(null);
   font-family: var(--font-mono);
   font-size: 0.72rem;
 }
+.mapper-pane-hint { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-faint); }
+.mapper-hint { font-size: 0.75rem; padding: 1rem; text-align: center; }
 .mapper-body {
   flex: 1;
   display: grid;

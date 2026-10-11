@@ -41,6 +41,7 @@ for leg in \
   comment-save-smoke \
   viewer-smoke \
   twin-smoke \
+  api-source-smoke \
   workspace-data-smoke \
   responsive-smoke \
   canvas-touch-smoke \

@@ -523,3 +523,22 @@ The corpus's exotic constructs (Datalog/OWL/Repo/Folder) do not appear
 in the corpus — no retention obligation. The remaining named waves
 (G4 report templates [owner seam], G7 checklist, G8 link analyser,
 G9/G10 summaries) are feature programs beyond the primitive set.
+
+## M-API: dynamic measurements via API (2026-10-11, the 13th pass)
+
+The audit's repeated headline — "dynamic measurements via API" — was
+the one primitive still short: the twin ran only authored step
+functions; the legacy extension ingested live measured values via
+API into the same calculation/gate pipeline. Closed:
+
+| Piece | Where |
+|---|---|
+| `lib/api-source.ts` | the ingestion seam, pure: JSON-path mappings (`a.b[0].v`, empty = the variable's own key), honest degradation (HTTP/bad-JSON/timeout → an error string, never a crash) |
+| `stores/twin.ts` | the API tick: fetch → the snapshot IS the tick's sources → the same deriveComputed + alert-edge pipeline; a failed fetch holds the last registers and says so on the wall |
+| `TwinPanel.vue` | source-mode toggle (step \| measurement API), endpoint + mapping rows, the streaming status chip |
+| `vite.config.ts` | the demo instrument `GET /api/measurements` (area steps 1.0→1.6 per 15s regime; `?t=` pins it) |
+| proofs | `lib/__tests__/api-source.test.ts` (11) + `e2e/api-source-smoke.ts` — the endpoint DRIVES the registers, the TABLE lookup derives from streamed readings (thicknessReq 0.6), two pins prove it |
+
+The measured contract holds: only what streamed this tick is ground
+truth — a field the endpoint omits falls back to the model's own
+semantics next derive.
