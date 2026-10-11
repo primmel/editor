@@ -12,6 +12,8 @@ export interface PaletteKind {
   kind: ElementKind;
   /** Event subtype when kind === 'event'. */
   eventType?: 'start' | 'end' | 'signalcatch' | 'timer';
+  /** Gateway type when kind === 'gateway' (default exclusive). */
+  gatewayType?: 'exclusive_gateway' | 'parallel_gateway';
   label: string;
   /** The id prefix the mint uses (P1, DC1, Start1…). */
   idPrefix: string;
@@ -28,6 +30,7 @@ export const PALETTE: PaletteKind[] = [
   { kind: 'event', eventType: 'timer', label: 'Timer event', idPrefix: 'T' },
   { kind: 'event', eventType: 'signalcatch', label: 'Signal event', idPrefix: 'Sig' },
   { kind: 'gateway', label: 'Exclusive gateway', idPrefix: 'X' },
+  { kind: 'gateway', gatewayType: 'parallel_gateway', label: 'Parallel gateway', idPrefix: 'PX' },
   { kind: 'subprocess', label: 'Subprocess page', idPrefix: 'Page' },
 ];
 
@@ -44,13 +47,18 @@ export function createFromPalette(
   const subtype = entry.eventType && entry.eventType !== 'start'
     ? updateElement((a: Standard) => a.events as Array<{ id: string; eventType: string }>, id, { eventType: entry.eventType })
     : null;
+  const gsubtype = entry.gatewayType === 'parallel_gateway'
+    ? updateElement((a: Standard) => a.gateways as Array<{ id: string; gatewayType: string }>, id, { gatewayType: 'parallel_gateway' })
+    : null;
   return {
     label: `create ${entry.label.toLowerCase()} ${id}`,
     apply(ast) {
       create.apply(ast);
       subtype?.apply(ast);
+      gsubtype?.apply(ast);
     },
     revert(ast) {
+      gsubtype?.revert(ast);
       subtype?.revert(ast);
       create.revert(ast);
     },
