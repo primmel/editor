@@ -38,7 +38,7 @@ reference refISO {
 }
 
 provision prov_data {
-  subject Sample#data
+  subject claims Sample#data
   modality shall
   condition "every sample carries its identifier"
   reference {
@@ -122,6 +122,31 @@ console.log('checklist:', JSON.stringify(check))
 if (check.pct !== '100%') await fail(`the completion rail read ${check.pct}`)
 if (!check.on) await fail('the satisfied mark did not light')
 
+// 5. The assessment report (G4's editor half): the preview renders the
+//    dossier with the SoA + the checklist marks.
+await page.evaluate(`(() => { document.querySelector('[data-testid="analyse-tab-report"]').click() })()`)
+await new Promise((r) => setTimeout(r, 1200))
+const report = await page.evaluate(`(() => {
+  const frame = document.querySelector('[data-testid="report-preview"]')
+  if (!frame) return { frame: false }
+  let doc = null
+  try { doc = frame.contentDocument } catch { return { frame: true, detached: true } }
+
+  return {
+    frame: !!frame,
+    title: doc?.querySelector('h1')?.textContent ?? null,
+    soa: doc ? [...doc.querySelectorAll('h2')].some((h) => h.textContent?.includes('Statement of applicability')) : false,
+    annex: doc ? [...doc.querySelectorAll('h3')].some((h) => h.textContent?.includes('samples')) : false,
+    mark: doc?.body.innerHTML.includes('satisfied') ?? false,
+  }
+})()`)
+console.log('report:', JSON.stringify(report))
+if (!report.frame || report.title !== 'T' || !report.soa || !report.annex || !report.mark) {
+  await fail(`the report did not render: ${JSON.stringify(report)}`)
+}
+console.log('REPORT OK')
+
 if (errors.length) { console.log('PAGE ERRORS:', errors.slice(0, 3)); await browser.close(); process.exit(1) }
 console.log('ANALYSE OK')
 await browser.close()
+

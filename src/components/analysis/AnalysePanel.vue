@@ -12,6 +12,7 @@ import {
   checklistCsv, checklistOf, linkInventory, provisionCsv,
   provisionSummaries, registrySummaries, type ChecklistMark,
 } from '../../lib/analysis';
+import { buildAssessmentReport } from '../../lib/report';
 import { downloadText } from '../../lib/save';
 import { useChecklistStore } from '../../stores/checklist';
 import { useModelStore } from '../../stores/model';
@@ -20,12 +21,13 @@ const props = defineProps<{ model: Standard }>();
 const modelStore = useModelStore();
 const checklist = useChecklistStore();
 
-const worksheet = ref<'registries' | 'provisions' | 'links' | 'checklist'>('registries');
+const worksheet = ref<'registries' | 'provisions' | 'links' | 'checklist' | 'report'>('registries');
 const WORKSHEETS: { id: typeof worksheet.value; label: string }[] = [
   { id: 'registries', label: 'registries' },
   { id: 'provisions', label: 'provisions' },
   { id: 'links', label: 'links' },
   { id: 'checklist', label: 'checklist' },
+  { id: 'report', label: 'report' },
 ];
 
 const registries = computed(() => {
@@ -56,6 +58,16 @@ function exportProvisions() {
 }
 function exportChecklist() {
   downloadText('checklist.csv', checklistCsv(items.value, checklist.marks));
+}
+
+// G4's editor half: the assessment dossier — generated from the model,
+// never hand-edited; the certificate plane keeps the formal documents.
+const reportHtml = computed(() => {
+  void modelStore.version;
+  return buildAssessmentReport(props.model, { marks: checklist.marks, purpose: 'Assessment report' });
+});
+function exportReport() {
+  downloadText('assessment-report.html', reportHtml.value);
 }
 </script>
 
@@ -122,6 +134,22 @@ function exportChecklist() {
       <div v-if="!links.length" class="analyse-empty">the model declares no cross-references</div>
     </div>
 
+    <!-- G4 — the assessment report (the editor half). -->
+    <div v-if="worksheet === 'report'" class="worksheet" data-testid="worksheet-report">
+      <div class="report-actions">
+        <button type="button" class="analyse-export" data-testid="report-export" @click="exportReport">
+          export the report (HTML)
+        </button>
+        <span class="report-note">generated from the model as authored — the certificate plane keeps the formal documents</span>
+      </div>
+      <iframe
+        class="report-preview"
+        data-testid="report-preview"
+        :srcdoc="reportHtml"
+        title="the assessment report preview"
+      />
+    </div>
+
     <!-- G7 — the checklist self-assessment. -->
     <div v-if="worksheet === 'checklist'" class="worksheet" data-testid="worksheet-checklist">
       <div class="checklist-head">
@@ -174,6 +202,9 @@ function exportChecklist() {
 }
 .analyse-tab.active { border-color: var(--accent); color: var(--accent); }
 .analyse-export { cursor: pointer; font-size: 0.64rem; }
+.report-actions { display: flex; gap: 0.5rem; align-items: baseline; margin-bottom: 0.4rem; }
+.report-note { font-size: 0.6rem; color: var(--text-faint); }
+.report-preview { width: 100%; height: 26rem; border: 1px solid var(--border-soft); border-radius: var(--radius-sm, 4px); background: #fffdf9; }
 .analyse-empty { color: var(--text-faint); font-style: italic; font-size: 0.68rem; padding: 0.25rem 0; }
 
 .reg-card { border: 1px solid var(--border-soft); border-radius: var(--radius-sm, 4px); padding: 0.4rem 0.5rem; margin-bottom: 0.4rem; }
