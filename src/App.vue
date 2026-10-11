@@ -20,6 +20,7 @@ import DiffView from './components/diff/DiffView.vue';
 import SimulationPanel from './components/simulation/SimulationPanel.vue';
 import TwinPanel from './components/simulation/TwinPanel.vue';
 import ReadingsPanel from './components/simulation/ReadingsPanel.vue';
+import AnalysePanel from './components/analysis/AnalysePanel.vue';
 import ValidationPanel from './components/validation/ValidationPanel.vue';
 import CheckPanel from './components/CheckPanel.vue';
 import CommentPanel from './components/comments/CommentPanel.vue';
@@ -360,6 +361,11 @@ const view = computed<ViewMode>({
               @click="ui.rightPanel = 'readings'"
             >Readings</button>
             <button
+              :class="{ active: ui.rightPanel === 'analyse' }"
+              data-testid="tab-analyse"
+              @click="ui.rightPanel = 'analyse'"
+            >Analyse</button>
+            <button
               :class="{ active: ui.rightPanel === 'validation' }"
               data-testid="tab-validation"
               @click="ui.rightPanel = 'validation'"
@@ -410,6 +416,7 @@ const view = computed<ViewMode>({
             <SimulationPanel v-else-if="ui.rightPanel === 'simulation'" :model="model" key="simulation" />
             <TwinPanel v-else-if="ui.rightPanel === 'twin'" :model="model" key="twin" />
             <ReadingsPanel v-else-if="ui.rightPanel === 'readings'" :model="model" key="readings" />
+            <AnalysePanel v-else-if="ui.rightPanel === 'analyse'" :model="model" key="analyse" />
             <CheckPanel v-else-if="ui.rightPanel === 'check'" key="check" />
             <ValidationPanel v-else :model="model" key="validation" />
           </Transition>

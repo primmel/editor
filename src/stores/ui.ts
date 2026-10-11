@@ -29,7 +29,7 @@ export const useUiStore = defineStore('ui', () => {
   const panX = ref(0);
   const panY = ref(0);
   const leftPanel = ref<'tree' | 'code'>('tree');
-  const rightPanel = ref<'inspector' | 'workspace' | 'layers' | 'editions' | 'compliance' | 'simulation' | 'twin' | 'readings' | 'validation' | 'check'>('inspector');
+  const rightPanel = ref<'inspector' | 'workspace' | 'layers' | 'editions' | 'compliance' | 'simulation' | 'twin' | 'readings' | 'analyse' | 'validation' | 'check'>('inspector');
   const view = ref<'model' | 'registry' | 'mapping' | 'diff'>('model');
   /** The responsive drawers (≤1024px): the panels slide over the
    *  canvas; desktop ignores these entirely. */
