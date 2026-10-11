@@ -48,6 +48,7 @@ for leg in \
   ui-surfaces-smoke \
   undo-smoke \
   data-flow-smoke \
+  readings-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \

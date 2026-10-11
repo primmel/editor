@@ -55,6 +55,11 @@ export const useTwinStore = defineStore('twin', () => {
     stepOnce();
   }
 
+  /** The streamed ids — the measured contract's ground truth (the
+   *  readings panel forwards them so the derive never clobbers a
+   *  measurement with the model's own lookup for the same id). */
+  const streamedVariables = computed(() => sources.map((s) => s.variable));
+
   function stop() {
     if (timer) {
       clearInterval(timer);
@@ -66,5 +71,5 @@ export const useTwinStore = defineStore('twin', () => {
     conditions = [];
   }
 
-  return { run, active, start, stepOnce, stop };
+  return { run, active, start, stepOnce, stop, streamedVariables };
 });
