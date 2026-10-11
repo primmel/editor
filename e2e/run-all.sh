@@ -49,6 +49,7 @@ for leg in \
   undo-smoke \
   data-flow-smoke \
   readings-smoke \
+  analysis-smoke \
   v3-terms-smoke \
   v3-constraints-smoke \
   v3-calculations-smoke \
