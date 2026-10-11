@@ -60,6 +60,12 @@ await sleep(6000)
 await shot('2-digital-twin-bs6004.png')
 console.log('step 2: the twin over the showcase')
 
+// 2b. THE READINGS — the routing truth lit (the gate rail).
+await clickSel('[data-testid="tab-readings"]')
+await new Promise((r) => setTimeout(r, 600))
+await shot('2b-readings.png')
+console.log('step 2b: the readings')
+
 // 3. THE INSTANCE STORE — the workspace data on the R 60 package.
 await page.evaluate(`(async () => {
   const res = await fetch('/api/package/open', {
