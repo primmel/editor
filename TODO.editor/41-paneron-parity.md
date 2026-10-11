@@ -499,3 +499,27 @@ run over **every `.mmel` and `.prl` file in both repositories —
 | Registry pairing | C157 enforced, library 41/41 |
 | **Table lookup** | **`lookupTable` + the TABLE-variable evaluation wire, the BS6004 corpus variables verbatim (kernel 1.21.9); editor-side derive = G16** |
 | **The unwrap class** | **measured: 1 damaging case in 594 files — fixed; the rest benign** |
+
+
+## The primitives matrix, complete (2026-10-10, PRs #74/#75)
+
+Element by element against the Paneron extension's supported set:
+
+| Primitive | Creatable | Editable | Renderable | Dynamic |
+|---|---|---|---|---|
+| process | palette | inspector | canvas | simulator |
+| approval | palette | inspector | canvas | simulator |
+| dataclass | palette + tree | inspector | canvas (data node, flowing edges) | — |
+| start/end/timer/signal events | palette | inspector | canvas | simulator |
+| exclusive gateway | palette | inspector + edge editor | canvas + the RAIL | simulator + readings |
+| **parallel gateway** | **palette (was the gap — PR #75)** | inspector | canvas | simulator |
+| subprocess page | palette | tree | canvas (frame) | descent |
+| measurements/variables | tree | inspector | readings readout | twin + derive |
+| data registries | tree | inspector | workspace schema form | instance store |
+| TABLE lookups / calculations | DSL + inspector | inspector | readings (live values, failure notes) | the measured contract |
+| gates' conditions | edge editor | edge editor | the gate rails (lit/default/BLOCKED) | readings + simulator |
+
+The corpus's exotic constructs (Datalog/OWL/Repo/Folder) do not appear
+in the corpus — no retention obligation. The remaining named waves
+(G4 report templates [owner seam], G7 checklist, G8 link analyser,
+G9/G10 summaries) are feature programs beyond the primitive set.
