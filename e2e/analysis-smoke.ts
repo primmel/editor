@@ -3,6 +3,7 @@
 // with claims and citations, the link inventory with resolution
 // states, and the checklist with marks, evidence, and the CSV export.
 import puppeteer from 'puppeteer'
+import { join } from 'node:path'
 
 const MODEL = `root Root
 
@@ -145,6 +146,45 @@ if (!report.frame || report.title !== 'T' || !report.soa || !report.annex || !re
   await fail(`the report did not render: ${JSON.stringify(report)}`)
 }
 console.log('REPORT OK')
+
+// 6. G7's persistence: the marks save to the package's workspace
+//    file (a git commit) and load back after a clear.
+import { execSync } from 'node:child_process'
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+const PKG2 = join(tmpdir(), 'primmel-checklist-smoke')
+rmSync(PKG2, { force: true, recursive: true })
+mkdirSync(PKG2, { recursive: true })
+writeFileSync(join(PKG2, 'package.primmel'), 'package {\n  id cl-smoke\n}\n')
+writeFileSync(join(PKG2, 'model.prl'), MODEL)
+execSync('git init -q .', { cwd: PKG2 })
+await page.evaluate(`(async () => {
+  const res = await fetch('/api/package/open', {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ dir: ${JSON.stringify(PKG2)} }),
+  })
+  window.__stores.model.openPackage(await res.json())
+})()`)
+await new Promise((r) => setTimeout(r, 900))
+await page.evaluate(`(() => { document.querySelector('[data-testid="analyse-tab-checklist"]').click() })()`)
+await new Promise((r) => setTimeout(r, 400))
+await page.evaluate(`(() => { document.querySelector('[data-testid="checklist-save"]').click() })()`)
+await new Promise((r) => setTimeout(r, 1200))
+const saved = await page.evaluate(`(() => ({
+  note: document.querySelector('[data-testid="checklist-note"]')?.textContent ?? null,
+}))()`)
+console.log('marks saved:', JSON.stringify(saved))
+if (!saved.note?.includes('committed')) await fail(`the marks did not commit: ${JSON.stringify(saved)}`)
+await page.evaluate(`(() => { document.querySelector('[data-testid="check-mark-/req/one-partial"]').click() })()`)
+await new Promise((r) => setTimeout(r, 300))
+await page.evaluate(`(() => { document.querySelector('[data-testid="checklist-load"]').click() })()`)
+await new Promise((r) => setTimeout(r, 800))
+const loaded = await page.evaluate(`(() => ({
+  note: document.querySelector('[data-testid="checklist-note"]')?.textContent ?? null,
+  on: !!document.querySelector('.check-mark.satisfied.on'),
+}))()`)
+console.log('marks loaded:', JSON.stringify(loaded))
+if (!loaded.on) await fail('the loaded marks did not restore the satisfied state')
 
 if (errors.length) { console.log('PAGE ERRORS:', errors.slice(0, 3)); await browser.close(); process.exit(1) }
 console.log('ANALYSE OK')

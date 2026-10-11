@@ -60,6 +60,25 @@ function exportChecklist() {
   downloadText('checklist.csv', checklistCsv(items.value, checklist.marks));
 }
 
+// G7's persistence: the marks ride the package's workspace file (the
+// git-committing path) — recoverable by design.
+const marksNote = ref('');
+async function saveMarks() {
+  const pkg = modelStore.pkg;
+  if (!pkg) { marksNote.value = 'open a package to persist the marks'; return; }
+  marksNote.value = await checklist.save(pkg.dir);
+}
+async function loadMarks() {
+  const pkg = modelStore.pkg;
+  if (!pkg) { marksNote.value = 'open a package to load the marks'; return; }
+  try {
+    const n = await checklist.load(pkg.dir);
+    marksNote.value = n > 0 ? `${n} marks loaded` : 'no saved marks';
+  } catch (e) {
+    marksNote.value = (e as Error).message;
+  }
+}
+
 // G4's editor half: the assessment dossier — generated from the model,
 // never hand-edited; the certificate plane keeps the formal documents.
 const reportHtml = computed(() => {
@@ -160,7 +179,14 @@ function exportReport() {
         <button type="button" class="analyse-export" data-testid="checklist-export" @click="exportChecklist">
           export the marks (CSV)
         </button>
+        <button type="button" class="analyse-export" data-testid="checklist-save" @click="saveMarks">
+          save the marks
+        </button>
+        <button type="button" class="analyse-export" data-testid="checklist-load" @click="loadMarks">
+          load the marks
+        </button>
       </div>
+      <div v-if="marksNote" class="checklist-note" data-testid="checklist-note">{{ marksNote }}</div>
       <div v-for="item in items" :key="item.id" class="check-row" :data-testid="`check-${item.id}`">
         <div class="check-head">
           <code class="check-id">{{ item.id }}</code>
@@ -234,6 +260,7 @@ function exportReport() {
 .checklist-rail { flex: 1; height: 4px; background: var(--border-soft); border-radius: 999px; overflow: hidden; }
 .checklist-rail-fill { height: 100%; background: var(--sage); transition: width 0.2s ease; }
 .checklist-pct { font-family: var(--font-mono); font-size: 0.64rem; }
+.checklist-note { font-size: 0.62rem; color: var(--sage); font-family: var(--font-mono); margin: -0.3rem 0 0.5rem; }
 .check-row { border: 1px solid var(--border-soft); border-radius: var(--radius-sm, 4px); padding: 0.35rem 0.5rem; margin-bottom: 0.35rem; }
 .check-head { display: flex; gap: 0.4rem; align-items: baseline; }
 .check-id { color: var(--accent); font-size: 0.66rem; }
