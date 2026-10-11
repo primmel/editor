@@ -6,6 +6,8 @@
 import { defineStore } from 'pinia';
 import { shallowRef } from 'vue';
 import type { ChecklistMark } from '../lib/analysis';
+import { fetchPackageFile } from '../lib/workspace-data';
+import { writePackageFiles } from '../lib/package';
 
 export const useChecklistStore = defineStore('checklist', () => {
   const marks = shallowRef<Record<string, { mark: ChecklistMark; evidence: string }>>({});
@@ -24,5 +26,37 @@ export const useChecklistStore = defineStore('checklist', () => {
     marks.value = {};
   }
 
-  return { marks, setMark, setEvidence, clear };
+  // G7's persistence (Paneron's per-dataset checklists): the marks
+  // ride the package's workspace file — the same git-committing write
+  // path as the instance rows. Recoverable by design: the log IS the
+  // history.
+  const CHECKLIST_PATH = 'workspace/checklist.json';
+  let saving = false;
+
+  async function save(dir: string): Promise<string> {
+    saving = true;
+    try {
+      const r = await writePackageFiles(dir, [
+        { path: CHECKLIST_PATH, text: `${JSON.stringify({ marks: marks.value }, null, 2)}\n` },
+      ], 'workspace: the checklist marks');
+      return r.commit.committed
+        ? `committed ${r.commit.oid?.slice(0, 7)} — the marks are in the package's history`
+        : (r.commit.reason ?? 'saved without a commit');
+    } finally {
+      saving = false;
+    }
+  }
+
+  async function load(dir: string): Promise<number> {
+    const text = await fetchPackageFile(dir, CHECKLIST_PATH);
+    if (!text) {
+      marks.value = {};
+      return 0;
+    }
+    const doc = JSON.parse(text) as { marks?: Record<string, { mark: ChecklistMark; evidence: string }> };
+    marks.value = doc.marks ?? {};
+    return Object.keys(marks.value).length;
+  }
+
+  return { marks, setMark, setEvidence, clear, save, load, saving };
 });

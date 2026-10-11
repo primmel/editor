@@ -49,5 +49,6 @@ it('admits the workspace data file by exact path (G13), refuses other .json', ()
   const ws = guardPackageFile(dir, 'workspace/instances.json');
   expect(ws.endsWith(path.join('workspace', 'instances.json'))).toBe(true);
   expect(() => guardPackageFile(dir, 'workspace/other.json')).toThrow(/only .prl/);
+  expect(guardPackageFile(dir, 'workspace/checklist.json')).toBeTruthy();
   expect(() => guardPackageFile(dir, '../evil/workspace/instances.json')).toThrow();
 });

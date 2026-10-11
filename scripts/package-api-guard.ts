@@ -28,10 +28,12 @@ export function guardPackageDir(dir: string): string {
   return full;
 }
 
-/** Resolve a file to write INSIDE an opened package, or throw why not.
- *  The one non-model write is the workspace data file (G13's instance
- *  store — `workspace/instances.json`); admitted by exact path, never
- *  as a general .json allowance. */
+/** The workspace file set — the package's data plane (G13's instance
+ *  store, G7's persisted checklist marks): exact paths, never a
+ *  general .json allowance. */
+const WORKSPACE_FILES = new Set(['workspace/instances.json', 'workspace/checklist.json']);
+
+/** Resolve a file to write INSIDE an opened package, or throw why not. */
 export function guardPackageFile(packageDir: string, relPath: string): string {
   if (typeof relPath !== 'string' || relPath.trim() === '') {
     throw new Error('the path is empty');
@@ -43,8 +45,8 @@ export function guardPackageFile(packageDir: string, relPath: string): string {
   if (!full.startsWith(packageDir + path.sep)) {
     throw new Error('path escapes the package directory');
   }
-  if (!/\.(prl|primmel)$/.test(full) && relPath !== 'workspace/instances.json') {
-    throw new Error('only .prl/.primmel writes are accepted (the workspace data file aside)');
+  if (!/\.(prl|primmel)$/.test(full) && !WORKSPACE_FILES.has(relPath)) {
+    throw new Error('only .prl/.primmel writes are accepted (the workspace files aside)');
   }
   return full;
 }
