@@ -534,7 +534,17 @@ const view = computed<ViewMode>({
   margin-top: 2px;
 }
 
-.stats-bar { display: flex; gap: 0.5rem; flex: 1; justify-content: center; }
+.stats-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+  /* The R 60-scale packages grow more pills than the bar holds — they
+   *  must SHRINK IN PLACE, never wrap the topbar to three rows. */
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
 .stat-pill {
   display: flex;
   align-items: baseline;

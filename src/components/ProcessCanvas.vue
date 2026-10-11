@@ -12,9 +12,10 @@ import { pagePath } from '../lib/pages';
 import {
   createEdge, removeEdge, updateComponentPosition,
 } from '../lib/commands';
-import { createFromPalette, type PaletteKind } from '../lib/factory';
+import { createFromPalette, previewId, type PaletteKind } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
+import type { SelectionType } from '../stores/ui';
 
 const props = withDefaults(defineProps<{
   model: Standard;
@@ -413,7 +414,19 @@ function paletteAdd(entry: PaletteKind) {
   if (!canvas.value) return;
   const z = ui.zoom;
   const center = { x: (400 - ui.panX) / z - 400 / z + 300, y: (300 - ui.panY) / z - 300 / z + 200 };
+  // Mint the id FIRST (the apply takes it), then create AND SELECT —
+  // the inspector opens on the new element so its form is fillable
+  // immediately. (The owner's report: "create a process, fill in the
+  // form, cannot save" — the form never bound: no selection existed.)
+  const id = previewId(props.model, entry);
   modelStore.execute(createFromPalette(props.model, entry, center, canvas.value.id));
+  const type: SelectionType = entry.kind === 'process' ? 'process'
+    : entry.kind === 'dataclass' ? 'dataclass'
+    : entry.kind === 'gateway' ? 'gateway'
+    : entry.kind === 'subprocess' ? 'subprocess'
+    : entry.kind === 'approval' ? 'approval'
+    : 'event';
+  ui.select(id, type);
 }
 
 defineExpose({ paletteAdd });

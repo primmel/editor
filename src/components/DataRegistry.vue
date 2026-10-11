@@ -84,7 +84,9 @@ function exportYaml() {
           <span class="reg-count">{{ registry.stores.get(reg.id)?.records.length ?? 0 }}</span>
         </button>
       </div>
-      <div v-else class="reg-empty">No registries in this model</div>
+      <div v-else class="reg-empty">
+        No registries declared in this model — {{ model.dataclasses.length }} data classes are available to pair (declare a registry in the tree, or open a package that declares one).
+      </div>
     </div>
 
     <div class="record-list" v-if="activeReg">
