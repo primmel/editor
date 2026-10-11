@@ -60,7 +60,7 @@ function glyphShape(entry: PaletteKind): string {
         v-for="entry in PALETTE"
         :key="entry.label"
         class="palette-item"
-        :data-testid="`palette-${entry.kind}${entry.eventType ? '-' + entry.eventType : ''}`"
+        :data-testid="`palette-${entry.kind}${entry.eventType ? '-' + entry.eventType : entry.gatewayType ? '-parallel' : ''}`"
         draggable="true"
         @dragstart="emit('dragstart', entry, $event)"
         @click="emit('pick', entry)"
