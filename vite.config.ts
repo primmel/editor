@@ -165,8 +165,34 @@ function packageApi(): Plugin {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────
+// The demo measurement endpoint (M-API — the twin's API stream
+// source): GET /api/measurements answers live JSON readings —
+// `area` steps 1.0 → 1.6 on a 15s regime, `temp` wanders 20–26.
+// A `?t=` pin overrides the clock (deterministic — the probes and
+// the rehearsal read exact values). The readings are the same shape
+// any real instrument API returns; the twin's ingestion is generic.
+// ─────────────────────────────────────────────────────────────────────
+function demoMeasurements(): Plugin {
+  return {
+    name: 'primmel-demo-measurements',
+    configureServer(server) {
+      server.middlewares.use('/api/measurements', (_req, res) => {
+        const raw = new URL(_req.url ?? '/', 'http://x').searchParams.get('t');
+        const t = raw !== null && Number.isFinite(Number(raw))
+          ? Number(raw)
+          : process.uptime();
+        const area = Math.floor(t / 15) % 2 === 0 ? 1.0 : 1.6;
+        const temp = Math.round((20 + (t % 7)) * 10) / 10;
+        res.setHeader('content-type', 'application/json');
+        res.end(JSON.stringify({ ts: Date.now(), t, area, temp }));
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [vue(), tailwindcss(), saveApi(), packageApi()],
+  plugins: [vue(), tailwindcss(), saveApi(), packageApi(), demoMeasurements()],
   base: './',
   // The kernel-development loop: when @primmel/primmel is LINKED to a
   // local checkout (npm link), it resolves outside node_modules and
