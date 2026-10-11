@@ -86,7 +86,7 @@ export function tick(
     readings[s.variable] = v;
     registers[s.variable] = String(v);
   }
-  const { values } = deriveComputed(model, registers);
+  const { values } = deriveComputed(model, registers, { measured: sources.map((s) => s.variable) });
   for (const [id, v] of Object.entries(values)) registers[id] = String(v);
 
   // The alert edges: a condition fires when it turns true and was not

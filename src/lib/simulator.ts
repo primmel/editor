@@ -547,9 +547,17 @@ export function resetRun(model: Standard, opts: { pageId?: string; keepRegisters
 export function deriveComputed(
   model: Standard,
   registers: Record<string, string>,
+  opts: { measured?: Iterable<string> } = {},
 ): { values: Record<string, string | number>; errors: Record<string, string> } {
+  // The measured contract: the listed ids are ground truth (streamed
+  // by the caller's engine) — they are never re-derived, and their
+  // REGISTER value feeds every other derivation. A variable that is
+  // both streamed and declared TABLE would otherwise be clobbered by
+  // the model's own lookup for the same id.
+  const measured = new Set(opts.measured ?? []);
   const computed = (model.variables ?? []).filter(
-    v => (v.type === 'DERIVED' && v.definition !== '') || isTableVariable(v),
+    v => !measured.has(v.id)
+      && ((v.type === 'DERIVED' && v.definition !== '') || isTableVariable(v)),
   );
   const values: Record<string, string | number> = {};
   const errors: Record<string, string> = {};
