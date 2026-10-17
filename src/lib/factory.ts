@@ -274,6 +274,7 @@ export function newSymbol(id: string): Symbol {
     type: 'number',
     unit: '1',
     latex: '',
+    renders: [],
     values: [],
     series: null,
     kind: '',
@@ -429,7 +430,7 @@ export function newActivityArchetype(id: string): ActivityArchetype {
 }
 
 export function newCompetenceKind(id: string): CompetenceKind {
-  return { id, label: '', definition: '', source: null, methodStandards: [] };
+  return { id, label: '', definition: '', source: null };
 }
 
 export function newPredicate(id: string): RefPredicate {
