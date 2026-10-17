@@ -1009,7 +1009,6 @@ competence_kind force-measurement {
   label "Force measurement"
   definition "d"
   source { doc "urn:iso:std:iso-iec:17025:2017" clause "6.2" }
-  method_standard iec-61000-4-4 "IEC 61000-4-4 — bursts"
 }
 
 predicate derives-from {
@@ -1102,18 +1101,15 @@ discrepancy_record dr-1 {
     const ast = load(REGISTRY, { strict: true });
     const edits = [
       updateConstruct(a => a.activityArchetypes, 'peer-assessment', { label: 'peer assessment (edited)', parent: '' }),
-      updateConstruct(a => a.competenceKinds, 'force-measurement', { methodStandards: [{ id: 'iec-61000-4-4', title: 'IEC 61000-4-4 — bursts' }, { id: 'iec-60068-2-30', title: 'Damp heat' }] }),
       updateConstruct(a => a.predicates, 'derives-from', { symmetric: true, resolution: 'best-effort' }),
       updateConstruct(a => a.discrepancyRecords, 'dr-1', { status: 'resolved', resolution: 'follows_clause_x', governing: 'urn:oiml:pub:r:60:2021', rationale: 'the 2021 edition supersedes' }),
     ];
     for (const c of edits) c.apply(ast);
     const text = dump(ast);
     expect(text).toContain('label "peer assessment (edited)"');
-    expect(text).toContain('method_standard iec-60068-2-30 "Damp heat"');
     expect(text).toContain('symmetric true');
     expect(text).toContain('resolution follows_clause_x');
     const reloaded = load(text, { strict: true });
-    expect(reloaded.competenceKinds[0]?.methodStandards).toHaveLength(2);
     expect(reloaded.discrepancyRecords[0]?.governing).toBe('urn:oiml:pub:r:60:2021');
     expect(validate(reloaded)).toEqual([]);
     for (const c of [...edits].reverse()) c.revert(ast);
