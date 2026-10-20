@@ -87,10 +87,7 @@ data_registry InstrumentRegister {
   data_class LoadCell
 }
 
-reference R60 {
-  document "urn:oiml:pub:r:60-1:2021"
-  clause "5.1"
-}`;
+`;
 
 function fresh(): Standard {
   return load(BASE);
@@ -106,7 +103,7 @@ function attrShape(a: DataAttribute) {
     modality: a.modality,
     cardinality: a.cardinality,
     definition: a.definition,
-    ref: a.ref.map(r => r.id),
+    referenceIds: a.referenceIds,
     satisfy: a.satisfy,
     onDelete: a.onDelete,
     deprecated: a.deprecated,
@@ -129,15 +126,15 @@ describe('05 — the dataclass build', () => {
     updateElement((a: Standard) => a.dataclasses, 'LoadCell', { store: 'instruments' }).apply(ast);
     addAttribute('LoadCell', {
       id: 'capacity', type: 'QuantityValue', modality: 'SHALL', cardinality: '1..1',
-      definition: 'Maximum capacity', required: true, unit: 'kg', ref: [], satisfy: [],
+      definition: 'Maximum capacity', required: true, unit: 'kg', referenceIds: [], satisfy: [],
     }).apply(ast);
     addAttribute('LoadCell', {
       id: 'accuracyClass', type: 'enum', modality: '', cardinality: '1..1',
-      definition: 'Accuracy class', enumValues: ['A', 'C', 'D'], ref: [], satisfy: [],
+      definition: 'Accuracy class', enumValues: ['A', 'C', 'D'], referenceIds: [], satisfy: [],
     }).apply(ast);
     addAttribute('LoadCell', {
       id: 'certificate', type: 'reference(Certificate)', modality: '', cardinality: '0..1',
-      definition: 'The issued certificate', ref: [], satisfy: [],
+      definition: 'The issued certificate', referenceIds: [], satisfy: [],
     }).apply(ast);
 
     const hand = load(HANDWRITTEN);
@@ -229,18 +226,15 @@ describe('05 — enums and registries', () => {
     expect(dump(ast)).toContain('data_class LoadCell');
   });
 
-  it('attribute references resolve against the model reference list', () => {
+  it('attribute reference ids ride the opaque channel and round-trip', () => {
     const ast = load(HANDWRITTEN);
-    const r60 = ast.references.find(r => r.id === 'R60')!;
-    updateAttribute('LoadCell', 'capacity', { ref: [r60] }).apply(ast);
+    updateAttribute('LoadCell', 'capacity', { referenceIds: ['R60'] }).apply(ast);
     const attr = ast.dataclasses.find(d => d.id === 'LoadCell')!.attributes.find(a => a.id === 'capacity')!;
-    expect(attr.ref.map(r => r.id)).toEqual(['R60']);
+    expect(attr.referenceIds).toEqual(['R60']);
     const text = dump(ast);
     expect(text).toContain('reference {\n      R60\n    }');
-    // And the round trip re-resolves the reference object.
     const reparsed = load(text);
     const attr2 = reparsed.dataclasses.find(d => d.id === 'LoadCell')!.attributes.find(a => a.id === 'capacity')!;
-    expect(attr2.ref.map(r => r.id)).toEqual(['R60']);
-    expect(attr2.ref[0]!.document).toBe('urn:oiml:pub:r:60-1:2021');
+    expect(attr2.referenceIds).toEqual(['R60']);
   });
 });

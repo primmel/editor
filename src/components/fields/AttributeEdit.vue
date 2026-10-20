@@ -9,21 +9,15 @@ import type { DataAttribute } from '@primmel/primmel';
 import DataTypeSelector from './DataTypeSelector.vue';
 import CardinalityEdit from './CardinalityEdit.vue';
 import StringListEdit from './StringListEdit.vue';
-import PickerListEdit from './PickerListEdit.vue';
 
 const props = defineProps<{
   attr: DataAttribute;
   /** Dataclass ids (reference(…) targets). */
   classOptions: string[];
-  /** Reference ids (the document-reference picker). */
-  referenceOptions: string[];
 }>();
 
 const emit = defineEmits<{
   (e: 'patch', patch: Partial<DataAttribute>): void;
-  /** Reference id list — the parent resolves Reference objects (the
-   *  document/clause data lives on model.references, not here). */
-  (e: 'patchRefs', ids: string[]): void;
 }>();
 
 function onText(key: 'definition' | 'unit' | 'defaultValue', e: Event) {
@@ -117,11 +111,10 @@ function onText(key: 'definition' | 'unit' | 'defaultValue', e: Event) {
       </div>
       <div class="attr-block">
         <span class="attr-label">references</span>
-        <PickerListEdit
-          :items="attr.ref.map(r => r.id)"
-          :options="referenceOptions"
-          placeholder="add reference…"
-          @update="emit('patchRefs', $event)"
+        <StringListEdit
+          :items="attr.referenceIds"
+          placeholder="add a reference id…"
+          @update="emit('patch', { referenceIds: $event })"
         />
       </div>
     </details>

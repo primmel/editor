@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { Standard } from '@primmel/primmel';
 import { createConstruct, createElement, createInList, mintId } from '../lib/commands';
-import { newActivityArchetype, newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newCompetenceKind, newConditionSet, newConformanceClass, newConnectorProfile, newConstraint, newDataspace, newDiscrepancyRecord, newDual, newFormulasUsed, newInstance, newInstrument, newInvariant, newMonitor, newPassport, newPolicy, newPredicate, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newTextContent, newVerdict } from '../lib/factory';
+import { newActivityArchetype, newArtifactDefinition, newArtifactInstance, newAttributeDefinition, newBehavior, newCalculation, newCapability, newCompetenceKind, newConformanceClass, newConnectorProfile, newConstraint, newDataspace, newDiscrepancyRecord, newDual, newFormulasUsed, newInstance, newInstrument, newInvariant, newMonitor, newPassport, newPolicy, newPredicate, newQuantityRegister, newReferenceMaterial, newStateMachine, newSubject, newSymbol, newTable, newTerm, newTestPointSet, newTestSequence, newTextContent, newVerdict } from '../lib/factory';
 import { useModelStore } from '../stores/model';
 import { useUiStore } from '../stores/ui';
 import type { SelectionType } from '../stores/ui';
@@ -69,7 +69,6 @@ const groups = computed<TreeGroup[]>(() => {
     { label: 'Instruments', type: 'instrument', createPrefix: 'MI', items: m.instruments.map((i) => ({ id: i.id, detail: i.extends ? `extends ${i.extends}` : undefined })) },
     { label: 'Behaviors', type: 'behavior', createPrefix: 'Behavior', items: m.behaviors.map((b) => ({ id: b.id, detail: b.kind })) },
     { label: 'Capabilities', type: 'capability', createPrefix: 'Capability', items: m.capabilities.map((c) => ({ id: c.id, detail: c.label })) },
-    { label: 'Condition Sets', type: 'conditionSet', createPrefix: 'CondSet', items: m.conditionSets.map((c) => ({ id: c.id, detail: c.role })) },
     { label: 'Verdicts', type: 'verdict', createPrefix: 'Verdict', items: m.verdicts.map((v) => ({ id: v.id, detail: v.symbol ?? v.quantityKind })) },
     { label: 'Quantity Registers', type: 'quantityRegister', createPrefix: 'QR', items: m.quantityRegisters.map((q) => ({ id: q.id, detail: `${q.units.length} units` })) },
     { label: 'Duals', type: 'dual', createPrefix: 'Dual', items: m.duals.map((d) => ({ id: d.id, detail: d.attribute })) },
@@ -144,9 +143,6 @@ function createIn(group: TreeGroup) {
       break;
     case 'capability':
       modelStore.execute(createConstruct((a: Standard) => a.capabilities, newCapability(id), `create capability ${id}`));
-      break;
-    case 'conditionSet':
-      modelStore.execute(createConstruct((a: Standard) => a.conditionSets, newConditionSet(id), `create condition set ${id}`));
       break;
     case 'verdict':
       modelStore.execute(createConstruct((a: Standard) => a.verdicts, newVerdict(id), `create verdict ${id}`));

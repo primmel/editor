@@ -62,7 +62,6 @@ const groups = computed(() => (diff.value ? editionDiffGroups(diff.value) : []))
  *  (select-to-inspect stays the only authoring path). */
 const SELECTION_TYPE: Record<string, SelectionType> = {
   terms: 'term',
-  references: 'reference',
   roles: 'role',
   quantityRegisters: 'quantityRegister',
   enums: 'enum',
@@ -74,7 +73,6 @@ const SELECTION_TYPE: Record<string, SelectionType> = {
   attributeDefinitions: 'attributeDefinition',
   capabilities: 'capability',
   behaviors: 'behavior',
-  conditionSets: 'conditionSet',
   instances: 'instance',
   duals: 'dual',
   artifactDefinitions: 'artifactDefinition',

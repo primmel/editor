@@ -29,7 +29,7 @@ requirement /req/cs/application-completeness {
       - description: "Deficiencies communicated to the applicant when incomplete"
   }
   verification { method inspection description "IA application review step (process review_application)." }
-  source { doc "PD-05 §4.2.1" clause "" }
+  ref derives-from "PD-05 §4.2.1"
 }
 
 requirement /req/cs/application-contents {
@@ -48,7 +48,7 @@ requirement /req/cs/application-contents {
       - description: "Previous OIML test reports referenced where applicable"
   }
   verification { method inspection description "Applicant submission (abstract process application)." }
-  source { doc "PD-05 §4.1.2" clause "" }
+  ref derives-from "PD-05 §4.1.2"
 }
 
 requirement /req/cs/fee-estimate {
@@ -62,7 +62,7 @@ requirement /req/cs/fee-estimate {
       - description: "Fees determined by the Issuing Authority and the associated Test Laboratory(ies)"
   }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
-  source { doc "PD-05 §4.2.8" clause "" }
+  ref derives-from "PD-05 §4.2.8"
 }
 
 requirement /req/cs/application-time-estimate {
@@ -75,7 +75,7 @@ requirement /req/cs/application-time-estimate {
       - description: "Approximate completion time communicated to the applicant in writing"
   }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
-  source { doc "PD-05 §4.2.9" clause "" }
+  ref derives-from "PD-05 §4.2.9"
 }
 
 requirement /req/cs/sample-count {
@@ -90,7 +90,7 @@ requirement /req/cs/sample-count {
       - description: "Family-member identity and count stated for family applications"
   }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
-  source { doc "PD-05 §4.2.5" clause "" }
+  ref derives-from "PD-05 §4.2.5"
 }
 
 requirement /req/cs/rejection-reason {
@@ -105,7 +105,7 @@ requirement /req/cs/rejection-reason {
       - description: "Reasons for the rejection recorded and stated"
   }
   verification { method inspection description "IA rejection step (process reject_application)." }
-  source { doc "PD-05 §4.2.2" clause "" }
+  ref derives-from "PD-05 §4.2.2"
 }
 
 requirement /req/cs/test-laboratory-eligibility {
@@ -119,7 +119,7 @@ requirement /req/cs/test-laboratory-eligibility {
       - description: "Assigned test procedures are those of the relevant Recommendation"
   }
   verification { method inspection description "IA dispatch step (abstract process dispatch)." }
-  source { doc "PD-05 §4.3.1" clause "" }
+  ref derives-from "PD-05 §4.3.1"
 }
 
 requirement /req/cs/multiple-test-laboratories {
@@ -133,7 +133,7 @@ requirement /req/cs/multiple-test-laboratories {
       - description: "Each report covers only the tests that laboratory conducted"
   }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
-  source { doc "PD-05 §4.4.1" clause "" }
+  ref derives-from "PD-05 §4.4.1"
 }
 
 requirement /req/cs/test-report-18-elements {
@@ -150,7 +150,7 @@ requirement /req/cs/test-report-18-elements {
       - description: "All required form instances completed (completed_forms = required_forms)"
   }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
-  source { doc "PD-05 §4.4.3" clause "" }
+  ref derives-from "PD-05 §4.4.3"
 }
 
 requirement /req/cs/test-report-authorization {
@@ -165,7 +165,7 @@ requirement /req/cs/test-report-authorization {
       - description: "Unique report identification number assigned"
   }
   verification { method inspection description "TL report authorization (approval tl_authorize_test_report; abstract process testing)." }
-  source { doc "PD-05 §4.4.4" clause "" }
+  ref derives-from "PD-05 §4.4.4"
 }
 
 requirement /req/cs/test-report-language {
@@ -179,7 +179,7 @@ requirement /req/cs/test-report-language {
       - description: "English translation provided or authorised by the Issuing Authority where applicable"
   }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
-  source { doc "PD-05 §4.4.5" clause "" }
+  ref derives-from "PD-05 §4.4.5"
 }
 
 requirement /req/cs/test-report-logo {
@@ -195,7 +195,7 @@ requirement /req/cs/test-report-logo {
       - description: "Recommendation-required results distinguished from other results"
   }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
-  source { doc "PD-05 §4.4.6" clause "" }
+  ref derives-from "PD-05 §4.4.6"
 }
 
 requirement /req/cs/evaluation-report-contents {
@@ -210,7 +210,7 @@ requirement /req/cs/evaluation-report-contents {
       - description: "Conformity conclusion stated and signed by the Issuing Authority"
   }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
-  source { doc "PD-05 §4.5.1" clause "" }
+  ref derives-from "PD-05 §4.5.1"
 }
 
 requirement /req/cs/evaluation-report-id {
@@ -225,7 +225,7 @@ requirement /req/cs/evaluation-report-id {
       - description: "Unique report identification number assigned"
   }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report; approval ia_approve_evaluation_report)." }
-  source { doc "PD-05 §4.5.2" clause "" }
+  ref derives-from "PD-05 §4.5.2"
 }
 
 requirement /req/cs/evaluation-report-logo {
@@ -238,7 +238,7 @@ requirement /req/cs/evaluation-report-logo {
       - description: "OIML-CS logo affixed on the evaluation report"
   }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
-  source { doc "PD-05 §4.5.3" clause "" }
+  ref derives-from "PD-05 §4.5.3"
 }
 
 requirement /req/cs/evaluation-report-language {
@@ -252,7 +252,7 @@ requirement /req/cs/evaluation-report-language {
       - description: "English translation provided or authorised by the Issuing Authority where applicable"
   }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
-  source { doc "PD-05 §4.5.4" clause "" }
+  ref derives-from "PD-05 §4.5.4"
 }
 
 requirement /req/cs/sample-retention {
@@ -266,7 +266,7 @@ requirement /req/cs/sample-retention {
       - description: "Sample keeping by agreement recorded, taking size and commercial value into account"
   }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report) and sample custody records." }
-  source { doc "PD-05 §4.5.5" clause "" }
+  ref derives-from "PD-05 §4.5.5"
 }
 
 requirement /req/cs/failure-notice {
@@ -280,7 +280,7 @@ requirement /req/cs/failure-notice {
       - description: "Evaluation report given to the applicant on request"
   }
   verification { method inspection description "IA conformity decision (abstract process decision; process compile_evaluation_report)." }
-  source { doc "PD-05 §4.5.6" clause "" }
+  ref derives-from "PD-05 §4.5.6"
 }
 
 requirement /req/cs/re-application {
@@ -295,7 +295,7 @@ requirement /req/cs/re-application {
       - description: "Applications for already-certified types routed to the revision procedure"
   }
   verification { method inspection description "IA review of the re-application (abstract process re_application — no concrete Core process yet; named gap)." }
-  source { doc "PD-05 §4.5.7" clause "" }
+  ref derives-from "PD-05 §4.5.7"
 }
 
 requirement /req/cs/scheme-a-national-requirements {
@@ -310,7 +310,7 @@ requirement /req/cs/scheme-a-national-requirements {
       - description: "Additional-requirement results in separate or shared test reports"
   }
   verification { method inspection description "Scheme A processing (abstract process scheme_a_certification — unrealized; named gap)." }
-  source { doc "PD-05 §5.1.4" clause "" }
+  ref derives-from "PD-05 §5.1.4"
 }
 
 requirement /req/cs/scheme-a-mtl-test-data {
@@ -325,7 +325,7 @@ requirement /req/cs/scheme-a-mtl-test-data {
       - description: "Only own-Declaration Manufacturer Test Laboratory reports utilised"
   }
   verification { method inspection description "Scheme A processing (abstract process scheme_a_certification — unrealized; named gap)." }
-  source { doc "PD-05 §5.3.1" clause "" }
+  ref derives-from "PD-05 §5.3.1"
 }
 
 requirement /req/cs/scheme-a-anr-validation-letter {
@@ -339,7 +339,7 @@ requirement /req/cs/scheme-a-anr-validation-letter {
       - description: "Letter copy sent to the BIML with the certificate"
   }
   verification { method inspection description "Scheme A issuance (abstract process scheme_a_certification — unrealized; named gap)." }
-  source { doc "PD-05 §5.6.3" clause "" }
+  ref derives-from "PD-05 §5.6.3"
 }
 
 requirement /req/cs/certificate-requirements {
@@ -355,7 +355,7 @@ requirement /req/cs/certificate-requirements {
       - description: "Certificate number, date of issue and IA sign-off present"
   }
   verification { method inspection description "IA issuance step (process issue_certificate)." }
-  source { doc "PD-05 §4.6.1" clause "" }
+  ref derives-from "PD-05 §4.6.1"
 }
 
 requirement /req/cs/certificate-format {
@@ -373,7 +373,7 @@ requirement /req/cs/certificate-format {
       - description: "Module identified under the \"designation of the module\" heading where applicable"
   }
   verification { method inspection description "IA issuance step (abstract process issue)." }
-  source { doc "PD-05 §4.6.2" clause "" }
+  ref derives-from "PD-05 §4.6.2"
 }
 
 requirement /req/cs/certificate-number {
@@ -389,7 +389,7 @@ requirement /req/cs/certificate-number {
       - description: "Associated evaluation report and documentation file identifiers on the certificate"
   }
   verification { method inspection description "IA issuance step (abstract process issue)." }
-  source { doc "PD-05 §4.6.4" clause "" }
+  ref derives-from "PD-05 §4.6.4"
 }
 
 requirement /req/cs/certificate-delivery {
@@ -403,7 +403,7 @@ requirement /req/cs/certificate-delivery {
       - description: "Issuing Authority copies retained on file"
   }
   verification { method inspection description "IA issuance step (abstract process issue)." }
-  source { doc "PD-05 §4.6.6" clause "" }
+  ref derives-from "PD-05 §4.6.6"
 }
 
 requirement /req/cs/certificate-revision {
@@ -418,7 +418,7 @@ requirement /req/cs/certificate-revision {
       - description: "Revised certificate registered with the BIML"
   }
   verification { method inspection description "IA revision handling (process handle_revision)." }
-  source { doc "PD-05 §8.1" clause "" }
+  ref derives-from "PD-05 §8.1"
 }
 
 requirement /req/cs/biml-registration {
@@ -432,7 +432,7 @@ requirement /req/cs/biml-registration {
       - description: "Certificate visible in the public OIML-CS register"
   }
   verification { method inspection description "BIML registration step (process register_certificate)." }
-  source { doc "PD-05 §6.1" clause "" }
+  ref derives-from "PD-05 §6.1"
 }
 
 requirement /req/cs/registration-fee {
@@ -447,7 +447,7 @@ requirement /req/cs/registration-fee {
       - description: "Pass-through to the owner charges the exact amount in Euros"
   }
   verification { method inspection description "BIML registration fee handling (abstract process registration_fee — unrealized; named gap)." }
-  source { doc "PD-05 §6.2" clause "" }
+  ref derives-from "PD-05 §6.2"
 }
 
 requirement /req/cs/registration-withdrawal {
@@ -461,7 +461,7 @@ requirement /req/cs/registration-withdrawal {
       - description: "Certificate listed when the owner's payment has been received"
   }
   verification { method inspection description "BIML registration fee handling (abstract process registration_fee — unrealized; named gap)." }
-  source { doc "PD-05 §6.3" clause "" }
+  ref derives-from "PD-05 §6.3"
 }
 
 requirement /req/cs/incorrect-conclusions {
@@ -475,7 +475,7 @@ requirement /req/cs/incorrect-conclusions {
       - description: "PD-01 clause 6 procedure applied"
   }
   verification { method inspection description "Incorrect-conclusions handling (abstract process incorrect_conclusions — unrealized; named gap)." }
-  source { doc "PD-05 §7.1" clause "" }
+  ref derives-from "PD-05 §7.1"
 }
 
 requirement /req/cs/certificate-revision-mechanics {
@@ -491,7 +491,7 @@ requirement /req/cs/certificate-revision-mechanics {
       - description: "Previous certificate versions remain publicly available except error corrections"
   }
   verification { method inspection description "IA revision handling (process handle_revision)." }
-  source { doc "PD-05 §8.1.4" clause "" }
+  ref derives-from "PD-05 §8.1.4"
 }
 
 requirement /req/cs/parallel-certificates {
@@ -506,7 +506,7 @@ requirement /req/cs/parallel-certificates {
       - description: "Parallel certificate registered per clause 6"
   }
   verification { method inspection description "IA parallel issuance (abstract process parallel_certificates; process issue_certificate)." }
-  source { doc "PD-05 §8.2" clause "" }
+  ref derives-from "PD-05 §8.2"
 }
 
 requirement /req/cs/recommendation-revision-updates {
@@ -521,7 +521,7 @@ requirement /req/cs/recommendation-revision-updates {
       - description: "New certificate and evaluation report issued and registered on successful completion"
   }
   verification { method inspection description "IA edition-change handling (abstract process recommendation_update; process handle_edition_change)." }
-  source { doc "PD-05 §8.3" clause "" }
+  ref derives-from "PD-05 §8.3"
 }
 
 

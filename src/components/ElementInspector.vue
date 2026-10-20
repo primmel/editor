@@ -19,7 +19,6 @@ import TestPointSetInspector from './inspectors/TestPointSetInspector.vue';
 import SubjectInspector from './inspectors/SubjectInspector.vue';
 import BehaviorInspector from './inspectors/BehaviorInspector.vue';
 import CapabilityInspector from './inspectors/CapabilityInspector.vue';
-import ConditionSetInspector from './inspectors/ConditionSetInspector.vue';
 import VerdictInspector from './inspectors/VerdictInspector.vue';
 import SymbolInspector from './inspectors/SymbolInspector.vue';
 import AttributeDefinitionInspector from './inspectors/AttributeDefinitionInspector.vue';
@@ -150,11 +149,6 @@ const pluginInspector = computed(() => {
       />
       <CapabilityInspector
         v-else-if="target.type === 'capability'"
-        :model="props.model"
-        :element-id="target.id"
-      />
-      <ConditionSetInspector
-        v-else-if="target.type === 'conditionSet'"
         :model="props.model"
         :element-id="target.id"
       />

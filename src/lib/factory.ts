@@ -88,7 +88,6 @@ export type TestPointSet = Standard['testPointSets'][number];
 export type Subject = Standard['subjects'][number];
 export type Behavior = Standard['behaviors'][number];
 export type Capability = Standard['capabilities'][number];
-export type ConditionSet = Standard['conditionSets'][number];
 export type Verdict = Standard['verdicts'][number];
 export type ReferenceMaterial = Standard['referenceMaterials'][number];
 export type Symbol = Standard['symbols'][number];
@@ -113,7 +112,7 @@ export type DiscrepancyRecord = Standard['discrepancyRecords'][number];
 export type Dataspace = Standard['dataspaces'][number];
 export type Policy = Standard['policies'][number];
 export function newTerm(id: string): Term {
-  return { id, label: '', definition: '', symbolId: '', referenceIds: [], ref: [] };
+  return { id, label: '', definition: '', symbolId: '', referenceIds: [] };
 }
 
 export function newConstraint(id: string): Constraint {
@@ -136,7 +135,7 @@ export function newCalculation(id: string): Calculation {
     inputs: [],
     output: { type: 'number', unit: '' },
     expression: '',
-    ref: [],
+    referenceIds: [],
   };
 }
 
@@ -245,15 +244,6 @@ export function newCapability(id: string): Capability {
   };
 }
 
-export function newConditionSet(id: string): ConditionSet {
-  return {
-    id,
-    role: '',
-    entries: [],
-    referenceIds: [],
-  };
-}
-
 export function newVerdict(id: string): Verdict {
   return {
     id,
@@ -287,7 +277,7 @@ export function newSymbol(id: string): Symbol {
     sourceRef: null,
     formula: null,
     notes: [],
-    ref: [],
+    referenceIds: [],
   };
 }
 

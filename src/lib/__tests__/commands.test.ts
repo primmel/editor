@@ -155,7 +155,7 @@ describe('data-axis commands', () => {
   it('add/update/remove attribute with exact reverts', () => {
     const ast = fresh();
     createElement('dataclass', 'DC1').apply(ast);
-    const add = addAttribute('DC1', { id: 'a1', type: 'number', modality: 'SHALL', cardinality: '[1..1]', definition: '', ref: [], satisfy: [] });
+    const add = addAttribute('DC1', { id: 'a1', type: 'number', modality: 'SHALL', cardinality: '[1..1]', definition: '', referenceIds: [], satisfy: [] });
     add.apply(ast);
     const cls = ast.dataclasses.find(d => d.id === 'DC1')!;
     expect(cls.attributes).toHaveLength(1);
@@ -174,8 +174,8 @@ describe('data-axis commands', () => {
   it('reorderList moves and reverts', () => {
     const ast = fresh();
     createElement('dataclass', 'DC1').apply(ast);
-    addAttribute('DC1', { id: 'a1', type: 'string', modality: 'SHALL', cardinality: '', definition: '', ref: [], satisfy: [] }).apply(ast);
-    addAttribute('DC1', { id: 'a2', type: 'string', modality: 'SHALL', cardinality: '', definition: '', ref: [], satisfy: [] }).apply(ast);
+    addAttribute('DC1', { id: 'a1', type: 'string', modality: 'SHALL', cardinality: '', definition: '', referenceIds: [], satisfy: [] }).apply(ast);
+    addAttribute('DC1', { id: 'a2', type: 'string', modality: 'SHALL', cardinality: '', definition: '', referenceIds: [], satisfy: [] }).apply(ast);
     const before = clone(ast);
     const cmd = reorderList(ast => ast.dataclasses.find(d => d.id === 'DC1')!.attributes, 0, 1);
     cmd.apply(ast);

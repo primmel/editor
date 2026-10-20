@@ -22,7 +22,6 @@ const modelStore = useModelStore();
 
 const cls = computed(() => { void modelStore.version; return props.model.dataclasses.find(d => d.id === props.classId); });
 const classOptions = computed(() => { void modelStore.version; return props.model.dataclasses.map(d => d.id); });
-const referenceOptions = computed(() => { void modelStore.version; return props.model.references.map(r => r.id); });
 
 function patch(p: Partial<DataClass>) {
   modelStore.execute(
@@ -51,7 +50,7 @@ const attrs = computed(() => {
 
 function onAdd(id: string) {
   const attr: DataAttribute = {
-    id, type: '', modality: '', cardinality: '', definition: '', ref: [], satisfy: [],
+    id, type: '', modality: '', cardinality: '', definition: '', referenceIds: [], satisfy: [],
   };
   modelStore.execute(addAttribute(props.classId, attr));
 }
@@ -68,12 +67,6 @@ function onPatch(attrId: string, patch: Partial<DataAttribute>) {
   modelStore.execute(updateAttribute(props.classId, attrId, patch));
 }
 
-function onRefs(attrId: string, ids: string[]) {
-  const refs = ids
-    .map(id => props.model.references.find(r => r.id === id))
-    .filter((r): r is NonNullable<typeof r> => !!r);
-  modelStore.execute(updateAttribute(props.classId, attrId, { ref: refs }));
-}
 </script>
 
 <template>
@@ -116,12 +109,10 @@ function onRefs(attrId: string, ids: string[]) {
       <AttributeList
         :attributes="attrs"
         :class-options="classOptions"
-        :reference-options="referenceOptions"
         @add="onAdd"
         @remove="modelStore.execute(removeAttribute(props.classId, $event))"
         @move="onMove"
         @patch="onPatch"
-        @patch-refs="onRefs"
       />
     </InspectorField>
   </div>

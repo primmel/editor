@@ -43,9 +43,9 @@ import type { PackageOpenResult } from './package';
  *  tier-less eight. The unit test proves the list complete against a
  *  real package load. */
 export const CONSTRUCT_FIELDS = [
-  'terms', 'references', 'roles', 'quantityRegisters', 'enums', 'variables', 'figures',
+  'terms', 'roles', 'quantityRegisters', 'enums', 'variables', 'figures',
   'activityArchetypes', 'connectorProfiles', 'subjects', 'instruments', 'attributeDefinitions',
-  'capabilities', 'behaviors', 'conditionSets', 'instances', 'duals', 'artifactDefinitions',
+  'capabilities', 'behaviors', 'instances', 'duals', 'artifactDefinitions',
   'artifactInstances', 'requirements', 'requirementClasses', 'conformanceTests', 'conformanceClasses',
   'forms', 'subforms', 'symbols', 'calculations', 'verdicts', 'tables', 'testPointSets',
   'referenceMaterials', 'processes', 'pages', 'dataclasses', 'regs', 'gateways', 'events',

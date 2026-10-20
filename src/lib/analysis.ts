@@ -91,9 +91,7 @@ export function provisionSummaries(model: Standard): ProvisionSummary[] {
     modality: p.modality,
     condition: p.condition,
     subjects: [...p.subject.entries()].map(([slot, entityId]) => `${slot}: ${entityId}`),
-    citations: (p.ref ?? [])
-      .filter((r) => r.document)
-      .map((r) => [r.document, r.clause].filter(Boolean).join(' ')),
+    citations: [...(p.referenceIds ?? [])],
   }));
 }
 

@@ -11,7 +11,6 @@ import AttributeEdit from './AttributeEdit.vue';
 const props = defineProps<{
   attributes: DataAttribute[];
   classOptions: string[];
-  referenceOptions: string[];
 }>();
 
 const emit = defineEmits<{
@@ -19,7 +18,6 @@ const emit = defineEmits<{
   (e: 'remove', id: string): void;
   (e: 'move', fromIndex: number, toIndex: number): void;
   (e: 'patch', id: string, patch: Partial<DataAttribute>): void;
-  (e: 'patchRefs', id: string, ids: string[]): void;
 }>();
 
 const draft = ref('');
@@ -45,9 +43,7 @@ function add() {
       <AttributeEdit
         :attr="attr"
         :class-options="classOptions"
-        :reference-options="referenceOptions"
         @patch="emit('patch', attr.id, $event)"
-        @patch-refs="emit('patchRefs', attr.id, $event)"
       />
       <div class="row-actions">
         <button

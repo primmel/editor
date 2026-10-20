@@ -23,6 +23,10 @@ export interface ImportReport {
   expressionRenames: { from: string; to: string; count: number }[];
   /** How many expression strings were rewritten. */
   translatedExpressions: number;
+  /** The retired v2 constructs dropped on import (kernel 1.21.20/1.21.21):
+   *  the reference registry has no v3 home and the condition register is a
+   *  typed table — reported, never silently dropped. */
+  retiredConstructs: { kind: string; count: number }[];
 }
 
 export interface ImportResult {
@@ -57,6 +61,38 @@ const RENAMES: { from: string; to: string }[] = [
   { from: 'subprocess', to: 'canvas' },
   { from: 'view', to: 'view_profile' },
 ];
+
+/** Remove a retired v2 construct definition (keyword + id + brace-balanced
+ *  block, string-aware) so the strict parse of the remaining dialect holds. */
+function stripRetiredBlock(text: string, keyword: string): string {
+  const re = new RegExp(`^[ \t]*${keyword}[ \t]+[A-Za-z0-9_.:\-]+[ \t]*\\{`, 'm');
+  for (;;) {
+    const m = re.exec(text);
+    if (!m) {
+      return text;
+    }
+    let i = m.index + m[0].length;
+    let depth = 1;
+    let inString = false;
+    for (; i < text.length && depth > 0; i++) {
+      const c = text[i];
+      if (inString) {
+        if (c === '\\') {
+          i++;
+        } else if (c === '"') {
+          inString = false;
+        }
+      } else if (c === '"') {
+        inString = true;
+      } else if (c === '{') {
+        depth++;
+      } else if (c === '}') {
+        depth--;
+      }
+    }
+    text = text.slice(0, m.index) + text.slice(i);
+  }
+}
 
 /** The top-level keyword inventory of a source text: column-zero
  *  `keyword` tokens, with quoted-string contents and brace-nested
@@ -124,7 +160,11 @@ export function translateMeasurementExpression(expr: string): {
 }
 
 export function importLegacy(text: string): ImportResult {
-  const standard = load(text, { strict: true });
+  const v2 = stripRetiredBlock(
+    stripRetiredBlock(text, 'reference'),
+    'condition_set',
+  );
+  const standard = load(v2, { strict: true });
 
   // The measurement expressions translate (the rename contract's
   // expression table): bracket variables + postfix list operators →
@@ -167,7 +207,6 @@ export function importLegacy(text: string): ImportResult {
     ['event', standard.events],
     ['gateway', standard.gateways],
     ['canvas', standard.pages],
-    ['reference', standard.references],
     ['note', standard.notes],
     ['table', standard.tables],
     ['figure', standard.figures],
@@ -188,6 +227,10 @@ export function importLegacy(text: string): ImportResult {
     .filter(([k]) => !KNOWN_KEYWORDS.has(k))
     .map(([keyword, count]) => ({ keyword, count }));
 
+  const retiredConstructs = ['reference', 'condition_set']
+    .map(kind => ({ kind, count: inventory.get(kind) ?? 0 }))
+    .filter(r => r.count > 0);
+
   const validationIssues = validate(standard).map(i => i.message);
 
   const expressionRenamesList = Object.entries(expressionRenames).map(
@@ -207,6 +250,7 @@ export function importLegacy(text: string): ImportResult {
       validationIssues,
       expressionRenames: expressionRenamesList,
       translatedExpressions: translatedCount,
+      retiredConstructs,
     },
   };
 }

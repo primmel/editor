@@ -26,7 +26,6 @@ describe('15 — the real corpus converts', () => {
     expect(standard.provisions).toHaveLength(100);
     expect(standard.dataclasses).toHaveLength(14);
     expect(standard.regs).toHaveLength(10);
-    expect(standard.references).toHaveLength(49);
     expect(standard.variables).toHaveLength(7);
     expect(standard.pages).toHaveLength(10);
 

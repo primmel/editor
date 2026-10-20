@@ -135,7 +135,6 @@ export const oimlPlugin: StudioPlugin = {
         fields: [],
         passFail: null,
         referenceIds: [],
-        ref: [],
       }), 'create form'),
     },
     {

@@ -125,7 +125,7 @@ const ELEMENT_DEFAULTS: Record<ElementKind, (id: string) => Process | Approval |
   }),
   approval: id => ({
     id, name: '', modality: 'SHALL', actorRef: '', approverRef: '', recordRefs: [],
-    actor: null, approver: null, records: [], ref: [], source: null,
+    actor: null, approver: null, records: [], referenceIds: [], source: null,
   }),
   dataclass: id => ({ id, attributes: [] }),
   event: id => ({ id, eventType: 'start' }),
