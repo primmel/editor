@@ -8,7 +8,7 @@ export type SelectionType =
   | 'requirement' | 'conformanceTest' | 'requirementClass'
   | 'term' | 'constraint' | 'calculation' | 'table'
   | 'stateMachine' | 'testSequence' | 'testPointSet' | 'subject'
-  | 'behavior' | 'capability' | 'conditionSet' | 'verdict' | 'referenceMaterial'
+  | 'behavior' | 'capability' | 'verdict' | 'referenceMaterial'
   | 'symbol' | 'attributeDefinition'
   | 'quantityRegister' | 'dual' | 'instrument' | 'conformanceClass'
   | 'instance' | 'artifactDefinition' | 'artifactInstance'

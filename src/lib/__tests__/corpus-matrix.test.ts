@@ -56,7 +56,6 @@ describe('24 — the corpus matrix (10/10)', () => {
       expect(standard.roles, 'roles').toHaveLength(row.roles);
       expect(standard.pages, 'pages').toHaveLength(row.pages);
       expect(standard.dataclasses, 'dataclasses').toHaveLength(row.dataclasses);
-      expect(standard.references, 'references').toHaveLength(row.references);
       expect(standard.enums, 'enums').toHaveLength(row.enums);
       expect(standard.variables, 'variables').toHaveLength(row.variables);
       expect(standard.notes, 'notes').toHaveLength(row.notes);

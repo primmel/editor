@@ -92,7 +92,6 @@ describe('20 — the completion contexts', () => {
   it('detects the enclosing block', () => {
     expect(completionContext('process P1 {\n  validate_provision {\n    ').kind).toBe('provision');
     expect(completionContext('process P1 {\n  output {\n    ').kind).toBe('registry');
-    expect(completionContext('class C {\n  a: string {\n    reference {\n      ').kind).toBe('reference');
   });
 });
 
@@ -109,8 +108,6 @@ describe('20 — the items come from the live AST', () => {
       .toEqual(['Root', 'Page1']);
     expect(completionItemsFor({ kind: 'dataclass' }, model).map(i => i.label))
       .toEqual(['LoadCell']);
-    expect(completionItemsFor({ kind: 'reference' }, model).map(i => i.label))
-      .toEqual(['R60']);
 
     const types = completionItemsFor({ kind: 'datatype' }, model).map(i => i.label);
     expect(types).toContain('integer');

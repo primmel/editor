@@ -56,7 +56,7 @@ function addField() {
     requiredWhen: '', refs: [], measurementMethod: '', calculationId: null, calculationBindings: [],
     derivation: '', evaluation: null, values: [], trueLabel: '', falseLabel: '', enumValues: [],
     defaultValue: '', hasDefault: false, referenceIds: [], fieldReferences: [],
-    specificationReference: '', applicability: [], sourceDiscrepancy: null, fields: [],
+    applicability: [], sourceDiscrepancy: null, fields: [],
     itemsType: '', subformRef: null,
   }], `add field ${name}`);
   draftFieldName.value = '';

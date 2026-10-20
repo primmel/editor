@@ -19,7 +19,6 @@ import {
   newBehavior,
   newCalculation,
   newCapability,
-  newConditionSet,
   newConstraint,
   newStateMachine,
   newSubject,
@@ -188,7 +187,7 @@ describe('W3 constraints — the domain-constraint surface', () => {
     const source = { doc: c.source?.doc ?? '', clause: '3.7' };
     updateConstruct(a => a.constraints, 'dead_load_max_geometry', { source, sourceRefs: [source] }).apply(ast);
     const text = dump(ast);
-    expect(text).toContain('source { doc "urn:oiml:pub:r:60-1:2021" clause "3.7" }');
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-1:2021#clause-3.7"');
     expect(load(text, { strict: true }).constraints[0]?.source?.clause).toBe('3.7');
   });
 
@@ -436,7 +435,7 @@ describe('W3 test sequences — the required-ordering surface', () => {
     depends_on 1
   }
   sample_applicability all
-  source { doc "urn:oiml:pub:r:60-2:2021" clause "2.10" }
+  ref derives-from "urn:oiml:pub:r:60-2:2021#clause-2.10"
 }
 `;
 
@@ -708,15 +707,6 @@ capability gas-analytical-system {
   verified_by_tests { /conf/performance-tests/error-determination }
 }
 
-condition_set ref-conditions {
-  role reference
-  subject GasAnalyticalSystem
-  entries {
-    temperature { value "20" unit "degC" tolerance "5" note "Reference temperature" }
-  }
-  ref derives-from "urn:oiml:pub:r:144-1:2013#clause-8"
-}
-
 verdict creep {
   symbol "C_C"
   behavior creep
@@ -732,13 +722,11 @@ verdict creep {
       CHAIN,
       createConstruct(a => a.behaviors, newBehavior('b_new')),
       createConstruct(a => a.capabilities, newCapability('c_new')),
-      createConstruct(a => a.conditionSets, newConditionSet('cs_new')),
       createConstruct(a => a.verdicts, newVerdict('v_new')),
     );
     const reloaded = load(dump(ast), { strict: true });
     expect(reloaded.behaviors.map(b => b.id)).toContain('b_new');
     expect(reloaded.capabilities.map(c => c.id)).toContain('c_new');
-    expect(reloaded.conditionSets.map(c => c.id)).toContain('cs_new');
     expect(reloaded.verdicts.map(v => v.id)).toContain('v_new');
     expect(validate(reloaded)).toEqual([]);
   });
@@ -765,19 +753,6 @@ verdict creep {
     expect(text).toContain('requires { base-cap }');
     expect(text).toContain('has_parameters { measurand_components mpe response_time }');
     expect(validate(load(text, { strict: true }))).toEqual([]);
-  });
-
-  it('the condition set entries edit keyed on quantity kind (source ↔ sources alias)', () => {
-    const ast = load(CHAIN, { strict: true });
-    const cs = ast.conditionSets[0]!;
-    expect(cs.source?.clause).toBe('8');
-    expect(cs.sources?.[0]).toEqual(cs.source);
-    updateConstruct(a => a.conditionSets, 'ref-conditions', {
-      entries: [...cs.entries, { quantityKind: 'power_voltage', value: 'nominal', unit: 'V', tolerance: '2 %' }],
-    }).apply(ast);
-    const text = dump(ast);
-    expect(text).toContain('power_voltage { value nominal unit "V" tolerance "2 %" }');
-    expect(load(text, { strict: true }).conditionSets[0]?.entries).toHaveLength(2);
   });
 
   it('the verdict derivation, inputs, and quantity kind edit and round-trip', () => {

@@ -14,7 +14,6 @@ export type CompletionContext =
   | { kind: 'registry' }         // inside output { … } / reference_data_registry { … }
   | { kind: 'page' }             // after `subprocess` / `canvas`
   | { kind: 'dataclass' }        // after `data_class`
-  | { kind: 'reference' }        // inside a reference { … } block
   | { kind: 'datatype' }         // after an attribute's `:` or `type`
   | { kind: 'keyword' }          // top-level / block heads
   | { kind: 'none' };
@@ -26,7 +25,7 @@ export const CONSTRUCT_KEYWORDS = [
   'data_registry', 'variable', 'measurement',
   'start_event', 'end_event', 'timer_event', 'signal_event',
   'exclusive_gateway', 'parallel_gateway', 'canvas', 'subprocess',
-  'reference', 'note', 'table', 'figure', 'link', 'comment',
+  'note', 'table', 'figure', 'link', 'comment',
   'map_profile', 'view_profile', 'term', 'requirement',
   'conformance_test', 'conformance_class', 'form', 'subform',
   'subject', 'instrument', 'state_machine', 'calculation', 'symbol',
@@ -69,7 +68,6 @@ export function completionContext(textBefore: string): CompletionContext {
     case 'output':
     case 'reference_data_registry':
     case 'input': return { kind: 'registry' };
-    case 'reference': return { kind: 'reference' };
     default: break;
   }
 
@@ -102,8 +100,6 @@ export function completionItemsFor(context: CompletionContext, ast: Standard): C
       return ast.pages.map(p => ({ label: p.id, kind: 'id' }));
     case 'dataclass':
       return ast.dataclasses.map(d => ({ label: d.id, kind: 'id' }));
-    case 'reference':
-      return ast.references.map(r => ({ label: r.id, kind: 'id', detail: r.document }));
     case 'datatype':
       return [
         ...PRIMITIVE_TYPES.map(t => ({ label: t, kind: 'type' as const })),

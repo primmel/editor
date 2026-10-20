@@ -455,7 +455,7 @@ describe('wave 2 — the provenance re-base (applyPlanToSession)', () => {
     baseline2.packageManifest = structuredClone(session.manifest);
     addAttribute('Sprocket', {
       id: 'tooth_count', type: 'decimal', modality: 'SHALL',
-      cardinality: '[1..1]', definition: '', ref: [], satisfy: [],
+      cardinality: '[1..1]', definition: '', referenceIds: [], satisfy: [],
     }).apply(working);
 
     const plan2 = planPackageSave(baseline2, working, session2);

@@ -70,7 +70,7 @@ describe('W3.2 symbols — the symbol surface', () => {
     inputs { I m }
   }
   note "first note"
-  source { doc "urn:oiml:pub:r:60-1:2021" clause "3.2.1" }
+  ref derives-from "urn:oiml:pub:r:60-1:2021#clause-3.2.1"
 }
 
 symbol m {
@@ -119,7 +119,7 @@ symbol m {
       sourceRef: { doc: 'urn:oiml:pub:r:60-1:2021', clause: '3.5.2' },
     }));
     const text = dump(ast);
-    expect(text).toContain('source { doc "urn:oiml:pub:r:60-1:2021" clause "3.5.2" }');
+    expect(text).toContain('ref derives-from "urn:oiml:pub:r:60-1:2021#clause-3.5.2"');
     expect(load(text, { strict: true }).symbols.find(s => s.id === 'm')?.sourceRef?.clause).toBe('3.5.2');
   });
 
@@ -388,7 +388,7 @@ describe('W3.2 reference materials — the certified-material surface', () => {
   kind certified_gas_mixture
   name "CGM 200"
   definition "Certified gas mixture for analyzer verification"
-  source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2" }
+  ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.2"
   identity_fields {
     field composition { description "Component(s) and nominal concentrations" }
     field certified_value { description "The certified concentration" unit "mol/mol" type mole_fraction required true }
@@ -400,7 +400,7 @@ describe('W3.2 reference materials — the certified-material surface', () => {
       evidence { purity: purity_certificate }
       override { rule "ocl{purity >= 0.99}" by issuing_authority evidence override_approved }
       on_violation invalidate
-      source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2.1" }
+      ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.2.1"
     }
   }
 }
@@ -514,7 +514,7 @@ describe('W3.2 instruments — the subject-TYPE surface', () => {
     identical_characteristics { creep }
     identical_attributes { e_max }
   }
-  source { doc "urn:oiml:pub:r:60-1:2021" clause "2.1" }
+  ref derives-from "urn:oiml:pub:r:60-1:2021#clause-2.1"
 }
 
 instrument Other {
@@ -695,7 +695,7 @@ artifact_definition evidence_file {
   }
   produced_when per_measurement
   retention "three months (secure)"
-  source { doc "urn:oiml:pub:r:91-1:2024" clause "6.6" }
+  ref derives-from "urn:oiml:pub:r:91-1:2024#clause-6.6"
 }
 
 artifact_instance ai-1 {
@@ -990,7 +990,7 @@ formulas_used /conf/metrological/mdlo {
   name "MDLO evaluation formulas"
   description "The evaluation-level quantities"
   formulas { conversion_factor_f e_l }
-  source { doc "urn:oiml:pub:r:60-3:2021" clause "2.1" }
+  ref derives-from "urn:oiml:pub:r:60-3:2021#clause-2.1"
 }
 
 text load-cell.definition {
@@ -1008,7 +1008,7 @@ activity_archetype peer-assessment {
 competence_kind force-measurement {
   label "Force measurement"
   definition "d"
-  source { doc "urn:iso:std:iso-iec:17025:2017" clause "6.2" }
+  ref derives-from "urn:iso:std:iso-iec:17025:2017#clause-6.2"
 }
 
 predicate derives-from {
@@ -1155,7 +1155,7 @@ describe('W3.2 dataspaces + policies — the governance plane', () => {
     description "the BIML register"
   }
   compatible_with { other-ds }
-  source { doc "urn:oiml:pub:b:18:2025" clause "5.1" }
+  ref derives-from "urn:oiml:pub:b:18:2025#clause-5.1"
 }
 
 policy default-sharing {
@@ -1288,7 +1288,7 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
       id: 'form-new', name: '', description: '', dataClassId: '', headerFormId: '', conformanceProcessId: '',
       section: '', requirements: [], formNotes: [], scope: '', formReferences: [], calculationContext: null,
       formInstances: [], formConstraints: [], applicability: [], fields: [], passFail: null,
-      referenceIds: [], ref: [],
+      referenceIds: [],
     }));
     const reloaded = load(dump(ast), { strict: true });
     expect(reloaded.forms.map(f => f.id)).toContain('form-new');
@@ -1331,7 +1331,7 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
           required: false, requiredWhen: '', refs: [], measurementMethod: '', calculationId: null,
           calculationBindings: [], derivation: '', evaluation: null, values: [], trueLabel: '',
           falseLabel: '', enumValues: [], defaultValue: '', hasDefault: false, referenceIds: [],
-          fieldReferences: [], specificationReference: '', applicability: [], sourceDiscrepancy: null,
+          fieldReferences: [], applicability: [], sourceDiscrepancy: null,
           fields: [], itemsType: '', subformRef: null,
         },
       ],

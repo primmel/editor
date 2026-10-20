@@ -27,7 +27,6 @@ import {
   newCalculation,
   newCapability,
   newCompetenceKind,
-  newConditionSet,
   newConformanceClass,
   newConnectorProfile,
   newConstraint,
@@ -79,7 +78,6 @@ const SWEEP: SweepEntry[] = [
   { field: 'instruments', id: 'Instrument1', make: () => createConstruct(a => a.instruments, newInstrument('Instrument1')) },
   { field: 'behaviors', id: 'b-1', make: () => createConstruct(a => a.behaviors, newBehavior('b-1')) },
   { field: 'capabilities', id: 'cap-1', make: () => createConstruct(a => a.capabilities, newCapability('cap-1')) },
-  { field: 'conditionSets', id: 'cs-1', make: () => createConstruct(a => a.conditionSets, newConditionSet('cs-1')) },
   { field: 'verdicts', id: 'v-1', make: () => createConstruct(a => a.verdicts, newVerdict('v-1')) },
   { field: 'quantityRegisters', id: 'qr-1', make: () => createConstruct(a => a.quantityRegisters, newQuantityRegister('qr-1')) },
   { field: 'duals', id: 'd-1', make: () => createConstruct(a => a.duals, newDual('d-1')) },
@@ -131,7 +129,7 @@ const SWEEP: SweepEntry[] = [
       id: 'form-1', name: '', description: '', dataClassId: '', headerFormId: '', conformanceProcessId: '',
       section: '', requirements: [], formNotes: [], scope: '', formReferences: [], calculationContext: null,
       formInstances: [], formConstraints: [], applicability: [], fields: [], passFail: null,
-      referenceIds: [], ref: [],
+      referenceIds: [],
     }),
   },
   {
@@ -140,7 +138,7 @@ const SWEEP: SweepEntry[] = [
   },
   // ── the canvas-era kinds ────────────────────────────────────────
   { field: 'roles', id: 'role-1', make: () => createInList(a => a.roles, { id: 'role-1', name: '' }) },
-  { field: 'provisions', id: 'prov-1', make: () => createConstruct(a => a.provisions, { id: 'prov-1', modality: 'SHALL', subject: new Map(), condition: '', ref: [] }) },
+  { field: 'provisions', id: 'prov-1', make: () => createConstruct(a => a.provisions, { id: 'prov-1', modality: 'SHALL', subject: new Map(), condition: '', referenceIds: [] }) },
   { field: 'dataclasses', id: 'DC1', make: () => createElement('dataclass', 'DC1') },
   { field: 'enums', id: 'enum-1', make: () => createInList(a => a.enums, { id: 'enum-1', values: [] }) },
   { field: 'regs', id: 'reg-1', make: () => createInList(a => a.regs, { id: 'reg-1', title: '', data: null }) },
@@ -150,8 +148,7 @@ const SWEEP: SweepEntry[] = [
   { field: 'gateways', id: 'X1', make: () => createElement('gateway', 'X1') },
   { field: 'pages', id: 'Page1', make: () => createElement('subprocess', 'Page1') },
   // ── the remaining collections (minimal parse-default shapes) ────
-  { field: 'references', id: 'ref-1', make: () => createConstruct(a => a.references, { id: 'ref-1', document: '', clause: '' }) }, // parse defaults
-  { field: 'notes', id: 'note-1', make: () => createConstruct(a => a.notes, { id: 'note-1', type: 'NOTE', message: '', sourceDiscrepancy: null, ref: [] }) },
+  { field: 'notes', id: 'note-1', make: () => createConstruct(a => a.notes, { id: 'note-1', type: 'NOTE', message: '', sourceDiscrepancy: null, referenceIds: [] }) },
   { field: 'comments', id: 'comment-1', make: () => createConstruct(a => a.comments, { id: 'comment-1', on: '', author: '', timestamp: '', text: '', replyTo: null, resolved: false }) },
   { field: 'figures', id: 'fig-1', make: () => createConstruct(a => a.figures, { id: 'fig-1', title: '', src: '' }) },
   { field: 'links', id: 'link-1', make: () => createConstruct(a => a.links, { id: 'link-1', kind: 'URL', target: '', namespace: '' }) },

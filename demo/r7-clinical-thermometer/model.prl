@@ -82,40 +82,28 @@ requirement REQ-Construction {
   name "Construction integrity"
   statement "The thermometer must be free from any defects which might prevent it from operating normally, or which might lead to errors by the users."
   obligation shall
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "5.1"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-5.1"
 }
 
 requirement REQ-MaximumDevice {
   name "Maximum device holds the reading"
   statement "The maximum device prevents the mercury column from receding solely because of the cooling of the thermometer."
   obligation shall
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "5.4"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-5.4"
 }
 
 requirement REQ-Graduation {
   name "Scale spacing and graduation"
   statement "The scale spacing must be at least 0.5 mm for solid-stem thermometers and at least 0.6 mm for enclosed-scale thermometers."
   obligation shall
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "6.1"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-6.1"
 }
 
 requirement REQ-Inscriptions {
   name "Inscriptions"
   statement "The symbol °C near the scale must be engraved or indelibly printed on the scale-bearing strip of enclosed-scale thermometers and on the stem of solid-stem thermometers."
   obligation shall
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "7.1.1"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-7.1.1"
 }
 
 requirement REQ-MPE {
@@ -125,10 +113,7 @@ requirement REQ-MPE {
   limit {
     expression "error_of_indication >= -0.15 and error_of_indication <= 0.1"
   }
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "8"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-8"
 }
 
 // ── Conformance tests (Annex A + the examinations) ───────────────────
@@ -139,10 +124,7 @@ conformance_test CT-VisualExamination {
   kind examination
   obligation shall
   acceptance_pass_if "no defects found; scale spacing meets the type minimum (0.5 / 0.6 mm); the °C inscription is present and indelible"
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "A.5"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-A.5"
 }
 
 conformance_test CT-ErrorDetermination {
@@ -163,10 +145,7 @@ conformance_test CT-ErrorDetermination {
     5 "cool to an ambient temperature between 15 °C and 30 °C and read again (the maximum device must hold the reading)"
   }
   acceptance_pass_if "every error of indication is within +0.1 °C and −0.15 °C"
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "A.3"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-A.3"
 }
 
 conformance_test CT-MaximumDevice {
@@ -180,10 +159,7 @@ conformance_test CT-MaximumDevice {
     3 "read the indicated temperature — it must not have receded"
   }
   acceptance_pass_if "the indicated reading after cooling equals the maximum reading"
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "A.4"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-A.4"
 }
 
 conformance_test CT-Coloration {
@@ -197,10 +173,7 @@ conformance_test CT-Coloration {
     3 "inspect the cloth for stains"
   }
   acceptance_pass_if "the cloth picks up no stains"
-  source {
-    doc "urn:oiml:pub:r:7:1979"
-    clause "A.5"
-  }
+  ref derives-from "urn:oiml:pub:r:7:1979#clause-A.5"
 }
 
 // ── The test report form (the evidence skeleton) ─────────────────────
