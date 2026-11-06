@@ -256,7 +256,7 @@ describe('wave 2 — the comment-true save (pkg-commented)', () => {
     const written = plan.writes[0]!.text;
     expect(written).toBe(
       authored.slice(0, span.start.offset)
-        + 'process assemble {\n  name "Assemble gadgets v2"\n}'
+        + 'process assemble {\n  label "Assemble gadgets v2"\n}'
         + authored.slice(span.end.offset),
     );
     // Every comment line of the authored file survives verbatim.
@@ -421,7 +421,7 @@ describe('wave 2 — the provenance re-base (applyPlanToSession)', () => {
     expect(authoredText(session2, 'model/main.prl')).toBe(text1);
     const span2 = spanOf(session2, 'processes', 'assemble');
     expect(text1.slice(span2.start.offset, span2.end.offset))
-      .toBe('process assemble {\n  name "Assemble gadgets v2"\n}');
+      .toBe('process assemble {\n  label "Assemble gadgets v2"\n}');
 
     // The second save: the baseline is the saved state, the edit lands
     // on the re-based spans.
@@ -434,7 +434,7 @@ describe('wave 2 — the provenance re-base (applyPlanToSession)', () => {
     expect(plan2.warnings).toEqual([]);
     expect(plan2.writes[0]!.text).toBe(
       text1.slice(0, span2.start.offset)
-        + 'process assemble {\n  name "Assemble gadgets v3"\n}'
+        + 'process assemble {\n  label "Assemble gadgets v3"\n}'
         + text1.slice(span2.end.offset),
     );
   });

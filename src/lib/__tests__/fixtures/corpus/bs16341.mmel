@@ -306,14 +306,14 @@ exclusive_gateway NonapplcationGateway {
 
 class ContractAmendmentData {
   contract: reference(ContractData) {
-    definition "Contract"
+    definition { Contract }
     modality SHALL
     reference {
       Ref44
     }
   }
   change: string {
-    definition "Change"
+    definition { Change }
     modality SHALL
     reference {
       Ref44
@@ -323,14 +323,14 @@ class ContractAmendmentData {
 
 class StandardData {
   standard {
-    definition "Standard and standard-like document applicable to contracts"
+    definition { Standard and standard-like document applicable to contracts }
     modality SHALL
     reference {
       Ref41
     }
   }
   edition: string {
-    definition "Edition"
+    definition { Edition }
     modality SHALL
     reference {
       Ref42
@@ -340,14 +340,14 @@ class StandardData {
 
 class StandardApprovalData {
   standard: reference(StandardData) {
-    definition "Standard"
+    definition { Standard }
     modality SHALL
     reference {
       Ref41
     }
   }
   approval {
-    definition "A written approval"
+    definition { A written approval }
     modality SHALL
     reference {
       Ref41
@@ -357,14 +357,14 @@ class StandardApprovalData {
 
 class TenderData {
   tender {
-    definition "Tender"
+    definition { Tender }
     modality SHALL
     reference {
       Ref43
     }
   }
   reference[0..*] {
-    definition "Reference"
+    definition { Reference }
     modality SHALL
     reference {
       Ref43
@@ -374,7 +374,7 @@ class TenderData {
 
 class ContractData {
   contract {
-    definition "Contract"
+    definition { Contract }
     modality SHALL
     reference {
       Ref44

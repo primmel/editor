@@ -7,7 +7,7 @@ class Widget#data {
 
   weight: decimal {
     modality SHALL
-    definition "The widget's weight"
+    definition { The widget's weight }
   }
 }
 

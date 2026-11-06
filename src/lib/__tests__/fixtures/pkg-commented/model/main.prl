@@ -31,7 +31,7 @@ class Gadget#data {
 
   mass: decimal {
     modality SHALL
-    definition "The gadget's mass"
+    definition { The gadget's mass }
   }
 }
 

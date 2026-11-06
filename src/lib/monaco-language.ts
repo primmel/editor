@@ -12,7 +12,7 @@ export const primmelLanguageDefinition: languages.IMonarchLanguage = {
     'measurement', 'signal_event',
     'start_event', 'end_event', 'timer_event', 'signal_catch_event',
     'exclusive_gateway', 'parallel_gateway',
-    'provision', 'validate_provision', 'validate_measurement',
+    'provision', 'validate_provision',
     'actor', 'modality', 'measure',
     'output', 'reference_data_registry', 'input',
     'class', 'enum', 'data_registry', 'variable',

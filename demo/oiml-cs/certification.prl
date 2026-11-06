@@ -32,17 +32,17 @@ role BIML { name "International Bureau of Legal Metrology — the certificate re
 
 variable application_complete {
   type float
-  definition "1 when the application satisfies the PD-05 4.1.2 contents and 4.2.1 completeness review, else 0"
+  definition { 1 when the application satisfies the PD-05 4.1.2 contents and 4.2.1 completeness review, else 0 }
 }
 
 variable tests_passed {
   type float
-  definition "1 when every tested sample conforms to the relevant OIML Recommendation, else 0"
+  definition { 1 when every tested sample conforms to the relevant OIML Recommendation, else 0 }
 }
 
 variable evaluation_approved {
   type float
-  definition "1 when the Issuing Authority approves the type evaluation report, else 0"
+  definition { 1 when the Issuing Authority approves the type evaluation report, else 0 }
 }
 
 start_event ApplicationSubmitted { }

@@ -4,7 +4,7 @@
 // data-capture schema: the header facets (name/description/section/
 // scope, the class + process links), the requirement evidence links,
 // the notes, the named instances, the machine-checked constraints, the
-// pass_fail block, and the FIELDS — each field's core facets editable
+// and the FIELDS — each field's core facets editable
 // (type/label/unit/symbol/verdict/enum/required/required_when/default/
 // bind/targets), the deep facets (evaluation, calculation bindings,
 // values, series, nested fields, subform refs) summarized read-only.
@@ -20,7 +20,6 @@ type Form = Standard['forms'][number];
 type FormField = Form['fields'][number];
 type FormInstance = Form['formInstances'][number];
 type FormConstraint = Form['formConstraints'][number];
-type PassFailDerivation = NonNullable<Form['passFail']>['derivations'][number];
 
 const props = defineProps<{ model: Standard; elementId: string }>();
 const modelStore = useModelStore();
@@ -53,7 +52,7 @@ function addField() {
   patch('fields', [...fields.value, {
     name, type: 'string', typeDeclared: false, label: '', definition: '', unit: '', symbol: '',
     verdict: '', targets: [], dimension: '', enumRef: '', pattern: '', required: false,
-    requiredWhen: '', refs: [], measurementMethod: '', calculationId: null, calculationBindings: [],
+    requiredWhen: '', refs: [], measurementMethod: '', calculationId: null, bindings: [],
     derivation: '', evaluation: null, values: [], trueLabel: '', falseLabel: '', enumValues: [],
     defaultValue: '', hasDefault: false, referenceIds: [], fieldReferences: [],
     applicability: [], sourceDiscrepancy: null, fields: [],
@@ -71,7 +70,7 @@ function fieldDepth(f: FormField): string {
   const notes: string[] = [];
   if (f.evaluation) notes.push('evaluation');
   if (f.calculationId) notes.push(`calculation ${f.calculationId}`);
-  if (f.calculationBindings.length) notes.push(`${f.calculationBindings.length} bindings`);
+  if (f.bindings.length) notes.push(`${f.bindings.length} bindings`);
   if (f.values.length) notes.push(`${f.values.length} values`);
   if (f.enumValues.length) notes.push(`${f.enumValues.length} enum values`);
   if (f.series) notes.push('series');
@@ -116,43 +115,6 @@ function removeConstraint(index: number) {
   patch('formConstraints', formConstraints.value.filter((_, i) => i !== index), `remove form constraint ${formConstraints.value[index]?.id ?? index}`);
 }
 
-// ── pass_fail ────────────────────────────────────────────────────────
-function patchPassFail(field: 'criteria' | 'passIf', e: Event) {
-  const pf = form.value?.passFail ?? { criteria: '', passIf: '', derivations: [] };
-  patch('passFail', { ...pf, [field]: (e.target as HTMLInputElement | HTMLTextAreaElement).value }, `edit form ${props.elementId} pass_fail`);
-}
-
-function addPassFail() {
-  patch('passFail', { criteria: '', passIf: '', derivations: [] }, `add form ${props.elementId} pass_fail`);
-}
-
-function removePassFail() {
-  patch('passFail', null, `remove form ${props.elementId} pass_fail`);
-}
-
-function patchDerivation(index: number, field: keyof PassFailDerivation, e: Event) {
-  const pf = form.value?.passFail;
-  if (!pf) return;
-  patch('passFail', {
-    ...pf,
-    derivations: pf.derivations.map((d, i) => i === index ? { ...d, [field]: (e.target as HTMLInputElement).value } : d),
-  }, `edit pass_fail derivation ${props.elementId}[${index}]`);
-}
-
-const draftDerivationName = ref('');
-function addDerivation() {
-  const pf = form.value?.passFail;
-  const name = draftDerivationName.value.trim();
-  if (!pf || !name || pf.derivations.some(d => d.name === name)) return;
-  patch('passFail', { ...pf, derivations: [...pf.derivations, { name, calculation: '', forEach: '', unit: '' }] }, `add pass_fail derivation ${name}`);
-  draftDerivationName.value = '';
-}
-
-function removeDerivation(index: number) {
-  const pf = form.value?.passFail;
-  if (!pf) return;
-  patch('passFail', { ...pf, derivations: pf.derivations.filter((_, i) => i !== index) }, `remove pass_fail derivation ${pf.derivations[index]?.name ?? index}`);
-}
 </script>
 
 <template>
@@ -227,32 +189,6 @@ function removeDerivation(index: number) {
         <input v-model="draftConstraintId" class="text-input mono" placeholder="constraint id…" data-testid="form-constraint-add" @keyup.enter="addConstraint" />
         <button type="button" :disabled="!draftConstraintId.trim()" data-testid="form-constraint-add-btn" @click="addConstraint">+</button>
       </div>
-    </InspectorField>
-
-    <InspectorField label="pass/fail" hint="the criteria + the pass_if expression">
-      <div v-if="form.passFail" class="family-block" data-testid="form-pass-fail">
-        <textarea class="text-input" rows="2" :value="form.passFail.criteria" placeholder="criteria" data-testid="form-pf-criteria" @change="patchPassFail('criteria', $event)" />
-        <input class="text-input mono" :value="form.passFail.passIf" placeholder="pass_if (ocl{…})" data-testid="form-pf-pass-if" @change="patchPassFail('passIf', $event)" />
-        <ul v-if="form.passFail.derivations.length" class="entry-rows">
-          <li v-for="(d, i) in form.passFail.derivations" :key="i" class="entry-row">
-            <div class="entry-line">
-              <code class="entry-id">{{ d.name }}</code>
-              <button type="button" class="row-remove" title="remove derivation" :data-testid="`form-pf-derivation-remove-${d.name}`" @click="removeDerivation(i)">✕</button>
-            </div>
-            <div class="entry-pair">
-              <input class="text-input mono" :value="d.calculation" placeholder="calculation" :data-testid="`form-pf-derivation-calc-${d.name}`" @change="patchDerivation(i, 'calculation', $event)" />
-              <input class="text-input mono" :value="d.forEach" placeholder="for_each" :data-testid="`form-pf-derivation-foreach-${d.name}`" @change="patchDerivation(i, 'forEach', $event)" />
-            </div>
-            <input class="text-input mono" :value="d.unit" placeholder="unit" :data-testid="`form-pf-derivation-unit-${d.name}`" @change="patchDerivation(i, 'unit', $event)" />
-          </li>
-        </ul>
-        <div class="entry-add">
-          <input v-model="draftDerivationName" class="text-input mono" placeholder="derivation name…" data-testid="form-pf-derivation-add" @keyup.enter="addDerivation" />
-          <button type="button" :disabled="!draftDerivationName.trim()" data-testid="form-pf-derivation-add-btn" @click="addDerivation">+</button>
-        </div>
-        <button type="button" class="row-add" data-testid="form-pf-remove" @click="removePassFail">remove pass/fail</button>
-      </div>
-      <button v-else type="button" class="row-add" data-testid="form-pf-add" @click="addPassFail">+ pass/fail</button>
     </InspectorField>
 
     <InspectorField :label="`fields (${fields.length})`" hint="the capture fields — the deep facets (evaluation, bindings, values, series, nested, subform) summarize">

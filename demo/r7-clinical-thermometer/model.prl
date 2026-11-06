@@ -80,35 +80,35 @@ behavior BeVerifiedAtScalePoints {
 
 requirement REQ-Construction {
   name "Construction integrity"
-  statement "The thermometer must be free from any defects which might prevent it from operating normally, or which might lead to errors by the users."
+  statement { The thermometer must be free from any defects which might prevent it from operating normally, or which might lead to errors by the users. }
   obligation shall
   ref derives-from "urn:oiml:pub:r:7:1979#clause-5.1"
 }
 
 requirement REQ-MaximumDevice {
   name "Maximum device holds the reading"
-  statement "The maximum device prevents the mercury column from receding solely because of the cooling of the thermometer."
+  statement { The maximum device prevents the mercury column from receding solely because of the cooling of the thermometer. }
   obligation shall
   ref derives-from "urn:oiml:pub:r:7:1979#clause-5.4"
 }
 
 requirement REQ-Graduation {
   name "Scale spacing and graduation"
-  statement "The scale spacing must be at least 0.5 mm for solid-stem thermometers and at least 0.6 mm for enclosed-scale thermometers."
+  statement { The scale spacing must be at least 0.5 mm for solid-stem thermometers and at least 0.6 mm for enclosed-scale thermometers. }
   obligation shall
   ref derives-from "urn:oiml:pub:r:7:1979#clause-6.1"
 }
 
 requirement REQ-Inscriptions {
   name "Inscriptions"
-  statement "The symbol °C near the scale must be engraved or indelibly printed on the scale-bearing strip of enclosed-scale thermometers and on the stem of solid-stem thermometers."
+  statement { The symbol °C near the scale must be engraved or indelibly printed on the scale-bearing strip of enclosed-scale thermometers and on the stem of solid-stem thermometers. }
   obligation shall
   ref derives-from "urn:oiml:pub:r:7:1979#clause-7.1.1"
 }
 
 requirement REQ-MPE {
   name "Maximum permissible errors"
-  statement "The error of indication must be within +0.1 °C and −0.15 °C for thermometer readings after cooling to an ambient temperature between 15 °C and 30 °C."
+  statement { The error of indication must be within +0.1 °C and −0.15 °C for thermometer readings after cooling to an ambient temperature between 15 °C and 30 °C. }
   obligation shall
   limit {
     expression "error_of_indication >= -0.15 and error_of_indication <= 0.1"
@@ -138,11 +138,11 @@ conformance_test CT-ErrorDetermination {
     "the ambient temperature is between 15 °C and 30 °C (clause 8)"
   }
   procedure {
-    1 "immerse the test thermometer and the standard thermometer in the well-stirred water bath at the scale point"
-    2 "read both thermometers after stabilization"
-    3 "compute the error of indication (test reading minus standard reading)"
-    4 "repeat for each declared scale point"
-    5 "cool to an ambient temperature between 15 °C and 30 °C and read again (the maximum device must hold the reading)"
+    step s1 "immerse the test thermometer and the standard thermometer in the well-stirred water bath at the scale point"
+    step s2 "read both thermometers after stabilization"
+    step s3 "compute the error of indication (test reading minus standard reading)"
+    step s4 "repeat for each declared scale point"
+    step s5 "cool to an ambient temperature between 15 °C and 30 °C and read again (the maximum device must hold the reading)"
   }
   acceptance_pass_if "every error of indication is within +0.1 °C and −0.15 °C"
   ref derives-from "urn:oiml:pub:r:7:1979#clause-A.3"
@@ -154,9 +154,9 @@ conformance_test CT-MaximumDevice {
   kind testing
   obligation shall
   procedure {
-    1 "hold the thermometer at a temperature above the maximum of its scale"
-    2 "remove it and allow it to cool in ambient air"
-    3 "read the indicated temperature — it must not have receded"
+    step s1 "hold the thermometer at a temperature above the maximum of its scale"
+    step s2 "remove it and allow it to cool in ambient air"
+    step s3 "read the indicated temperature — it must not have receded"
   }
   acceptance_pass_if "the indicated reading after cooling equals the maximum reading"
   ref derives-from "urn:oiml:pub:r:7:1979#clause-A.4"
@@ -168,9 +168,9 @@ conformance_test CT-Coloration {
   kind testing
   obligation shall
   procedure {
-    1 "immerse for one hour in a 5 % aqueous solution of phenol at 20–30 °C (or subject to 96 % alcohol)"
-    2 "wipe with a piece of light-colored cloth"
-    3 "inspect the cloth for stains"
+    step s1 "immerse for one hour in a 5 % aqueous solution of phenol at 20–30 °C (or subject to 96 % alcohol)"
+    step s2 "wipe with a piece of light-colored cloth"
+    step s3 "inspect the cloth for stains"
   }
   acceptance_pass_if "the cloth picks up no stains"
   ref derives-from "urn:oiml:pub:r:7:1979#clause-A.5"
@@ -188,13 +188,13 @@ form TestReportR7 {
 
 variable ambient_temperature {
   type float
-  definition "The ambient temperature during the run (°C)"
+  definition { The ambient temperature during the run (°C) }
   description "clause 8 validity: 15–30 °C"
 }
 
 variable error_of_indication {
   type float
-  definition "The measured error of indication at a scale point (°C)"
+  definition { The measured error of indication at a scale point (°C) }
   description "must lie in [−0.15, +0.1]"
 }
 
@@ -214,20 +214,28 @@ process VisualExamination {
   name "Construction, graduation and inscriptions examination"
   actor VerifyingAuthority
   modality SHALL
-  validate_measurement {
-    "ambient_temperature"
-  }
 }
+check process:VisualExamination:validate_measurement:1 {
+  inputs { ambient_temperature }
+  ref derives-from "process:VisualExamination"
+}
+
 
 process ErrorDetermination {
   name "Determination of errors of indication at the scale points"
   actor VerifyingAuthority
   modality SHALL
-  validate_measurement {
-    "ambient_temperature"
-    "error_of_indication"
-  }
 }
+check process:ErrorDetermination:validate_measurement:1 {
+  inputs { ambient_temperature }
+  ref derives-from "process:ErrorDetermination"
+}
+
+check process:ErrorDetermination:validate_measurement:2 {
+  inputs { error_of_indication }
+  ref derives-from "process:ErrorDetermination"
+}
+
 
 process MaximumDeviceTest {
   name "Testing the maximum device"

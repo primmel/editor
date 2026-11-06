@@ -837,21 +837,21 @@ exclusive_gateway SingleSourceDominanceGateway {
 
 class Methodology#data {
   methodology {
-    definition "Methodology used to deliver the evidence"
+    definition { Methodology used to deliver the evidence }
     modality SHALL
     reference {
       ref421
     }
   }
   justification {
-    definition "Justification"
+    definition { Justification }
     modality SHALL
   }
 }
 
 class Achievement#data {
   declaration {
-    definition "Declaration"
+    definition { Declaration }
     modality SHALL
     reference {
       ref41
@@ -861,7 +861,7 @@ class Achievement#data {
 
 class CarbonFootprintPlan#data {
   commitment {
-    definition "A statement of commitment to carbon neutrality for the defined subject"
+    definition { A statement of commitment to carbon neutrality for the defined subject }
     modality SHALL
     reference {
       ref41
@@ -869,50 +869,50 @@ class CarbonFootprintPlan#data {
     }
   }
   timescale {
-    definition "A timescale for achieving carbon neutrality of the defined subject"
+    definition { A timescale for achieving carbon neutrality of the defined subject }
     modality SHALL
     reference {
       ref7
     }
   }
   target {
-    definition "Targets for GHG reduction for the defined subject appropriate to the timescale for achieving carbon neutrality"
+    definition { Targets for GHG reduction for the defined subject appropriate to the timescale for achieving carbon neutrality }
     modality SHALL
     reference {
       ref7
     }
   }
   means {
-    definition "Planned means of achieving and maintaining GHG emissions reductions "
+    definition { Planned means of achieving and maintaining GHG emissions reductions  }
     reference {
       ref7
     }
   }
   assumption {
-    definition "Assumptions made of the techniques and measures to be employed to reduce GHG emissions
-"
+    definition { Assumptions made of the techniques and measures to be employed to reduce GHG emissions
+ }
     modality SHALL
     reference {
       ref7
     }
   }
   justification {
-    definition "Justification of the techniques and measures to be employed to reduce GHG emissions
-"
+    definition { Justification of the techniques and measures to be employed to reduce GHG emissions
+ }
     modality SHALL
     reference {
       ref7
     }
   }
   calculation {
-    definition "Where historic reductions are to be taken into account, the period over which those reductions are to be calculated and confirmation that the necessary data is available and that calculation is to be undertaken using precisely the same methodology as that to be employed to assess and calculate future reductions"
+    definition { Where historic reductions are to be taken into account, the period over which those reductions are to be calculated and confirmation that the necessary data is available and that calculation is to be undertaken using precisely the same methodology as that to be employed to assess and calculate future reductions }
     modality SHALL
     reference {
       ref7
     }
   }
   offset {
-    definition "The offset strategy to be adopted including an estimate of the quantity of GHG emissions to be offset, the nature of the offsets and the likely number and type of credits"
+    definition { The offset strategy to be adopted including an estimate of the quantity of GHG emissions to be offset, the nature of the offsets and the likely number and type of credits }
     modality SHALL
     reference {
       ref7
@@ -922,14 +922,14 @@ class CarbonFootprintPlan#data {
 
 class Subject#data {
   Entity {
-    definition "Entity"
+    definition { Entity }
     modality SHALL
     reference {
       ref511
     }
   }
   subject {
-    definition "Subject of the declaration of carbon neutrality"
+    definition { Subject of the declaration of carbon neutrality }
     modality SHALL
     reference {
       ref511
@@ -937,55 +937,55 @@ class Subject#data {
     }
   }
   purpose {
-    definition "Purposes"
+    definition { Purposes }
     modality SHALL
     reference {
       ref511
     }
   }
   Objective {
-    definition "Objectives"
+    definition { Objectives }
     modality SHALL
     reference {
       ref511
     }
   }
   functionality {
-    definition "Functionality"
+    definition { Functionality }
     modality SHALL
     reference {
       ref511
     }
   }
   rationale {
-    definition "Rationale for the selection of the subject"
+    definition { Rationale for the selection of the subject }
     modality SHALL
     reference {
       ref521
     }
   }
   exclusion: Exclusion {
-    definition "Exclusion"
+    definition { Exclusion }
     modality SHALL
     reference {
       ref521
     }
   }
   emission {
-    definition "GHG emissions associated with the subject"
+    definition { GHG emissions associated with the subject }
     reference {
       ref524
     }
   }
   uncertainty {
-    definition "Uncertainties and variability including the positive tolerances adopted in association with estimates"
+    definition { Uncertainties and variability including the positive tolerances adopted in association with estimates }
     modality SHALL
     reference {
       ref53
     }
   }
   boundary {
-    definition "Boundaries"
+    definition { Boundaries }
     modality SHALL
     reference {
       ref522
@@ -997,7 +997,7 @@ class Subject#data {
 
 class Exclusion {
   source {
-    definition "Material GHG emission source"
+    definition { Material GHG emission source }
     modality SHALL
     reference {
       ref521
@@ -1005,7 +1005,7 @@ class Exclusion {
     }
   }
   reason {
-    definition "Reason for the exclusion"
+    definition { Reason for the exclusion }
     modality SHALL
     reference {
       ref521
@@ -1016,7 +1016,7 @@ class Exclusion {
 
 class SubjectMethodology#data {
   methodology {
-    definition "Methodology"
+    definition { Methodology }
     modality SHALL
     reference {
       ref525
@@ -1024,23 +1024,23 @@ class SubjectMethodology#data {
     }
   }
   justification {
-    definition "Justification for the selection of the methodology"
+    definition { Justification for the selection of the methodology }
     modality SHALL
     reference {
       ref53
     }
   }
   assumption {
-    definition "Assumption made in defining the boundaries and for determining which GHG emissions to include (in terms of both sources and which greenhouse gases)"
+    definition { Assumption made in defining the boundaries and for determining which GHG emissions to include (in terms of both sources and which greenhouse gases) }
     modality SHALL
     reference {
       ref53
     }
   }
   confirmation {
-    definition "Confirmation that the selected methodology was applied in accordance with its provisions and that the principles set out in PAS 2060 were met;
+    definition { Confirmation that the selected methodology was applied in accordance with its provisions and that the principles set out in PAS 2060 were met;
 
-"
+ }
     modality SHALL
     reference {
       ref53
@@ -1050,14 +1050,14 @@ class SubjectMethodology#data {
 
 class MethodQuantification#data {
   source {
-    definition "Data source"
+    definition { Data source }
     modality SHALL
     reference {
       ref612
     }
   }
   standard {
-    definition "Standard"
+    definition { Standard }
     modality SHALL
     reference {
       ref62
@@ -1065,7 +1065,7 @@ class MethodQuantification#data {
     }
   }
   methodology {
-    definition "Methodology"
+    definition { Methodology }
     modality SHALL
     reference {
       ref62
@@ -1073,7 +1073,7 @@ class MethodQuantification#data {
     }
   }
   justification {
-    definition "Justification for the selection of the methodology"
+    definition { Justification for the selection of the methodology }
     modality SHALL
     reference {
       ref62
@@ -1081,7 +1081,7 @@ class MethodQuantification#data {
     }
   }
   assumption {
-    definition "Assumptions in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors"
+    definition { Assumptions in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors }
     modality SHALL
     reference {
       ref62
@@ -1089,7 +1089,7 @@ class MethodQuantification#data {
     }
   }
   calculation {
-    definition "Calculations in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors"
+    definition { Calculations in quantifying GHG emissions and in the selection or development of greenhouse gas emission factors }
     modality SHALL
     reference {
       ref62
@@ -1097,21 +1097,21 @@ class MethodQuantification#data {
     }
   }
   confirmation {
-    definition "Confirmation that the selected methodology was applied in accordance with its provisions"
+    definition { Confirmation that the selected methodology was applied in accordance with its provisions }
     modality SHALL
     reference {
       ref62
     }
   }
   actualMethod {
-    definition "The actual methods used to quantify GHG emissions (e.g. use of primary or secondary data)"
+    definition { The actual methods used to quantify GHG emissions (e.g. use of primary or secondary data) }
     modality SHALL
     reference {
       ref62
     }
   }
   measurement {
-    definition "The measurement unit(s) applied"
+    definition { The measurement unit(s) applied }
     modality SHALL
     reference {
       ref62
@@ -1121,7 +1121,7 @@ class MethodQuantification#data {
 
 class CarbonFootprint#data {
   time {
-    definition "The time period associated with the carbon footprint"
+    definition { The time period associated with the carbon footprint }
     modality SHALL
     reference {
       ref612
@@ -1129,21 +1129,21 @@ class CarbonFootprint#data {
     }
   }
   carbonFootprint {
-    definition "The size of carbon footprint"
+    definition { The size of carbon footprint }
     modality SHALL
     reference {
       ref62
     }
   }
   uncertainty {
-    definition "Uncertainty or variability associated with quantifying GHG emissions (e.g. resulting from the use of alternative types of data)"
+    definition { Uncertainty or variability associated with quantifying GHG emissions (e.g. resulting from the use of alternative types of data) }
     modality SHALL
     reference {
       ref62
     }
   }
   statementExtent {
-    definition "A statement as to the extent of that uncertainty with explanation of any underlying assumptions"
+    definition { A statement as to the extent of that uncertainty with explanation of any underlying assumptions }
     modality SHALL
     reference {
       ref62
@@ -1153,49 +1153,49 @@ class CarbonFootprint#data {
 
 class Reduction#data {
   type {
-    definition "A statement identifying whether the reductions are overall, activity-based or intensity-based"
+    definition { A statement identifying whether the reductions are overall, activity-based or intensity-based }
     modality SHALL
     reference {
       ref821
     }
   }
   reduction: GHGReduction {
-    definition "GHG emissions that have been reduced"
+    definition { GHG emissions that have been reduced }
     modality SHALL
     reference {
       ref821
     }
   }
   means {
-    definition "Actual means of achieving GHG emissions reductions"
+    definition { Actual means of achieving GHG emissions reductions }
     modality SHALL
     reference {
       ref83
     }
   }
   confirmation {
-    definition "Confirmation that the methodology used was applied in accordance with its provisions and that the principles set out in PAS 2060 clause 8.2.2"
+    definition { Confirmation that the methodology used was applied in accordance with its provisions and that the principles set out in PAS 2060 clause 8.2.2 }
     modality SHALL
     reference {
       ref83
     }
   }
   reductionMet {
-    definition "Whether or not the actual reduction is in line with that forecast in the carbon management plan together"
+    definition { Whether or not the actual reduction is in line with that forecast in the carbon management plan together }
     modality SHALL
     reference {
       ref83
     }
   }
   reason {
-    definition "Reasons for any significant variation"
+    definition { Reasons for any significant variation }
     modality SHALL
     reference {
       ref83
     }
   }
   footprint {
-    definition "The size of the reduced carbon footprint"
+    definition { The size of the reduced carbon footprint }
     modality SHALL
     reference {
       ref83
@@ -1205,28 +1205,28 @@ class Reduction#data {
 
 class GHGReduction {
   amount {
-    definition "Amount of GHG emission that have been reduced in absolute or intensity terms"
+    definition { Amount of GHG emission that have been reduced in absolute or intensity terms }
     modality SHALL
     reference {
       ref822
     }
   }
   type {
-    definition "Type of GHG emission that have been reduced"
+    definition { Type of GHG emission that have been reduced }
     modality SHALL
     reference {
       ref822
     }
   }
   period {
-    definition "The time period involved"
+    definition { The time period involved }
     modality SHALL
     reference {
       ref822
     }
   }
   percentage {
-    definition "Percentage of original carbon footprint"
+    definition { Percentage of original carbon footprint }
     modality SHALL
     reference {
       ref83
@@ -1236,56 +1236,56 @@ class GHGReduction {
 
 class CarbonOffset#data {
   methodology {
-    definition "Standard and methodology used to achieve its carbon offset"
+    definition { Standard and methodology used to achieve its carbon offset }
     modality SHALL
     reference {
       ref912
     }
   }
   emissions {
-    definition "Which GHG emissions have been offset"
+    definition { Which GHG emissions have been offset }
     modality SHALL
     reference {
       ref92
     }
   }
   amount {
-    definition "The actual amount of carbon credit required"
+    definition { The actual amount of carbon credit required }
     modality SHALL
     reference {
       ref92
     }
   }
   type {
-    definition "Type of offset"
+    definition { Type of offset }
     modality SHALL
     reference {
       ref92
     }
   }
   project {
-    definition "Projects involved"
+    definition { Projects involved }
     modality SHALL
     reference {
       ref92
     }
   }
   confirmation {
-    definition "Confirmation that the carbon offset scheme was used in accordance with its provisions and that there was no conflict with the principles set out in PAS 2060 clause 9.1.2"
+    definition { Confirmation that the carbon offset scheme was used in accordance with its provisions and that there was no conflict with the principles set out in PAS 2060 clause 9.1.2 }
     modality SHALL
     reference {
       ref92
     }
   }
   creditUsed: CarbonCreditUse {
-    definition "Carbon credits used"
+    definition { Carbon credits used }
     modality SHALL
     reference {
       ref92
     }
   }
   retirement {
-    definition "Retirement/cancellation of carbon credits sufficient to prevent their use by others including a link to the registry where the credit has been retired"
+    definition { Retirement/cancellation of carbon credits sufficient to prevent their use by others including a link to the registry where the credit has been retired }
     modality SHALL
     reference {
       ref92
@@ -1295,35 +1295,35 @@ class CarbonOffset#data {
 
 class CarbonOffsetProject#data {
   information {
-    definition "Information about the offset project"
+    definition { Information about the offset project }
     modality SHALL
     reference {
       ref912
     }
   }
   quantification {
-    definition "Quantification methodology"
+    definition { Quantification methodology }
     modality SHALL
     reference {
       ref912
     }
   }
   validation {
-    definition "Validation procedures"
+    definition { Validation procedures }
     modality SHALL
     reference {
       ref912
     }
   }
   verification {
-    definition "Verification procedures"
+    definition { Verification procedures }
     modality SHALL
     reference {
       ref912
     }
   }
   credit: CarbonCredit {
-    definition "Credits from carbon offset projects"
+    definition { Credits from carbon offset projects }
     modality SHALL
     reference {
       ref912
@@ -1334,14 +1334,14 @@ class CarbonOffsetProject#data {
 
 class CarbonCredit {
   amount {
-    definition "Number of carbon credits"
+    definition { Number of carbon credits }
     modality SHALL
     reference {
       ref92
     }
   }
   type {
-    definition "Type of carbon credits"
+    definition { Type of carbon credits }
     modality SHALL
     reference {
       ref92
@@ -1351,21 +1351,21 @@ class CarbonCredit {
 
 class CarbonCreditUse {
   credit: CarbonCredit {
-    definition "Carbon credit"
+    definition { Carbon credit }
     modality SHALL
     reference {
       ref92
     }
   }
   period {
-    definition "Time period over which the credits have been generated"
+    definition { Time period over which the credits have been generated }
     modality SHALL
     reference {
       ref92
     }
   }
   retirement {
-    definition "Date of retirement"
+    definition { Date of retirement }
     modality SHALL
     reference {
       ref92
@@ -3233,31 +3233,31 @@ measurement Included_Emission {
 
 measurement Largest_Emission_In_Percentage {
   type DERIVED
-  definition "[Included_Emission].max / [Total_Emission]"
+  definition { [Included_Emission].max / [Total_Emission] }
   description "The largest emission source"
 }
 
 measurement Total_Emission {
   type DERIVED
-  definition "[Included_Emission].sum + [Excluded_Emission].sum"
+  definition { [Included_Emission].sum + [Excluded_Emission].sum }
   description "Total emission"
 }
 
 measurement Total_Emission_Excluded_Max {
   type DERIVED
-  definition "[Total_Emission] - [Included_Emission].max"
+  definition { [Total_Emission] - [Included_Emission].max }
   description "The total emission excluding the largest emission"
 }
 
 measurement Excluded_Emssions_Without_Max_In_Percentage {
   type DERIVED
-  definition "[Excluded_Emission].sum / [Total_Emission_Excluded_Max]"
+  definition { [Excluded_Emission].sum / [Total_Emission_Excluded_Max] }
   description "Percentage of excluded emissions"
 }
 
 measurement Total_Included_Emissions_In_Percentage {
   type DERIVED
-  definition "[Included_Emission].sum / [Total_Emission]"
+  definition { [Included_Emission].sum / [Total_Emission] }
   description "Percentage of all included emissions"
 }
 

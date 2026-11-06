@@ -114,7 +114,7 @@ function pageOf(ast: Standard, pageId: string): Subprocess {
 
 const ELEMENT_DEFAULTS: Record<ElementKind, (id: string) => Process | Approval | DataClass | EventNode | Gateway | Subprocess> = {
   process: id => ({
-    id, name: '', modality: 'SHALL', phase: '', guards: [], machineSteps: [],
+    id, name: '', modality: 'SHALL', phase: '', gates: [],
     actor: null, actorRef: '', output: [], outputRefs: [], input: [], inputRefs: [],
     provision: [], provisionRefs: [], page: null, measure: [], parent: '', children: [],
     signature: null, invariants: [], activityKinds: [], segregation: [],

@@ -33,7 +33,7 @@ import { complianceSurface } from '../compliance';
 /** A model with the construct collections this suite exercises. */
 const BASE = `term load-cell {
   label "load cell"
-  definition "measuring transducer that will produce an output in response to an applied load"
+  definition { measuring transducer that will produce an output in response to an applied load }
   section "3.1"
   source "urn:oiml:pub:r:60-1:2021#clause-3.1.3"
   language "en"
@@ -43,7 +43,7 @@ const BASE = `term load-cell {
 
 term widget {
   label "widget"
-  definition "a measurable thing"
+  definition { a measurable thing }
   language "en"
 }
 `;
@@ -547,7 +547,7 @@ describe('W3 subjects — the IS/HAS/DOES anatomy surface', () => {
         target error_hold
         level symbolic C6
         conditions "over the rated range"
-        statement "Holds accuracy class C6 across the rated range."
+        statement { Holds accuracy class C6 across the rated range. }
         verified_by { oiml-r60#/req/class-c/mpe }
       }
     }
@@ -602,7 +602,7 @@ describe('W3 subjects — the IS/HAS/DOES anatomy surface', () => {
     expect(text).toContain('accuracy_class in { C, D }');
     expect(text).toContain('behavior self_test');
     expect(text).toContain('creep_c6 {');
-    expect(text).toContain('statement "Creep stays within the envelope."');
+    expect(text).toContain('statement { Creep stays within the envelope. }');
     const reloaded = load(text, { strict: true });
     expect(reloaded.subjects[0]?.has.dimensions['accuracy_class']).toEqual(['C', 'D']);
     expect(reloaded.subjects[0]?.is.promises).toHaveLength(2);
@@ -676,7 +676,7 @@ describe('W3 the compliance surface — the provision-era bridge (audit G6)', ()
   });
 
   it('reads the REAL requirements on v3 packages (0 provisions, 180 requirements)', () => {
-    const ast = load('requirement r1 {\n  name "First"\n  statement "s"\n  obligation shall\n}\nrequirement r2 {\n  name "Second"\n  statement "s"\n  obligation may\n}\n', { strict: true });
+    const ast = load('requirement r1 {\n  name "First"\n  statement { s }\n  obligation shall\n}\nrequirement r2 {\n  name "Second"\n  statement { s }\n  obligation may\n}\n', { strict: true });
     const s = complianceSurface(ast);
     expect(s.kind).toBe('requirements');
     expect(s.label).toBe('requirements');
@@ -696,7 +696,7 @@ describe('W3 behaviors, capabilities, condition sets, verdicts — the subject-c
   const CHAIN = `behavior creep {
   kind temporal
   stimulus force
-  response "Change in load cell output with time under constant load (R 60-1, 3.4.4)."
+  response { Change in load cell output with time under constant load (R 60-1, 3.4.4). }
 }
 
 capability gas-analytical-system {
@@ -738,7 +738,7 @@ verdict creep {
     });
     const ast = run(CHAIN, patch);
     const text = dump(ast);
-    expect(text).toContain('response "Output change under constant load (edited)."');
+    expect(text).toContain('response { Output change under constant load (edited). }');
     expect(text).toContain('verified_by { /conf/metrological-tests/creep }');
     patch.revert(ast);
     expect(dump(ast)).toBe(dump(load(CHAIN, { strict: true })));

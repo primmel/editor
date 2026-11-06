@@ -27,7 +27,7 @@ role r1 { name "R1" }
 
 variable load {
   type float
-  definition "The applied load"
+  definition { The applied load }
   description "kg"
 }
 
@@ -393,25 +393,25 @@ table data {
 
 variable type {
   type TABLE_OPTIONS
-  definition "data,0,2,area,3,class"
+  definition { data,0,2,area,3,class }
   description "Type of cable"
 }
 
 variable area {
   type TABLE_OPTIONS
-  definition "data,2,0,type,3,class"
+  definition { data,2,0,type,3,class }
   description "Nominal area"
 }
 
 variable thicknessReq {
   type TABLE_REFERENCE
-  definition "data,4,0,type,2,area,3,class"
+  definition { data,4,0,type,2,area,3,class }
   description "Thickness requirement"
 }
 
 variable doubled {
   type DERIVED
-  definition "area * 2"
+  definition { area * 2 }
   description "derived over a derived table variable"
 }
 `;

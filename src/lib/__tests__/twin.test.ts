@@ -31,13 +31,13 @@ table data {
 
 variable type {
   type TABLE_OPTIONS
-  definition "data,0,2,area,3,class"
+  definition { data,0,2,area,3,class }
   description "Type of cable"
 }
 
 variable thicknessReq {
   type TABLE_REFERENCE
-  definition "data,4,0,type,2,area,3,class"
+  definition { data,4,0,type,2,area,3,class }
   description "Thickness requirement"
 }
 `;

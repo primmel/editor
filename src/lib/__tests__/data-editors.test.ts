@@ -56,23 +56,23 @@ const HANDWRITTEN = `${BASE}
 class LoadCell {
   store { instruments }
   capacity: QuantityValue[1..1] {
-    definition "Maximum capacity"
+    definition { Maximum capacity }
     modality SHALL
     required true
     unit "kg"
   }
   accuracyClass: enum[1..1] {
-    definition "Accuracy class"
+    definition { Accuracy class }
     enum_values { A C D }
   }
   certificate: reference(Certificate)[0..1] {
-    definition "The issued certificate"
+    definition { The issued certificate }
   }
 }
 
 class Certificate {
   number: string {
-    definition "Certificate number"
+    definition { Certificate number }
   }
 }
 

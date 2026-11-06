@@ -40,42 +40,42 @@ start_event Start1 {
 
 class RiskPlan#data {
   scope {
-    definition "Scope"
+    definition { Scope }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   Assignment {
-    definition "Responsibilities and authorities"
+    definition { Responsibilities and authorities }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   Requirements {
-    definition "Requirements for review of risk management activities"
+    definition { Requirements for review of risk management activities }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   Criteria {
-    definition "Criteria for risk acceptability"
+    definition { Criteria for risk acceptability }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   Verification {
-    definition "Verification activities"
+    definition { Verification activities }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   activities {
-    definition "Collection and review of relevant production and post-production information"
+    definition { Collection and review of relevant production and post-production information }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
@@ -90,16 +90,16 @@ data_registry RiskPlan {
 
 class ChangeRecord#data {
   Subject {
-    definition "Subject of change"
+    definition { Subject of change }
   }
   Date {
-    definition "Date of change"
+    definition { Date of change }
   }
   Reason {
-    definition "Reason of change"
+    definition { Reason of change }
   }
   Approval {
-    definition "Approval information"
+    definition { Approval information }
   }
 }
 
@@ -110,45 +110,45 @@ data_registry ChangeRecord {
 
 class RiskAnalysisRecord#data {
   implementation {
-    definition "Methodology of risk analysis"
+    definition { Methodology of risk analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   results {
-    definition "Results of the risk analysis"
+    definition { Results of the risk analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   medicalDevice {
-    definition "Medical device that was analysed"
+    definition { Medical device that was analysed }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   Person {
-    definition "Person who carried out the risk analysis"
+    definition { Person who carried out the risk analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   Scope {
-    definition "Scope of the risk analysis"
+    definition { Scope of the risk analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   Date {
-    definition "Date of risk analysis"
+    definition { Date of risk analysis }
   }
   ID {
-    definition "Risk ID"
+    definition { Risk ID }
   }
 }
 
@@ -159,10 +159,10 @@ data_registry RiskAnalysisRecord {
 
 class MedicalDevice#data {
   use {
-    definition "Intended use"
+    definition { Intended use }
   }
   specification {
-    definition "Specification"
+    definition { Specification }
   }
 }
 
@@ -173,13 +173,13 @@ data_registry MedicalDevice {
 
 class Hazards#data {
   hazard {
-    definition "Known hazards"
+    definition { Known hazards }
   }
   hazard2 {
-    definition "Foreseeable hazards"
+    definition { Foreseeable hazards }
   }
   type: HazardType {
-    definition "Hazard type"
+    definition { Hazard type }
   }
 }
 
@@ -190,10 +190,10 @@ data_registry Hazards {
 
 class RiskEvaluationResult#data {
   riskEvaluated {
-    definition "Risk evaluated"
+    definition { Risk evaluated }
   }
   result {
-    definition "Evaluation results"
+    definition { Evaluation results }
   }
 }
 
@@ -204,35 +204,35 @@ data_registry RiskEvaluationResult {
 
 class RiskControlRecord#data {
   selected {
-    definition "risk control measures selected"
+    definition { risk control measures selected }
     modality SHALL
     reference {
       ISO14971-doc-ref6-2
     }
   }
   implementation {
-    definition "verification of implementation of each risk control measure"
+    definition { verification of implementation of each risk control measure }
     modality SHALL
     reference {
       ISO14971-doc-ref6-3
     }
   }
   effectiveness {
-    definition "verification of the effectiveness of the risk control measure"
+    definition { verification of the effectiveness of the risk control measure }
     modality SHALL
     reference {
       ISO14971-doc-ref6-3
     }
   }
   residualRisk {
-    definition "residual risk shall be evaluated"
+    definition { residual risk shall be evaluated }
     modality SHALL
     reference {
       ISO14971-doc-ref6-4
     }
   }
   risk/benefit {
-    definition "results of risk/benefit analysis"
+    definition { results of risk/benefit analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref6-5
@@ -263,60 +263,60 @@ data_registry Post-ProductionEvaluationResult {
 
 class RiskManagementFile#data {
   plan: reference(RiskPlan) {
-    definition "Risk Management Plan"
+    definition { Risk Management Plan }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   change: reference(ChangeRecord) {
-    definition "Record of changes"
+    definition { Record of changes }
     modality SHALL
     reference {
       ISO14971-doc-ref3-4
     }
   }
   analysis: reference(RiskAnalysisRecord) {
-    definition "Risk analysis"
+    definition { Risk analysis }
     modality SHALL
     reference {
       ISO14971-doc-ref4-1
     }
   }
   device: reference(MedicalDevice) {
-    definition "characteristics related to the safety of the medical device"
+    definition { characteristics related to the safety of the medical device }
     modality SHALL
     reference {
       ISO14971-doc-ref4-2
     }
   }
   hazards: reference(Hazards) {
-    definition "Known and foreseeable hazards associated with the medical device in both normal and fault conditions"
+    definition { Known and foreseeable hazards associated with the medical device in both normal and fault conditions }
     modality SHALL
   }
   evaluation: reference(RiskEvaluationResult) {
-    definition "Risk evaluation results"
+    definition { Risk evaluation results }
     modality SHALL
     reference {
       ISO14971-doc-ref5
     }
   }
   control: reference(RiskControlRecord) {
-    definition "Risk control records"
+    definition { Risk control records }
     modality SHALL
     reference {
       ISO14971-doc-ref6-2
     }
   }
   review: reference(RiskControlMeasureReview) {
-    definition "Result of risk control measure review"
+    definition { Result of risk control measure review }
     modality SHALL
     reference {
       ISO14971-doc-ref6-6
     }
   }
   post-productionEvaluation: reference(Post-ProductionEvaluationResult) {
-    definition "Post-production evaluation result"
+    definition { Post-production evaluation result }
     modality SHALL
     reference {
       ISO14971-doc-ref9
@@ -346,10 +346,10 @@ process RiskManagementFile1 {
 
 class Procedure#data {
   Process {
-    definition "Processes"
+    definition { Processes }
   }
   Procedures {
-    definition "Procedures"
+    definition { Procedures }
   }
 }
 
@@ -394,7 +394,7 @@ process Process2 {
 
 class QualityPolicy#data {
   content {
-    definition "Quality Policy Content"
+    definition { Quality Policy Content }
   }
 }
 
@@ -511,13 +511,13 @@ provision Provision5 {
 
 enum HazardType {
   Physical {
-    definition "Physical"
+    definition { Physical }
   }
   Chemical {
-    definition "Chemical"
+    definition { Chemical }
   }
   Biological {
-    definition "Biological"
+    definition { Biological }
   }
 }
 

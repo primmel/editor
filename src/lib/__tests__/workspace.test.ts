@@ -26,7 +26,7 @@ process P1 {
 
 term widget {
   label "widget"
-  definition "a measurable thing"
+  definition { a measurable thing }
 }
 `;
 
@@ -40,7 +40,7 @@ const REF_A = `metadata {
 
 requirement /req/a1 {
   name "A1"
-  statement "shall a"
+  statement { shall a }
 }
 `;
 

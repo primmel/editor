@@ -1,7 +1,7 @@
 // The editioned package's requirements — the OLD edition (the diff base).
 requirement /req/ed/stability {
   name "Stability"
-  statement "The instrument SHALL remain stable."
+  statement { The instrument SHALL remain stable. }
   binds_to { model.parameters.zero }
   ref derives-from "urn:example:ed:2025#clause-5.1"
 }

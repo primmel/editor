@@ -3623,19 +3623,19 @@ measurement target {
 
 measurement type {
   type TABLE_OPTIONS
-  definition "data,0,2,area,3,class"
+  definition { data,0,2,area,3,class }
   description "Type of cable (e.g., 6181Y)"
 }
 
 measurement area {
   type TABLE_OPTIONS
-  definition "data,2,0,type,3,class"
+  definition { data,2,0,type,3,class }
   description "Nominal cross-sectional area of conductors"
 }
 
 measurement class {
   type TABLE_OPTIONS
-  definition "data,3,2,area,0,type"
+  definition { data,3,2,area,0,type }
   description "Class of conductor (1 / 2)"
 }
 
@@ -3651,7 +3651,7 @@ measurement thickness {
 
 measurement thicknessReq {
   type TABLE_REFERENCE
-  definition "data,4,0,type,2,area,3,class"
+  definition { data,4,0,type,2,area,3,class }
   description "Requirement of the radial thickness of insulation"
 }
 
@@ -3662,13 +3662,13 @@ measurement sheath {
 
 measurement sheathReq {
   type TABLE_REFERENCE
-  definition "data,5,0,type,2,area,3,class"
+  definition { data,5,0,type,2,area,3,class }
   description "Requirement of radial thickness of sheath"
 }
 
 measurement isCircular {
   type TABLE_REFERENCE
-  definition "data,13,0,type"
+  definition { data,13,0,type }
   description "Is the cable circular"
 }
 
@@ -3684,31 +3684,31 @@ measurement dimension2 {
 
 measurement dimension1ReqMin {
   type TABLE_REFERENCE
-  definition "data,9,0,type,2,area,3,class"
+  definition { data,9,0,type,2,area,3,class }
   description "Minimal dimension 1"
 }
 
 measurement dimension1ReqMax {
   type TABLE_REFERENCE
-  definition "data,11,0,type,2,area,3,class"
+  definition { data,11,0,type,2,area,3,class }
   description "Maximum dimension 1"
 }
 
 measurement dimension2ReqMin {
   type TABLE_REFERENCE
-  definition "data,10,0,type,2,area,3,class"
+  definition { data,10,0,type,2,area,3,class }
   description "Minimum dimension 2"
 }
 
 measurement dimension2ReqMax {
   type TABLE_REFERENCE
-  definition "data,12,0,type,2,area,3,class"
+  definition { data,12,0,type,2,area,3,class }
   description "Maximum dimension 2"
 }
 
 measurement tableRef {
   type TABLE_REFERENCE
-  definition "data,14,0,type,2,area,3,class"
+  definition { data,14,0,type,2,area,3,class }
   description "Cable in which table"
 }
 
@@ -3729,7 +3729,7 @@ measurement resistance {
 
 measurement resistanceReq {
   type TABLE_REFERENCE
-  definition "data,6,0,type,2,area,3,class"
+  definition { data,6,0,type,2,area,3,class }
   description "Requirement of minimum insulation resistance"
 }
 

@@ -2717,14 +2717,14 @@ exclusive_gateway ChangeSystemGateway {
 
 class BasicDocumentedInformation {
   identification {
-    definition "Identification"
+    definition { Identification }
     modality SHALL
     reference {
       ref7-5-3
     }
   }
   description {
-    definition "Description (e.g. a title, date, author, or reference number)"
+    definition { Description (e.g. a title, date, author, or reference number) }
     modality SHALL
     reference {
       ref7-5-3
@@ -2734,14 +2734,14 @@ class BasicDocumentedInformation {
 
 class PartyRegistry#data {
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   party {
-    definition "Interested parties that are relevant to the information security management system"
+    definition { Interested parties that are relevant to the information security management system }
     modality SHALL
     reference {
       ref4-2
@@ -2751,21 +2751,21 @@ class PartyRegistry#data {
 
 class PartyRequirement#data {
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   requirement {
-    definition "Requirements"
+    definition { Requirements }
     modality SHALL
     reference {
       ref4-2
     }
   }
   party: reference(PartyRegistry#data) {
-    definition "Party that gives the requirements"
+    definition { Party that gives the requirements }
     modality SHALL
     reference {
       ref4-2
@@ -2775,28 +2775,28 @@ class PartyRequirement#data {
 
 class Scope#data {
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   scope {
-    definition "Scope"
+    definition { Scope }
     modality SHALL
     reference {
       ref4-3
     }
   }
   boundary {
-    definition "Boundary"
+    definition { Boundary }
     modality SHALL
     reference {
       ref4-3
     }
   }
   applicability {
-    definition "Applicability"
+    definition { Applicability }
     modality SHALL
     reference {
       ref4-3
@@ -2806,14 +2806,14 @@ class Scope#data {
 
 class Issues#data {
   issue {
-    definition "Issue"
+    definition { Issue }
     modality SHALL
     reference {
       ref4-1
     }
   }
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     reference {
       ref7-5-2
     }
@@ -2822,13 +2822,13 @@ class Issues#data {
 
 class Policy#data {
   policy {
-    definition "Information Security Policy"
+    definition { Information Security Policy }
     reference {
       ref5-2
     }
   }
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     reference {
       ref7-5-2
     }
@@ -2837,13 +2837,13 @@ class Policy#data {
 
 class Objectives#data {
   objectives {
-    definition "Information security Objectives"
+    definition { Information security Objectives }
     reference {
       ref6-2
     }
   }
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     reference {
       ref7-5-2
     }
@@ -2852,14 +2852,14 @@ class Objectives#data {
 
 class RiskOpportunity#data {
   meta: BasicDocumentedInformation {
-    definition "General documented information"
+    definition { General documented information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   owner {
-    definition "Risk owner"
+    definition { Risk owner }
     modality SHALL
     reference {
       ref6-1-2
@@ -2869,21 +2869,21 @@ class RiskOpportunity#data {
 
 class RiskAssessmentCriteria#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   criteria {
-    definition "Criteria for performing information security risk assessments"
+    definition { Criteria for performing information security risk assessments }
     modality SHALL
     reference {
       ref6-1-2
     }
   }
   acceptance {
-    definition "Risk acceptance criteria"
+    definition { Risk acceptance criteria }
     modality SHALL
     reference {
       ref6-1-2
@@ -2893,35 +2893,35 @@ class RiskAssessmentCriteria#data {
 
 class RiskAnalysisResult#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   risk: reference(RiskOpportunity#data) {
-    definition "Risk concerned"
+    definition { Risk concerned }
     modality SHALL
     reference {
       ref6-1-2
     }
   }
   consequence {
-    definition "Potential consequences"
+    definition { Potential consequences }
     modality SHALL
     reference {
       ref6-1-2
     }
   }
   likelihood {
-    definition "Likelihood of the occurrence "
+    definition { Likelihood of the occurrence  }
     modality SHALL
     reference {
       ref6-1-2
     }
   }
   level {
-    definition "Levels of risk"
+    definition { Levels of risk }
     modality SHALL
     reference {
       ref6-1-2
@@ -2931,14 +2931,14 @@ class RiskAnalysisResult#data {
 
 class RiskControl#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   control {
-    definition "Controls that are necessary to implement the information security risk treatment option(s) chosen"
+    definition { Controls that are necessary to implement the information security risk treatment option(s) chosen }
     modality SHALL
     reference {
       ref6-1-3
@@ -2948,28 +2948,28 @@ class RiskControl#data {
 
 class SoA#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   control: reference(RiskControl#data) {
-    definition "Control"
+    definition { Control }
     modality SHALL
     reference {
       ref6-1-3
     }
   }
   included: boolean {
-    definition "Included or Excluded"
+    definition { Included or Excluded }
     modality SHALL
     reference {
       ref6-1-3
     }
   }
   Justification {
-    definition "Justification"
+    definition { Justification }
     modality SHALL
     reference {
       ref6-1-3
@@ -2979,42 +2979,42 @@ class SoA#data {
 
 class InformationSecurityPlan#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   what {
-    definition "what will be done"
+    definition { what will be done }
     modality SHALL
     reference {
       ref6-2
     }
   }
   resources {
-    definition "what resources will be required"
+    definition { what resources will be required }
     modality SHALL
     reference {
       ref6-2
     }
   }
   who {
-    definition "who will be responsible"
+    definition { who will be responsible }
     modality SHALL
     reference {
       ref6-2
     }
   }
   when {
-    definition "when it will be completed"
+    definition { when it will be completed }
     modality SHALL
     reference {
       ref6-2
     }
   }
   evaluate {
-    definition "how the results will be evaluated"
+    definition { how the results will be evaluated }
     modality SHALL
     reference {
       ref6-2
@@ -3024,42 +3024,42 @@ class InformationSecurityPlan#data {
 
 class CommunicationNeed#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   what {
-    definition "on what to communicate"
+    definition { on what to communicate }
     modality SHALL
     reference {
       ref7-4
     }
   }
   when {
-    definition "when to communicate"
+    definition { when to communicate }
     modality SHALL
     reference {
       ref7-4
     }
   }
   whom {
-    definition "with whom to communicate"
+    definition { with whom to communicate }
     modality SHALL
     reference {
       ref7-4
     }
   }
   who {
-    definition "who shall communicate"
+    definition { who shall communicate }
     modality SHALL
     reference {
       ref7-4
     }
   }
   process {
-    definition "the processes by which communication shall be effected"
+    definition { the processes by which communication shall be effected }
     modality SHALL
     reference {
       ref7-4
@@ -3069,14 +3069,14 @@ class CommunicationNeed#data {
 
 class RiskTreatmentPlanRegistry#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   plan {
-    definition "Risk Treatment Plan"
+    definition { Risk Treatment Plan }
     modality SHALL
     reference {
       ref6-1-3
@@ -3086,49 +3086,49 @@ class RiskTreatmentPlanRegistry#data {
 
 class PerformanceEvaluationPlan#data {
   meta {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref9-1
     }
   }
   what {
-    definition "what needs to be monitored and measured, including information security processes and controls"
+    definition { what needs to be monitored and measured, including information security processes and controls }
     modality SHALL
     reference {
       ref9-1
     }
   }
   method {
-    definition "the methods for monitoring, measurement, analysis and evaluation, as applicable, to ensure valid results"
+    definition { the methods for monitoring, measurement, analysis and evaluation, as applicable, to ensure valid results }
     modality SHALL
     reference {
       ref9-1
     }
   }
   when {
-    definition "when the monitoring and measuring shall be performed"
+    definition { when the monitoring and measuring shall be performed }
     modality SHALL
     reference {
       ref9-1
     }
   }
   who {
-    definition "who shall monitor and measure"
+    definition { who shall monitor and measure }
     modality SHALL
     reference {
       ref9-1
     }
   }
   analyse {
-    definition "when the results from monitoring and measurement shall be analysed and evaluated"
+    definition { when the results from monitoring and measurement shall be analysed and evaluated }
     modality SHALL
     reference {
       ref9-1
     }
   }
   analyser {
-    definition "who shall analyse and evaluate these results"
+    definition { who shall analyse and evaluate these results }
     modality SHALL
     reference {
       ref9-1
@@ -3138,42 +3138,42 @@ class PerformanceEvaluationPlan#data {
 
 class AuditProgrammeRegistry#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   frequency {
-    definition "frequency"
+    definition { frequency }
     modality SHALL
     reference {
       ref9-2
     }
   }
   methods {
-    definition "methods"
+    definition { methods }
     modality SHALL
     reference {
       ref9-2
     }
   }
   responsibilities {
-    definition "responsibilities"
+    definition { responsibilities }
     modality SHALL
     reference {
       ref9-2
     }
   }
   requirements {
-    definition "planning requirements"
+    definition { planning requirements }
     modality SHALL
     reference {
       ref9-2
     }
   }
   reporting {
-    definition "reporting"
+    definition { reporting }
     modality SHALL
     reference {
       ref9-2
@@ -3183,21 +3183,21 @@ class AuditProgrammeRegistry#data {
 
 class AuditPlan#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   criteria {
-    definition "Audit criteria"
+    definition { Audit criteria }
     modality SHALL
     reference {
       ref9-2
     }
   }
   scope {
-    definition "Audit scope"
+    definition { Audit scope }
     modality SHALL
     reference {
       ref9-2
@@ -3207,14 +3207,14 @@ class AuditPlan#data {
 
 class AuditResult#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref9-2
     }
   }
   result {
-    definition "Audit result"
+    definition { Audit result }
     modality SHALL
     reference {
       ref9-2
@@ -3224,21 +3224,21 @@ class AuditResult#data {
 
 class ManagementReviewOutput#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   decision {
-    definition "Decisions related to continual improvement opportunities"
+    definition { Decisions related to continual improvement opportunities }
     modality SHALL
     reference {
       ref9-3
     }
   }
   need {
-    definition "Needs for changes to the information security management system"
+    definition { Needs for changes to the information security management system }
     modality SHALL
     reference {
       ref9-3
@@ -3248,14 +3248,14 @@ class ManagementReviewOutput#data {
 
 class Nonconformity#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref7-5-2
     }
   }
   nature {
-    definition "Nature of the nonconformities"
+    definition { Nature of the nonconformities }
     modality SHALL
     reference {
       ref10-1
@@ -3265,13 +3265,13 @@ class Nonconformity#data {
 
 class NonconformityReaction#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     reference {
       ref10-1
     }
   }
   action {
-    definition "Subsequent actions taken"
+    definition { Subsequent actions taken }
     modality SHALL
     reference {
       ref10-1
@@ -3281,7 +3281,7 @@ class NonconformityReaction#data {
 
 class CorrectiveActionResult#data {
   meta: BasicDocumentedInformation {
-    definition "Basic Documented Information"
+    definition { Basic Documented Information }
     modality SHALL
     reference {
       ref10-1
