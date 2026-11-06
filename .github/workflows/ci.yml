@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22.x, 24.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Typing-discipline gate (R1–R6)
+        run: npm run audit:types
+      - name: Type-check (vue-tsc)
+        run: npx vue-tsc --noEmit
+      # The retention gate rides this run: corpus-matrix (38/38 legacy
+      # .mmel files parse natively — the rename-contract regression doc
+      # 41 records as CI's standing gate), legacy-vocabulary, and
+      # mmel-import all execute inside the vitest suite.
+      - name: Tests (vitest — includes the retention gate)
+        run: npm test
+      - name: Build
+        run: npm run build
