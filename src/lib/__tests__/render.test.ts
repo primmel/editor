@@ -35,7 +35,7 @@ process Unnamed {
 
 class DC1 {
   a: string {
-    definition "a"
+    definition { a }
   }
 }
 

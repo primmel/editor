@@ -103,7 +103,6 @@ export type ConnectorProfile = Standard['connectorProfiles'][number];
 export type Monitor = Standard['monitors'][number];
 export type Passport = Standard['passports'][number];
 export type Invariant = Standard['invariants'][number];
-export type FormulasUsed = Standard['formulasUsed'][number];
 export type TextContent = Standard['texts'][number];
 export type ActivityArchetype = Standard['activityArchetypes'][number];
 export type CompetenceKind = Standard['competenceKinds'][number];
@@ -319,7 +318,6 @@ export function newInstrument(id: string): Instrument {
     id,
     extends: '',
     definition: '',
-    variants: [],
     dimensions: [],
     perChannel: '',
     familyCriteria: [],
@@ -405,10 +403,6 @@ export function newPassport(id: string): Passport {
 
 export function newInvariant(id: string): Invariant {
   return { id, name: '', statement: '', severity: '', appliesTo: [], source: '', enforcement: { aspirational: false, claims: [] } };
-}
-
-export function newFormulasUsed(id: string): FormulasUsed {
-  return { id, name: '', description: '', formulas: [], sourceRefs: [] };
 }
 
 export function newTextContent(id: string): TextContent {

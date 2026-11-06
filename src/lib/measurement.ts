@@ -1,8 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────
 // The measurement harness (TODO.editor/16) — the measurement model
-// over PRL: a process's declared measurement points (the
-// validate_measurement facet) → variable-setting rows (value + unit +
-// uncertainty), the per-row validation (declared type + presence),
+// over PRL: a process's authored measurement checks (the canonical
+// check plane — the validate_measurement facet retired at parse,
+// TODO.lang-gaps/03; the kernel's refusal names the check id) →
+// variable-setting rows (value + unit + uncertainty) from each check's
+// declared inputs, the per-row validation (declared type + presence),
 // and the result formatter.
 //
 // The wall: measurement values are EVIDENCE-adjacent (a run's input),
@@ -26,15 +28,17 @@ export interface MeasurementValue {
   uncertainty: string;
 }
 
-/** The rows for a process: one per declared measurement point, in the
- *  facet's order. */
+/** The rows for a process: one per declared measurement point — the
+ *  inputs of the process's authored checks (the canonical check plane),
+ *  in declaration order. */
 export function measurementRows(model: Standard, processId: string): MeasurementRow[] {
-  const proc = model.processes.find(p => p.id === processId);
-  if (!proc) return [];
-  return proc.measure.map(id => ({
-    id,
-    declared: model.variables.find(v => v.id === id) ?? null,
-  }));
+  const checks = model.checks.filter(c => c.id.startsWith(`process:${processId}:`));
+  return checks.flatMap(c =>
+    c.inputs.map(id => ({
+      id,
+      declared: model.variables.find(v => v.id === id) ?? null,
+    })),
+  );
 }
 
 export type RowVerdict = 'valid' | 'warning' | 'missing';

@@ -50,7 +50,7 @@ export const CONSTRUCT_FIELDS = [
   'forms', 'subforms', 'symbols', 'calculations', 'verdicts', 'tables', 'testPointSets',
   'referenceMaterials', 'processes', 'pages', 'dataclasses', 'regs', 'gateways', 'events',
   'approvals', 'stateMachines', 'monitors', 'passports', 'viewProfiles', 'provisions', 'notes',
-  'invariants', 'testSequences', 'formulasUsed', 'links', 'texts',
+  'invariants', 'testSequences', 'links', 'texts',
   'comments', 'mapProfiles', 'competenceKinds', 'predicates', 'constraints',
   'discrepancyRecords', 'dataspaces', 'policies',
 ] as const satisfies readonly (keyof Standard)[];

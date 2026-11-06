@@ -62,6 +62,76 @@ const RENAMES: { from: string; to: string }[] = [
   { from: 'view', to: 'view_profile' },
 ];
 
+/** The legacy `validate_measurement` facet translates to the canonical
+ *  check plane (the kernel refuses the spelling at parse,
+ *  TODO.lang-gaps/03 — the refusal names the check id): each criterion
+ *  string becomes `check process:<pid>:validate_measurement:<n>` with
+ *  the inline expression carrier, the measurement-expression
+ *  translation applied. The facet leaves the process block; the checks
+ *  append after it. */
+function translateValidateMeasurement(
+  text: string,
+  renames: Record<string, number>,
+): { text: string; checks: number } {
+  let checks = 0;
+  const procRe = /^[ 	]*process[ 	]+([A-Za-z0-9_.,:\-]+)[ 	]*\{/gm;
+  type Edit = { start: number; end: number; replacement: string };
+  const edits: Edit[] = [];
+  for (;;) {
+    const pm = procRe.exec(text);
+    if (!pm) break;
+    const pid = pm[1] as string;
+    // brace-balanced scan of the process block (string-aware)
+    let i = pm.index + pm[0].length;
+    let depth = 1;
+    let inString = false;
+    const bodyStart = i;
+    for (; i < text.length && depth > 0; i++) {
+      const c = text[i];
+      if (inString) {
+        if (c === '\\') i++;
+        else if (c === '"') inString = false;
+      } else if (c === '"') inString = true;
+      else if (c === '{') depth++;
+      else if (c === '}') depth--;
+    }
+    const bodyEnd = i - 1; // the closing brace
+    const body = text.slice(bodyStart, bodyEnd);
+    const facetRe = /^[ \t]*validate_measurement[ \t]*\{([\s\S]*?)^[ \t]*\}[ \t]*$/m;
+    const fm = facetRe.exec(body);
+    if (!fm) continue;
+    const entries = [...body.slice(fm.index, fm.index + fm[0].length).matchAll(/"((?:[^"\\]|\\.)*)"/g)]
+      .map(m => m[1] as string);
+    if (entries.length === 0) continue;
+    const emitted = entries.map((crit, k) => {
+      const t = translateMeasurementExpression(crit);
+      for (const rn of t.renames) {
+        renames[`${rn.from}→${rn.to}`] = (renames[`${rn.from}→${rn.to}`] ?? 0) + 1;
+      }
+      return (
+        `\ncheck process:${pid}:validate_measurement:${k + 1} {\n` +
+        `  expression { ${t.text} }\n` +
+        `  ref derives-from "process:${pid}"\n` +
+        `}\n`
+      );
+    }).join('');
+    const absStart = pm.index + pm[0].length + fm.index; // body offsets are absolute from after the opening brace
+    const absEnd = absStart + fm[0].length;
+    // the facet leaves the block; the checks land AFTER the process's
+    // closing brace (a check inside a process block is air)
+    const closeAbs = bodyEnd + 1;
+    edits.push({ start: absStart, end: absEnd, replacement: '' });
+    edits.push({ start: closeAbs, end: closeAbs, replacement: emitted });
+    checks += entries.length;
+  }
+  // apply bottom-up
+  edits.sort((a, b) => b.start - a.start);
+  for (const e of edits) {
+    text = text.slice(0, e.start) + e.replacement + text.slice(e.end);
+  }
+  return { text, checks };
+}
+
 /** Remove a retired v2 construct definition (keyword + id + brace-balanced
  *  block, string-aware) so the strict parse of the remaining dialect holds. */
 function stripRetiredBlock(text: string, keyword: string): string {
@@ -160,8 +230,10 @@ export function translateMeasurementExpression(expr: string): {
 }
 
 export function importLegacy(text: string): ImportResult {
+  const expressionRenames: Record<string, number> = {};
+  const vm = translateValidateMeasurement(text, expressionRenames);
   const v2 = stripRetiredBlock(
-    stripRetiredBlock(text, 'reference'),
+    stripRetiredBlock(vm.text, 'reference'),
     'condition_set',
   );
   const standard = load(v2, { strict: true });
@@ -170,7 +242,6 @@ export function importLegacy(text: string): ImportResult {
   // expression table): bracket variables + postfix list operators →
   // identifiers + call-form aggregators. Applied to process measures
   // and DERIVED variable definitions; the translation is reported.
-  const expressionRenames: Record<string, number> = {};
   let translatedCount = 0;
   const translate = (expr: string): string => {
     const r = translateMeasurementExpression(expr);

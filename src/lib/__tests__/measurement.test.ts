@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────
 // TODO.editor/16 — the measurement harness's proofs:
-//   - the rows follow the process's validate_measurement facet, with
+//   - the rows follow the process's authored checks' declared inputs
+//     (the canonical check plane — the facet retired at parse), with
 //     the declared variable joined when the point is one;
 //   - the validation: missing when empty, type-mismatch warning, valid;
 //   - the result formatter renders the declared shape.
@@ -24,24 +25,23 @@ role r1 { name "R1" }
 
 variable temperature {
   type float
-  definition "The chamber temperature"
+  definition { The chamber temperature }
   description "°C"
 }
 
 variable count {
   type integer
-  definition "The reading count"
+  definition { The reading count }
   description ""
 }
 
 process Weigh {
   name "Weigh"
   actor r1
-  validate_measurement {
-    "temperature"
-    "count"
-    "freeNote"
-  }
+}
+
+check process:Weigh:validate_measurement:1 {
+  inputs { temperature count freeNote }
 }
 
 process Plain {

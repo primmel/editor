@@ -343,21 +343,21 @@ data_registry QualityManual {
 
 class QualityManual#data {
   scope {
-    definition "Scope of the quality management system, including details of and justification for any exclusion or non-application"
+    definition { Scope of the quality management system, including details of and justification for any exclusion or non-application }
     modality SHALL
     reference {
       ref4-2-2
     }
   }
   procedure {
-    definition "Documented procedures for the quality management system, or reference to them"
+    definition { Documented procedures for the quality management system, or reference to them }
     modality SHALL
     reference {
       ref4-2-1
     }
   }
   interaction {
-    definition "Description of the interaction between the processes of the quality management system"
+    definition { Description of the interaction between the processes of the quality management system }
     modality SHALL
     reference {
       ref4-2-1
@@ -446,39 +446,39 @@ data_registry MedicalDeviceFile {
 
 class MedicalDeviceFile#data {
   description {
-    definition "General description of the medical device, intended use/purpose, and labelling, including any instructions for use"
+    definition { General description of the medical device, intended use/purpose, and labelling, including any instructions for use }
     modality SHALL
     reference {
       ref4-2-3
     }
   }
   productSpecification {
-    definition "Specifications for product"
+    definition { Specifications for product }
     modality SHALL
     reference {
       ref4-2-3
     }
   }
   producerSpecification {
-    definition "Specifications or procedures for manufacturing, packaging, storage, handling and distribution"
+    definition { Specifications or procedures for manufacturing, packaging, storage, handling and distribution }
     modality SHALL
     reference {
       ref4-2-3
     }
   }
   installationRequirements[0..*] {
-    definition "Requirements for installation (as appropriate)"
+    definition { Requirements for installation (as appropriate) }
     modality SHALL
   }
   procedureMeasurement {
-    definition "Procedures for measuring and monitoring"
+    definition { Procedures for measuring and monitoring }
     modality SHALL
     reference {
       ref4-2-3
     }
   }
   procedureServicing[0..*] {
-    definition "Procedures for servicing (as appropriate)"
+    definition { Procedures for servicing (as appropriate) }
     modality SHALL
     reference {
       ref4-2-3
@@ -1677,42 +1677,42 @@ data_registry DesignAndDevelopmentPlan {
 
 class DesignAndDevelopmentPlan#data {
   stages {
-    definition "Design and development stages"
+    definition { Design and development stages }
     modality SHALL
     reference {
       ref7-3-2
     }
   }
   review {
-    definition "Review(s) needed at each design and development stage"
+    definition { Review(s) needed at each design and development stage }
     modality SHALL
     reference {
       ref7-3-2
     }
   }
   verification {
-    definition "Verification, validation, and design transfer activities that are appropriate at each design and development stage"
+    definition { Verification, validation, and design transfer activities that are appropriate at each design and development stage }
     modality SHALL
     reference {
       ref7-3-2
     }
   }
   responsibility {
-    definition "Responsibilities and authorities for design and development"
+    definition { Responsibilities and authorities for design and development }
     modality SHALL
     reference {
       ref7-3-2
     }
   }
   traceability {
-    definition "Methods to ensure traceability of design and development outputs to design and development inputs"
+    definition { Methods to ensure traceability of design and development outputs to design and development inputs }
     modality SHALL
     reference {
       ref7-3-2
     }
   }
   resources {
-    definition "Resources needed, including necessary competence of personnel"
+    definition { Resources needed, including necessary competence of personnel }
     modality SHALL
     reference {
       ref7-3-2
@@ -1742,35 +1742,35 @@ data_registry DesignDevelopmentInputs {
 
 class DesignDevelopmentInputs#data {
   requirements {
-    definition "Functional, performance, usability and safety requirements, according to the intended use"
+    definition { Functional, performance, usability and safety requirements, according to the intended use }
     modality SHALL
     reference {
       ref7-3-3
     }
   }
   regulation {
-    definition "Applicable regulatory requirements and standards"
+    definition { Applicable regulatory requirements and standards }
     modality SHALL
     reference {
       ref7-3-3
     }
   }
   riskOutput {
-    definition "Applicable output(s) of risk management"
+    definition { Applicable output(s) of risk management }
     modality SHALL
     reference {
       ref7-3-3
     }
   }
   previousDesign[0..*] {
-    definition "As appropriate, information derived from previous similar designs"
+    definition { As appropriate, information derived from previous similar designs }
     modality SHALL
     reference {
       ref7-3-3
     }
   }
   others {
-    definition "Other requirements essential for design and development of the product and processes"
+    definition { Other requirements essential for design and development of the product and processes }
     modality SHALL
     reference {
       ref7-3-3
@@ -1943,21 +1943,21 @@ data_registry D&DReviewResult {
 
 class D&DReviewResult#data {
   design {
-    definition "Identification of the design under review"
+    definition { Identification of the design under review }
     modality SHALL
     reference {
       ref7-3-5
     }
   }
   participants {
-    definition "Participants involved"
+    definition { Participants involved }
     modality SHALL
     reference {
       ref7-3-5
     }
   }
   date {
-    definition "Date of the review"
+    definition { Date of the review }
     modality SHALL
     reference {
       ref7-3-5
@@ -1992,21 +1992,21 @@ data_registry D&DVerificationPlan {
 
 class D&DVerificationPlan#data {
   methods {
-    definition "Methods"
+    definition { Methods }
     modality SHALL
     reference {
       ref7-3-6
     }
   }
   criteria {
-    definition "Acceptance criteria"
+    definition { Acceptance criteria }
     modality SHALL
     reference {
       ref7-3-6
     }
   }
   stat_techniques[0..*] {
-    definition "Statistical techniques with rationale for sample size (as appropriate)"
+    definition { Statistical techniques with rationale for sample size (as appropriate) }
     modality SHALL
     reference {
       ref7-3-6
@@ -2070,21 +2070,21 @@ data_registry D&DValidationPlan {
 
 class D&DValidationPlan#data {
   methods {
-    definition "Methods"
+    definition { Methods }
     modality SHALL
     reference {
       ref7-3-7
     }
   }
   criteria {
-    definition "Acceptance criteria"
+    definition { Acceptance criteria }
     modality SHALL
     reference {
       ref7-3-7
     }
   }
   stat_techniques[0..*] {
-    definition "Statistical techniques with rationale for sample size (as appropriate)"
+    definition { Statistical techniques with rationale for sample size (as appropriate) }
     modality SHALL
     reference {
       ref7-3-7
@@ -2565,35 +2565,35 @@ data_registry PurchasingInformation {
 
 class PurchasingInformation#data {
   specifications[0..*] {
-    definition "Product specifications (as appropriate)"
+    definition { Product specifications (as appropriate) }
     modality SHALL
     reference {
       ref7-4-2
     }
   }
   product_requirements[0..*] {
-    definition "Requirements for product acceptance, procedures, processes and equipment (as appropriate)"
+    definition { Requirements for product acceptance, procedures, processes and equipment (as appropriate) }
     modality SHALL
     reference {
       ref7-4-2
     }
   }
   qualification_requirement[0..*] {
-    definition "Requirements for qualification of supplier personnel (as appropritate)"
+    definition { Requirements for qualification of supplier personnel (as appropritate) }
     modality SHALL
     reference {
       ref7-4-2
     }
   }
   qms_requirements[0..*] {
-    definition "Quality management system requirements (as appropriate)"
+    definition { Quality management system requirements (as appropriate) }
     modality SHALL
     reference {
       ref7-4-2
     }
   }
   agreement {
-    definition "A written agreement that the supplier notify the organization of changes in the purchased product prior to implementation of any changes that affect the ability of the purchased product to meet specified purchase requirements (as applicable)"
+    definition { A written agreement that the supplier notify the organization of changes in the purchased product prior to implementation of any changes that affect the ability of the purchased product to meet specified purchase requirements (as applicable) }
     modality SHALL
     reference {
       ref7-4-2
@@ -3054,48 +3054,48 @@ data_registry ValidationProcedures {
 
 class ValidationProcedures#data {
   criteria {
-    definition "defined criteria for review and approval of the processes"
+    definition { defined criteria for review and approval of the processes }
     modality SHALL
     reference {
       ref7-5-6
     }
   }
   personnel {
-    definition "Equipment qualification and qualification of personnel"
+    definition { Equipment qualification and qualification of personnel }
     modality SHALL
     reference {
       ref7-5-6
     }
   }
   methods {
-    definition "Use of specific methods, procedures and acceptance criteria"
+    definition { Use of specific methods, procedures and acceptance criteria }
     reference {
       ref7-5-6
     }
   }
   stat_techniques[0..*] {
-    definition "Statistical techniques with rationale for sample sizes (as appropriate)"
+    definition { Statistical techniques with rationale for sample sizes (as appropriate) }
     modality SHALL
     reference {
       ref7-5-6
     }
   }
   records_requirements {
-    definition "Requirements for records (see 4.2.5)"
+    definition { Requirements for records (see 4.2.5) }
     modality SHALL
     reference {
       ref7-5-6
     }
   }
   revalidation {
-    definition "Revalidation, including criteria for revalidation"
+    definition { Revalidation, including criteria for revalidation }
     modality SHALL
     reference {
       ref7-5-6
     }
   }
   change {
-    definition "Approval of changes to the processes"
+    definition { Approval of changes to the processes }
     modality SHALL
     reference {
       ref7-5-6
@@ -3921,28 +3921,28 @@ data_registry AuditProgram {
 
 class AuditProgram#data {
   criteria {
-    definition "Audit criteria"
+    definition { Audit criteria }
     modality SHALL
     reference {
       ref8-2-4
     }
   }
   scope {
-    definition "Scope"
+    definition { Scope }
     modality SHALL
     reference {
       ref8-2-4
     }
   }
   interval {
-    definition "Interval"
+    definition { Interval }
     modality SHALL
     reference {
       ref8-2-4
     }
   }
   method {
-    definition "Methods"
+    definition { Methods }
     modality SHALL
     reference {
       ref8-2-4
@@ -13752,7 +13752,7 @@ measurement implant {
 
 measurement outsourcing {
   type TRUE/FALSE
-  definition "disableda"
+  definition { disableda }
   description "There is outsourcing"
 }
 

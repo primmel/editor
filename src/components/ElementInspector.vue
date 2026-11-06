@@ -34,7 +34,6 @@ import ConnectorProfileInspector from './inspectors/ConnectorProfileInspector.vu
 import MonitorInspector from './inspectors/MonitorInspector.vue';
 import PassportInspector from './inspectors/PassportInspector.vue';
 import InvariantInspector from './inspectors/InvariantInspector.vue';
-import FormulasUsedInspector from './inspectors/FormulasUsedInspector.vue';
 import TextInspector from './inspectors/TextInspector.vue';
 import ActivityArchetypeInspector from './inspectors/ActivityArchetypeInspector.vue';
 import CompetenceKindInspector from './inspectors/CompetenceKindInspector.vue';
@@ -224,11 +223,6 @@ const pluginInspector = computed(() => {
       />
       <InvariantInspector
         v-else-if="target.type === 'invariant'"
-        :model="props.model"
-        :element-id="target.id"
-      />
-      <FormulasUsedInspector
-        v-else-if="target.type === 'formulasUsed'"
         :model="props.model"
         :element-id="target.id"
       />

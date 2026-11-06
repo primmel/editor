@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────────
 // The instrument inspector (TODO.editor wave 03, window 2) — the
 // subject-TYPE definition (one per Recommendation): extends, the
-// measurand, the variants, the classification dimensions with their
+// measurand, the classification dimensions with their
 // values, the family block + criteria + defaults, the model group, the
 // channel dimension, the provenance. The measurand block, components,
 // structure relations, and the per-value payloads summarize read-only
@@ -17,7 +17,6 @@ import StringListEdit from '../fields/StringListEdit.vue';
 import DimensionValuesEditor from '../fields/DimensionValuesEditor.vue';
 
 type Instrument = Standard['instruments'][number];
-type SubjectVariant = Instrument['variants'][number];
 type ClassificationDimension = Instrument['dimensions'][number];
 type DimensionValue = ClassificationDimension['values'][number];
 type ModelGroupDef = NonNullable<Instrument['modelGroup']>;
@@ -28,7 +27,6 @@ const modelStore = useModelStore();
 const listOf = (a: Standard) => a.instruments;
 const instrument = computed(() => { void modelStore.version; return props.model.instruments.find(i => i.id === props.elementId); });
 
-const variants = computed(() => { void modelStore.version; return (instrument.value?.variants ?? []).map(v => ({ ...v })); });
 const dimensions = computed(() => { void modelStore.version; return (instrument.value?.dimensions ?? []).map(d => ({ ...d })); });
 
 function patch(field: keyof Instrument, value: unknown, label?: string) {
@@ -46,23 +44,6 @@ function patchSource(field: 'doc' | 'clause', e: Event) {
   // The dump walks `sourceRefs` (whose [0] ALIASES `source` on load) —
   // patch both in ONE command, keeping the alias.
   modelStore.execute(updateConstruct(listOf, props.elementId, { source, sourceRefs: [source] }, `edit instrument ${props.elementId} source`));
-}
-
-// ── variants ─────────────────────────────────────────────────────────
-function patchVariant(index: number, field: keyof SubjectVariant, e: Event) {
-  patch('variants', variants.value.map((v, i) => i === index ? { ...v, [field]: (e.target as HTMLInputElement).value } : v), `edit variant ${props.elementId}[${index}]`);
-}
-
-const draftVariantId = ref('');
-function addVariant() {
-  const id = draftVariantId.value.trim();
-  if (!id || !instrument.value || variants.value.some(v => v.id === id)) return;
-  patch('variants', [...variants.value, { id, definition: '' }], `add variant ${id}`);
-  draftVariantId.value = '';
-}
-
-function removeVariant(index: number) {
-  patch('variants', variants.value.filter((_, i) => i !== index), `remove variant ${variants.value[index]?.id ?? index}`);
 }
 
 // ── dimensions ───────────────────────────────────────────────────────
@@ -162,23 +143,6 @@ function patchList(field: 'familyCriteria' | 'familyDefaultDimensions' | 'family
 
     <InspectorField v-if="instrument.structure.length" :label="`structure relations (${instrument.structure.length})`" hint="the designed composition (partOf / consists_of / connectsTo) — authored in the code view">
       <code class="readonly-id" data-testid="inst-structure">{{ instrument.structure.map(s => `${s.predicate} → ${s.target}`).join(', ') }}</code>
-    </InspectorField>
-
-    <InspectorField :label="`variants (${variants.length})`">
-      <ul v-if="variants.length" class="entry-rows">
-        <li v-for="(v, i) in variants" :key="i" class="entry-row" :data-testid="`inst-variant-${v.id}`">
-          <div class="entry-line">
-            <code class="entry-id">{{ v.id }}</code>
-            <button type="button" class="row-remove" title="remove variant" :data-testid="`inst-variant-remove-${v.id}`" @click="removeVariant(i)">✕</button>
-          </div>
-          <input class="text-input" :value="v.name ?? ''" placeholder="display name" :data-testid="`inst-variant-name-${v.id}`" @change="patchVariant(i, 'name', $event)" />
-          <input class="text-input" :value="v.definition" placeholder="definition" :data-testid="`inst-variant-def-${v.id}`" @change="patchVariant(i, 'definition', $event)" />
-        </li>
-      </ul>
-      <div class="entry-add">
-        <input v-model="draftVariantId" class="text-input mono" placeholder="variant id…" data-testid="inst-variant-add" @keyup.enter="addVariant" />
-        <button type="button" :disabled="!draftVariantId.trim()" data-testid="inst-variant-add-btn" @click="addVariant">+</button>
-      </div>
     </InspectorField>
 
     <InspectorField :label="`dimensions (${dimensions.length})`" hint="the classification dimensions (single | set cardinality)">

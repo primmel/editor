@@ -21,13 +21,13 @@ import { dump, load, validate } from '@primmel/primmel';
 const SYNTHETIC = `term sample-overlay {
   overlay true
   label "sample"
-  definition "a sample definition"
+  definition { a sample definition }
   source "X, 3.1"
 }
 
 term plain-term {
   label "plain"
-  definition "no overlay marker"
+  definition { no overlay marker }
   source "X, 3.2"
 }
 `;

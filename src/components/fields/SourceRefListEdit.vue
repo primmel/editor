@@ -6,7 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────
 import type { Standard } from '@primmel/primmel';
 
-type SourceRef = NonNullable<Standard['formulasUsed'][number]['sourceRefs']>[number];
+type SourceRef = NonNullable<Standard['instruments'][number]['sourceRefs']>[number];
 
 const props = defineProps<{
   items: SourceRef[];

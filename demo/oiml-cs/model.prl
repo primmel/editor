@@ -18,510 +18,708 @@ requirement_class /req/cs {
 
 requirement /req/cs/application-completeness {
   name "Application completeness"
-  statement "The Issuing Authority shall review the application for completeness: it shall identify the applicant and the manufacturer(s), describe the measuring instrument type (single model or model family) with its declared metrological characteristics and dimensions, and include the documentation required for type evaluation. Where the application is incomplete, the Issuing Authority may request the applicant to provide additional information and documents prior to further processing."
+  statement { The Issuing Authority shall review the application for completeness: it shall identify the applicant and the manufacturer(s), describe the measuring instrument type (single model or model family) with its declared metrological characteristics and dimensions, and include the documentation required for type evaluation. Where the application is incomplete, the Issuing Authority may request the applicant to provide additional information and documents prior to further processing. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Applicant and manufacturer(s) identified"
-      - description: "Type (model or model family) described with declared characteristics and dimensions"
-      - description: "Type evaluation documentation included"
-      - description: "Deficiencies communicated to the applicant when incomplete"
-  }
   verification { method inspection description "IA application review step (process review_application)." }
   ref derives-from "PD-05 §4.2.1"
 }
 
+check requirement:/req/cs/application-completeness:acceptance_criteria:1 {
+  description { Applicant and manufacturer(s) identified }
+  ref derives-from "requirement:/req/cs/application-completeness"
+}
+check requirement:/req/cs/application-completeness:acceptance_criteria:2 {
+  description { Type (model or model family) described with declared characteristics and dimensions }
+  ref derives-from "requirement:/req/cs/application-completeness"
+}
+check requirement:/req/cs/application-completeness:acceptance_criteria:3 {
+  description { Type evaluation documentation included }
+  ref derives-from "requirement:/req/cs/application-completeness"
+}
+check requirement:/req/cs/application-completeness:acceptance_criteria:4 {
+  description { Deficiencies communicated to the applicant when incomplete }
+  ref derives-from "requirement:/req/cs/application-completeness"
+}
+
 requirement /req/cs/application-contents {
   name "Application contents"
-  statement "The application shall include: the name and address of the manufacturer and, if appropriate, of the authorised representative; a statement that no concurrent application for OIML type evaluation has been made to any other OIML Issuing Authority; a description of the type as distinct from other types (for a family of instruments or modules, information concerning each member as appropriate); a description of the instrument's operation, including the manufacturer's operating instructions; a list of the manufacturer's documentation necessary and sufficient for the identification of the type; information on the sample(s), representative of the production envisaged, to be submitted for tests and examinations; and, if applicable, the results of OIML test reports of previous OIML type evaluations."
+  statement { The application shall include: the name and address of the manufacturer and, if appropriate, of the authorised representative; a statement that no concurrent application for OIML type evaluation has been made to any other OIML Issuing Authority; a description of the type as distinct from other types (for a family of instruments or modules, information concerning each member as appropriate); a description of the instrument's operation, including the manufacturer's operating instructions; a list of the manufacturer's documentation necessary and sufficient for the identification of the type; information on the sample(s), representative of the production envisaged, to be submitted for tests and examinations; and, if applicable, the results of OIML test reports of previous OIML type evaluations. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Manufacturer (and authorised representative) name and address recorded"
-      - description: "No-concurrent-application statement present"
-      - description: "Type description (per family member as appropriate) recorded"
-      - description: "Operation description and manufacturer's operating instructions included"
-      - description: "Type-identification documentation list included"
-      - description: "Sample information representative of production recorded"
-      - description: "Previous OIML test reports referenced where applicable"
-  }
   verification { method inspection description "Applicant submission (abstract process application)." }
   ref derives-from "PD-05 §4.1.2"
 }
 
+check requirement:/req/cs/application-contents:acceptance_criteria:1 {
+  description { Manufacturer (and authorised representative) name and address recorded }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:2 {
+  description { No-concurrent-application statement present }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:3 {
+  description { Type description (per family member as appropriate) recorded }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:4 {
+  description { Operation description and manufacturer's operating instructions included }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:5 {
+  description { Type-identification documentation list included }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:6 {
+  description { Sample information representative of production recorded }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+check requirement:/req/cs/application-contents:acceptance_criteria:7 {
+  description { Previous OIML test reports referenced where applicable }
+  ref derives-from "requirement:/req/cs/application-contents"
+}
+
 requirement /req/cs/fee-estimate {
   name "Fee estimate on acceptance"
-  statement "On acceptance of an application, the Issuing Authority shall inform the applicant of the fee for application and an estimate of the fees for the type evaluation (including testing and reviewing any applicant-submitted test reports) and for issuing the certificate. The fees shall be determined by the Issuing Authority and the associated Test Laboratory(ies) (PD-05 §4.2.8)."
+  statement { On acceptance of an application, the Issuing Authority shall inform the applicant of the fee for application and an estimate of the fees for the type evaluation (including testing and reviewing any applicant-submitted test reports) and for issuing the certificate. The fees shall be determined by the Issuing Authority and the associated Test Laboratory(ies) (PD-05 §4.2.8). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Fee estimate communicated to the applicant on acceptance"
-      - description: "Fees determined by the Issuing Authority and the associated Test Laboratory(ies)"
-  }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
   ref derives-from "PD-05 §4.2.8"
 }
 
+check requirement:/req/cs/fee-estimate:acceptance_criteria:1 {
+  description { Fee estimate communicated to the applicant on acceptance }
+  ref derives-from "requirement:/req/cs/fee-estimate"
+}
+check requirement:/req/cs/fee-estimate:acceptance_criteria:2 {
+  description { Fees determined by the Issuing Authority and the associated Test Laboratory(ies) }
+  ref derives-from "requirement:/req/cs/fee-estimate"
+}
+
 requirement /req/cs/application-time-estimate {
   name "Approximate time estimate on acceptance"
-  statement "The Issuing Authority shall inform the applicant in writing of the approximate time necessary to draw up the OIML type evaluation report and OIML test report(s) and complete the OIML type evaluation."
+  statement { The Issuing Authority shall inform the applicant in writing of the approximate time necessary to draw up the OIML type evaluation report and OIML test report(s) and complete the OIML type evaluation. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Approximate completion time communicated to the applicant in writing"
-  }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
   ref derives-from "PD-05 §4.2.9"
 }
 
+check requirement:/req/cs/application-time-estimate:acceptance_criteria {
+  description { Approximate completion time communicated to the applicant in writing }
+  ref derives-from "requirement:/req/cs/application-time-estimate"
+}
+
 requirement /req/cs/sample-count {
   name "Sample count on acceptance"
-  statement "On acceptance of an application, the Issuing Authority shall inform the applicant of the rules of the OIML-CS and of the number of samples of the type required for testing — usually specified in the relevant OIML Recommendation, otherwise mutually agreed between the Issuing Authority and the applicant. Where the Issuing Authority is satisfied with the results of OIML test reports of a previous OIML type evaluation instead of testing new samples, it shall obtain evidence that the type for which the certificate is requested is identical to the previously evaluated type, and the OIML type evaluation report or accompanying document shall indicate which previous results were accepted and utilised (PD-05 §4.2.5). For a family of instruments or modules, the Issuing Authority shall inform the applicant of the identity and number of family members to be submitted (PD-05 §4.2.6); for modules, of the equipment or simulation setup necessary to enable testing (PD-05 §4.2.7)."
+  statement { On acceptance of an application, the Issuing Authority shall inform the applicant of the rules of the OIML-CS and of the number of samples of the type required for testing — usually specified in the relevant OIML Recommendation, otherwise mutually agreed between the Issuing Authority and the applicant. Where the Issuing Authority is satisfied with the results of OIML test reports of a previous OIML type evaluation instead of testing new samples, it shall obtain evidence that the type for which the certificate is requested is identical to the previously evaluated type, and the OIML type evaluation report or accompanying document shall indicate which previous results were accepted and utilised (PD-05 §4.2.5). For a family of instruments or modules, the Issuing Authority shall inform the applicant of the identity and number of family members to be submitted (PD-05 §4.2.6); for modules, of the equipment or simulation setup necessary to enable testing (PD-05 §4.2.7). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Required sample count stated per the Recommendation, or mutually agreed"
-      - description: "Type-identity evidence obtained and accepted previous results indicated when previous reports are used"
-      - description: "Family-member identity and count stated for family applications"
-  }
   verification { method inspection description "IA acceptance notification (process accept_application)." }
   ref derives-from "PD-05 §4.2.5"
 }
 
+check requirement:/req/cs/sample-count:acceptance_criteria:1 {
+  description { Required sample count stated per the Recommendation, or mutually agreed }
+  ref derives-from "requirement:/req/cs/sample-count"
+}
+check requirement:/req/cs/sample-count:acceptance_criteria:2 {
+  description { Type-identity evidence obtained and accepted previous results indicated when previous reports are used }
+  ref derives-from "requirement:/req/cs/sample-count"
+}
+check requirement:/req/cs/sample-count:acceptance_criteria:3 {
+  description { Family-member identity and count stated for family applications }
+  ref derives-from "requirement:/req/cs/sample-count"
+}
+
 requirement /req/cs/rejection-reason {
   name "Rejection with reason"
-  statement "The Issuing Authority may refuse an application only on clearly identified grounds: the category of measuring instrument or module is not included in its scope, the type does not correspond to the category or module covered in the relevant OIML Recommendation, the information required for the application is incomplete, or other clearly identified reasons (PD-05 §4.2.2 a–d). Where an application is rejected, the Issuing Authority shall inform the applicant in writing of its decision and state the reasons for the rejection (PD-05 §4.2.4)."
+  statement { The Issuing Authority may refuse an application only on clearly identified grounds: the category of measuring instrument or module is not included in its scope, the type does not correspond to the category or module covered in the relevant OIML Recommendation, the information required for the application is incomplete, or other clearly identified reasons (PD-05 §4.2.2 a–d). Where an application is rejected, the Issuing Authority shall inform the applicant in writing of its decision and state the reasons for the rejection (PD-05 §4.2.4). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Refusal rests on the §4.2.2 a–d grounds"
-      - description: "Rejection communicated to the applicant in writing"
-      - description: "Reasons for the rejection recorded and stated"
-  }
   verification { method inspection description "IA rejection step (process reject_application)." }
   ref derives-from "PD-05 §4.2.2"
 }
 
+check requirement:/req/cs/rejection-reason:acceptance_criteria:1 {
+  description { Refusal rests on the §4.2.2 a–d grounds }
+  ref derives-from "requirement:/req/cs/rejection-reason"
+}
+check requirement:/req/cs/rejection-reason:acceptance_criteria:2 {
+  description { Rejection communicated to the applicant in writing }
+  ref derives-from "requirement:/req/cs/rejection-reason"
+}
+check requirement:/req/cs/rejection-reason:acceptance_criteria:3 {
+  description { Reasons for the rejection recorded and stated }
+  ref derives-from "requirement:/req/cs/rejection-reason"
+}
+
 requirement /req/cs/test-laboratory-eligibility {
   name "Test laboratory eligibility"
-  statement "The tests and examinations for OIML type evaluation shall be performed by Test Laboratories that are listed in the OIML-CS Declaration of an OIML Issuing Authority, and the test procedures shall be consistent with those described in the relevant OIML Recommendation (PD-05 §4.3.2). (Platform enforcement interpretation, not PD-05 text — PD-05 defines no dispatch step: the Issuing Authority shall dispatch each test report request only to Test Laboratories eligible for the tests it assigns.)"
+  statement { The tests and examinations for OIML type evaluation shall be performed by Test Laboratories that are listed in the OIML-CS Declaration of an OIML Issuing Authority, and the test procedures shall be consistent with those described in the relevant OIML Recommendation (PD-05 §4.3.2). (Platform enforcement interpretation, not PD-05 text — PD-05 defines no dispatch step: the Issuing Authority shall dispatch each test report request only to Test Laboratories eligible for the tests it assigns.) }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Every dispatched Test Laboratory is listed in an OIML-CS Declaration"
-      - description: "Assigned test procedures are those of the relevant Recommendation"
-  }
   verification { method inspection description "IA dispatch step (abstract process dispatch)." }
   ref derives-from "PD-05 §4.3.1"
 }
 
+check requirement:/req/cs/test-laboratory-eligibility:acceptance_criteria:1 {
+  description { Every dispatched Test Laboratory is listed in an OIML-CS Declaration }
+  ref derives-from "requirement:/req/cs/test-laboratory-eligibility"
+}
+check requirement:/req/cs/test-laboratory-eligibility:acceptance_criteria:2 {
+  description { Assigned test procedures are those of the relevant Recommendation }
+  ref derives-from "requirement:/req/cs/test-laboratory-eligibility"
+}
+
 requirement /req/cs/multiple-test-laboratories {
   name "One test report per Test Laboratory"
-  statement "The Test Laboratory conducting tests according to the relevant OIML Recommendation shall issue an OIML test report. Where several Test Laboratories conduct such tests, each Test Laboratory shall issue an OIML test report that includes the results of the tests it has conducted."
+  statement { The Test Laboratory conducting tests according to the relevant OIML Recommendation shall issue an OIML test report. Where several Test Laboratories conduct such tests, each Test Laboratory shall issue an OIML test report that includes the results of the tests it has conducted. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "One OIML test report issued per testing Test Laboratory"
-      - description: "Each report covers only the tests that laboratory conducted"
-  }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
   ref derives-from "PD-05 §4.4.1"
 }
 
+check requirement:/req/cs/multiple-test-laboratories:acceptance_criteria:1 {
+  description { One OIML test report issued per testing Test Laboratory }
+  ref derives-from "requirement:/req/cs/multiple-test-laboratories"
+}
+check requirement:/req/cs/multiple-test-laboratories:acceptance_criteria:2 {
+  description { Each report covers only the tests that laboratory conducted }
+  ref derives-from "requirement:/req/cs/multiple-test-laboratories"
+}
+
 requirement /req/cs/test-report-18-elements {
   name "Test report content (18-element checklist)"
-  statement "The Test Laboratory shall compile the OIML test report so that it covers every element of the OIML-CS test-report checklist (PD-05, 4.4.3): identification of the report and the laboratory, identification of the tested samples, the test methods and conditions applied, the results obtained with their measurement uncertainties, and the responsible sign-off. The test-report skeleton of the Recommendation's execution layer realizes this checklist; the 18-element validation checklist is enforced at report compilation."
+  statement { The Test Laboratory shall compile the OIML test report so that it covers every element of the OIML-CS test-report checklist (PD-05, 4.4.3): identification of the report and the laboratory, identification of the tested samples, the test methods and conditions applied, the results obtained with their measurement uncertainties, and the responsible sign-off. The test-report skeleton of the Recommendation's execution layer realizes this checklist; the 18-element validation checklist is enforced at report compilation. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Report and laboratory identification elements present"
-      - description: "Sample identification for every tested specimen"
-      - description: "Test methods, conditions and results (with uncertainties) recorded per test"
-      - description: "Responsible Test Laboratory sign-off on the report"
-      - description: "All required form instances completed (completed_forms = required_forms)"
-  }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
   ref derives-from "PD-05 §4.4.3"
 }
 
+check requirement:/req/cs/test-report-18-elements:acceptance_criteria:1 {
+  description { Report and laboratory identification elements present }
+  ref derives-from "requirement:/req/cs/test-report-18-elements"
+}
+check requirement:/req/cs/test-report-18-elements:acceptance_criteria:2 {
+  description { Sample identification for every tested specimen }
+  ref derives-from "requirement:/req/cs/test-report-18-elements"
+}
+check requirement:/req/cs/test-report-18-elements:acceptance_criteria:3 {
+  description { Test methods, conditions and results (with uncertainties) recorded per test }
+  ref derives-from "requirement:/req/cs/test-report-18-elements"
+}
+check requirement:/req/cs/test-report-18-elements:acceptance_criteria:4 {
+  description { Responsible Test Laboratory sign-off on the report }
+  ref derives-from "requirement:/req/cs/test-report-18-elements"
+}
+check requirement:/req/cs/test-report-18-elements:acceptance_criteria:5 {
+  description { All required form instances completed (completed_forms = required_forms) }
+  ref derives-from "requirement:/req/cs/test-report-18-elements"
+}
+
 requirement /req/cs/test-report-authorization {
   name "Test report authorization"
-  statement "The OIML test report shall be dated, signed, and provided with a unique identification number by the responsible person of the Test Laboratory who authorises the report."
+  statement { The OIML test report shall be dated, signed, and provided with a unique identification number by the responsible person of the Test Laboratory who authorises the report. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Report dated by the authorizing responsible person"
-      - description: "Responsible-person signature recorded"
-      - description: "Unique report identification number assigned"
-  }
   verification { method inspection description "TL report authorization (approval tl_authorize_test_report; abstract process testing)." }
   ref derives-from "PD-05 §4.4.4"
 }
 
+check requirement:/req/cs/test-report-authorization:acceptance_criteria:1 {
+  description { Report dated by the authorizing responsible person }
+  ref derives-from "requirement:/req/cs/test-report-authorization"
+}
+check requirement:/req/cs/test-report-authorization:acceptance_criteria:2 {
+  description { Responsible-person signature recorded }
+  ref derives-from "requirement:/req/cs/test-report-authorization"
+}
+check requirement:/req/cs/test-report-authorization:acceptance_criteria:3 {
+  description { Unique report identification number assigned }
+  ref derives-from "requirement:/req/cs/test-report-authorization"
+}
+
 requirement /req/cs/test-report-language {
   name "Test report language"
-  statement "The OIML test report shall be in English or the national language of the Test Laboratory. Where the OIML test report is issued in a language other than English, an English translation shall be provided or authorised by the responsible OIML Issuing Authority."
+  statement { The OIML test report shall be in English or the national language of the Test Laboratory. Where the OIML test report is issued in a language other than English, an English translation shall be provided or authorised by the responsible OIML Issuing Authority. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Report in English or the Test Laboratory's national language"
-      - description: "English translation provided or authorised by the Issuing Authority where applicable"
-  }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
   ref derives-from "PD-05 §4.4.5"
 }
 
+check requirement:/req/cs/test-report-language:acceptance_criteria:1 {
+  description { Report in English or the Test Laboratory's national language }
+  ref derives-from "requirement:/req/cs/test-report-language"
+}
+check requirement:/req/cs/test-report-language:acceptance_criteria:2 {
+  description { English translation provided or authorised by the Issuing Authority where applicable }
+  ref derives-from "requirement:/req/cs/test-report-language"
+}
+
 requirement /req/cs/test-report-logo {
   name "Test report OIML-CS logo conditions"
-  statement "An OIML test report may bear the OIML-CS logo only under the conditions of PD-05 §4.4.6: the format and specifications of the logo comply with OIML B 20; the report clearly indicates the results of testing performed exclusively by an OIML-CS approved Test Laboratory within its scope of accreditation or peer assessment; the logo is not used on test reports that include 'old test data' (reports issued under the Basic Certificate System, the OIML Mutual Acceptance Arrangement, or any other scheme); and the report clearly identifies the results required by the relevant OIML Recommendation and any results not from the relevant OIML Recommendation (e.g. tests in support of additional national requirements)."
+  statement { An OIML test report may bear the OIML-CS logo only under the conditions of PD-05 §4.4.6: the format and specifications of the logo comply with OIML B 20; the report clearly indicates the results of testing performed exclusively by an OIML-CS approved Test Laboratory within its scope of accreditation or peer assessment; the logo is not used on test reports that include 'old test data' (reports issued under the Basic Certificate System, the OIML Mutual Acceptance Arrangement, or any other scheme); and the report clearly identifies the results required by the relevant OIML Recommendation and any results not from the relevant OIML Recommendation (e.g. tests in support of additional national requirements). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Logo format and specifications per OIML B 20"
-      - description: "OIML-CS Test Laboratory results within scope clearly indicated"
-      - description: "No logo on reports including old test data"
-      - description: "Recommendation-required results distinguished from other results"
-  }
   verification { method inspection description "TL report compilation (process compile_test_report)." }
   ref derives-from "PD-05 §4.4.6"
 }
 
+check requirement:/req/cs/test-report-logo:acceptance_criteria:1 {
+  description { Logo format and specifications per OIML B 20 }
+  ref derives-from "requirement:/req/cs/test-report-logo"
+}
+check requirement:/req/cs/test-report-logo:acceptance_criteria:2 {
+  description { OIML-CS Test Laboratory results within scope clearly indicated }
+  ref derives-from "requirement:/req/cs/test-report-logo"
+}
+check requirement:/req/cs/test-report-logo:acceptance_criteria:3 {
+  description { No logo on reports including old test data }
+  ref derives-from "requirement:/req/cs/test-report-logo"
+}
+check requirement:/req/cs/test-report-logo:acceptance_criteria:4 {
+  description { Recommendation-required results distinguished from other results }
+  ref derives-from "requirement:/req/cs/test-report-logo"
+}
+
 requirement /req/cs/evaluation-report-contents {
   name "Evaluation report contents"
-  statement "The Issuing Authority shall compile the type evaluation report so that it records the evaluation of every test report and examination result against the applicable requirements of the Recommendation: full coverage of the required test reports, a determination (pass / fail / indeterminate) for each evaluated provision, and a conclusion on the conformity of the type. Where tests were abbreviated or omitted on the basis of a previous evaluation, that shall be clearly indicated (PD-05 §4.3.3)."
+  statement { The Issuing Authority shall compile the type evaluation report so that it records the evaluation of every test report and examination result against the applicable requirements of the Recommendation: full coverage of the required test reports, a determination (pass / fail / indeterminate) for each evaluated provision, and a conclusion on the conformity of the type. Where tests were abbreviated or omitted on the basis of a previous evaluation, that shall be clearly indicated (PD-05 §4.3.3). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Every required test report reviewed (checklist coverage complete)"
-      - description: "Per-provision determinations recorded with notes where indeterminate"
-      - description: "Conformity conclusion stated and signed by the Issuing Authority"
-  }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
   ref derives-from "PD-05 §4.5.1"
 }
 
+check requirement:/req/cs/evaluation-report-contents:acceptance_criteria:1 {
+  description { Every required test report reviewed (checklist coverage complete) }
+  ref derives-from "requirement:/req/cs/evaluation-report-contents"
+}
+check requirement:/req/cs/evaluation-report-contents:acceptance_criteria:2 {
+  description { Per-provision determinations recorded with notes where indeterminate }
+  ref derives-from "requirement:/req/cs/evaluation-report-contents"
+}
+check requirement:/req/cs/evaluation-report-contents:acceptance_criteria:3 {
+  description { Conformity conclusion stated and signed by the Issuing Authority }
+  ref derives-from "requirement:/req/cs/evaluation-report-contents"
+}
+
 requirement /req/cs/evaluation-report-id {
   name "Evaluation report identification"
-  statement "The OIML type evaluation report shall be dated, signed by the responsible persons of the Issuing Authority that performed the OIML type evaluation (e.g. evaluator and supervisors according to OIML D 32 or OIML D 37), and provided with a unique identification number."
+  statement { The OIML type evaluation report shall be dated, signed by the responsible persons of the Issuing Authority that performed the OIML type evaluation (e.g. evaluator and supervisors according to OIML D 32 or OIML D 37), and provided with a unique identification number. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Report dated"
-      - description: "Signed by the responsible persons (evaluator and supervisors)"
-      - description: "Unique report identification number assigned"
-  }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report; approval ia_approve_evaluation_report)." }
   ref derives-from "PD-05 §4.5.2"
 }
 
+check requirement:/req/cs/evaluation-report-id:acceptance_criteria:1 {
+  description { Report dated }
+  ref derives-from "requirement:/req/cs/evaluation-report-id"
+}
+check requirement:/req/cs/evaluation-report-id:acceptance_criteria:2 {
+  description { Signed by the responsible persons (evaluator and supervisors) }
+  ref derives-from "requirement:/req/cs/evaluation-report-id"
+}
+check requirement:/req/cs/evaluation-report-id:acceptance_criteria:3 {
+  description { Unique report identification number assigned }
+  ref derives-from "requirement:/req/cs/evaluation-report-id"
+}
+
 requirement /req/cs/evaluation-report-logo {
   name "Evaluation report OIML-CS logo"
-  statement "The OIML-CS logo shall be affixed on the OIML type evaluation report."
+  statement { The OIML-CS logo shall be affixed on the OIML type evaluation report. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "OIML-CS logo affixed on the evaluation report"
-  }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
   ref derives-from "PD-05 §4.5.3"
 }
 
+check requirement:/req/cs/evaluation-report-logo:acceptance_criteria {
+  description { OIML-CS logo affixed on the evaluation report }
+  ref derives-from "requirement:/req/cs/evaluation-report-logo"
+}
+
 requirement /req/cs/evaluation-report-language {
   name "Evaluation report language"
-  statement "The OIML type evaluation report shall be in English or the national language of the Issuing Authority. Where the OIML type evaluation report is issued in a language other than English, an English translation shall be provided or authorised by the Issuing Authority."
+  statement { The OIML type evaluation report shall be in English or the national language of the Issuing Authority. Where the OIML type evaluation report is issued in a language other than English, an English translation shall be provided or authorised by the Issuing Authority. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Report in English or the Issuing Authority's national language"
-      - description: "English translation provided or authorised by the Issuing Authority where applicable"
-  }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report)." }
   ref derives-from "PD-05 §4.5.4"
 }
 
+check requirement:/req/cs/evaluation-report-language:acceptance_criteria:1 {
+  description { Report in English or the Issuing Authority's national language }
+  ref derives-from "requirement:/req/cs/evaluation-report-language"
+}
+check requirement:/req/cs/evaluation-report-language:acceptance_criteria:2 {
+  description { English translation provided or authorised by the Issuing Authority where applicable }
+  ref derives-from "requirement:/req/cs/evaluation-report-language"
+}
+
 requirement /req/cs/sample-retention {
   name "Report file copy and sample retention"
-  statement "The Issuing Authority shall keep on file a copy of the OIML type evaluation report and the information provided with the application. By agreement with the applicant, the tested samples may be kept by the Issuing Authority, the Test Laboratory(ies) or the applicant, the decision taking into account the size and, if appropriate, the commercial value of those samples."
+  statement { The Issuing Authority shall keep on file a copy of the OIML type evaluation report and the information provided with the application. By agreement with the applicant, the tested samples may be kept by the Issuing Authority, the Test Laboratory(ies) or the applicant, the decision taking into account the size and, if appropriate, the commercial value of those samples. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Evaluation report copy and application information kept on file by the Issuing Authority"
-      - description: "Sample keeping by agreement recorded, taking size and commercial value into account"
-  }
   verification { method inspection description "IA evaluation step (process compile_evaluation_report) and sample custody records." }
   ref derives-from "PD-05 §4.5.5"
 }
 
+check requirement:/req/cs/sample-retention:acceptance_criteria:1 {
+  description { Evaluation report copy and application information kept on file by the Issuing Authority }
+  ref derives-from "requirement:/req/cs/sample-retention"
+}
+check requirement:/req/cs/sample-retention:acceptance_criteria:2 {
+  description { Sample keeping by agreement recorded, taking size and commercial value into account }
+  ref derives-from "requirement:/req/cs/sample-retention"
+}
+
 requirement /req/cs/failure-notice {
   name "Failure notice"
-  statement "If the samples do not meet the requirements of the OIML Recommendation, the applicant shall be informed in writing of the reason for the failure, and the OIML type evaluation report shall be given to the applicant, if requested."
+  statement { If the samples do not meet the requirements of the OIML Recommendation, the applicant shall be informed in writing of the reason for the failure, and the OIML type evaluation report shall be given to the applicant, if requested. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Written failure reason communicated to the applicant"
-      - description: "Evaluation report given to the applicant on request"
-  }
   verification { method inspection description "IA conformity decision (abstract process decision; process compile_evaluation_report)." }
   ref derives-from "PD-05 §4.5.6"
 }
 
+check requirement:/req/cs/failure-notice:acceptance_criteria:1 {
+  description { Written failure reason communicated to the applicant }
+  ref derives-from "requirement:/req/cs/failure-notice"
+}
+check requirement:/req/cs/failure-notice:acceptance_criteria:2 {
+  description { Evaluation report given to the applicant on request }
+  ref derives-from "requirement:/req/cs/failure-notice"
+}
+
 requirement /req/cs/re-application {
   name "Re-application after failure"
-  statement "Where the samples failed a previous evaluation, the applicant may submit a new application with samples of a modified or newly identified type. New tests may be conducted but may be limited to those requirements for which the previous type was found not to comply only if the evidence provided supports the conclusion that the instrument's performance for all other requirements is not likely to have been affected by the modification of the type. Where the application applies to a type for which an OIML certificate has already been issued, the certificate revision procedure applies (PD-05 §4.5.7 cites \"the procedure in 7.1\" — a stale cross-reference in the published text; the revision procedure is §8.1)."
+  statement { Where the samples failed a previous evaluation, the applicant may submit a new application with samples of a modified or newly identified type. New tests may be conducted but may be limited to those requirements for which the previous type was found not to comply only if the evidence provided supports the conclusion that the instrument's performance for all other requirements is not likely to have been affected by the modification of the type. Where the application applies to a type for which an OIML certificate has already been issued, the certificate revision procedure applies (PD-05 §4.5.7 cites "the procedure in 7.1" — a stale cross-reference in the published text; the revision procedure is §8.1). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "New application linked to the previous failed evaluation"
-      - description: "Retest limitation rests on recorded supporting evidence"
-      - description: "Applications for already-certified types routed to the revision procedure"
-  }
   verification { method inspection description "IA review of the re-application (abstract process re_application — no concrete Core process yet; named gap)." }
   ref derives-from "PD-05 §4.5.7"
 }
 
+check requirement:/req/cs/re-application:acceptance_criteria:1 {
+  description { New application linked to the previous failed evaluation }
+  ref derives-from "requirement:/req/cs/re-application"
+}
+check requirement:/req/cs/re-application:acceptance_criteria:2 {
+  description { Retest limitation rests on recorded supporting evidence }
+  ref derives-from "requirement:/req/cs/re-application"
+}
+check requirement:/req/cs/re-application:acceptance_criteria:3 {
+  description { Applications for already-certified types routed to the revision procedure }
+  ref derives-from "requirement:/req/cs/re-application"
+}
+
 requirement /req/cs/scheme-a-national-requirements {
   name "Scheme A additional national requirements"
-  statement "Under Scheme A, when applicable, the applicant shall inform the Issuing Authority which additional tests and examinations it is applying for on the basis of additional national requirements listed in the OIML-CS Declaration of a Utilizer or Associate (PD-05 §5.1.4). The test procedures shall be consistent with those described in the relevant OIML Recommendation and/or the additional testing procedures for the additional national requirements included in the scope of that Declaration (PD-05 §5.3.2). Results of tests corresponding to the additional national requirements may be provided in separate test reports, or may be included in the OIML test reports issued for the tests and examinations conducted according to the relevant OIML Recommendation (PD-05 §5.4.2)."
+  statement { Under Scheme A, when applicable, the applicant shall inform the Issuing Authority which additional tests and examinations it is applying for on the basis of additional national requirements listed in the OIML-CS Declaration of a Utilizer or Associate (PD-05 §5.1.4). The test procedures shall be consistent with those described in the relevant OIML Recommendation and/or the additional testing procedures for the additional national requirements included in the scope of that Declaration (PD-05 §5.3.2). Results of tests corresponding to the additional national requirements may be provided in separate test reports, or may be included in the OIML test reports issued for the tests and examinations conducted according to the relevant OIML Recommendation (PD-05 §5.4.2). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Applied-for additional national requirement tests declared at application"
-      - description: "Test procedures consistent with the Recommendation and/or the Declaration's additional procedures"
-      - description: "Additional-requirement results in separate or shared test reports"
-  }
   verification { method inspection description "Scheme A processing (abstract process scheme_a_certification — unrealized; named gap)." }
   ref derives-from "PD-05 §5.1.4"
 }
 
+check requirement:/req/cs/scheme-a-national-requirements:acceptance_criteria:1 {
+  description { Applied-for additional national requirement tests declared at application }
+  ref derives-from "requirement:/req/cs/scheme-a-national-requirements"
+}
+check requirement:/req/cs/scheme-a-national-requirements:acceptance_criteria:2 {
+  description { Test procedures consistent with the Recommendation and/or the Declaration's additional procedures }
+  ref derives-from "requirement:/req/cs/scheme-a-national-requirements"
+}
+check requirement:/req/cs/scheme-a-national-requirements:acceptance_criteria:3 {
+  description { Additional-requirement results in separate or shared test reports }
+  ref derives-from "requirement:/req/cs/scheme-a-national-requirements"
+}
+
 requirement /req/cs/scheme-a-mtl-test-data {
   name "Scheme A Manufacturer Test Laboratory data"
-  statement "Under Scheme A, the tests and examinations may be performed by Manufacturer Test Laboratories listed in the OIML-CS Declaration of the Issuing Authority considering the application (PD-05 §5.3.1 b). Where OIML test reports from a Manufacturer Test Laboratory are utilised, this shall be prominently stated and the respective tests identified at the beginning of the OIML type evaluation report, together with the designation of the Manufacturer Test Laboratory (PD-05 §5.5.4). Issuing Authorities shall only utilise OIML test reports from Manufacturer Test Laboratories that are listed in their own OIML-CS Declaration (PD-05 §5.5.5)."
+  statement { Under Scheme A, the tests and examinations may be performed by Manufacturer Test Laboratories listed in the OIML-CS Declaration of the Issuing Authority considering the application (PD-05 §5.3.1 b). Where OIML test reports from a Manufacturer Test Laboratory are utilised, this shall be prominently stated and the respective tests identified at the beginning of the OIML type evaluation report, together with the designation of the Manufacturer Test Laboratory (PD-05 §5.5.4). Issuing Authorities shall only utilise OIML test reports from Manufacturer Test Laboratories that are listed in their own OIML-CS Declaration (PD-05 §5.5.5). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Manufacturer Test Laboratories listed in the considering Issuing Authority's Declaration"
-      - description: "Manufacturer Test Laboratory use prominently stated with tests identified at the head of the evaluation report"
-      - description: "Only own-Declaration Manufacturer Test Laboratory reports utilised"
-  }
   verification { method inspection description "Scheme A processing (abstract process scheme_a_certification — unrealized; named gap)." }
   ref derives-from "PD-05 §5.3.1"
 }
 
+check requirement:/req/cs/scheme-a-mtl-test-data:acceptance_criteria:1 {
+  description { Manufacturer Test Laboratories listed in the considering Issuing Authority's Declaration }
+  ref derives-from "requirement:/req/cs/scheme-a-mtl-test-data"
+}
+check requirement:/req/cs/scheme-a-mtl-test-data:acceptance_criteria:2 {
+  description { Manufacturer Test Laboratory use prominently stated with tests identified at the head of the evaluation report }
+  ref derives-from "requirement:/req/cs/scheme-a-mtl-test-data"
+}
+check requirement:/req/cs/scheme-a-mtl-test-data:acceptance_criteria:3 {
+  description { Only own-Declaration Manufacturer Test Laboratory reports utilised }
+  ref derives-from "requirement:/req/cs/scheme-a-mtl-test-data"
+}
+
 requirement /req/cs/scheme-a-anr-validation-letter {
   name "Scheme A additional-requirements validation letter"
-  statement "Under Scheme A, where tests according to the additional national requirements included in the OIML-CS Declaration of a Utilizer or Associate have been conducted, a letter issued by the OIML Issuing Authority shall validate the conformity of the instrument to these requirements. A copy of such a letter shall be sent to the BIML with the OIML certificate."
+  statement { Under Scheme A, where tests according to the additional national requirements included in the OIML-CS Declaration of a Utilizer or Associate have been conducted, a letter issued by the OIML Issuing Authority shall validate the conformity of the instrument to these requirements. A copy of such a letter shall be sent to the BIML with the OIML certificate. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Issuing Authority letter validating conformity to the additional national requirements"
-      - description: "Letter copy sent to the BIML with the certificate"
-  }
   verification { method inspection description "Scheme A issuance (abstract process scheme_a_certification — unrealized; named gap)." }
   ref derives-from "PD-05 §5.6.3"
 }
 
+check requirement:/req/cs/scheme-a-anr-validation-letter:acceptance_criteria:1 {
+  description { Issuing Authority letter validating conformity to the additional national requirements }
+  ref derives-from "requirement:/req/cs/scheme-a-anr-validation-letter"
+}
+check requirement:/req/cs/scheme-a-anr-validation-letter:acceptance_criteria:2 {
+  description { Letter copy sent to the BIML with the certificate }
+  ref derives-from "requirement:/req/cs/scheme-a-anr-validation-letter"
+}
+
 requirement /req/cs/certificate-requirements {
   name "Certificate issuance requirements"
-  statement "The Issuing Authority shall issue the OIML Certificate only when the type evaluation report concludes that the type conforms to all the requirements of the relevant Recommendation (PD-05 §4.6.1, §4.5.6). The certificate shall carry the information required by the OIML-CS and the Recommendation's certificate template: the type designation, the applicant and manufacturer(s), the certified metrological characteristics, the issuing authority, the date of issue and the signature of the responsible person, and the certificate number."
+  statement { The Issuing Authority shall issue the OIML Certificate only when the type evaluation report concludes that the type conforms to all the requirements of the relevant Recommendation (PD-05 §4.6.1, §4.5.6). The certificate shall carry the information required by the OIML-CS and the Recommendation's certificate template: the type designation, the applicant and manufacturer(s), the certified metrological characteristics, the issuing authority, the date of issue and the signature of the responsible person, and the certificate number. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Issued only on a conforming evaluation report"
-      - description: "Type designation, applicant and manufacturer(s) stated"
-      - description: "Certified characteristics per the Recommendation's certificate template"
-      - description: "Certificate number, date of issue and IA sign-off present"
-  }
   verification { method inspection description "IA issuance step (process issue_certificate)." }
   ref derives-from "PD-05 §4.6.1"
 }
 
+check requirement:/req/cs/certificate-requirements:acceptance_criteria:1 {
+  description { Issued only on a conforming evaluation report }
+  ref derives-from "requirement:/req/cs/certificate-requirements"
+}
+check requirement:/req/cs/certificate-requirements:acceptance_criteria:2 {
+  description { Type designation, applicant and manufacturer(s) stated }
+  ref derives-from "requirement:/req/cs/certificate-requirements"
+}
+check requirement:/req/cs/certificate-requirements:acceptance_criteria:3 {
+  description { Certified characteristics per the Recommendation's certificate template }
+  ref derives-from "requirement:/req/cs/certificate-requirements"
+}
+check requirement:/req/cs/certificate-requirements:acceptance_criteria:4 {
+  description { Certificate number, date of issue and IA sign-off present }
+  ref derives-from "requirement:/req/cs/certificate-requirements"
+}
+
 requirement /req/cs/certificate-format {
   name "Certificate format"
-  statement "The OIML certificate shall be drawn up according to the requirements of PD-05 Annex A and the OIML Certificate Template published on the OIML-CS pages of the OIML website — identical to that format or based on it, including the essential elements, with additional pages defining the essential technical and metrological characteristics of the instrument. It shall be signed by the responsible person within the Issuing Authority and shall bear the OIML-CS logo. The certificate shall be in English or in the national language of the Issuing Authority; a certificate issued in another language shall be accompanied by a provided or authorised English translation (PD-05 §4.6.3). The identification of the certified type shall be defined as marked on the instrument and identical to that in the type evaluation report (Annex A, A.5). Where the certificate concerns a module, the module shall be clearly identified in the certificate under the heading \"designation of the module\" (Annex A, A.4)."
+  statement { The OIML certificate shall be drawn up according to the requirements of PD-05 Annex A and the OIML Certificate Template published on the OIML-CS pages of the OIML website — identical to that format or based on it, including the essential elements, with additional pages defining the essential technical and metrological characteristics of the instrument. It shall be signed by the responsible person within the Issuing Authority and shall bear the OIML-CS logo. The certificate shall be in English or in the national language of the Issuing Authority; a certificate issued in another language shall be accompanied by a provided or authorised English translation (PD-05 §4.6.3). The identification of the certified type shall be defined as marked on the instrument and identical to that in the type evaluation report (Annex A, A.5). Where the certificate concerns a module, the module shall be clearly identified in the certificate under the heading "designation of the module" (Annex A, A.4). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Certificate drawn up per the OIML Certificate Template (Annex A)"
-      - description: "Signed by the responsible person within the Issuing Authority"
-      - description: "OIML-CS logo affixed"
-      - description: "Language rule satisfied (English or authorised translation)"
-      - description: "Certified-type identification identical to the evaluation report's"
-      - description: "Module identified under the \"designation of the module\" heading where applicable"
-  }
   verification { method inspection description "IA issuance step (abstract process issue)." }
   ref derives-from "PD-05 §4.6.2"
 }
 
+check requirement:/req/cs/certificate-format:acceptance_criteria:1 {
+  description { Certificate drawn up per the OIML Certificate Template (Annex A) }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+check requirement:/req/cs/certificate-format:acceptance_criteria:2 {
+  description { Signed by the responsible person within the Issuing Authority }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+check requirement:/req/cs/certificate-format:acceptance_criteria:3 {
+  description { OIML-CS logo affixed }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+check requirement:/req/cs/certificate-format:acceptance_criteria:4 {
+  description { Language rule satisfied (English or authorised translation) }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+check requirement:/req/cs/certificate-format:acceptance_criteria:5 {
+  description { Certified-type identification identical to the evaluation report's }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+check requirement:/req/cs/certificate-format:acceptance_criteria:6 {
+  description { Module identified under the "designation of the module" heading where applicable }
+  ref derives-from "requirement:/req/cs/certificate-format"
+}
+
 requirement /req/cs/certificate-number {
   name "Certificate number"
-  statement "The OIML certificate shall have a unique certificate number established according to the form specified in PD-05 Annex B, indicating: the relevant OIML Recommendation with its year of publication; the scheme letter ('A' or 'B'); the ISO country code of the Member State of issue supplemented by the numbering of the Issuing Authority for the instrument category; the year of issue and a sequential two-digit number; and the revision number. The certificate shall also include the identification number of the associated type evaluation report and of the documentation file (PD-05 §4.6.5; numbering guidance: OIML-CS Guidance Note GN-01)."
+  statement { The OIML certificate shall have a unique certificate number established according to the form specified in PD-05 Annex B, indicating: the relevant OIML Recommendation with its year of publication; the scheme letter ('A' or 'B'); the ISO country code of the Member State of issue supplemented by the numbering of the Issuing Authority for the instrument category; the year of issue and a sequential two-digit number; and the revision number. The certificate shall also include the identification number of the associated type evaluation report and of the documentation file (PD-05 §4.6.5; numbering guidance: OIML-CS Guidance Note GN-01). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Number carries Recommendation number and year of publication"
-      - description: "Number carries the scheme letter and the country/authority code"
-      - description: "Number carries year of issue, sequential number, and revision number"
-      - description: "Associated evaluation report and documentation file identifiers on the certificate"
-  }
   verification { method inspection description "IA issuance step (abstract process issue)." }
   ref derives-from "PD-05 §4.6.4"
 }
 
+check requirement:/req/cs/certificate-number:acceptance_criteria:1 {
+  description { Number carries Recommendation number and year of publication }
+  ref derives-from "requirement:/req/cs/certificate-number"
+}
+check requirement:/req/cs/certificate-number:acceptance_criteria:2 {
+  description { Number carries the scheme letter and the country/authority code }
+  ref derives-from "requirement:/req/cs/certificate-number"
+}
+check requirement:/req/cs/certificate-number:acceptance_criteria:3 {
+  description { Number carries year of issue, sequential number, and revision number }
+  ref derives-from "requirement:/req/cs/certificate-number"
+}
+check requirement:/req/cs/certificate-number:acceptance_criteria:4 {
+  description { Associated evaluation report and documentation file identifiers on the certificate }
+  ref derives-from "requirement:/req/cs/certificate-number"
+}
+
 requirement /req/cs/certificate-delivery {
   name "Certificate delivery and retention"
-  statement "The OIML certificate and the associated type evaluation report and test report(s) shall be given to the applicant, who then becomes their owner. The Issuing Authority shall keep a copy of the certificate, the type evaluation report and the test report(s)."
+  statement { The OIML certificate and the associated type evaluation report and test report(s) shall be given to the applicant, who then becomes their owner. The Issuing Authority shall keep a copy of the certificate, the type evaluation report and the test report(s). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Certificate with evaluation report and test reports handed to the applicant"
-      - description: "Issuing Authority copies retained on file"
-  }
   verification { method inspection description "IA issuance step (abstract process issue)." }
   ref derives-from "PD-05 §4.6.6"
 }
 
+check requirement:/req/cs/certificate-delivery:acceptance_criteria:1 {
+  description { Certificate with evaluation report and test reports handed to the applicant }
+  ref derives-from "requirement:/req/cs/certificate-delivery"
+}
+check requirement:/req/cs/certificate-delivery:acceptance_criteria:2 {
+  description { Issuing Authority copies retained on file }
+  ref derives-from "requirement:/req/cs/certificate-delivery"
+}
+
 requirement /req/cs/certificate-revision {
   name "Certificate revision"
-  statement "A revised OIML certificate shall keep the certificate number of the initial certificate, indicating in addition the revision number and a statement explaining the reason for the amendment, and shall be registered according to PD-05 clause 6. A statement shall indicate that the revised certificate replaces the previous version(s) and summarise the reason(s) for the revision (PD-05 §8.1.2); a revision that modifies the certified type shall include all information from the previous revision(s) with references to every evaluation/test report used to determine conformity (PD-05 §8.1.3)."
+  statement { A revised OIML certificate shall keep the certificate number of the initial certificate, indicating in addition the revision number and a statement explaining the reason for the amendment, and shall be registered according to PD-05 clause 6. A statement shall indicate that the revised certificate replaces the previous version(s) and summarise the reason(s) for the revision (PD-05 §8.1.2); a revision that modifies the certified type shall include all information from the previous revision(s) with references to every evaluation/test report used to determine conformity (PD-05 §8.1.3). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Initial certificate number retained with revision number"
-      - description: "Replacement statement and revision reason recorded"
-      - description: "Revised certificate registered with the BIML"
-  }
   verification { method inspection description "IA revision handling (process handle_revision)." }
   ref derives-from "PD-05 §8.1"
 }
 
+check requirement:/req/cs/certificate-revision:acceptance_criteria:1 {
+  description { Initial certificate number retained with revision number }
+  ref derives-from "requirement:/req/cs/certificate-revision"
+}
+check requirement:/req/cs/certificate-revision:acceptance_criteria:2 {
+  description { Replacement statement and revision reason recorded }
+  ref derives-from "requirement:/req/cs/certificate-revision"
+}
+check requirement:/req/cs/certificate-revision:acceptance_criteria:3 {
+  description { Revised certificate registered with the BIML }
+  ref derives-from "requirement:/req/cs/certificate-revision"
+}
+
 requirement /req/cs/biml-registration {
   name "BIML registration"
-  statement "The Issuing Authority shall send a copy of each OIML certificate it issues to the BIML for registration, and the registered certificate shall be made available on the OIML-CS register of issued certificates (PD-05 §6.4)."
+  statement { The Issuing Authority shall send a copy of each OIML certificate it issues to the BIML for registration, and the registered certificate shall be made available on the OIML-CS register of issued certificates (PD-05 §6.4). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Issued certificate transmitted to the BIML"
-      - description: "Certificate visible in the public OIML-CS register"
-  }
   verification { method inspection description "BIML registration step (process register_certificate)." }
   ref derives-from "PD-05 §6.1"
 }
 
+check requirement:/req/cs/biml-registration:acceptance_criteria:1 {
+  description { Issued certificate transmitted to the BIML }
+  ref derives-from "requirement:/req/cs/biml-registration"
+}
+check requirement:/req/cs/biml-registration:acceptance_criteria:2 {
+  description { Certificate visible in the public OIML-CS register }
+  ref derives-from "requirement:/req/cs/biml-registration"
+}
+
 requirement /req/cs/registration-fee {
   name "BIML registration fee"
-  statement "The BIML shall send the OIML Issuing Authority an invoice for the registration fee. The OIML certificate will be added to the list of registered certificates but will be withdrawn if payment is not received from the OIML Issuing Authority within 3 months of the invoice date. The registration fee is set by the CIML (PD-05 §6.2 Note 1); the Issuing Authority may choose to pass the registration fee on to the owner of the certificate, in which case the exact amount in Euros shall be charged (PD-05 §6.2 Note 2)."
+  statement { The BIML shall send the OIML Issuing Authority an invoice for the registration fee. The OIML certificate will be added to the list of registered certificates but will be withdrawn if payment is not received from the OIML Issuing Authority within 3 months of the invoice date. The registration fee is set by the CIML (PD-05 §6.2 Note 1); the Issuing Authority may choose to pass the registration fee on to the owner of the certificate, in which case the exact amount in Euros shall be charged (PD-05 §6.2 Note 2). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "BIML invoice for the registration fee sent to the Issuing Authority"
-      - description: "Certificate listing withdrawn when payment is not received within 3 months of the invoice date"
-      - description: "Pass-through to the owner charges the exact amount in Euros"
-  }
   verification { method inspection description "BIML registration fee handling (abstract process registration_fee — unrealized; named gap)." }
   ref derives-from "PD-05 §6.2"
 }
 
+check requirement:/req/cs/registration-fee:acceptance_criteria:1 {
+  description { BIML invoice for the registration fee sent to the Issuing Authority }
+  ref derives-from "requirement:/req/cs/registration-fee"
+}
+check requirement:/req/cs/registration-fee:acceptance_criteria:2 {
+  description { Certificate listing withdrawn when payment is not received within 3 months of the invoice date }
+  ref derives-from "requirement:/req/cs/registration-fee"
+}
+check requirement:/req/cs/registration-fee:acceptance_criteria:3 {
+  description { Pass-through to the owner charges the exact amount in Euros }
+  ref derives-from "requirement:/req/cs/registration-fee"
+}
+
 requirement /req/cs/registration-withdrawal {
   name "Registration fee invoiced to the owner"
-  statement "Where national regulations do not permit the OIML Issuing Authority to pass the BIML registration fee on to the owner of the OIML certificate, the BIML shall invoice the owner of the certificate instead of the Issuing Authority. When the owner is invoiced, the OIML certificate will be added to the list of registered certificates when payment has been received."
+  statement { Where national regulations do not permit the OIML Issuing Authority to pass the BIML registration fee on to the owner of the OIML certificate, the BIML shall invoice the owner of the certificate instead of the Issuing Authority. When the owner is invoiced, the OIML certificate will be added to the list of registered certificates when payment has been received. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Owner invoiced directly where national regulations bar pass-through"
-      - description: "Certificate listed when the owner's payment has been received"
-  }
   verification { method inspection description "BIML registration fee handling (abstract process registration_fee — unrealized; named gap)." }
   ref derives-from "PD-05 §6.3"
 }
 
+check requirement:/req/cs/registration-withdrawal:acceptance_criteria:1 {
+  description { Owner invoiced directly where national regulations bar pass-through }
+  ref derives-from "requirement:/req/cs/registration-withdrawal"
+}
+check requirement:/req/cs/registration-withdrawal:acceptance_criteria:2 {
+  description { Certificate listed when the owner's payment has been received }
+  ref derives-from "requirement:/req/cs/registration-withdrawal"
+}
+
 requirement /req/cs/incorrect-conclusions {
   name "Certificate issued on incorrect conclusions"
-  statement "The Executive Secretary shall consult with the relevant OIML Issuing Authority when documented and substantiated evidence is presented indicating that the tests providing the basis for issuing the OIML certificate were performed and/or interpreted incorrectly. In this instance the procedure detailed in clause 6 of PD-01 (complaints) shall be applied."
+  statement { The Executive Secretary shall consult with the relevant OIML Issuing Authority when documented and substantiated evidence is presented indicating that the tests providing the basis for issuing the OIML certificate were performed and/or interpreted incorrectly. In this instance the procedure detailed in clause 6 of PD-01 (complaints) shall be applied. }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Documented and substantiated evidence triggers Executive Secretary consultation with the Issuing Authority"
-      - description: "PD-01 clause 6 procedure applied"
-  }
   verification { method inspection description "Incorrect-conclusions handling (abstract process incorrect_conclusions — unrealized; named gap)." }
   ref derives-from "PD-05 §7.1"
 }
 
+check requirement:/req/cs/incorrect-conclusions:acceptance_criteria:1 {
+  description { Documented and substantiated evidence triggers Executive Secretary consultation with the Issuing Authority }
+  ref derives-from "requirement:/req/cs/incorrect-conclusions"
+}
+check requirement:/req/cs/incorrect-conclusions:acceptance_criteria:2 {
+  description { PD-01 clause 6 procedure applied }
+  ref derives-from "requirement:/req/cs/incorrect-conclusions"
+}
+
 requirement /req/cs/certificate-revision-mechanics {
   name "Certificate revision mechanics"
-  statement "When revising an OIML certificate, the Issuing Authority is responsible for determining the list of tests and examinations to be performed on the modified instrument (PD-05 §8.1.4). Where a revised certificate is issued to correct an error, the previous certificate shall be marked as being superseded in the lists maintained by the BIML when the revised certificate is registered (PD-05 §8.1.5). Where the revision concerns the transfer of ownership to a new applicant, the Issuing Authority shall verify that the new applicant is in possession of all the technical documentation defined in §4.1.2 and of the relevant OIML type evaluation report and OIML test report(s), and should make any necessary inquiry to ensure the validity of the transfer (PD-05 §8.1.6). Previous versions of OIML certificates remain on the OIML website except in the case of the correction of errors (PD-05 §8.1.7)."
+  statement { When revising an OIML certificate, the Issuing Authority is responsible for determining the list of tests and examinations to be performed on the modified instrument (PD-05 §8.1.4). Where a revised certificate is issued to correct an error, the previous certificate shall be marked as being superseded in the lists maintained by the BIML when the revised certificate is registered (PD-05 §8.1.5). Where the revision concerns the transfer of ownership to a new applicant, the Issuing Authority shall verify that the new applicant is in possession of all the technical documentation defined in §4.1.2 and of the relevant OIML type evaluation report and OIML test report(s), and should make any necessary inquiry to ensure the validity of the transfer (PD-05 §8.1.6). Previous versions of OIML certificates remain on the OIML website except in the case of the correction of errors (PD-05 §8.1.7). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Retest list for the modified instrument determined by the Issuing Authority"
-      - description: "Previous certificate marked superseded on registration of an error-correction revision"
-      - description: "Ownership-transfer documentation possession verified, with inquiry where necessary"
-      - description: "Previous certificate versions remain publicly available except error corrections"
-  }
   verification { method inspection description "IA revision handling (process handle_revision)." }
   ref derives-from "PD-05 §8.1.4"
 }
 
+check requirement:/req/cs/certificate-revision-mechanics:acceptance_criteria:1 {
+  description { Retest list for the modified instrument determined by the Issuing Authority }
+  ref derives-from "requirement:/req/cs/certificate-revision-mechanics"
+}
+check requirement:/req/cs/certificate-revision-mechanics:acceptance_criteria:2 {
+  description { Previous certificate marked superseded on registration of an error-correction revision }
+  ref derives-from "requirement:/req/cs/certificate-revision-mechanics"
+}
+check requirement:/req/cs/certificate-revision-mechanics:acceptance_criteria:3 {
+  description { Ownership-transfer documentation possession verified, with inquiry where necessary }
+  ref derives-from "requirement:/req/cs/certificate-revision-mechanics"
+}
+check requirement:/req/cs/certificate-revision-mechanics:acceptance_criteria:4 {
+  description { Previous certificate versions remain publicly available except error corrections }
+  ref derives-from "requirement:/req/cs/certificate-revision-mechanics"
+}
+
 requirement /req/cs/parallel-certificates {
   name "Certificates issued in parallel"
-  statement "A new applicant may apply to the original OIML Issuing Authority to issue a new OIML certificate in parallel to the one previously issued to the original applicant, provided that the new applicant is also in possession of all the technical documentation defined in §4.1.2 and of the existing OIML type evaluation report (PD-05 §8.2.1). The Issuing Authority should make any necessary inquiry to ensure the validity of the application — including, for example, the permission of the original applicant (PD-05 §8.2.2). The registration of the OIML certificate by the BIML is performed according to clause 6 (PD-05 §8.2.3)."
+  statement { A new applicant may apply to the original OIML Issuing Authority to issue a new OIML certificate in parallel to the one previously issued to the original applicant, provided that the new applicant is also in possession of all the technical documentation defined in §4.1.2 and of the existing OIML type evaluation report (PD-05 §8.2.1). The Issuing Authority should make any necessary inquiry to ensure the validity of the application — including, for example, the permission of the original applicant (PD-05 §8.2.2). The registration of the OIML certificate by the BIML is performed according to clause 6 (PD-05 §8.2.3). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "New applicant's possession of the full documentation and the existing evaluation report verified"
-      - description: "Validity inquiry (e.g. original applicant's permission) made where necessary"
-      - description: "Parallel certificate registered per clause 6"
-  }
   verification { method inspection description "IA parallel issuance (abstract process parallel_certificates; process issue_certificate)." }
   ref derives-from "PD-05 §8.2"
 }
 
+check requirement:/req/cs/parallel-certificates:acceptance_criteria:1 {
+  description { New applicant's possession of the full documentation and the existing evaluation report verified }
+  ref derives-from "requirement:/req/cs/parallel-certificates"
+}
+check requirement:/req/cs/parallel-certificates:acceptance_criteria:2 {
+  description { Validity inquiry (e.g. original applicant's permission) made where necessary }
+  ref derives-from "requirement:/req/cs/parallel-certificates"
+}
+check requirement:/req/cs/parallel-certificates:acceptance_criteria:3 {
+  description { Parallel certificate registered per clause 6 }
+  ref derives-from "requirement:/req/cs/parallel-certificates"
+}
+
 requirement /req/cs/recommendation-revision-updates {
   name "Certificate update after a Recommendation revision"
-  statement "After revision of the relevant OIML Recommendation, the owner of an OIML certificate issued on the basis of the previous edition may apply for updating the certificate on the basis of the revised Recommendation; the Issuing Authority must be approved by the Management Committee to issue certificates in accordance with the revised Recommendation (PD-05 §8.3.1). When reviewing the application, the Issuing Authority is responsible for determining, depending on the modifications implemented in the revised Recommendation, whether the type complies with the revised Recommendation and, if applicable, defining the additional tests and examinations to be performed (PD-05 §8.3.2). Upon successful completion of any additional tests and examinations, a new OIML certificate and OIML type evaluation report shall be issued to the owner by the relevant Issuing Authority, and the certificate registered according to clause 6 (PD-05 §8.3.3)."
+  statement { After revision of the relevant OIML Recommendation, the owner of an OIML certificate issued on the basis of the previous edition may apply for updating the certificate on the basis of the revised Recommendation; the Issuing Authority must be approved by the Management Committee to issue certificates in accordance with the revised Recommendation (PD-05 §8.3.1). When reviewing the application, the Issuing Authority is responsible for determining, depending on the modifications implemented in the revised Recommendation, whether the type complies with the revised Recommendation and, if applicable, defining the additional tests and examinations to be performed (PD-05 §8.3.2). Upon successful completion of any additional tests and examinations, a new OIML certificate and OIML type evaluation report shall be issued to the owner by the relevant Issuing Authority, and the certificate registered according to clause 6 (PD-05 §8.3.3). }
   obligation shall
-  acceptance_criteria {
-    type: "qualitative"
-    items:
-      - description: "Update application by the certificate owner on the revised Recommendation"
-      - description: "Compliance determination and additional tests defined by the Issuing Authority"
-      - description: "New certificate and evaluation report issued and registered on successful completion"
-  }
   verification { method inspection description "IA edition-change handling (abstract process recommendation_update; process handle_edition_change)." }
   ref derives-from "PD-05 §8.3"
+}
+
+check requirement:/req/cs/recommendation-revision-updates:acceptance_criteria:1 {
+  description { Update application by the certificate owner on the revised Recommendation }
+  ref derives-from "requirement:/req/cs/recommendation-revision-updates"
+}
+check requirement:/req/cs/recommendation-revision-updates:acceptance_criteria:2 {
+  description { Compliance determination and additional tests defined by the Issuing Authority }
+  ref derives-from "requirement:/req/cs/recommendation-revision-updates"
+}
+check requirement:/req/cs/recommendation-revision-updates:acceptance_criteria:3 {
+  description { New certificate and evaluation report issued and registered on successful completion }
+  ref derives-from "requirement:/req/cs/recommendation-revision-updates"
 }
 
 

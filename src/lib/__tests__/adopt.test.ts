@@ -36,12 +36,12 @@ metadata {
 
 term adopted_term {
   label "adopted"
-  definition "the definition that comes across"
+  definition { the definition that comes across }
 }
 
 requirement /req/upstream {
   name "Upstream"
-  statement "shall carry across"
+  statement { shall carry across }
 }
 `;
 

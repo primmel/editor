@@ -40,7 +40,7 @@ process P1 {
 
 class LoadCell {
   capacity: QuantityValue[1..1] {
-    definition "The capacity"
+    definition { The capacity }
   }
 }
 
@@ -144,12 +144,12 @@ describe('wave 03 G6 — the provision completion reads the real requirements', 
   it('a v3 package (zero provisions) completes requirement ids in validate_provision', () => {
     const model = load(`requirement /req/cs/sample-count {
   name "Sample count"
-  statement "s"
+  statement { s }
   obligation shall
 }
 requirement /req/cs/marking {
   name "Marking"
-  statement "s"
+  statement { s }
   obligation shall
 }
 `, { strict: true });
@@ -164,7 +164,7 @@ requirement /req/cs/marking {
 }
 requirement r1 {
   name "R"
-  statement "s"
+  statement { s }
   obligation may
 }
 `, { strict: true });

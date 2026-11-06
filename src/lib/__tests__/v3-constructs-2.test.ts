@@ -31,7 +31,6 @@ import {
   newDataspace,
   newDiscrepancyRecord,
   newDual,
-  newFormulasUsed,
   newInstance,
   newInstrument,
   newInvariant,
@@ -55,12 +54,12 @@ function run(text: string, ...commands: Command[]) {
 describe('W3.2 symbols — the symbol surface', () => {
   const SYMBOLS = `symbol e {
   name "e"
-  definition "Indication error"
+  definition { Indication error }
   type number
   unit "kg"
   kind formula
   quantity_kind mass
-  origin derived
+  origin computed
   legacy_id "3.2.1"
   attribute error
   calculation calc_error
@@ -75,7 +74,7 @@ describe('W3.2 symbols — the symbol surface', () => {
 
 symbol m {
   name "m"
-  definition "Applied load"
+  definition { Applied load }
   type number
 }
 `;
@@ -103,7 +102,7 @@ symbol m {
     });
     const ast = run(SYMBOLS, patch);
     const text = dump(ast);
-    expect(text).toContain('name "m (edited)"');
+    expect(text).toContain('label "m (edited)"');
     expect(text).toContain('unit "kg"');
     expect(text).toContain('formula { display "m" expression "ocl{m}" inputs { m } }');
     expect(text).toContain('note "a note"');
@@ -153,7 +152,7 @@ describe('W3.2 attribute definitions — the INV-2 schema surface', () => {
   const ATTRS = `attribute_definition e_max {
   symbol "E_max"
   name "Maximum capacity"
-  definition "Upper limit of the measuring range"
+  definition { Upper limit of the measuring range }
   quantity_kind mass
   unit "kg"
   value_type number
@@ -167,7 +166,7 @@ describe('W3.2 attribute definitions — the INV-2 schema surface', () => {
 
 attribute_definition accuracy_class {
   name "Accuracy class"
-  definition "The classification"
+  definition { The classification }
   scope family
 }
 `;
@@ -219,7 +218,7 @@ attribute_definition accuracy_class {
   it('note, enum_values and ref cites round-trip (kernel 1.9.0 dumps all three — the read-only pins lift)', () => {
     const ast = load(`attribute_definition a {
   name "A"
-  definition "d"
+  definition { d }
   note "a note"
   enum_values { X Y }
   ref cites "urn:oiml:pub:r:60-1:2021#clause-3.1"
@@ -259,7 +258,7 @@ describe('W3.2 quantity registers — the unit/kind registry surface', () => {
     symbol "kg"
     label "kilogram"
     kind mass
-    definition "SI base unit of mass"
+    definition { SI base unit of mass }
   }
   unit g {
     symbol "g"
@@ -295,7 +294,7 @@ describe('W3.2 quantity registers — the unit/kind registry surface', () => {
     expect(text).toContain('unit g { symbol "g" label "gram" kind mass factor 0.001 }');
     expect(text).toContain('unit degC { symbol "°C" label "degree Celsius" kind temperature offset 273.15 }');
     // factor 1 / offset 0 never serialize (the compact form).
-    expect(text).toContain('unit kg { symbol "kg" label "kilogram" kind mass definition "SI base unit of mass" }');
+    expect(text).toContain('unit kg { symbol "kg" label "kilogram" kind mass definition { SI base unit of mass } }');
     const reloaded = load(text, { strict: true });
     expect(reloaded.quantityRegisters[0]?.kinds).toHaveLength(2);
     expect(reloaded.quantityRegisters[0]?.units.find(u => u.id === 'degC')?.offsetToSI).toBe(273.15);
@@ -387,7 +386,7 @@ describe('W3.2 reference materials — the certified-material surface', () => {
   const RMS = `reference_material cgm-200 {
   kind certified_gas_mixture
   name "CGM 200"
-  definition "Certified gas mixture for analyzer verification"
+  definition { Certified gas mixture for analyzer verification }
   ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.2"
   identity_fields {
     field composition { description "Component(s) and nominal concentrations" }
@@ -483,11 +482,7 @@ describe('W3.2 instruments — the subject-TYPE surface', () => {
   const INSTRUMENT = `instrument LoadCell {
   extends MeasuringInstrument
   measurand_kind force
-  definition "A load cell family"
-  variant DigitalLoadCell {
-    name "Digital load cell"
-    definition "d"
-  }
+  definition { A load cell family }
   dimension accuracy_class {
     label "Accuracy class"
     scope family
@@ -499,7 +494,7 @@ describe('W3.2 instruments — the subject-TYPE surface', () => {
   }
   family {
     metamodel_class MeasuringInstrumentModelFamily
-    definition "The family definition"
+    definition { The family definition }
   }
   family_criteria {
     "criterion one"
@@ -509,7 +504,7 @@ describe('W3.2 instruments — the subject-TYPE surface', () => {
     parameters { e_max }
   }
   model_group {
-    definition "the inner family"
+    definition { the inner family }
     group_by accuracy_class
     identical_characteristics { creep }
     identical_attributes { e_max }
@@ -518,14 +513,13 @@ describe('W3.2 instruments — the subject-TYPE surface', () => {
 }
 
 instrument Other {
-  definition "d"
+  definition { d }
 }
 `;
 
   it('creates an instrument with the parse defaults; the dump round-trips', () => {
     const ast = run(INSTRUMENT, createConstruct(a => a.instruments, newInstrument('NewInstrument')));
     const i = ast.instruments.find(x => x.id === 'NewInstrument');
-    expect(i?.variants).toEqual([]);
     expect(i?.modelGroup).toBe(null);
     const text = dump(ast);
     expect(text).toContain('instrument NewInstrument {');
@@ -534,9 +528,8 @@ instrument Other {
     expect(validate(reloaded)).toEqual([]);
   });
 
-  it('edits variants, dimensions + values, the family block and the model group; undo restores', () => {
+  it('edits dimensions + values, the family block and the model group; undo restores', () => {
     const patch = updateConstruct(a => a.instruments, 'Other', {
-      variants: [{ id: 'AnalogVariant', name: 'Analog', definition: 'd' }],
       dimensions: [{
         id: 'installation', label: 'Installation', scope: 'model', cardinality: 'set',
         labelSeparator: '', description: '', source: null,
@@ -551,7 +544,6 @@ instrument Other {
     });
     const ast = run(INSTRUMENT, patch);
     const text = dump(ast);
-    expect(text).toContain('variant AnalogVariant { name "Analog" definition "d" }');
     expect(text).toContain('dimension installation {');
     expect(text).toContain('cardinality set');
     expect(text).toContain('fixed { label "Fixed" }');
@@ -976,22 +968,16 @@ describe('W3.2 the passport vocabularies — the kernel exports', () => {
   });
 });
 
-describe('W3.2 the registry plane — invariants, formulas-used, texts, archetypes, competence kinds, predicates, discrepancy records', () => {
+describe('W3.2 the registry plane — invariants, texts, archetypes, competence kinds, predicates, discrepancy records', () => {
   const REGISTRY = `invariant INV-1 {
   name "No bare numbers"
-  statement "every physical quantity is a QuantityValue"
+  statement { every physical quantity is a QuantityValue }
   severity error
   applies_to { QuantityValue }
   source "docs/oiml-core/09-invariants.md#9.2"
   enforcement { kernel:C32 gate:schema-quantity-value }
 }
 
-formulas_used /conf/metrological/mdlo {
-  name "MDLO evaluation formulas"
-  description "The evaluation-level quantities"
-  formulas { conversion_factor_f e_l }
-  ref derives-from "urn:oiml:pub:r:60-3:2021#clause-2.1"
-}
 
 text load-cell.definition {
   spell de "Wägezelle"
@@ -1001,13 +987,13 @@ text load-cell.definition {
 activity_archetype peer-assessment {
   label "peer assessment"
   clause "6.2"
-  definition "assessment of a body by others in the same field"
+  definition { assessment of a body by others in the same field }
   parent assessment
 }
 
 competence_kind force-measurement {
   label "Force measurement"
-  definition "d"
+  definition { d }
   ref derives-from "urn:iso:std:iso-iec:17025:2017#clause-6.2"
 }
 
@@ -1023,7 +1009,7 @@ predicate derives-from {
 
 discrepancy_record dr-1 {
   status open
-  summary "The 2017 and 2021 editions disagree on the creep band"
+  summary { The 2017 and 2021 editions disagree on the creep band }
   sources { "urn:oiml:pub:r:60:2017" "urn:oiml:pub:r:60:2021" }
 }
 `;
@@ -1032,7 +1018,6 @@ discrepancy_record dr-1 {
     const ast = run(
       REGISTRY,
       createConstruct(a => a.invariants, newInvariant('INV-2')),
-      createConstruct(a => a.formulasUsed, newFormulasUsed('/conf/other')),
       createConstruct(a => a.texts, newTextContent('t.x')),
       createConstruct(a => a.activityArchetypes, newActivityArchetype('aa-new')),
       createConstruct(a => a.competenceKinds, newCompetenceKind('ck-new')),
@@ -1041,7 +1026,6 @@ discrepancy_record dr-1 {
     );
     const reloaded = load(dump(ast), { strict: true });
     expect(reloaded.invariants.map(i => i.id)).toContain('INV-2');
-    expect(reloaded.formulasUsed.map(f => f.id)).toContain('/conf/other');
     expect(reloaded.texts.map(t => t.id)).toContain('t.x');
     expect(reloaded.activityArchetypes.map(a => a.id)).toContain('aa-new');
     expect(reloaded.competenceKinds.map(c => c.id)).toContain('ck-new');
@@ -1063,21 +1047,6 @@ discrepancy_record dr-1 {
       enforcement: { aspirational: false, claims: ['kernel:C32', 'linker:quantity-coherence'] },
     }));
     expect(dump(back)).toContain('enforcement { kernel:C32 linker:quantity-coherence }');
-  });
-
-  it('the formulas-used trace edits its formulas + sourceRefs (the repeated source blocks)', () => {
-    const patch = updateConstruct(a => a.formulasUsed, '/conf/metrological/mdlo', {
-      formulas: ['conversion_factor_f', 'e_l', 'e_r'],
-      sourceRefs: [{ doc: 'urn:oiml:pub:r:60-3:2021', clause: '2.1' }, { doc: 'urn:oiml:pub:r:60-3:2021', clause: '2.2' }],
-    });
-    const ast = run(REGISTRY, patch);
-    const text = dump(ast);
-    expect(text).toContain('formulas { conversion_factor_f e_l e_r }');
-    const reloaded = load(text, { strict: true });
-    expect(reloaded.formulasUsed[0]?.sourceRefs).toHaveLength(2);
-    expect(validate(reloaded)).toEqual([]);
-    patch.revert(ast);
-    expect(dump(ast)).toBe(dump(load(REGISTRY, { strict: true })));
   });
 
   it('the text spellings edit (incl. the via marker)', () => {
@@ -1119,7 +1088,6 @@ discrepancy_record dr-1 {
   it('deletes each registry kind; the removals revert to the exact slots', () => {
     const dels = [
       deleteConstruct(a => a.invariants, 'INV-1'),
-      deleteConstruct(a => a.formulasUsed, '/conf/metrological/mdlo'),
       deleteConstruct(a => a.texts, 'load-cell.definition'),
       deleteConstruct(a => a.activityArchetypes, 'peer-assessment'),
       deleteConstruct(a => a.competenceKinds, 'force-measurement'),
@@ -1259,7 +1227,7 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
   }
   field indication : number {
     label "Indication"
-    definition "The instrument indication"
+    definition { The instrument indication }
     unit "kg"
     required true
     bind run.indication
@@ -1270,15 +1238,12 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
     enum AccuracyClass
     targets { /req/metrological/mpe }
   }
-  pass_fail {
-    criteria "the error stays within MPE"
-    pass_if "ocl{abs(e) <= mpe}"
-    derive e_norm {
-      calculation normalize
-      for_each run
-      unit "v"
-    }
-  }
+}
+
+check form:test-report:pass_fail {
+  expression "ocl{abs(e) <= mpe}"
+  ref derives-from "form:test-report"
+  description { the error stays within MPE }
 }
 `;
 
@@ -1295,25 +1260,29 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
     expect(validate(reloaded)).toEqual([]);
   });
 
-  it('edits the header facets, the instances, the constraints, and the pass_fail block', () => {
+  it('edits the header facets, the instances, and the constraints; the canonical check edits beside them', () => {
     const ast = load(FORMS, { strict: true });
     const f = ast.forms[0]!;
     const patch = updateConstruct(a => a.forms, 'test-report', {
       section: 'verification',
       requirements: ['/req/metrological/mpe', '/req/metrological/repeatability'],
       formInstances: [...f.formInstances, { id: 'on-the-bench', name: 'on the bench' }],
-      passFail: { criteria: 'edited criteria', passIf: 'ocl{abs(e) <= mpe}', derivations: [] },
+    });
+    const patchCheck = updateConstruct(a => a.checks, 'form:test-report:pass_fail', {
+      description: 'edited criteria',
     });
     patch.apply(ast);
+    patchCheck.apply(ast);
     const text = dump(ast);
     expect(text).toContain('section "verification"');
     expect(text).toContain('requirements { /req/metrological/mpe /req/metrological/repeatability }');
-    expect(text).toContain('instance on-the-bench { name "on the bench" }');
-    expect(text).toContain('criteria "edited criteria"');
+    expect(text).toContain('instance on-the-bench { label "on the bench" }');
+    expect(text).toContain('description { edited criteria }');
     const reloaded = load(text, { strict: true });
     expect(reloaded.forms[0]?.formInstances).toHaveLength(2);
     expect(validate(reloaded)).toEqual([]);
     patch.revert(ast);
+    patchCheck.revert(ast);
     expect(dump(ast)).toBe(dump(load(FORMS, { strict: true })));
   });
 
@@ -1329,7 +1298,7 @@ describe('W3.2 forms — the data-capture schema surface (the plugin inspector)'
           name: 'ambient', type: 'number', typeDeclared: true, label: 'Ambient temperature', definition: '',
           unit: 'degC', symbol: '', verdict: '', targets: [], dimension: '', enumRef: '', pattern: '',
           required: false, requiredWhen: '', refs: [], measurementMethod: '', calculationId: null,
-          calculationBindings: [], derivation: '', evaluation: null, values: [], trueLabel: '',
+          bindings: [], derivation: '', evaluation: null, values: [], trueLabel: '',
           falseLabel: '', enumValues: [], defaultValue: '', hasDefault: false, referenceIds: [],
           fieldReferences: [], applicability: [], sourceDiscrepancy: null,
           fields: [], itemsType: '', subformRef: null,
