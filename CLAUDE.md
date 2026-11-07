@@ -11,7 +11,7 @@ The full feature map lives in `README.md`; the work program in
 ## Stack
 
 - Vue 3 + Pinia + Vite, TypeScript throughout.
-- `@primmel/primmel` — the published kernel (`^1.9.0`; the Studio tracks
+- `@primmel/primmel` — the published kernel (`^1.21.86`; the Studio tracks
   the v3 kernel: MapProfile, coverage, model-diff, type-expr, comments,
   the package-load API).
 - Puppeteer + tsx for the e2e probes (`e2e/`).
@@ -75,7 +75,7 @@ src/
 npx vue-tsc --noEmit
 npx vitest run
 npm run build
-./e2e/run-all.sh     # needs npm run dev on :5173
+./e2e/run-all.sh     # needs the studio on :5173 AND :5199 (npm run dev -- --port 5199)
 ```
 
 ## Gotchas that bit us (don't relearn them)
