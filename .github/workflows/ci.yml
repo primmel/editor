@@ -36,3 +36,28 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+      - name: Install
+        run: npm ci
+      # The e2e suite's own gate (run-all.sh's 64 legs): both dev
+      # servers up (the studio on 5173, the save-API studio on 5199),
+      # puppeteer drives the built app. Any leg's failure fails the job.
+      - name: Start the studio (5173)
+        run: |
+          nohup npm run dev -- --port 5173 --strictPort > /tmp/dev5173.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:5173/ > /dev/null && break; sleep 1; done
+      - name: Start the save-API studio (5199)
+        run: |
+          nohup npm run dev -- --port 5199 --strictPort > /tmp/dev5199.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:5199/ > /dev/null && break; sleep 1; done
+      - name: The e2e suite (all legs)
+        run: ./e2e/run-all.sh
