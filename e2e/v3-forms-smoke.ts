@@ -5,8 +5,9 @@ import puppeteer from 'puppeteer'
 // schema surface on the live app: the tree section (palette-created,
 // no in-tree +), the plugin's FormInspector (the header facets, the
 // fields with the bind facet — editable since the 1.9.0 kernel dumps
-// it — the pass_fail block), an edit through the command path, and the
-// palette create.
+// it), an edit through the command path, and the palette create. (The
+// pass_fail surface left with the spelling's parse refusal — 1.21.87;
+// the judgment rides the canonical check.)
 // ─────────────────────────────────────────────────────────────────────
 
 const TEXT = `form test-report {
@@ -19,10 +20,11 @@ const TEXT = `form test-report {
     required true
     bind run.indication
   }
-  pass_fail {
-    criteria "the error stays within MPE"
-    pass_if "ocl{abs(e) <= mpe}"
-  }
+}
+
+check form:test-report:pass_fail {
+  description { the error stays within MPE }
+  ref derives-from "form:test-report"
 }
 `
 
@@ -60,12 +62,11 @@ state = await page.evaluate(`(() => ({
   fieldRequired: document.querySelector('[data-testid="form-field-required-indication"]')?.checked ?? null,
   bind: document.querySelector('[data-testid="form-field-bind-indication"]')?.value ?? null,
   bindEditable: !document.querySelector('[data-testid="form-field-bind-indication"]')?.readOnly,
-  passFail: !!document.querySelector('[data-testid="form-pass-fail"]'),
 }))()`)
 console.log('inspector:', JSON.stringify(state))
 if (!state.inspector || state.name !== 'Test report' || state.section !== 'results'
   || state.fieldLabel !== 'Indication' || state.fieldRequired !== true
-  || state.bind !== 'run.indication' || state.bindEditable !== true || !state.passFail)
+  || state.bind !== 'run.indication' || state.bindEditable !== true)
   await fail('the form inspector did not open with the facets')
 
 // 3. A field edit lands through the command path and into the serialization

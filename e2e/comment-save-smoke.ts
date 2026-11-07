@@ -88,7 +88,7 @@ if (!probe.done?.includes('written to the package')) await fail('the first write
 // 3. The byte discipline on disk: the splice equation holds EXACTLY.
 const written1 = fs.readFileSync(path.join(PKG_DIR, 'model/main.prl'), 'utf8')
 const replacement1 = `process assemble {
-  name "Assemble gadgets v2"
+  label "Assemble gadgets v2"
 }`
 const expected1 = authoredMain.slice(0, span0.start.offset) + replacement1 + authoredMain.slice(span0.end.offset)
 if (written1 !== expected1) await fail('the written file is not the authored file with only the construct span spliced')
@@ -137,7 +137,7 @@ if (!probe.done?.includes('written to the package')) await fail('the second writ
 
 const written2 = fs.readFileSync(path.join(PKG_DIR, 'model/main.prl'), 'utf8')
 const replacement2 = `process assemble {
-  name "Assemble gadgets v3"
+  label "Assemble gadgets v3"
 }`
 const expected2 = written1.slice(0, span1.start) + replacement2 + written1.slice(span1.end)
 if (written2 !== expected2) await fail('the second write did not splice the re-based span')

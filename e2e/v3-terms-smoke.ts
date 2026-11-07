@@ -9,7 +9,7 @@ import puppeteer from 'puppeteer'
 
 const TEXT = `term load-cell {
   label "load cell"
-  definition "measuring transducer that will produce an output in response to an applied load"
+  definition { measuring transducer that will produce an output in response to an applied load }
   section "3.1"
   source "urn:oiml:pub:r:60-1:2021#clause-3.1.3"
   language "en"
@@ -20,14 +20,14 @@ const TEXT = `term load-cell {
 term durability {
   overlay true
   label "durability"
-  definition "ability of a measuring instrument to maintain its performance characteristics over a period of use"
+  definition { ability of a measuring instrument to maintain its performance characteristics over a period of use }
   section "3.1"
   language "en"
 }
 
 term widget {
   label "widget"
-  definition "a measurable thing"
+  definition { a measurable thing }
   language "en"
 }
 `

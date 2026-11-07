@@ -10,7 +10,7 @@ import puppeteer from 'puppeteer'
 
 const TEXT = `symbol e {
   name "e"
-  definition "Indication error"
+  definition { Indication error }
   type number
   unit "kg"
   kind formula
@@ -24,7 +24,7 @@ const TEXT = `symbol e {
 attribute_definition e_max {
   symbol "E_max"
   name "Maximum capacity"
-  definition "Upper limit of the measuring range"
+  definition { Upper limit of the measuring range }
   quantity_kind mass
   unit "kg"
   scope model

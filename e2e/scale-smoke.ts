@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer'
 import { readFileSync } from 'node:fs'
+import { importLegacy } from '../src/lib/mmel-import'
 import { join } from 'node:path'
 
 // ─────────────────────────────────────────────────────────────────────
@@ -27,7 +28,7 @@ await new Promise(r => setTimeout(r, 2500))
 const t0 = Date.now()
 await page.evaluate(`((text) => {
   window.__stores.model.loadText(text)
-})(${JSON.stringify(ISO27001).replace(/`/g, '\\`')})`)
+})(${JSON.stringify(importLegacy(ISO27001).canonical).replace(/`/g, '\\`')})`)
 await new Promise(r => setTimeout(r, 3000))
 const loadMs = Date.now() - t0
 
@@ -84,7 +85,7 @@ await page.evaluate(`(() => { window.__stores.ui.view = 'mapping' })()`)
 await new Promise(r => setTimeout(r, 800))
 await page.evaluate(`((text) => {
   window.__stores.mapping.loadRefText(text)
-})(${JSON.stringify(PAS2060).replace(/`/g, '\\`')})`)
+})(${JSON.stringify(importLegacy(PAS2060).canonical).replace(/`/g, '\\`')})`)
 await new Promise(r => setTimeout(r, 1500))
 const mapMs = Date.now() - t2
 state = await page.evaluate(`(() => ({

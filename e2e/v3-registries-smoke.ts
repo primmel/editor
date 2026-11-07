@@ -10,16 +10,11 @@ import puppeteer from 'puppeteer'
 
 const TEXT = `invariant INV-1 {
   name "No bare numbers"
-  statement "every physical quantity is a QuantityValue"
+  statement { every physical quantity is a QuantityValue }
   severity error
   enforcement aspirational
 }
 
-formulas_used /conf/metrological/mdlo {
-  name "MDLO evaluation formulas"
-  description "The evaluation-level quantities"
-  formulas { conversion_factor_f e_l }
-}
 
 text load-cell.definition {
   spell de "Wägezelle"
@@ -28,13 +23,12 @@ text load-cell.definition {
 activity_archetype peer-assessment {
   label "peer assessment"
   clause "6.2"
-  definition "assessment of a body by others in the same field"
+  definition { assessment of a body by others in the same field }
 }
 
 competence_kind force-measurement {
   label "Force measurement"
-  definition "d"
-  method_standard iec-61000-4-4 "IEC 61000-4-4 — bursts"
+  definition { d }
 }
 
 predicate derives-from {
@@ -46,7 +40,7 @@ predicate derives-from {
 
 discrepancy_record dr-1 {
   status open
-  summary "The 2017 and 2021 editions disagree"
+  summary { The 2017 and 2021 editions disagree }
   sources { "urn:a" "urn:b" }
 }
 `
@@ -66,11 +60,11 @@ await page.evaluate(`(() => { window.__stores.model.loadText(${JSON.stringify(TE
 await new Promise(r => setTimeout(r, 700))
 let state = await page.evaluate(`(() => ({
   groups: Array.from(document.querySelectorAll('.tree-group .group-header')).map((g) => g.textContent.trim()).filter((g) =>
-    g.startsWith('Invariants') || g.startsWith('Formulas Used') || g.startsWith('Texts') || g.startsWith('Activity Archetypes')
+    g.startsWith('Invariants') || g.startsWith('Texts') || g.startsWith('Activity Archetypes')
     || g.startsWith('Competence Kinds') || g.startsWith('Predicates') || g.startsWith('Discrepancy Records')),
 }))()`)
 console.log('tree:', JSON.stringify(state))
-const EXPECTED = ['Invariants (1) +', 'Formulas Used (1) +', 'Texts (1) +', 'Activity Archetypes (1) +', 'Competence Kinds (1) +', 'Predicates (1) +', 'Discrepancy Records (1) +']
+const EXPECTED = ['Invariants (1) +', 'Texts (1) +', 'Activity Archetypes (1) +', 'Competence Kinds (1) +', 'Predicates (1) +', 'Discrepancy Records (1) +']
 if (EXPECTED.some(g => !state.groups.includes(g))) await fail('the tree sections did not render')
 
 // 2. The invariant inspector opens; the aspirational marker shows.
@@ -127,20 +121,19 @@ if (!state.inspector || state.spelling !== 'de' || state.value !== 'Wägezelle')
   await fail('the text inspector did not open with the spelling')
 
 // 6. The in-tree creates mint one of each remaining kind.
-for (const type of ['formulasUsed', 'activityArchetype', 'competenceKind', 'discrepancyRecord']) {
+for (const type of ['activityArchetype', 'competenceKind', 'discrepancyRecord']) {
   await page.evaluate(`(() => { document.querySelector('[data-testid="tree-add-' + '${type}' + '"]').click() })()`)
   await new Promise(r => setTimeout(r, 250))
 }
 await new Promise(r => setTimeout(r, 400))
 state = await page.evaluate(`(() => ({
-  fu: window.__stores.model.standard.formulasUsed.map((f) => f.id),
   aa: window.__stores.model.standard.activityArchetypes.map((a) => a.id),
   ck: window.__stores.model.standard.competenceKinds.map((c) => c.id),
   dr: window.__stores.model.standard.discrepancyRecords.map((d) => d.id),
   selection: JSON.parse(JSON.stringify(window.__stores.ui.selection ?? null)),
 }))()`)
 console.log('created:', JSON.stringify(state))
-if (!state.fu.includes('FU1') || !state.aa.includes('AA1') || !state.ck.includes('CK1') || !state.dr.includes('DR1')
+if (!state.aa.includes('AA1') || !state.ck.includes('CK1') || !state.dr.includes('DR1')
   || state.selection?.id !== 'DR1' || state.selection?.type !== 'discrepancyRecord')
   await fail('the in-tree creates did not mint + select')
 

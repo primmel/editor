@@ -25,7 +25,7 @@ const TEXT = `subject LC500 {
         target error_hold
         level symbolic C6
         conditions "over the rated range"
-        statement "Holds accuracy class C6 across the rated range."
+        statement { Holds accuracy class C6 across the rated range. }
         verified_by { oiml-r60#/req/class-c/mpe }
       }
     }

@@ -54,7 +54,7 @@ process a_test {
 
 term adopted_term {
   label "adopted"
-  definition "the definition that comes across"
+  definition { the definition that comes across }
 }
 
 map_profile refB {

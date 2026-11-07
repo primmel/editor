@@ -106,7 +106,7 @@ await new Promise(r => setTimeout(r, 600))
 const synced = await page.evaluate(`(() => {
   const text = window.__editor.getValue()
   return {
-    hasRename: text.includes('name "Renamed on canvas"'),
+    hasRename: text.includes('label "Renamed on canvas"'),
     byteClean: text === window.__stores.model.serialize(),
   }
 })()`)

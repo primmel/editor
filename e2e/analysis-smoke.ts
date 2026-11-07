@@ -33,18 +33,10 @@ data_registry samples {
   data_class Sample#data
 }
 
-reference refISO {
-  document "ISO/IEC 17025:2017"
-  clause "7.5"
-}
-
 provision prov_data {
   subject claims Sample#data
   modality shall
   condition "every sample carries its identifier"
-  reference {
-    refISO
-  }
 }
 
 provision prov_other {
@@ -55,7 +47,7 @@ provision prov_other {
 
 requirement /req/one {
   name "The one"
-  statement "The organisation shall measure."
+  statement { The organisation shall measure. }
   binds_to Measure
 }
 `

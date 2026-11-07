@@ -20,7 +20,7 @@ const TEXT = `test_sequence mdlo-creep-dr {
     depends_on 1
   }
   sample_applicability all
-  source { doc "urn:oiml:pub:r:60-2:2021" clause "2.10" }
+  ref derives-from "urn:oiml:pub:r:60-2:2021#clause-2.10"
 }
 
 test_point_set span-points {
