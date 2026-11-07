@@ -42,13 +42,13 @@ table data {
 
 variable area {
   type TABLE_OPTIONS
-  definition "data,2,0,type,3,class"
+  definition { data,2,0,type,3,class }
   description "Nominal area"
 }
 
 variable thicknessReq {
   type TABLE_REFERENCE
-  definition "data,4,0,type,2,area,3,class"
+  definition { data,4,0,type,2,area,3,class }
   description "Thickness requirement"
 }
 

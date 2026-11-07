@@ -5,7 +5,7 @@
 // authored steps). The Paneron extension's dynamic-measurements-via-
 // API primitive, proven in a real browser.
 import puppeteer from 'puppeteer'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
@@ -34,7 +34,9 @@ async function text(sel: string): Promise<string | null> {
 
 // The demo model (the BS6004 showcase — area is measured, the data
 // table looks up type/thickness by class).
-const mmel = readFileSync(join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel'), 'utf8')
+const BS6004 = join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel')
+if (!existsSync(BS6004)) { console.log('API-SOURCE SKIP: the local legacy corpus is absent (the machine-dependent leg)'); process.exit(0) }
+const mmel = readFileSync(BS6004, 'utf8')
 await page.evaluate(`(async () => {
   const { importLegacy } = await import('/src/lib/mmel-import.ts')
   const result = importLegacy(${JSON.stringify(mmel)})

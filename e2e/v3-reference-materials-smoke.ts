@@ -10,8 +10,8 @@ import puppeteer from 'puppeteer'
 const TEXT = `reference_material cgm-200 {
   kind certified_gas_mixture
   name "CGM 200"
-  definition "Certified gas mixture for analyzer verification"
-  source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2" }
+  definition { Certified gas mixture for analyzer verification }
+  ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.2"
   identity_fields {
     field certified_value { description "The certified concentration" unit "mol/mol" type mole_fraction required true }
   }
@@ -22,7 +22,7 @@ const TEXT = `reference_material cgm-200 {
       evidence { purity: purity_certificate }
       override { rule "ocl{purity >= 0.99}" by issuing_authority evidence override_approved }
       on_violation invalidate
-      source { doc "urn:oiml:pub:r:144-1:2013" clause "5.2.1" }
+      ref derives-from "urn:oiml:pub:r:144-1:2013#clause-5.2.1"
     }
   }
 }

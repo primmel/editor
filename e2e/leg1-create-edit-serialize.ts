@@ -48,7 +48,7 @@ await new Promise(r => setTimeout(r, 500))
 state = await page.evaluate(`(() => {
   const text = window.__stores.model.serialize()
   return {
-    hasName: text.includes('name "Calibrate the cell"'),
+    hasName: text.includes('label "Calibrate the cell"'),
     hasActor: text.includes('actor QA'),
     hasModality: text.includes('modality SHOULD'),
     hasProcess: text.includes('process P1'),

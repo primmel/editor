@@ -10,22 +10,13 @@ import puppeteer from 'puppeteer'
 const TEXT = `behavior creep {
   kind temporal
   stimulus force
-  response "Change in load cell output with time under constant load (R 60-1, 3.4.4)."
+  response { Change in load cell output with time under constant load (R 60-1, 3.4.4). }
 }
 
 capability gas-analytical-system {
   label "Gas Analytical System"
   description "Base capability — all gas analytical systems have this."
   has_parameters { measurand_components mpe }
-}
-
-condition_set ref-conditions {
-  role reference
-  subject GasAnalyticalSystem
-  entries {
-    temperature { value "20" unit "degC" tolerance "5" note "Reference temperature" }
-  }
-  ref derives-from "urn:oiml:pub:r:144-1:2013#clause-8"
 }
 
 verdict creep {
@@ -54,7 +45,7 @@ await new Promise(r => setTimeout(r, 700))
 let state = await page.evaluate(`(() => ({
   groups: Array.from(document.querySelectorAll('.tree-group .group-header')).map((g) => g.textContent.trim()),
 }))()`)
-const want = ['Behaviors (1) +', 'Capabilities (1) +', 'Condition Sets (1) +', 'Verdicts (1) +']
+const want = ['Behaviors (1) +', 'Capabilities (1) +', 'Verdicts (1) +']
 console.log('tree:', JSON.stringify(state.groups.filter(g => want.some(w => g.startsWith(w.split(' ')[0])))))
 if (!want.every(w => state.groups.includes(w))) await fail('the subject-chain tree sections did not render')
 
@@ -114,32 +105,8 @@ state = await page.evaluate(`(() => ({
 console.log('capability:', JSON.stringify(state))
 if (!state.inspector || state.label !== 'Gas Analytical System') await fail('the capability inspector did not open')
 
-// 4. The condition set inspector opens; an entry edit lands.
-await page.evaluate(`(() => {
-  const groups = Array.from(document.querySelectorAll('.tree-group'))
-  const g = groups.find((el) => el.querySelector('.group-header')?.textContent?.startsWith('Condition Sets'))
-  g.querySelector('.group-items li').click()
-})()`)
-await new Promise(r => setTimeout(r, 300))
-state = await page.evaluate(`(() => ({
-  inspector: !!document.querySelector('[data-testid="condition-set-inspector"]'),
-  role: document.querySelector('[data-testid="cs-role"]')?.value ?? null,
-  value: document.querySelector('[data-testid="cs-entry-value-temperature"]')?.value ?? null,
-}))()`)
-console.log('condition set:', JSON.stringify(state))
-if (!state.inspector || state.role !== 'reference' || state.value !== '20') await fail('the condition set inspector did not open with the entries')
-await page.evaluate(`(() => {
-  const el = document.querySelector('[data-testid="cs-entry-value-temperature"]')
-  el.value = '21'
-  el.dispatchEvent(new Event('change', { bubbles: true }))
-})()`)
-await new Promise(r => setTimeout(r, 300))
-state = await page.evaluate(`(() => ({
-  value: window.__stores.model.standard.conditionSets[0].entries[0].value,
-}))()`)
-if (state.value !== '21') await fail('the condition entry edit did not land')
-
-// 5. The verdict inspector opens with the derivation chain.
+// 4. The verdict inspector opens with the derivation chain (the
+// condition-set surfaces left with the construct's retirement).
 await page.evaluate(`(() => {
   const groups = Array.from(document.querySelectorAll('.tree-group'))
   const g = groups.find((el) => el.querySelector('.group-header')?.textContent?.startsWith('Verdicts'))
@@ -157,7 +124,7 @@ if (!state.inspector || state.symbol !== 'C_C' || state.derive !== 'ocl{abs(c_c)
   await fail('the verdict inspector did not open with the facets')
 
 // 6. The in-tree creates mint + select (one per kind).
-for (const [type, prefix] of [['behavior', 'Behavior1'], ['capability', 'Capability1'], ['conditionSet', 'CondSet1'], ['verdict', 'Verdict1']]) {
+for (const [type, prefix] of [['behavior', 'Behavior1'], ['capability', 'Capability1'], ['verdict', 'Verdict1']]) {
   await page.evaluate(`(() => { document.querySelector('[data-testid="tree-add-' + '${type}' + '"]').click() })()`)
   await new Promise(r => setTimeout(r, 250))
   state = await page.evaluate(`(() => ({

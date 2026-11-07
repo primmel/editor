@@ -3,18 +3,15 @@ import puppeteer from 'puppeteer'
 // ─────────────────────────────────────────────────────────────────────
 // The v3 instruments leg (TODO.editor wave 03, window 2) — the
 // subject-TYPE surface on the live app: the tree section, the inspector
-// (variants, dimensions with values, the family block, the model
-// group), an edit through the command path, and the in-tree create.
+// (dimensions with values, the family block, the model group), an edit
+// through the command path, and the in-tree create. (The variant
+// surface left with the kernel's Instrument type — 1.21.87.)
 // ─────────────────────────────────────────────────────────────────────
 
 const TEXT = `instrument LoadCell {
   extends MeasuringInstrument
   measurand_kind force
-  definition "A load cell family"
-  variant DigitalLoadCell {
-    name "Digital load cell"
-    definition "d"
-  }
+  definition { A load cell family }
   dimension accuracy_class {
     label "Accuracy class"
     scope family
@@ -24,7 +21,7 @@ const TEXT = `instrument LoadCell {
     }
   }
   model_group {
-    definition "the inner family"
+    definition { the inner family }
     group_by accuracy_class
   }
 }
@@ -59,28 +56,27 @@ await new Promise(r => setTimeout(r, 400))
 state = await page.evaluate(`(() => ({
   inspector: !!document.querySelector('[data-testid="instrument-inspector"]'),
   extends: document.querySelector('[data-testid="inst-extends"]')?.value ?? null,
-  variantName: document.querySelector('[data-testid="inst-variant-name-DigitalLoadCell"]')?.value ?? null,
   dimLabel: document.querySelector('[data-testid="inst-dimension-label-accuracy_class"]')?.value ?? null,
   dimValueLabel: document.querySelector('[data-testid="inst-dimension-accuracy_class-value-label-C"]')?.value ?? null,
   modelGroup: !!document.querySelector('[data-testid="inst-model-group"]'),
 }))()`)
 console.log('inspector:', JSON.stringify(state))
-if (!state.inspector || state.extends !== 'MeasuringInstrument' || state.variantName !== 'Digital load cell'
+if (!state.inspector || state.extends !== 'MeasuringInstrument'
   || state.dimLabel !== 'Accuracy class' || state.dimValueLabel !== 'Class C' || !state.modelGroup)
   await fail('the instrument inspector did not open with the anatomy')
 
 // 3. An edit lands through the command path and into the serialization.
 await page.evaluate(`(() => {
-  const el = document.querySelector('[data-testid="inst-variant-name-DigitalLoadCell"]')
-  el.value = 'Digital load cell (edited live)'
+  const el = document.querySelector('[data-testid="inst-dimension-accuracy_class-value-label-C"]')
+  el.value = 'Class C (edited live)'
   el.dispatchEvent(new Event('change', { bubbles: true }))
 })()`)
 await new Promise(r => setTimeout(r, 300))
 state = await page.evaluate(`(() => ({
-  name: window.__stores.model.standard.instruments[0]?.variants[0]?.name,
-  serialized: window.__stores.model.serialize().includes('Digital load cell (edited live)'),
+  name: window.__stores.model.standard.instruments[0]?.dimensions[0]?.values[0]?.label,
+  serialized: window.__stores.model.serialize().includes('Class C (edited live)'),
 }))()`)
-if (state.name !== 'Digital load cell (edited live)' || !state.serialized) await fail('the variant edit did not land')
+if (state.name !== 'Class C (edited live)' || !state.serialized) await fail('the dimension-value edit did not land')
 
 // 4. Adding a dimension value lands (the nested editor).
 await page.evaluate(`(() => {

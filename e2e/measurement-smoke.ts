@@ -15,13 +15,16 @@ await page.evaluate(`(() => {
   s.model.execute({
     label: 'declare measurements',
     apply(ast) {
-      const p = ast.processes.find((x) => x.id === 'Manufacturing')
-      p.measure = ['temperature', 'note']
+      // The canonical check plane: the harness reads the process's
+      // authored checks' declared inputs (the facet retired at parse).
+      ast.checks.push(
+        { id: 'process:Manufacturing:validate_measurement:1', inputs: ['temperature'], expression: '', operator: '', threshold: '', source: null },
+        { id: 'process:Manufacturing:validate_measurement:2', inputs: ['note'], expression: '', operator: '', threshold: '', source: null },
+      )
       ast.variables.push({ id: 'temperature', type: 'float', definition: 'Chamber temperature', description: '' })
     },
     revert(ast) {
-      const p = ast.processes.find((x) => x.id === 'Manufacturing')
-      p.measure = []
+      ast.checks = ast.checks.filter((c) => !c.id.startsWith('process:Manufacturing:validate_measurement'))
       ast.variables = ast.variables.filter((v) => v.id !== 'temperature')
     },
   })

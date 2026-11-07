@@ -29,7 +29,7 @@ process InnerStep {
 
 measurement legacyVar {
   type float
-  definition "A legacy measurement"
+  definition { A legacy measurement }
 }
 
 subprocess Page1 {

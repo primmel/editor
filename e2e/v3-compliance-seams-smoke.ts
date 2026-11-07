@@ -12,7 +12,7 @@ const TEXT = `role TL { name "Test laboratory" }
 
 requirement /req/cs/sample-count {
   name "Sample count"
-  statement "The applicant provides the number of samples."
+  statement { The applicant provides the number of samples. }
   obligation shall
 }
 
