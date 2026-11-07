@@ -2,7 +2,7 @@
 // the Twin tab opens, the stream starts, the TABLE lookups derive, the
 // clock advances — the digital-twin golden path in a real browser.
 import puppeteer from 'puppeteer'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
@@ -28,7 +28,9 @@ async function click(sel: string) {
 
 // 1. Import the showcase BS6004 through the legacy importer (the demo
 // path: .mmel text → translated canonical → the working model).
-const mmel = readFileSync(join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel'), 'utf8')
+const BS6004 = join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel')
+if (!existsSync(BS6004)) { console.log('TWIN SKIP: the local legacy corpus is absent (the machine-dependent leg)'); process.exit(0) }
+const mmel = readFileSync(BS6004, 'utf8')
 await page.evaluate(`(async () => {
   const { importLegacy } = await import('/src/lib/mmel-import.ts')
   const result = importLegacy(${JSON.stringify(mmel)})

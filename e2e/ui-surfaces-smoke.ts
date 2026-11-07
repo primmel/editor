@@ -11,6 +11,7 @@ import { join } from 'node:path'
 // pattern: prove against the real fixture when present, skip the leg on
 // machines without it.
 const DIR = join(homedir(), 'src/mn/mmel-models/13485 (for diff)')
+if (!existsSync(DIR)) { console.log('UI-SURFACES SKIP: the local legacy corpus is absent (the machine-dependent leg)'); process.exit(0) }
 if (!existsSync(join(DIR, '2016.json')) || !existsSync(join(DIR, '2021.json'))) {
   console.log('UI-SURFACES SKIPPED (no corpus map sets)')
   process.exit(0)

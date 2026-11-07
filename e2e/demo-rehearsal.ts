@@ -3,7 +3,7 @@
 // (oiml-r60-lml through the package API), the digital twin on the
 // BS6004 showcase, the instance store, and the mapping surfaces.
 import puppeteer from 'puppeteer'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
@@ -41,7 +41,9 @@ await shot('1-corpus-home-r60.png')
 console.log('step 1: the R 60 corpus home')
 
 // 2. THE DIGITAL TWIN — the BS6004 showcase through the legacy import.
-const mmel = readFileSync(join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel'), 'utf8')
+const BS6004 = join(homedir(), 'src/mn/mmel-models/showcase 5/BS6004.mmel')
+if (!existsSync(BS6004)) { console.log('DEMO-REHEARSAL SKIP: the local legacy corpus is absent (the machine-dependent leg)'); process.exit(0) }
+const mmel = readFileSync(BS6004, 'utf8')
 await page.evaluate(`(async () => {
   const { importLegacy } = await import('/src/lib/mmel-import.ts')
   window.__stores.model.loadText(importLegacy(${JSON.stringify(mmel)}).canonical)

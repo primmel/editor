@@ -8,6 +8,7 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 
 const FIXTURE = join(homedir(), 'src/mn/mmel-models/dptm.sdc')
+if (!existsSync(FIXTURE)) { console.log('SDC SKIP: the local legacy corpus is absent (the machine-dependent leg)'); process.exit(0) }
 if (!existsSync(FIXTURE)) {
   console.log('DOC-SDC SKIPPED (no corpus fixture)')
   process.exit(0)
